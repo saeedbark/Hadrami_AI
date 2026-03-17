@@ -1,0 +1,21 @@
+### Python / FastAPI backend
+backend/venv/
+**/__pycache__/
+*.pyc
+
+### Flutter / Dart
+flutter_app/.dart_tool/
+flutter_app/.flutter-plugins
+flutter_app/.flutter-plugins-dependencies
+flutter_app/.packages
+flutter_app/build/
+
+### Editor / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+### Cursor / tooling
+.cursor/
+
