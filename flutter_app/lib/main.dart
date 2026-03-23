@@ -132,8 +132,8 @@ class _MainNavigationState extends State<MainNavigation> {
             textDirection: TextDirection.rtl,
             child: Column(
               children: [
-                DrawerHeader(
-                  decoration: const BoxDecoration(
+              const  DrawerHeader(
+                  decoration:  BoxDecoration(
                     gradient: LinearGradient(
                       colors: [Color(0xFF1B4F72), Color(0xFF1d4ed8)],
                     ),
@@ -141,7 +141,7 @@ class _MainNavigationState extends State<MainNavigation> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.end,
-                    children: const [
+                    children:  [
                       Text('🗺️ قاموس حضرموت',
                           style: TextStyle(
                               color: Colors.white,
