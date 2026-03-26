@@ -1,4 +1,4 @@
-name: hadrami_nlp
+  name: hadrami_nlp
 description: قاموس اللهجة الحضرمية - تطبيق الترجمة والبحث
 publish_to: 'none'
 version: 2.0.0+1

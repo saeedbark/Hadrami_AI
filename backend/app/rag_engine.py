@@ -4,7 +4,10 @@ from typing import Optional
 from .core.data_store import ENTRIES
 from .services.dictionary_service import search as keyword_search
 
-MODE = os.getenv("RAG_MODE", "simple")
+MODE = os.getenv("RAG_MODE", "local")
+OLLAMA_URL = os.getenv("OLLAMA_URL", "http://localhost:11434")
+# Default to a small model so local setup is fast; override via OLLAMA_MODEL.
+OLLAMA_MODEL = os.getenv("OLLAMA_MODEL", "tinyllama")
 
 
 def _keyword_context(query: str, top_k: int = 5) -> list[dict]:
@@ -105,8 +108,8 @@ class LocalRAG:
             import requests
 
             resp = requests.post(
-                "http://localhost:11434/api/generate",
-                json={"model": "aya:8b", "prompt": prompt, "stream": False},
+                f"{OLLAMA_URL}/api/generate",
+                json={"model": OLLAMA_MODEL, "prompt": prompt, "stream": False},
                 timeout=30,
             )
             if resp.status_code == 200:

@@ -74,6 +74,7 @@ class TranslateResultCard extends ConsumerWidget {
 
     return Card(
       elevation: 3,
+      color: colorScheme.surfaceContainerLow,
       child: Padding(
         padding: const EdgeInsets.all(16),
         child: Column(

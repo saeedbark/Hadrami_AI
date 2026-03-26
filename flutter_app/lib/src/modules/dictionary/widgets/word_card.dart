@@ -22,7 +22,9 @@ class WordCard extends ConsumerWidget {
 
     return Card(
       margin: const EdgeInsets.only(bottom: 8),
-      color: highlight ? colorScheme.secondaryContainer : null,
+      color: highlight
+          ? colorScheme.secondaryContainer
+          : colorScheme.surfaceContainerLow,
       child: InkWell(
         borderRadius: BorderRadius.circular(12),
         onTap: () => showModalBottomSheet(
