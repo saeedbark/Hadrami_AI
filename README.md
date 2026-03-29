@@ -149,23 +149,26 @@ flutter run
 
 ### 4) Connect Frontend To Backend API
 
-Frontend reads API URL from:
+The API base URL is set in `flutter_app/lib/src/configs/api_config.dart` via compile-time define **`API_BASE_URL`** (default `http://localhost:8000`).
 
-- `flutter_app/lib/src/configs/api_config.dart`
+**Web / Windows / macOS desktop (same machine as backend):** default is enough.
 
-Default:
+**Android emulator** (`localhost` points at the emulator, not your PC):
 
-```dart
-static const String baseUrl = 'http://localhost:8000';
+```bash
+cd flutter_app
+flutter run --dart-define=API_BASE_URL=http://10.0.2.2:8000
 ```
 
-Use the correct host per platform:
+**Physical phone:** use your computer’s LAN IP and allow the port in the Windows firewall if needed:
 
-- Android emulator: `http://10.0.2.2:8000`
-- iOS simulator: `http://localhost:8000`
-- Real phone/device: `http://YOUR_COMPUTER_IP:8000`
+```bash
+flutter run --dart-define=API_BASE_URL=http://192.168.x.x:8000
+```
 
-After changing `baseUrl`, restart Flutter app.
+**iOS simulator:** usually `http://localhost:8000` works; if not, use your Mac’s IP with `--dart-define`.
+
+After changing the define, do a full restart (not only hot reload).
 
 ### 5) End-to-End Test (Backend + Frontend)
 
@@ -206,7 +209,7 @@ If these pass, integration is working.
 | State | hooks_riverpod + flutter_hooks |
 | Routing | go_router (StatefulShellRoute) |
 | Theme | Material 3 + responsive (mobile/tablet/desktop) |
-| AI | RAG (Gemini / Ollama / simple keyword) |
+| AI | RAG (Gemini / simple keyword) |
 
 ---
 

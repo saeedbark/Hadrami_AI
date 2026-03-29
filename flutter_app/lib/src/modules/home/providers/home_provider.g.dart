@@ -6,11 +6,11 @@ part of 'home_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$statsHash() => r'372ef099a46b2c141617b47b13617919eb74b0b8';
+String _$statsHash() => r'37e2386fe3a183c42598dae31bb340756752bf00';
 
 /// See also [stats].
 @ProviderFor(stats)
-final statsProvider = AutoDisposeFutureProvider<AppStats?>.internal(
+final statsProvider = AutoDisposeFutureProvider<AppStats>.internal(
   stats,
   name: r'statsProvider',
   debugGetCreateSourceHash:
@@ -21,7 +21,7 @@ final statsProvider = AutoDisposeFutureProvider<AppStats?>.internal(
 
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
-typedef StatsRef = AutoDisposeFutureProviderRef<AppStats?>;
+typedef StatsRef = AutoDisposeFutureProviderRef<AppStats>;
 String _$randomWordHash() => r'282275b57bc33613853abb940796008f6c619fad';
 
 /// See also [randomWord].

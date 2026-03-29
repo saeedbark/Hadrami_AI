@@ -1,4 +1,6 @@
 ### Python / FastAPI backend
+backend/.env
+.env
 backend/venv/
 **/__pycache__/
 *.pyc

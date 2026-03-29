@@ -118,7 +118,7 @@ class SettingsPage extends HookConsumerWidget {
                   const _InfoRow('المصدر', 'القاموس الحضرمي (154 صفحة)'),
                   const _InfoRow('Backend', 'FastAPI + Python'),
                   const _InfoRow('Frontend', 'Flutter + Riverpod'),
-                  const _InfoRow('AI', 'RAG (Gemini / Ollama)'),
+                  const _InfoRow('AI', 'RAG (Gemini)'),
                 ],
               ),
             ),
