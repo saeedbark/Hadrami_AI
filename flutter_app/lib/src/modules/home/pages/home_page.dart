@@ -119,10 +119,9 @@ class HomePage extends HookConsumerWidget {
                 if (translateState.result != null)
                   TranslateResultCard(result: translateState.result!),
                 statsAsync.when(
-                  data: (stats) =>
-                      stats != null ? _StatsRow(stats: stats) : const SizedBox.shrink(),
+                  data: (stats) => _StatsRow(stats: stats),
                   loading: () => const LoadingWidget(),
-                  error: (_, __) => const SizedBox.shrink(),
+                  error: (err, _) => _ApiErrorCard(message: err.toString()),
                 ),
                 if (translateState.history.isNotEmpty) ...[
                   const SizedBox(height: 16),
@@ -170,6 +169,40 @@ class HomePage extends HookConsumerWidget {
             ),
           ),
         ],
+      ),
+    );
+  }
+}
+
+class _ApiErrorCard extends StatelessWidget {
+  const _ApiErrorCard({required this.message});
+
+  final String message;
+
+  @override
+  Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    return Card(
+      color: colorScheme.errorContainer,
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Icon(Icons.cloud_off, color: colorScheme.onErrorContainer),
+            const SizedBox(width: 12),
+            Expanded(
+              child: Text(
+                message.replaceFirst('Bad state: ', ''),
+                textDirection: TextDirection.rtl,
+                style: TextStyle(
+                  color: colorScheme.onErrorContainer,
+                  height: 1.4,
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

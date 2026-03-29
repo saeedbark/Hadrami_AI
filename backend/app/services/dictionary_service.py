@@ -1,5 +1,6 @@
 import json
 import random
+import re
 from typing import Any, Optional
 
 from ..core.config import FEEDBACK_FILE
@@ -88,6 +89,53 @@ def search(query: str, limit: int) -> dict[str, Any]:
     scored.sort(key=lambda item: -item[0])
     top = [item[1] for item in scored[:limit]]
     return {"total": len(scored), "results": top}
+
+
+_AR_QUESTION_FRAG = re.compile(
+    r"ما\s*معنى|مامعنى|ما\s*هو\s*معنى|وش\s*يعني|يعني\s*ايش|ايش\s*يعني|معنى\s*كلمة|^كلمة\s*",
+    re.IGNORECASE,
+)
+
+
+def _extract_search_candidates(raw: str) -> list[str]:
+    """Split questions like 'ما معنى الزقر' into tokens so 'الزقر' can match 'الزقره'."""
+    q = raw.strip()
+    if not q:
+        return []
+    stripped = _AR_QUESTION_FRAG.sub(" ", q)
+    parts = re.split(r"[\s،,.;:!؟?]+", stripped)
+    out: list[str] = []
+    for p in parts:
+        t = p.strip()
+        if len(t) >= 2:
+            out.append(t)
+        if t.startswith("ال") and len(t) > 3:
+            out.append(t[2:])
+    if q not in out:
+        out.insert(0, q)
+    seen: set[str] = set()
+    uniq: list[str] = []
+    for x in out:
+        if x and x not in seen:
+            seen.add(x)
+            uniq.append(x)
+    return uniq
+
+
+def search_expanded(query: str, limit: int) -> dict[str, Any]:
+    """Merge keyword search across the full question and extracted tokens (higher recall for /ask)."""
+    seen_ids: set[int] = set()
+    merged: list[dict[str, Any]] = []
+    inner = max(limit, 12)
+    for cand in _extract_search_candidates(query):
+        for entry in search(cand, limit=inner)["results"]:
+            eid = entry["id"]
+            if eid not in seen_ids:
+                seen_ids.add(eid)
+                merged.append(entry)
+            if len(merged) >= limit:
+                return {"total": len(merged), "results": merged}
+    return {"total": len(merged), "results": merged}
 
 
 def get_word(word_id: int) -> Optional[dict[str, Any]]:

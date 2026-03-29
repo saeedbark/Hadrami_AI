@@ -23,6 +23,7 @@ class AskPage extends ConsumerWidget {
             void send() {
               formModel.form.markAllAsTouched();
               if (!formModel.form.valid) return;
+              if (ref.read(askProvider).isLoading) return;
               final q = formModel.model.question.trim();
               ref.read(askProvider.notifier).ask(q);
               FocusScope.of(context).unfocus();
@@ -59,18 +60,32 @@ class AskPage extends ConsumerWidget {
                 const SizedBox(height: 16),
                 if (askState.result != null) ...[
                   Text(
-                    'الإجابة (${askState.result!.mode})',
+                    askState.result!.mode == 'error'
+                        ? 'خطأ في الاتصال'
+                        : 'الإجابة (${askState.result!.mode})',
                     style: TextStyle(
-                        fontWeight: FontWeight.bold, color: colorScheme.primary),
+                      fontWeight: FontWeight.bold,
+                      color: askState.result!.mode == 'error'
+                          ? colorScheme.error
+                          : colorScheme.primary,
+                    ),
                   ),
                   const SizedBox(height: 8),
                   Card(
+                    color: askState.result!.mode == 'error'
+                        ? colorScheme.errorContainer
+                        : null,
                     child: Padding(
                       padding: const EdgeInsets.all(16),
                       child: Text(
                         askState.result!.answer,
                         textDirection: TextDirection.rtl,
-                        style: const TextStyle(fontSize: 16),
+                        style: TextStyle(
+                          fontSize: 16,
+                          color: askState.result!.mode == 'error'
+                              ? colorScheme.onErrorContainer
+                              : null,
+                        ),
                       ),
                     ),
                   ),

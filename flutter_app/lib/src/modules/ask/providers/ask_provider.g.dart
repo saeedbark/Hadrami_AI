@@ -6,7 +6,7 @@ part of 'ask_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$askHash() => r'cf415ac1c3e4f5cd3e48c938896c091b037c59b0';
+String _$askHash() => r'c9508ae86191069b95efe1e65b7115fa64b2718f';
 
 /// See also [Ask].
 @ProviderFor(Ask)
