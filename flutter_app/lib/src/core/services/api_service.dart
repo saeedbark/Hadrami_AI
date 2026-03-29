@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart' as http;
@@ -121,7 +122,8 @@ class ApiService {
     }
   }
 
-  Future<AskResult?> ask(String question) async {
+  /// Always returns a result; [AskResult.mode] == `error` when the request failed.
+  Future<AskResult> ask(String question) async {
     try {
       final data = await _getJson(
         '/ask',
@@ -129,8 +131,20 @@ class ApiService {
         timeout: ApiConfig.longTimeout,
       );
       return AskResult.fromJson(data);
+    } on TimeoutException {
+      return AskResult(
+        question: question,
+        answer:
+            'انتهت مهلة الانتظار. أول طلب للخادم قد يستغرق وقتاً. جرّب مرة أخرى، أو تأكد من تشغيل الـ backend.',
+        mode: 'error',
+      );
     } catch (_) {
-      return null;
+      return AskResult(
+        question: question,
+        answer:
+            'تعذّر الاتصال بالخادم. تأكد من تشغيل الـ backend على ${ApiConfig.baseUrl}',
+        mode: 'error',
+      );
     }
   }
 

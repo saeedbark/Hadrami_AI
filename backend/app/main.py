@@ -9,8 +9,11 @@ from .services import dictionary_service
 
 app = FastAPI(title=APP_TITLE, description=APP_DESCRIPTION, version=APP_VERSION)
 
+# Flutter web runs on a random port (e.g. :63094) while the API is on :8000 — browsers require CORS.
+# Regex allows any localhost / 127.0.0.1 / LAN IP with a port (typical dev setups).
 app.add_middleware(
     CORSMiddleware,
+    allow_origin_regex=r"http://(localhost|127\.0\.0\.1|192\.168\.\d{1,3}\.\d{1,3})(:\d+)?",
     allow_origins=["*"],
     allow_methods=["*"],
     allow_headers=["*"],
@@ -89,9 +92,15 @@ def random_word():
 
 @app.get("/ask")
 def ask(q: str = Query(..., description="Ask anything about Hadrami dialect")):
-    from .rag_engine import get_rag_answer
+    from .rag_engine import _preview, _rag_log, get_rag_answer
 
     result = get_rag_answer(q)
+    ctx_snip = [
+        f"{e.get('hadrami_word', '?')}→{e.get('arabic_fus7a', '')}" for e in result["context"][:3]
+    ]
+    _rag_log(
+        f"🌐 /ask q={q!r} → mode={result['mode']!r} | context={ctx_snip} | answer={_preview(result['answer'])}"
+    )
     return {
         "question": q,
         "answer": result["answer"],

@@ -6,6 +6,7 @@ part 'ask_provider.g.dart';
 
 class AskState {
   final bool isLoading;
+  /// Null until the first successful or failed ask (never stuck hidden on error).
   final AskResult? result;
 
   const AskState({this.isLoading = false, this.result});
@@ -23,7 +24,8 @@ class Ask extends _$Ask {
 
   Future<void> ask(String question) async {
     if (question.trim().isEmpty) return;
-    state = const AskState(isLoading: true);
+    if (state.isLoading) return;
+    state = AskState(isLoading: true, result: state.result);
     final result = await ref.read(apiServiceProvider).ask(question);
     state = AskState(isLoading: false, result: result);
   }

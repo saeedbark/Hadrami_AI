@@ -1,13 +1,19 @@
 import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:hadrami_nlp/src/configs/api_config.dart';
 import 'package:hadrami_nlp/src/core/models/word_entry.dart';
 import 'package:hadrami_nlp/src/core/services/api_service.dart';
 
 part 'home_provider.g.dart';
 
 @riverpod
-Future<AppStats?> stats(StatsRef ref) async {
+Future<AppStats> stats(StatsRef ref) async {
   final data = await ref.read(apiServiceProvider).getStats();
-  if (data.isEmpty) return null;
+  if (data.isEmpty) {
+    throw StateError(
+      'تعذّر الاتصال بالخادم. شغّل الـ backend ثم حدّث الصفحة.\n'
+      'المتوقع: ${ApiConfig.baseUrl}',
+    );
+  }
   return AppStats.fromJson(data);
 }
 
