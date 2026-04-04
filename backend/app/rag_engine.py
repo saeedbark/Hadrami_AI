@@ -1,6 +1,7 @@
 import os
+import re
 from pathlib import Path
-from typing import Optional
+from typing import Any, Optional
 
 try:
     from dotenv import load_dotenv
@@ -12,6 +13,7 @@ except ImportError:
 from .core.data_store import ENTRIES
 from .services.dictionary_service import search as keyword_search
 from .services.dictionary_service import search_expanded
+from .services.dictionary_service import search_phrase_lexicon
 
 MODE = os.getenv("RAG_MODE", "local")
 # Gemini: set GEMINI_API_KEY and optional GEMINI_MODEL.
@@ -43,6 +45,85 @@ def _preview(text: str, max_len: int = 160) -> str:
 
 def _gemini_api_key() -> str:
     return (os.getenv("GEMINI_API_KEY") or "").strip()
+
+
+# Hadrami usage snippets often appear as ") : … (" inside dictionary prose.
+_USAGE_EXAMPLE_PATTERN = re.compile(r"\)\s*:\s*([^()]+?)\s*\(", re.UNICODE)
+
+# User asks to translate Hadrami → MSA (overrides default Q&A prompt).
+_TRANSLATION_INTENT_PATTERN = re.compile(
+    r"(ترجم|ترجمة|إلى\s*الفصحى|إلى\s*العربية|بالفصحى|بالعربية\s*الفصحى|"
+    r"translate|حول\s*إلى\s*الفصحى|عبر\s*إلى\s*الفصحى|فصحى\s*هذه)",
+    re.IGNORECASE,
+)
+
+
+def _looks_like_translation_request(question: str) -> bool:
+    q = (question or "").strip()
+    if not q:
+        return False
+    return bool(_TRANSLATION_INTENT_PATTERN.search(q))
+
+
+def _few_shot_pairs_from_entry(entry: dict[str, Any]) -> list[tuple[str, str]]:
+    """Build (Hadrami sentence, Fusha gloss) pairs from examples field and full_definition."""
+    hadrami_head = (entry.get("hadrami_word") or "").strip()
+    fus_gloss = (entry.get("arabic_fus7a") or "").strip()
+    definition = (entry.get("full_definition") or "").strip()
+    out: list[tuple[str, str]] = []
+
+    raw_examples = entry.get("examples")
+    if isinstance(raw_examples, list):
+        for ex in raw_examples[:4]:
+            if not isinstance(ex, dict):
+                continue
+            h = (ex.get("hadrami") or ex.get("hadrami_sentence") or ex.get("sentence") or "").strip()
+            f = (ex.get("fusha") or ex.get("fusha_translation") or ex.get("meaning") or "").strip()
+            if h and f:
+                out.append((h, f))
+
+    for m in _USAGE_EXAMPLE_PATTERN.finditer(definition):
+        snippet = (m.group(1) or "").strip()
+        if len(snippet) >= 3:
+            gloss = fus_gloss if fus_gloss else definition[:160]
+            out.append((snippet, gloss))
+
+    if not out and hadrami_head and fus_gloss:
+        out.append((hadrami_head, fus_gloss))
+
+    return out[:2]
+
+
+def _translation_prompt(question: str, context_entries: list[dict]) -> str:
+    """Few-shot Hadrami → MSA prompt for Gemini."""
+    blocks: list[str] = []
+    for e in context_entries[:8]:
+        for had, fusha in _few_shot_pairs_from_entry(e):
+            if len(blocks) >= 10:
+                break
+            had_clean = had.replace("\n", " ").strip()
+            fusha_clean = fusha.replace("\n", " ").strip()
+            if not had_clean or not fusha_clean:
+                continue
+            blocks.append(
+                f"- Hadrami Example: {had_clean}\n  - Fusha Translation: {fusha_clean}"
+            )
+        if len(blocks) >= 10:
+            break
+
+    examples_text = (
+        "\n\n".join(blocks)
+        if blocks
+        else "(No structured examples were retrieved from the dictionary; rely on general Hadrami-to-MSA competence.)"
+    )
+
+    system_and_examples = f"""You are a professional translator from Hadrami dialect to Modern Standard Arabic. Use the following examples as a guide for style, grammar, and vocabulary mapping.
+
+{examples_text}"""
+
+    return f"""{system_and_examples}
+
+Now, translate this sentence precisely: {question}"""
 
 
 def _merge_entries_by_id(*lists: list[dict]) -> list[dict]:
@@ -230,25 +311,20 @@ class LocalRAG:
 _local_rag = None
 
 
-def get_rag_answer(question: str) -> dict:
+def retrieve_rag_context(query: str) -> tuple[list[dict], list[dict]]:
+    """Return (entries_for_prompt, entries_for_api_response) — same retrieval as /ask."""
     global _local_rag
 
     if MODE == "simple":
-        context = _keyword_context(question, top_k=3)
-        if not context:
-            answer = "غير موجود"
-            _rag_log(f"📌 branch=simple (no hits) answer_preview={_preview(answer)}")
-            return {"answer": answer, "context": context, "mode": "simple"}
-        answer = context[0].get("arabic_fus7a", "غير موجود")
-        _rag_log(f"📌 branch=simple mode=simple answer_preview={_preview(answer)}")
-        return {"answer": answer, "context": context, "mode": "simple"}
+        context = _keyword_context(query, top_k=3)
+        return context[:5], context[:3]
 
-    kw_ctx = _expanded_keyword_context(question, top_k=8)
+    kw_ctx = _expanded_keyword_context(query, top_k=8)
     chroma_ctx: list[dict] = []
     if MODE == "local" and _use_chroma():
         if _local_rag is None:
             _local_rag = LocalRAG()
-        ch = _local_rag.chroma_search(question, top_k=6)
+        ch = _local_rag.chroma_search(query, top_k=6)
         if ch is not None:
             chroma_ctx = ch
     elif MODE == "local":
@@ -258,8 +334,69 @@ def get_rag_answer(question: str) -> dict:
         )
 
     merged = _merge_entries_by_id(kw_ctx, chroma_ctx)[:5]
-    ctx_for_api = merged[:3]
-    prompt = _prompt_for_gemini(question, merged)
+    return merged, merged[:3]
+
+
+def retrieve_phrase_context(query: str) -> tuple[list[dict], list[dict]]:
+    """Retrieval for /translate-phrase: stricter lexicon matching so Gemini is not misled on long text."""
+    global _local_rag
+
+    if MODE == "simple":
+        rows = search_phrase_lexicon(query, 8)["results"]
+        return rows[:5], rows[:3]
+
+    kw_ctx = search_phrase_lexicon(query, 10)["results"]
+    chroma_ctx: list[dict] = []
+    if MODE == "local" and _use_chroma():
+        if _local_rag is None:
+            _local_rag = LocalRAG()
+        ch = _local_rag.chroma_search(query, top_k=6)
+        if ch is not None:
+            chroma_ctx = ch
+    elif MODE == "local":
+        _rag_log(
+            "📚 phrase: Chroma off — phrase-safe keyword + Gemini. "
+            "Set RAG_USE_CHROMA=1 after build-index for vector recall."
+        )
+
+    merged = _merge_entries_by_id(kw_ctx, chroma_ctx)[:5]
+    return merged, merged[:3]
+
+
+def get_translation_answer(question: str) -> dict:
+    """Hadrami → MSA translation using phrase-safe retrieval and few-shot prompting."""
+    merged, ctx_for_api = retrieve_phrase_context(question)
+    prompt = _translation_prompt(question, merged)
+    answer = _gemini_generate(prompt, _gemini_api_key())
+
+    if answer.startswith("Gemini not available:"):
+        fb = merged[0].get("arabic_fus7a", "غير موجود") if merged else "غير موجود"
+        _rag_log(f"🔁 translation Gemini failed → fallback answer_preview={_preview(fb)}")
+        return {"answer": fb, "context": ctx_for_api, "mode": "simple"}
+
+    mode_tag = "local_gemini" if MODE == "local" else "gemini"
+    _rag_log(f"⬅️ get_translation_answer END mode={mode_tag} answer_preview={_preview(answer)}")
+    return {"answer": answer, "context": ctx_for_api, "mode": mode_tag}
+
+
+def get_rag_answer(question: str) -> dict:
+    q = (question or "").strip()
+
+    if _looks_like_translation_request(q):
+        return get_translation_answer(q)
+
+    if MODE == "simple":
+        merged, ctx_for_api = retrieve_rag_context(q)
+        if not merged:
+            answer = "غير موجود"
+            _rag_log(f"📌 branch=simple (no hits) answer_preview={_preview(answer)}")
+            return {"answer": answer, "context": ctx_for_api, "mode": "simple"}
+        answer = merged[0].get("arabic_fus7a", "غير موجود")
+        _rag_log(f"📌 branch=simple mode=simple answer_preview={_preview(answer)}")
+        return {"answer": answer, "context": ctx_for_api, "mode": "simple"}
+
+    merged, ctx_for_api = retrieve_rag_context(q)
+    prompt = _prompt_for_gemini(q, merged)
     answer = _gemini_generate(prompt, _gemini_api_key())
 
     if answer.startswith("Gemini not available:"):

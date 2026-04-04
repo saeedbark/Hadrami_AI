@@ -76,6 +76,50 @@ Map<String, dynamic> _$$AskResultImplToJson(_$AskResultImpl instance) =>
       'context': instance.context,
     };
 
+_$HadramiSpanImpl _$$HadramiSpanImplFromJson(Map<String, dynamic> json) =>
+    _$HadramiSpanImpl(
+      start: (json['start'] as num?)?.toInt() ?? 0,
+      end: (json['end'] as num?)?.toInt() ?? 0,
+      surface: json['surface'] as String? ?? '',
+    );
+
+Map<String, dynamic> _$$HadramiSpanImplToJson(_$HadramiSpanImpl instance) =>
+    <String, dynamic>{
+      'start': instance.start,
+      'end': instance.end,
+      'surface': instance.surface,
+    };
+
+_$PhraseTranslateResultImpl _$$PhraseTranslateResultImplFromJson(
+        Map<String, dynamic> json) =>
+    _$PhraseTranslateResultImpl(
+      inputText: json['input_text'] as String? ?? '',
+      direction: json['direction'] as String? ?? '',
+      translatedText: json['translated_text'] as String? ?? '',
+      hadramiSpans: (json['hadrami_spans'] as List<dynamic>?)
+              ?.map((e) => HadramiSpan.fromJson(e as Map<String, dynamic>))
+              .toList() ??
+          const <HadramiSpan>[],
+      mode: json['mode'] as String? ?? 'error',
+      ragMode: json['rag_mode'] as String? ?? '',
+      context: (json['context'] as List<dynamic>?)
+              ?.map((e) => WordEntry.fromJson(e as Map<String, dynamic>))
+              .toList() ??
+          const <WordEntry>[],
+    );
+
+Map<String, dynamic> _$$PhraseTranslateResultImplToJson(
+        _$PhraseTranslateResultImpl instance) =>
+    <String, dynamic>{
+      'input_text': instance.inputText,
+      'direction': instance.direction,
+      'translated_text': instance.translatedText,
+      'hadrami_spans': instance.hadramiSpans,
+      'mode': instance.mode,
+      'rag_mode': instance.ragMode,
+      'context': instance.context,
+    };
+
 _$AppStatsImpl _$$AppStatsImplFromJson(Map<String, dynamic> json) =>
     _$AppStatsImpl(
       totalWords: (json['total_words'] as num?)?.toInt() ?? 0,

@@ -12,16 +12,19 @@ hadrami_project/
 │   ├── app/
 │   │   ├── main.py                ← FastAPI routes
 │   │   ├── schemas.py             ← Pydantic models
+│   │   ├── rag_engine.py          ← RAG / ask pipeline
 │   │   ├── core/
 │   │   │   ├── config.py          ← constants + paths
 │   │   │   └── data_store.py      ← dataset loading
 │   │   └── services/
-│   │       └── dictionary_service.py ← business logic
+│   │       ├── dictionary_service.py
+│   │       └── phrase_translation_service.py ← phrase + lexicon
 │   ├── data/
 │   │   ├── hadrami_dataset.json
 │   │   └── feedback.json
 │   ├── requirements.txt
-│   └── run.sh
+│   ├── run.sh
+│   └── run_api.ps1                ← Windows: venv + uvicorn
 │
 └── flutter_app/
     ├── lib/
@@ -30,6 +33,7 @@ hadrami_project/
     │       ├── app.dart           ← MaterialApp.router + theme
     │       ├── configs/
     │       │   ├── api_config.dart
+    │       │   ├── phrase_translate_config.dart
     │       │   ├── app_colors.dart
     │       │   └── app_radius.dart
     │       ├── core/
@@ -46,6 +50,7 @@ hadrami_project/
     │       ├── widgets/
     │       │   ├── app_card.dart
     │       │   ├── app_scaffold.dart
+    │       │   ├── hadrami_highlighted_text.dart
     │       │   ├── loading_widget.dart
     │       │   ├── error_widget.dart
     │       │   └── empty_state.dart
@@ -70,6 +75,9 @@ hadrami_project/
     │           ├── ask/
     │           │   ├── pages/ask_page.dart
     │           │   └── providers/ask_provider.dart
+    │           ├── phrase/
+    │           │   ├── pages/phrase_translate_page.dart
+    │           │   └── providers/
     │           └── settings/pages/settings_page.dart
     └── pubspec.yaml
 ```
@@ -109,6 +117,8 @@ pip install -r requirements.txt
 uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
 ```
 
+On Windows, from `backend` with the venv already created and dependencies installed, you can use `.\run_api.ps1` instead of the `uvicorn` line above (same host, port, and reload).
+
 Backend URLs:
 
 - API base: `http://localhost:8000`
@@ -127,6 +137,14 @@ curl "http://localhost:8000/translate?q=ويش"
 curl "http://localhost:8000/search?q=ويش&limit=5"
 curl "http://localhost:8000/words?page=1&size=10"
 curl "http://localhost:8000/random"
+```
+
+POST phrase translation (MSA ↔ Hadrami; `direction` is `ar_to_hadrami` or `hadrami_to_ar`):
+
+```bash
+curl -X POST "http://localhost:8000/translate-phrase" \
+  -H "Content-Type: application/json" \
+  -d "{\"text\":\"مرحبا\",\"direction\":\"ar_to_hadrami\"}"
 ```
 
 POST feedback example:
@@ -150,6 +168,8 @@ flutter run
 ### 4) Connect Frontend To Backend API
 
 The API base URL is set in `flutter_app/lib/src/configs/api_config.dart` via compile-time define **`API_BASE_URL`** (default `http://localhost:8000`).
+
+Phrase screen limits and soft-length hints live in `phrase_translate_config.dart` and match the backend caps.
 
 **Web / Windows / macOS desktop (same machine as backend):** default is enough.
 
@@ -177,7 +197,8 @@ After changing the define, do a full restart (not only hot reload).
 3. In app Home screen, translate a word like `ويش`.
 4. Open Dictionary and verify list loads.
 5. Open Ask screen and send a question.
-6. Open Settings and run connection test.
+6. Open Phrases (عبارات) and try a short phrase in both directions.
+7. Open Settings and run connection test.
 
 If these pass, integration is working.
 
@@ -190,6 +211,7 @@ If these pass, integration is working.
 | GET | `/` | API info |
 | GET | `/stats` | Dictionary stats |
 | GET | `/translate?q=word` | Translate Hadrami word |
+| POST | `/translate-phrase` | Phrase translation (body: `text`, `direction`) |
 | GET | `/search?q=word` | Search dictionary |
 | GET | `/words?page=1&size=20` | Paginated word list |
 | GET | `/word/{id}` | Single word |
@@ -220,4 +242,5 @@ If these pass, integration is working.
 3. **Dictionary** - full word list with Arabic letter filter
 4. **Favorites** - saved words
 5. **Ask** - AI Q&A about the Hadrami dialect
-6. **Settings** - connection test + about info
+6. **Phrases** (عبارات) - phrase-level translation with highlighted Hadrami spans
+7. **Settings** - connection test + about info

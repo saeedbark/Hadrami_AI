@@ -60,6 +60,36 @@ class AskResult with _$AskResult {
 }
 
 @freezed
+class HadramiSpan with _$HadramiSpan {
+  @JsonSerializable(fieldRename: FieldRename.snake)
+  const factory HadramiSpan({
+    @Default(0) int start,
+    @Default(0) int end,
+    @Default('') String surface,
+  }) = _HadramiSpan;
+
+  factory HadramiSpan.fromJson(Map<String, dynamic> json) =>
+      _$HadramiSpanFromJson(json);
+}
+
+@freezed
+class PhraseTranslateResult with _$PhraseTranslateResult {
+  @JsonSerializable(fieldRename: FieldRename.snake)
+  const factory PhraseTranslateResult({
+    @Default('') String inputText,
+    @Default('') String direction,
+    @Default('') String translatedText,
+    @Default(<HadramiSpan>[]) List<HadramiSpan> hadramiSpans,
+    @Default('error') String mode,
+    @Default('') String ragMode,
+    @Default(<WordEntry>[]) List<WordEntry> context,
+  }) = _PhraseTranslateResult;
+
+  factory PhraseTranslateResult.fromJson(Map<String, dynamic> json) =>
+      _$PhraseTranslateResultFromJson(json);
+}
+
+@freezed
 class AppStats with _$AppStats {
   @JsonSerializable(fieldRename: FieldRename.snake)
   const factory AppStats({
