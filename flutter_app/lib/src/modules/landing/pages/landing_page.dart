@@ -53,6 +53,11 @@ class LandingPage extends HookConsumerWidget {
               selectedIcon: Icon(Icons.chat_bubble),
               label: 'اسأل',
             ),
+            NavigationDestination(
+              icon: Icon(Icons.translate_outlined),
+              selectedIcon: Icon(Icons.translate),
+              label: 'عبارات',
+            ),
           ],
           backgroundColor: colorScheme.surface,
           indicatorColor: colorScheme.primaryContainer,
@@ -147,6 +152,11 @@ class LandingPage extends HookConsumerWidget {
                 icon: Icon(Icons.chat_bubble_outline),
                 selectedIcon: Icon(Icons.chat_bubble),
                 label: Text('اسأل'),
+              ),
+              NavigationRailDestination(
+                icon: Icon(Icons.translate_outlined),
+                selectedIcon: Icon(Icons.translate),
+                label: Text('عبارات'),
               ),
             ],
             indicatorColor: colorScheme.primaryContainer,

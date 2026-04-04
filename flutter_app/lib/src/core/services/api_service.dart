@@ -123,6 +123,51 @@ class ApiService {
   }
 
   /// Always returns a result; [AskResult.mode] == `error` when the request failed.
+  /// Phrase-level MSA ↔ Hadrami translation (RAG + Gemini). [direction] is
+  /// `ar_to_hadrami` or `hadrami_to_ar`.
+  Future<PhraseTranslateResult> translatePhrase({
+    required String text,
+    required String direction,
+  }) async {
+    try {
+      final response = await _client
+          .post(
+            _buildUri('/translate-phrase'),
+            headers: const {'Content-Type': 'application/json'},
+            body: json.encode({'text': text, 'direction': direction}),
+          )
+          .timeout(ApiConfig.longTimeout);
+      if (response.statusCode != 200) {
+        return PhraseTranslateResult(
+          inputText: text,
+          direction: direction,
+          translatedText:
+              'خطأ من الخادم (${response.statusCode}). تحقق من النص واتجاه الترجمة.',
+          mode: 'error',
+        );
+      }
+      final data =
+          json.decode(utf8.decode(response.bodyBytes)) as Map<String, dynamic>;
+      return PhraseTranslateResult.fromJson(data);
+    } on TimeoutException {
+      return PhraseTranslateResult(
+        inputText: text,
+        direction: direction,
+        translatedText:
+            'انتهت مهلة الانتظار. جرّب مرة أخرى أو تأكد من تشغيل الـ backend.',
+        mode: 'error',
+      );
+    } catch (_) {
+      return PhraseTranslateResult(
+        inputText: text,
+        direction: direction,
+        translatedText:
+            'تعذّر الاتصال بالخادم. تأكد من تشغيل الـ backend على ${ApiConfig.baseUrl}',
+        mode: 'error',
+      );
+    }
+  }
+
   Future<AskResult> ask(String question) async {
     try {
       final data = await _getJson(

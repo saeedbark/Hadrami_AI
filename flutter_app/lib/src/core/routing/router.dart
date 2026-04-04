@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hadrami_nlp/src/modules/ask/pages/ask_page.dart';
+import 'package:hadrami_nlp/src/modules/phrase/pages/phrase_translate_page.dart';
 import 'package:hadrami_nlp/src/modules/dictionary/pages/dictionary_page.dart';
 import 'package:hadrami_nlp/src/modules/favorites/pages/favorites_page.dart';
 import 'package:hadrami_nlp/src/modules/home/pages/home_page.dart';
@@ -56,6 +57,13 @@ GoRouter router(RouterRef ref) {
               path: '/ask',
               name: 'ask',
               builder: (context, state) => const AskPage(),
+            ),
+          ]),
+          StatefulShellBranch(routes: [
+            GoRoute(
+              path: '/phrase-translate',
+              name: 'phrase_translate',
+              builder: (context, state) => const PhraseTranslatePage(),
             ),
           ]),
         ],

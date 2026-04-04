@@ -4,8 +4,16 @@ from typing import Optional
 
 from .core.config import APP_DESCRIPTION, APP_TITLE, APP_VERSION, DEFAULT_PAGE_SIZE, MAX_PAGE_SIZE
 from .core.data_store import ENTRIES
-from .schemas import Entry, FeedbackRequest, SearchResult, TranslateResponse
+from .schemas import (
+    Entry,
+    FeedbackRequest,
+    SearchResult,
+    TranslatePhraseRequest,
+    TranslatePhraseResponse,
+    TranslateResponse,
+)
 from .services import dictionary_service
+from .services.phrase_translation_service import translate_phrase as run_translate_phrase
 
 app = FastAPI(title=APP_TITLE, description=APP_DESCRIPTION, version=APP_VERSION)
 
@@ -28,7 +36,15 @@ def root():
         "message": "Hadrami NLP API",
         "version": APP_VERSION,
         "total_words": len(ENTRIES),
-        "endpoints": ["/translate", "/search", "/word/{id}", "/stats", "/feedback", "/ask"],
+        "endpoints": [
+            "/translate",
+            "/translate-phrase",
+            "/search",
+            "/word/{id}",
+            "/stats",
+            "/feedback",
+            "/ask",
+        ],
     }
 
 
@@ -40,6 +56,11 @@ def get_stats():
 @app.get("/translate", response_model=TranslateResponse)
 def translate(q: str = Query(..., description="Hadrami word to translate")):
     return dictionary_service.translate(q)
+
+
+@app.post("/translate-phrase", response_model=TranslatePhraseResponse)
+def translate_phrase(body: TranslatePhraseRequest):
+    return run_translate_phrase(body.text, body.direction.value)
 
 
 @app.get("/search", response_model=SearchResult)

@@ -11,3 +11,8 @@ FEEDBACK_FILE = DATA_DIR / "feedback.json"
 
 DEFAULT_PAGE_SIZE = 20
 MAX_PAGE_SIZE = 100
+
+# Phrase translation: shorter cap improves model fidelity; aligns with Flutter UI range.
+PHRASE_TRANSLATE_MAX_CHARS = 800
+# Above this, prompt adds instructions to translate fully without summarizing.
+PHRASE_TRANSLATE_LONG_HINT_CHARS = 400

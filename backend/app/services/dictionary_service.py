@@ -138,6 +138,52 @@ def search_expanded(query: str, limit: int) -> dict[str, Any]:
     return {"total": len(merged), "results": merged}
 
 
+# For long phrases: `search()` matched 2-codepoint headwords inside unrelated tokens (e.g. "أح" in "يحكيلنا").
+# Allow 3+ codepoint headwords as substrings of a token; block 1–2 (noise).
+_MIN_SUBWORD_LEN = 3
+
+
+def _score_phrase_token_match(cand: str, entry: dict[str, Any]) -> int:
+    """Stricter matching per whitespace token — reduces garbage RAG for /translate-phrase."""
+    cand = cand.strip()
+    if len(cand) < 2:
+        return 0
+    word = (entry.get("hadrami_word") or "").strip()
+    fus7a = (entry.get("arabic_fus7a") or "").strip()
+    definition = (entry.get("full_definition") or "").strip()
+
+    if word == cand or fus7a == cand:
+        return 100
+    if cand in word and len(cand) >= 2:
+        return 88
+    if word in cand:
+        if len(word) < _MIN_SUBWORD_LEN:
+            return 0
+        return 78
+    if len(cand) >= 4 and cand in fus7a:
+        return 62
+    if len(cand) >= 5 and cand in definition:
+        return 32
+    return 0
+
+
+def search_phrase_lexicon(query: str, limit: int) -> dict[str, Any]:
+    """Lexicon hits for phrase translation: token-wise scoring, no short substring noise."""
+    best: dict[int, tuple[int, dict[str, Any]]] = {}
+    for cand in _extract_search_candidates(query):
+        for entry in ENTRIES:
+            sc = _score_phrase_token_match(cand, entry)
+            if sc <= 0:
+                continue
+            eid = entry["id"]
+            prev = best.get(eid)
+            if prev is None or sc > prev[0]:
+                best[eid] = (sc, entry)
+    ranked = sorted(best.values(), key=lambda x: -x[0])
+    merged = [e for _, e in ranked[:limit]]
+    return {"total": len(merged), "results": merged}
+
+
 def get_word(word_id: int) -> Optional[dict[str, Any]]:
     for entry in ENTRIES:
         if entry["id"] == word_id:
