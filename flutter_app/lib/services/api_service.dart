@@ -1,12 +1,11 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:hadrami_nlp/src/configs/api_config.dart';
 import '../models/word_entry.dart';
 
 class ApiService {
-  // Change this to your computer's IP when testing on real device
-  // For emulator: use 10.0.2.2
-  // For real device: use your computer's IP e.g. 192.168.1.100
-static const String baseUrl = 'http://localhost:8000';
+  /// Compile-time (`--dart-define`) or default; see [ApiConfig.baseUrl].
+  static String get baseUrl => ApiConfig.baseUrl;
   static final _client = http.Client();
 
   // ── Translate a single word ─────────────────────────────────────────────

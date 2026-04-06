@@ -9,6 +9,7 @@ flutter_app/.flutter-plugins
 flutter_app/.flutter-plugins-dependencies
 flutter_app/.packages
 flutter_app/build/
+flutter_app/_flutter/
 
 ### Editor / OS
 .vscode/
