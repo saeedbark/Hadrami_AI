@@ -4,9 +4,14 @@ from __future__ import annotations
 
 import json
 import re
+from concurrent.futures import Future, ThreadPoolExecutor, as_completed
 from typing import Any
 
-from ..core.config import PHRASE_TRANSLATE_LONG_HINT_CHARS
+from ..core.config import (
+    PHRASE_TRANSLATE_CHUNK_SIZE,
+    PHRASE_TRANSLATE_LONG_HINT_CHARS,
+    PHRASE_TRANSLATE_MAX_WORKERS,
+)
 from ..rag_engine import (
     MODE,
     _gemini_api_key,
@@ -187,43 +192,151 @@ def _normalize_spans(translated_text: str, spans: Any) -> list[dict[str, Any]]:
 
 
 def _entries_to_response(entries: list[dict]) -> list[Entry]:
+    from ..schemas import ExamplePair
+
     out: list[Entry] = []
     for e in entries:
+        examples = None
+        raw_ex = e.get("examples")
+        if isinstance(raw_ex, list):
+            examples = [
+                ExamplePair(
+                    hadrami=str(x.get("hadrami", "")),
+                    fusha=str(x.get("fusha", "")),
+                )
+                for x in raw_ex
+                if isinstance(x, dict)
+            ]
         out.append(
             Entry(
                 id=int(e.get("id", 0)),
                 hadrami_word=str(e.get("hadrami_word", "")),
                 arabic_fus7a=str(e.get("arabic_fus7a", "")),
                 full_definition=str(e.get("full_definition", "")),
+                fus7a_short=e.get("fus7a_short"),
+                aliases=e.get("aliases"),
+                examples=examples,
             )
         )
     return out
+
+
+def _split_into_chunks(text: str, max_chunk: int) -> list[str]:
+    """Split text on paragraph/sentence boundaries to stay under max_chunk chars per piece."""
+    if len(text) <= max_chunk:
+        return [text]
+
+    chunks: list[str] = []
+    paragraphs = re.split(r"(\n\s*\n)", text)
+    current = ""
+    for para in paragraphs:
+        if len(current) + len(para) <= max_chunk:
+            current += para
+        else:
+            if current.strip():
+                chunks.append(current.strip())
+            if len(para) > max_chunk:
+                sentences = re.split(r"(?<=[.!?،؟])\s+", para)
+                for s in sentences:
+                    if len(current) + len(s) + 1 <= max_chunk:
+                        current = (current + " " + s).strip()
+                    else:
+                        if current.strip():
+                            chunks.append(current.strip())
+                        current = s
+            else:
+                current = para
+    if current.strip():
+        chunks.append(current.strip())
+    return chunks if chunks else [text]
+
+
+def _translate_single_chunk(
+    text: str, direction: str, merged: list[dict], api_key: str
+) -> tuple[str, list[dict[str, Any]]]:
+    prompt = _phrase_prompt(text, direction, merged)
+    raw = _gemini_generate(prompt, api_key)
+    if raw.startswith("Gemini not available:"):
+        return raw, []
+    data = _parse_json_payload(raw)
+    translated = (data.get("translated_text") if isinstance(data, dict) else None) or raw.strip()
+    spans = _normalize_spans(translated, data.get("hadrami_spans") if isinstance(data, dict) else None)
+    spans = _filter_spans_to_lexicon(translated, spans, merged, direction)
+    return translated, spans
 
 
 def translate_phrase(text: str, direction: str) -> dict[str, Any]:
     stripped = (text or "").strip()
     merged, ctx_for_api = retrieve_phrase_context(stripped)
     context_models = _entries_to_response(ctx_for_api)
+    api_key = _gemini_api_key()
 
-    prompt = _phrase_prompt(stripped, direction, merged)
-    raw = _gemini_generate(prompt, _gemini_api_key())
+    chunks = _split_into_chunks(stripped, PHRASE_TRANSLATE_CHUNK_SIZE)
 
-    if raw.startswith("Gemini not available:"):
-        _rag_log(f"🌐 translate-phrase Gemini fail → {_preview(raw)}")
-        return {
-            "input_text": stripped,
-            "direction": direction,
-            "translated_text": raw,
-            "hadrami_spans": [],
-            "mode": "error",
-            "rag_mode": MODE,
-            "context": context_models,
-        }
+    if len(chunks) == 1:
+        translated, spans = _translate_single_chunk(stripped, direction, merged, api_key)
+        if translated.startswith("Gemini not available:"):
+            _rag_log(f"🌐 translate-phrase Gemini fail → {_preview(translated)}")
+            return {
+                "input_text": stripped,
+                "direction": direction,
+                "translated_text": translated,
+                "hadrami_spans": [],
+                "mode": "error",
+                "rag_mode": MODE,
+                "context": context_models,
+            }
+    else:
+        workers = min(PHRASE_TRANSLATE_MAX_WORKERS, len(chunks))
+        _rag_log(
+            f"🌐 translate-phrase chunked: {len(chunks)} chunks for {len(stripped)} chars "
+            f"(workers={workers})"
+        )
 
-    data = _parse_json_payload(raw)
-    translated = (data.get("translated_text") if isinstance(data, dict) else None) or raw.strip()
-    spans = _normalize_spans(translated, data.get("hadrami_spans") if isinstance(data, dict) else None)
-    spans = _filter_spans_to_lexicon(translated, spans, merged, direction)
+        def _merge_ordered(
+            ordered: list[tuple[str, list[dict[str, Any]]]],
+        ) -> tuple[str, list[dict[str, Any]]]:
+            all_translated: list[str] = []
+            all_spans: list[dict[str, Any]] = []
+            offset = 0
+            for t, s in ordered:
+                if t.startswith("Gemini not available:"):
+                    return t, []
+                for sp in s:
+                    sp["start"] += offset
+                    sp["end"] += offset
+                all_translated.append(t)
+                all_spans.extend(s)
+                offset += len(t) + 1
+            return "\n".join(all_translated), all_spans
+
+        if workers <= 1:
+            ordered = [_translate_single_chunk(c, direction, merged, api_key) for c in chunks]
+        else:
+            future_to_idx: dict[Future, int] = {}
+            with ThreadPoolExecutor(max_workers=workers) as ex:
+                for i, chunk in enumerate(chunks):
+                    fut = ex.submit(_translate_single_chunk, chunk, direction, merged, api_key)
+                    future_to_idx[fut] = i
+                indexed: list[tuple[int, str, list[dict[str, Any]]]] = []
+                for fut in as_completed(future_to_idx):
+                    idx = future_to_idx[fut]
+                    t, s = fut.result()
+                    indexed.append((idx, t, s))
+                indexed.sort(key=lambda x: x[0])
+                ordered = [(t, s) for _, t, s in indexed]
+
+        translated, spans = _merge_ordered(ordered)
+        if translated.startswith("Gemini not available:"):
+            return {
+                "input_text": stripped,
+                "direction": direction,
+                "translated_text": translated,
+                "hadrami_spans": [],
+                "mode": "error",
+                "rag_mode": MODE,
+                "context": context_models,
+            }
 
     mode_tag = "local_gemini" if MODE == "local" else "gemini"
     _rag_log(

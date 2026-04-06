@@ -51,4 +51,14 @@ class AppColors {
 
   static const Color accent = Color(0xFF1A5276);
   static const Color gold = Color(0xFFFFB300);
+
+  /// Yellow tint behind Hadrami lexicon words (Ask + phrase translation results).
+  static Color hadramiLexiconHighlightBackground(Brightness brightness) {
+    switch (brightness) {
+      case Brightness.dark:
+        return gold.withValues(alpha: 0.32);
+      case Brightness.light:
+        return gold.withValues(alpha: 0.40);
+    }
+  }
 }

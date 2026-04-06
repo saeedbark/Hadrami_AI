@@ -194,20 +194,35 @@ class ApiService {
   }
 
   Future<bool> submitFeedback({
-    required int wordId,
     required String hadramiWord,
-    required String suggestedFus7a,
+    String suggestedFus7a = '',
+    int wordId = 0,
     String? comment,
+    String feedbackType = 'correction',
+    List<String>? spellingVariants,
+    String? sentencePairHadrami,
+    String? sentencePairFusha,
+    bool consent = false,
   }) async {
     try {
+      final body = <String, dynamic>{
+        'word_id': wordId,
+        'hadrami_word': hadramiWord,
+        'suggested_fus7a': suggestedFus7a,
+        'comment': comment,
+        'feedback_type': feedbackType,
+        'consent': consent,
+      };
+      if (spellingVariants != null) body['spelling_variants'] = spellingVariants;
+      if (sentencePairHadrami != null) {
+        body['sentence_pair_hadrami'] = sentencePairHadrami;
+      }
+      if (sentencePairFusha != null) {
+        body['sentence_pair_fusha'] = sentencePairFusha;
+      }
       return await _postJson(
         '/feedback',
-        {
-          'word_id': wordId,
-          'hadrami_word': hadramiWord,
-          'suggested_fus7a': suggestedFus7a,
-          'comment': comment,
-        },
+        body,
         timeout: const Duration(seconds: 5),
       );
     } catch (_) {

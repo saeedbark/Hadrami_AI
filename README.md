@@ -1,6 +1,10 @@
 # Hadrami NLP Project
 
-Backend FastAPI + Frontend Flutter (Riverpod + go_router)
+A bilingual dictionary and translation tool for the **Hadrami dialect** of Yemeni Arabic.
+Combines a curated 1 000+ entry lexicon with RAG (Retrieval-Augmented Generation) powered by Gemini
+to provide word-level translation, phrase translation, and AI-powered Q&A.
+
+**Backend:** FastAPI (Python) &nbsp;|&nbsp; **Frontend:** Flutter (Riverpod + go_router)
 
 ---
 
@@ -8,199 +12,109 @@ Backend FastAPI + Frontend Flutter (Riverpod + go_router)
 
 ```
 hadrami_project/
-├── backend/
+├── backend/                     ← FastAPI REST API
 │   ├── app/
-│   │   ├── main.py                ← FastAPI routes
-│   │   ├── schemas.py             ← Pydantic models
-│   │   ├── rag_engine.py          ← RAG / ask pipeline
+│   │   ├── main.py              ← Routes & middleware
+│   │   ├── schemas.py           ← Pydantic request/response models
+│   │   ├── rag_engine.py        ← RAG + Gemini pipeline (/ask, /translate-phrase)
 │   │   ├── core/
-│   │   │   ├── config.py          ← constants + paths
-│   │   │   └── data_store.py      ← dataset loading
+│   │   │   ├── config.py        ← Constants, paths, limits
+│   │   │   └── data_store.py    ← Dataset loading at startup
 │   │   └── services/
-│   │       ├── dictionary_service.py
-│   │       └── phrase_translation_service.py ← phrase + lexicon
+│   │       ├── dictionary_service.py        ← Search, translate, feedback
+│   │       └── phrase_translation_service.py ← Chunked phrase translation
 │   ├── data/
-│   │   ├── hadrami_dataset.json
-│   │   └── feedback.json
+│   │   ├── hadrami_dataset.json ← Main lexicon (1 026 entries, v1.1.0)
+│   │   └── eval_pairs.json      ← Held-out evaluation pairs
+│   ├── scripts/                 ← Data quality & maintenance scripts
+│   ├── tests/                   ← Pytest API smoke tests
 │   ├── requirements.txt
-│   ├── run.sh
-│   └── run_api.ps1                ← Windows: venv + uvicorn
+│   ├── run.ps1                  ← Windows: install deps + start server
+│   └── run.sh                   ← Linux/macOS: install deps + start server
 │
-└── flutter_app/
-    ├── lib/
-    │   ├── main.dart              ← Entry point (ProviderScope)
-    │   └── src/
-    │       ├── app.dart           ← MaterialApp.router + theme
-    │       ├── configs/
-    │       │   ├── api_config.dart
-    │       │   ├── phrase_translate_config.dart
-    │       │   ├── app_colors.dart
-    │       │   └── app_radius.dart
-    │       ├── core/
-    │       │   ├── models/
-    │       │   │   └── word_entry.dart
-    │       │   ├── services/
-    │       │   │   └── api_service.dart
-    │       │   ├── providers/
-    │       │   │   └── theme_provider.dart
-    │       │   ├── routing/
-    │       │   │   └── router.dart
-    │       │   └── theme/
-    │       │       └── theme.dart
-    │       ├── widgets/
-    │       │   ├── app_card.dart
-    │       │   ├── app_scaffold.dart
-    │       │   ├── hadrami_highlighted_text.dart
-    │       │   ├── loading_widget.dart
-    │       │   ├── error_widget.dart
-    │       │   └── empty_state.dart
-    │       └── modules/
-    │           ├── landing/pages/landing_page.dart
-    │           ├── home/
-    │           │   ├── pages/home_page.dart
-    │           │   ├── providers/home_provider.dart
-    │           │   └── widgets/translate_result_card.dart
-    │           ├── search/
-    │           │   ├── pages/search_page.dart
-    │           │   └── providers/search_provider.dart
-    │           ├── dictionary/
-    │           │   ├── pages/dictionary_page.dart
-    │           │   ├── providers/dictionary_provider.dart
-    │           │   └── widgets/
-    │           │       ├── word_card.dart
-    │           │       └── word_detail_sheet.dart
-    │           ├── favorites/
-    │           │   ├── pages/favorites_page.dart
-    │           │   └── providers/favorites_provider.dart
-    │           ├── ask/
-    │           │   ├── pages/ask_page.dart
-    │           │   └── providers/ask_provider.dart
-    │           ├── phrase/
-    │           │   ├── pages/phrase_translate_page.dart
-    │           │   └── providers/
-    │           └── settings/pages/settings_page.dart
-    └── pubspec.yaml
+├── flutter_app/                 ← Flutter mobile/web/desktop client
+│   ├── lib/
+│   │   ├── main.dart            ← Entry point (ProviderScope)
+│   │   └── src/
+│   │       ├── app.dart         ← MaterialApp.router + theme
+│   │       ├── configs/         ← API URL, colors, radii, phrase limits
+│   │       ├── core/            ← Models, services, providers, routing, theme
+│   │       ├── widgets/         ← Shared UI components
+│   │       └── modules/         ← Feature modules (home, search, dictionary, ...)
+│   └── pubspec.yaml
+│
+├── docs/
+│   └── methods_evaluation.md    ← System architecture & evaluation protocol
+│
+└── ROADMAP.md                   ← Future improvement ideas
 ```
 
 ---
 
-## How To Run (Backend + Frontend)
+## Quick Start
 
-### Requirements
+### Prerequisites
 
-- Python 3.10+
-- Flutter SDK 3.x
-- Git (optional)
+- **Python 3.10+** with pip
+- **Flutter SDK 3.x** ([install guide](https://docs.flutter.dev/get-started/install))
+- A **Gemini API key** (for AI features — set in `backend/.env`)
 
-### 1) Run Backend
+### 1. Start the Backend
 
 ```bash
 cd backend
 python -m venv venv
 ```
 
-Activate virtual environment:
+Activate the virtual environment:
 
-- Windows PowerShell:
 ```powershell
+# Windows PowerShell
 .\venv\Scripts\Activate.ps1
 ```
-- Linux/macOS:
 ```bash
+# Linux / macOS
 source venv/bin/activate
 ```
 
-Install dependencies and start API:
+Install dependencies and launch:
 
 ```bash
 pip install -r requirements.txt
 uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
 ```
 
-On Windows, from `backend` with the venv already created and dependencies installed, you can use `.\run_api.ps1` instead of the `uvicorn` line above (same host, port, and reload).
+Or use the helper script: `.\run.ps1` (Windows) / `./run.sh` (Linux/macOS).
 
-Backend URLs:
+Verify at:
+- API root: http://localhost:8000
+- Swagger docs: http://localhost:8000/docs
 
-- API base: `http://localhost:8000`
-- Swagger docs: `http://localhost:8000/docs`
-- OpenAPI JSON: `http://localhost:8000/openapi.json`
-
-### 2) Test Backend API Quickly
-
-Use the docs page, or test from terminal.
-
-Examples:
+### 2. Run Tests
 
 ```bash
-curl "http://localhost:8000/stats"
-curl "http://localhost:8000/translate?q=ويش"
-curl "http://localhost:8000/search?q=ويش&limit=5"
-curl "http://localhost:8000/words?page=1&size=10"
-curl "http://localhost:8000/random"
+cd backend
+python -m pytest tests/ -v
 ```
 
-POST phrase translation (MSA ↔ Hadrami; `direction` is `ar_to_hadrami` or `hadrami_to_ar`):
-
-```bash
-curl -X POST "http://localhost:8000/translate-phrase" \
-  -H "Content-Type: application/json" \
-  -d "{\"text\":\"مرحبا\",\"direction\":\"ar_to_hadrami\"}"
-```
-
-POST feedback example:
-
-```bash
-curl -X POST "http://localhost:8000/feedback" \
-  -H "Content-Type: application/json" \
-  -d "{\"word_id\":1,\"hadrami_word\":\"ويش\",\"suggested_fus7a\":\"ماذا\",\"comment\":\"test\"}"
-```
-
-If all responses are valid JSON, backend is ready for frontend.
-
-### 3) Run Frontend (Flutter)
+### 3. Start the Frontend
 
 ```bash
 cd flutter_app
 flutter pub get
+dart run build_runner build --delete-conflicting-outputs
 flutter run
 ```
 
-### 4) Connect Frontend To Backend API
+### 4. Connect Frontend to Backend
 
-The API base URL is set in `flutter_app/lib/src/configs/api_config.dart` via compile-time define **`API_BASE_URL`** (default `http://localhost:8000`).
+The API URL defaults to `http://localhost:8000`. Override with `--dart-define`:
 
-Phrase screen limits and soft-length hints live in `phrase_translate_config.dart` and match the backend caps.
-
-**Web / Windows / macOS desktop (same machine as backend):** default is enough.
-
-**Android emulator** (`localhost` points at the emulator, not your PC):
-
-```bash
-cd flutter_app
-flutter run --dart-define=API_BASE_URL=http://10.0.2.2:8000
-```
-
-**Physical phone:** use your computer’s LAN IP and allow the port in the Windows firewall if needed:
-
-```bash
-flutter run --dart-define=API_BASE_URL=http://192.168.x.x:8000
-```
-
-**iOS simulator:** usually `http://localhost:8000` works; if not, use your Mac’s IP with `--dart-define`.
-
-After changing the define, do a full restart (not only hot reload).
-
-### 5) End-to-End Test (Backend + Frontend)
-
-1. Start backend and keep it running.
-2. Start Flutter app.
-3. In app Home screen, translate a word like `ويش`.
-4. Open Dictionary and verify list loads.
-5. Open Ask screen and send a question.
-6. Open Phrases (عبارات) and try a short phrase in both directions.
-7. Open Settings and run connection test.
-
-If these pass, integration is working.
+| Platform | Command |
+|----------|---------|
+| Web / Desktop (same machine) | `flutter run` (default works) |
+| Android emulator | `flutter run --dart-define=API_BASE_URL=http://10.0.2.2:8000` |
+| Physical phone | `flutter run --dart-define=API_BASE_URL=http://<your-lan-ip>:8000` |
 
 ---
 
@@ -208,17 +122,35 @@ If these pass, integration is working.
 
 | Method | Endpoint | Description |
 |--------|----------|-------------|
-| GET | `/` | API info |
-| GET | `/stats` | Dictionary stats |
-| GET | `/translate?q=word` | Translate Hadrami word |
+| GET | `/` | API info + version |
+| GET | `/stats` | Dictionary statistics |
+| GET | `/translate?q=word` | Translate a Hadrami word |
 | POST | `/translate-phrase` | Phrase translation (body: `text`, `direction`) |
-| GET | `/search?q=word` | Search dictionary |
-| GET | `/words?page=1&size=20` | Paginated word list |
-| GET | `/word/{id}` | Single word |
+| GET | `/search?q=word&limit=20` | Search the dictionary |
+| GET | `/words?page=1&size=20` | Paginated word list (optional `letter` filter) |
+| GET | `/word/{id}` | Single word by ID |
 | GET | `/random` | Random word |
-| POST | `/feedback` | Submit correction |
+| POST | `/feedback` | Submit a correction or new word |
 | GET | `/ask?q=question` | AI-powered Q&A (RAG) |
-| POST | `/admin/build-index` | Build vector index |
+| POST | `/admin/build-index` | Rebuild vector index |
+
+---
+
+## Dataset (v1.1.0)
+
+The lexicon lives in `backend/data/hadrami_dataset.json` with **1 026 entries**.
+
+Each entry has:
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `id` | int | Unique identifier |
+| `hadrami_word` | string | Hadrami dialect word |
+| `arabic_fus7a` | string | Modern Standard Arabic equivalent |
+| `full_definition` | string | Detailed definition with context |
+| `fus7a_short` | string? | Concise 1-3 word MSA gloss |
+| `aliases` | string[]? | Variant spellings or forms |
+| `examples` | ExamplePair[]? | Usage examples (`hadrami` + `fusha` fields) |
 
 ---
 
@@ -226,21 +158,28 @@ If these pass, integration is working.
 
 | Layer | Technology |
 |-------|-----------|
-| Backend | FastAPI + Python |
-| Frontend | Flutter + Riverpod + go_router |
-| State | hooks_riverpod + flutter_hooks |
-| Routing | go_router (StatefulShellRoute) |
-| Theme | Material 3 + responsive (mobile/tablet/desktop) |
-| AI | RAG (Gemini / simple keyword) |
+| Backend | FastAPI, Pydantic, Uvicorn |
+| AI / RAG | Google Gemini via `google-generativeai` |
+| Frontend | Flutter 3.x, Riverpod, go_router |
+| Forms | reactive_forms + code generation |
+| Models | freezed + json_serializable |
+| Theme | Material 3, responsive layout |
+| Testing | pytest (backend), flutter_test (frontend) |
 
 ---
 
 ## App Screens
 
-1. **Home** - translate + stats + random word of the day
-2. **Search** - live search as you type
-3. **Dictionary** - full word list with Arabic letter filter
-4. **Favorites** - saved words
-5. **Ask** - AI Q&A about the Hadrami dialect
-6. **Phrases** (عبارات) - phrase-level translation with highlighted Hadrami spans
-7. **Settings** - connection test + about info
+1. **Home** — translate a word, view stats, word of the day
+2. **Search** — live debounced search with result count
+3. **Dictionary** — full word list with Arabic letter filter
+4. **Favorites** — locally saved words
+5. **Ask** — AI Q&A about the Hadrami dialect
+6. **Phrases** — phrase-level MSA ↔ Hadrami translation with highlighted spans
+7. **Settings** — connection test, theme toggle, about info
+
+---
+
+## Contributing
+
+See [ROADMAP.md](ROADMAP.md) for planned improvements. Contributions welcome.

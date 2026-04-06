@@ -23,7 +23,7 @@ final searchResultsProvider = AutoDisposeFutureProvider<SearchResult>.internal(
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
 typedef SearchResultsRef = AutoDisposeFutureProviderRef<SearchResult>;
-String _$searchQueryHash() => r'd7661c7cd48d895c1983ea94c0c4b94ff6c761a8';
+String _$searchQueryHash() => r'd2f95bae8a26764a2dfc2d3d00aaae11b96cf15a';
 
 /// See also [SearchQuery].
 @ProviderFor(SearchQuery)

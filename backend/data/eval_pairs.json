@@ -1,0 +1,148 @@
+{
+  "description": "Held-out evaluation pairs for benchmarking Hadrami<->MSA translation quality. NOT used for training or prompt stuffing.",
+  "version": "0.1.0",
+  "created": "2026-04-04",
+  "metrics_notes": "Use chrF, BLEU, and human evaluation. Compare system (lexicon+RAG) vs plain LLM vs larger models.",
+  "pairs": [
+    {
+      "id": 1,
+      "hadrami": "ويش تبغى؟",
+      "fusha": "ماذا تريد؟",
+      "domain": "everyday",
+      "verified": false
+    },
+    {
+      "id": 2,
+      "hadrami": "كم الساعة هلحين؟",
+      "fusha": "كم الساعة الآن؟",
+      "domain": "everyday",
+      "verified": false
+    },
+    {
+      "id": 3,
+      "hadrami": "أنا جعان مره",
+      "fusha": "أنا جائع جداً",
+      "domain": "everyday",
+      "verified": false
+    },
+    {
+      "id": 4,
+      "hadrami": "هبط من البيت بكره الصبح",
+      "fusha": "سأخرج من البيت غداً صباحاً",
+      "domain": "everyday",
+      "verified": false
+    },
+    {
+      "id": 5,
+      "hadrami": "الزقرة يلعب في الحوش",
+      "fusha": "الولد يلعب في الفناء",
+      "domain": "everyday",
+      "verified": false
+    },
+    {
+      "id": 6,
+      "hadrami": "ما عندي سالفه",
+      "fusha": "ليس لدي شيء أقوله",
+      "domain": "conversation",
+      "verified": false
+    },
+    {
+      "id": 7,
+      "hadrami": "المره بتطبخ غدا",
+      "fusha": "المرأة ستطبخ الغداء",
+      "domain": "everyday",
+      "verified": false
+    },
+    {
+      "id": 8,
+      "hadrami": "شحوالك يا أخوي؟",
+      "fusha": "كيف حالك يا أخي؟",
+      "domain": "greetings",
+      "verified": false
+    },
+    {
+      "id": 9,
+      "hadrami": "عطني الكتاب ذيّه",
+      "fusha": "أعطني هذا الكتاب",
+      "domain": "everyday",
+      "verified": false
+    },
+    {
+      "id": 10,
+      "hadrami": "بسير السوق هلحين",
+      "fusha": "سأذهب إلى السوق الآن",
+      "domain": "everyday",
+      "verified": false
+    },
+    {
+      "id": 11,
+      "hadrami": "ذا الحمر غالي مره",
+      "fusha": "هذا الشيء غالٍ جداً",
+      "domain": "shopping",
+      "verified": false
+    },
+    {
+      "id": 12,
+      "hadrami": "خل نروح نتمشى",
+      "fusha": "هيا نذهب للتنزه",
+      "domain": "conversation",
+      "verified": false
+    },
+    {
+      "id": 13,
+      "hadrami": "الدنيا حره اليوم",
+      "fusha": "الجو حار اليوم",
+      "domain": "weather",
+      "verified": false
+    },
+    {
+      "id": 14,
+      "hadrami": "قلت له بس ما سمعني",
+      "fusha": "قلت له لكنه لم يسمعني",
+      "domain": "conversation",
+      "verified": false
+    },
+    {
+      "id": 15,
+      "hadrami": "أم حبيل في الزاوية",
+      "fusha": "العنكبوت في الزاوية",
+      "domain": "everyday",
+      "verified": false
+    },
+    {
+      "id": 16,
+      "hadrami": "إبط شوي لا تستعجل",
+      "fusha": "تمهل قليلاً لا تستعجل",
+      "domain": "advice",
+      "verified": false
+    },
+    {
+      "id": 17,
+      "hadrami": "آل فلان عزموني على العشا",
+      "fusha": "عائلة فلان دعوني على العشاء",
+      "domain": "social",
+      "verified": false
+    },
+    {
+      "id": 18,
+      "hadrami": "أبوي راح الشغل",
+      "fusha": "أبي ذهب إلى العمل",
+      "domain": "family",
+      "verified": false
+    },
+    {
+      "id": 19,
+      "hadrami": "الأود بروح معاك",
+      "fusha": "نعم سأذهب معك",
+      "domain": "conversation",
+      "verified": false
+    },
+    {
+      "id": 20,
+      "hadrami": "قعد يحكي لي سوالف",
+      "fusha": "جلس يحكي لي قصصاً",
+      "domain": "conversation",
+      "verified": false
+    }
+  ]
+}

@@ -5,6 +5,22 @@ import 'package:hadrami_nlp/src/configs/app_colors.dart';
 import 'package:hadrami_nlp/src/core/providers/theme_provider.dart';
 import 'package:hadrami_nlp/src/core/theme/theme.dart';
 
+class _NavItem {
+  final IconData icon;
+  final IconData selectedIcon;
+  final String label;
+  const _NavItem(this.icon, this.selectedIcon, this.label);
+}
+
+const _destinations = [
+  _NavItem(Icons.home_outlined, Icons.home_rounded, 'الرئيسية'),
+  _NavItem(Icons.search_outlined, Icons.search_rounded, 'بحث'),
+  _NavItem(Icons.menu_book_outlined, Icons.menu_book_rounded, 'القاموس'),
+  _NavItem(Icons.bookmark_outline_rounded, Icons.bookmark_rounded, 'المفضلة'),
+  _NavItem(Icons.chat_bubble_outline_rounded, Icons.chat_bubble_rounded, 'اسأل'),
+  _NavItem(Icons.translate_outlined, Icons.translate_rounded, 'عبارات'),
+];
+
 class LandingPage extends HookConsumerWidget {
   const LandingPage({super.key, required this.navigationShell});
 
@@ -27,41 +43,19 @@ class LandingPage extends HookConsumerWidget {
         bottomNavigationBar: NavigationBar(
           selectedIndex: navigationShell.currentIndex,
           onDestinationSelected: onDestinationSelected,
-          destinations: const [
-            NavigationDestination(
-              icon: Icon(Icons.home_outlined),
-              selectedIcon: Icon(Icons.home),
-              label: 'الرئيسية',
-            ),
-            NavigationDestination(
-              icon: Icon(Icons.search_outlined),
-              selectedIcon: Icon(Icons.search),
-              label: 'بحث',
-            ),
-            NavigationDestination(
-              icon: Icon(Icons.menu_book_outlined),
-              selectedIcon: Icon(Icons.menu_book),
-              label: 'القاموس',
-            ),
-            NavigationDestination(
-              icon: Icon(Icons.bookmark_outline),
-              selectedIcon: Icon(Icons.bookmark),
-              label: 'المفضلة',
-            ),
-            NavigationDestination(
-              icon: Icon(Icons.chat_bubble_outline),
-              selectedIcon: Icon(Icons.chat_bubble),
-              label: 'اسأل',
-            ),
-            NavigationDestination(
-              icon: Icon(Icons.translate_outlined),
-              selectedIcon: Icon(Icons.translate),
-              label: 'عبارات',
-            ),
+          destinations: [
+            for (final d in _destinations)
+              NavigationDestination(
+                icon: Icon(d.icon),
+                selectedIcon: Icon(d.selectedIcon),
+                label: d.label,
+              ),
           ],
           backgroundColor: colorScheme.surface,
           indicatorColor: colorScheme.primaryContainer,
-          elevation: 4,
+          elevation: 2,
+          shadowColor: colorScheme.shadow.withValues(alpha: 0.1),
+          animationDuration: const Duration(milliseconds: 500),
         ),
       );
     }
@@ -88,7 +82,7 @@ class LandingPage extends HookConsumerWidget {
                       color: AppColors.primaryLight,
                       borderRadius: BorderRadius.circular(12),
                     ),
-                    child: const Icon(Icons.menu_book,
+                    child: const Icon(Icons.menu_book_rounded,
                         color: Colors.white, size: 24),
                   ),
                   if (isDesktop) ...[
@@ -111,15 +105,17 @@ class LandingPage extends HookConsumerWidget {
                   IconButton(
                     icon: Icon(
                       ref.watch(appThemeModeProvider) == ThemeMode.dark
-                          ? Icons.light_mode
-                          : Icons.dark_mode,
+                          ? Icons.light_mode_rounded
+                          : Icons.dark_mode_rounded,
                       color: colorScheme.outline,
                     ),
                     onPressed: () =>
                         ref.read(appThemeModeProvider.notifier).toggle(),
+                    tooltip: 'تبديل المظهر',
                   ),
                   IconButton(
-                    icon: Icon(Icons.settings, color: colorScheme.outline),
+                    icon: Icon(Icons.settings_rounded,
+                        color: colorScheme.outline),
                     tooltip: 'الإعدادات',
                     onPressed: () => context.push('/settings'),
                   ),
@@ -127,37 +123,13 @@ class LandingPage extends HookConsumerWidget {
                 ],
               ),
             ),
-            destinations: const [
-              NavigationRailDestination(
-                icon: Icon(Icons.home_outlined),
-                selectedIcon: Icon(Icons.home),
-                label: Text('الرئيسية'),
-              ),
-              NavigationRailDestination(
-                icon: Icon(Icons.search_outlined),
-                selectedIcon: Icon(Icons.search),
-                label: Text('بحث'),
-              ),
-              NavigationRailDestination(
-                icon: Icon(Icons.menu_book_outlined),
-                selectedIcon: Icon(Icons.menu_book),
-                label: Text('القاموس'),
-              ),
-              NavigationRailDestination(
-                icon: Icon(Icons.bookmark_outline),
-                selectedIcon: Icon(Icons.bookmark),
-                label: Text('المفضلة'),
-              ),
-              NavigationRailDestination(
-                icon: Icon(Icons.chat_bubble_outline),
-                selectedIcon: Icon(Icons.chat_bubble),
-                label: Text('اسأل'),
-              ),
-              NavigationRailDestination(
-                icon: Icon(Icons.translate_outlined),
-                selectedIcon: Icon(Icons.translate),
-                label: Text('عبارات'),
-              ),
+            destinations: [
+              for (final d in _destinations)
+                NavigationRailDestination(
+                  icon: Icon(d.icon),
+                  selectedIcon: Icon(d.selectedIcon),
+                  label: Text(d.label),
+                ),
             ],
             indicatorColor: colorScheme.primaryContainer,
           ),

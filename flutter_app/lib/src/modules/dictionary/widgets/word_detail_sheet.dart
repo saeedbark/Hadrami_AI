@@ -73,6 +73,7 @@ class WordDetailSheet extends HookConsumerWidget {
                 ),
               ),
               const SizedBox(height: 20),
+
               Row(
                 children: [
                   Expanded(
@@ -84,11 +85,24 @@ class WordDetailSheet extends HookConsumerWidget {
                           style: const TextStyle(
                               fontSize: 28, fontWeight: FontWeight.bold),
                         ),
+                        if (entry.fus7aShort != null &&
+                            entry.fus7aShort!.isNotEmpty)
+                          Padding(
+                            padding: const EdgeInsets.only(top: 4),
+                            child: Text(
+                              entry.fus7aShort!,
+                              style: TextStyle(
+                                fontSize: 14,
+                                color: colorScheme.outline,
+                                fontStyle: FontStyle.italic,
+                              ),
+                            ),
+                          ),
                         if (entry.arabicFus7a.isNotEmpty)
                           Container(
-                            margin: const EdgeInsets.only(top: 6),
+                            margin: const EdgeInsets.only(top: 8),
                             padding: const EdgeInsets.symmetric(
-                                horizontal: 12, vertical: 4),
+                                horizontal: 12, vertical: 6),
                             decoration: BoxDecoration(
                               color: colorScheme.primaryContainer,
                               borderRadius: BorderRadius.circular(20),
@@ -105,28 +119,59 @@ class WordDetailSheet extends HookConsumerWidget {
                       ],
                     ),
                   ),
-                  IconButton(
-                    icon: Icon(
-                      isFav ? Icons.star : Icons.star_border,
-                      color: isFav ? Colors.amber : colorScheme.outline,
-                      size: 30,
-                    ),
-                    onPressed: () =>
-                        ref.read(favoritesProvider.notifier).toggle(entry),
-                  ),
-                  IconButton(
-                    icon: const Icon(Icons.copy, size: 24),
-                    onPressed: () {
-                      Clipboard.setData(ClipboardData(
-                          text:
-                              '${entry.hadramiWord} = ${entry.arabicFus7a}'));
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text('تم النسخ!')),
-                      );
-                    },
+                  Column(
+                    children: [
+                      IconButton(
+                        icon: Icon(
+                          isFav ? Icons.star_rounded : Icons.star_border_rounded,
+                          color: isFav ? Colors.amber : colorScheme.outline,
+                          size: 28,
+                        ),
+                        onPressed: () =>
+                            ref.read(favoritesProvider.notifier).toggle(entry),
+                      ),
+                      IconButton(
+                        icon: const Icon(Icons.copy_rounded, size: 22),
+                        tooltip: 'نسخ',
+                        onPressed: () {
+                          Clipboard.setData(ClipboardData(
+                              text:
+                                  '${entry.hadramiWord} = ${entry.arabicFus7a}'));
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(content: Text('تم النسخ!')),
+                          );
+                        },
+                      ),
+                    ],
                   ),
                 ],
               ),
+
+              if (entry.aliases != null && entry.aliases!.isNotEmpty) ...[
+                const SizedBox(height: 16),
+                Text(
+                  'أشكال أخرى',
+                  style: TextStyle(
+                    fontSize: 13,
+                    color: colorScheme.outline,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const SizedBox(height: 6),
+                Wrap(
+                  spacing: 6,
+                  runSpacing: 6,
+                  children: entry.aliases!
+                      .map((alias) => Chip(
+                            label: Text(alias),
+                            visualDensity: VisualDensity.compact,
+                            materialTapTargetSize:
+                                MaterialTapTargetSize.shrinkWrap,
+                          ))
+                      .toList(),
+                ),
+              ],
+
               const SizedBox(height: 20),
               Container(
                 padding: const EdgeInsets.all(16),
@@ -137,22 +182,84 @@ class WordDetailSheet extends HookConsumerWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      'الشرح من القاموس',
-                      style: TextStyle(
-                        fontSize: 13,
-                        color: colorScheme.outline,
-                        fontWeight: FontWeight.bold,
-                      ),
+                    Row(
+                      children: [
+                        Icon(Icons.menu_book_rounded,
+                            size: 16, color: colorScheme.outline),
+                        const SizedBox(width: 6),
+                        Text(
+                          'الشرح من القاموس',
+                          style: TextStyle(
+                            fontSize: 13,
+                            color: colorScheme.outline,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
                     ),
-                    const SizedBox(height: 8),
-                    Text(
+                    const SizedBox(height: 10),
+                    SelectableText(
                       entry.fullDefinition,
                       style: const TextStyle(fontSize: 15, height: 1.7),
                     ),
                   ],
                 ),
               ),
+
+              if (entry.examples != null && entry.examples!.isNotEmpty) ...[
+                const SizedBox(height: 16),
+                Row(
+                  children: [
+                    Icon(Icons.format_quote_rounded,
+                        size: 16, color: colorScheme.secondary),
+                    const SizedBox(width: 6),
+                    Text(
+                      'أمثلة',
+                      style: TextStyle(
+                        fontSize: 13,
+                        color: colorScheme.secondary,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 8),
+                ...entry.examples!.map((ex) => Container(
+                      margin: const EdgeInsets.only(bottom: 8),
+                      padding: const EdgeInsets.all(12),
+                      decoration: BoxDecoration(
+                        color: colorScheme.secondaryContainer
+                            .withValues(alpha: 0.4),
+                        borderRadius: BorderRadius.circular(10),
+                        border: Border(
+                          right: BorderSide(
+                            color: colorScheme.secondary,
+                            width: 3,
+                          ),
+                        ),
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          if (ex.hadrami.isNotEmpty)
+                            Text(
+                              ex.hadrami,
+                              style: const TextStyle(
+                                  fontSize: 15, fontWeight: FontWeight.w600),
+                            ),
+                          if (ex.fusha.isNotEmpty) ...[
+                            const SizedBox(height: 4),
+                            Text(
+                              ex.fusha,
+                              style: TextStyle(
+                                  fontSize: 14, color: colorScheme.outline),
+                            ),
+                          ],
+                        ],
+                      ),
+                    )),
+              ],
+
               const SizedBox(height: 16),
               Text(
                 'رقم الكلمة في القاموس: ${entry.id}',
@@ -162,7 +269,9 @@ class WordDetailSheet extends HookConsumerWidget {
               OutlinedButton.icon(
                 onPressed: () =>
                     showFeedback.value = !showFeedback.value,
-                icon: const Icon(Icons.edit_note),
+                icon: Icon(showFeedback.value
+                    ? Icons.close_rounded
+                    : Icons.edit_note_rounded),
                 label: Text(showFeedback.value ? 'إلغاء' : 'اقتراح تصحيح'),
               ),
               if (showFeedback.value) ...[
@@ -185,7 +294,7 @@ class WordDetailSheet extends HookConsumerWidget {
                           width: 16,
                           height: 16,
                           child: CircularProgressIndicator(strokeWidth: 2))
-                      : const Icon(Icons.send),
+                      : const Icon(Icons.send_rounded),
                   label: Text(isSubmitting.value ? 'جاري الإرسال...' : 'إرسال'),
                 ),
               ],

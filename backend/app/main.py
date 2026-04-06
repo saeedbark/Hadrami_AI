@@ -92,14 +92,21 @@ def list_words(
 
 @app.post("/feedback")
 def submit_feedback(fb: FeedbackRequest):
-    dictionary_service.save_feedback(
-        {
-            "word_id": fb.word_id,
-            "hadrami_word": fb.hadrami_word,
-            "suggested_fus7a": fb.suggested_fus7a,
-            "comment": fb.comment,
-        }
-    )
+    payload: dict = {
+        "word_id": fb.word_id,
+        "hadrami_word": fb.hadrami_word,
+        "suggested_fus7a": fb.suggested_fus7a,
+        "comment": fb.comment,
+        "feedback_type": fb.feedback_type.value,
+        "consent": fb.consent,
+    }
+    if fb.spelling_variants:
+        payload["spelling_variants"] = fb.spelling_variants
+    if fb.sentence_pair_hadrami:
+        payload["sentence_pair_hadrami"] = fb.sentence_pair_hadrami
+    if fb.sentence_pair_fusha:
+        payload["sentence_pair_fusha"] = fb.sentence_pair_fusha
+    dictionary_service.save_feedback(payload)
     return {"status": "success", "message": "شكراً على مساهمتك!"}
 
 

@@ -6,12 +6,30 @@ part of 'word_entry.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
+_$ExamplePairImpl _$$ExamplePairImplFromJson(Map<String, dynamic> json) =>
+    _$ExamplePairImpl(
+      hadrami: json['hadrami'] as String? ?? '',
+      fusha: json['fusha'] as String? ?? '',
+    );
+
+Map<String, dynamic> _$$ExamplePairImplToJson(_$ExamplePairImpl instance) =>
+    <String, dynamic>{
+      'hadrami': instance.hadrami,
+      'fusha': instance.fusha,
+    };
+
 _$WordEntryImpl _$$WordEntryImplFromJson(Map<String, dynamic> json) =>
     _$WordEntryImpl(
       id: (json['id'] as num?)?.toInt() ?? 0,
       hadramiWord: json['hadrami_word'] as String? ?? '',
       arabicFus7a: json['arabic_fus7a'] as String? ?? '',
       fullDefinition: json['full_definition'] as String? ?? '',
+      fus7aShort: json['fus7a_short'] as String?,
+      aliases:
+          (json['aliases'] as List<dynamic>?)?.map((e) => e as String).toList(),
+      examples: (json['examples'] as List<dynamic>?)
+          ?.map((e) => ExamplePair.fromJson(e as Map<String, dynamic>))
+          .toList(),
     );
 
 Map<String, dynamic> _$$WordEntryImplToJson(_$WordEntryImpl instance) =>
@@ -20,6 +38,9 @@ Map<String, dynamic> _$$WordEntryImplToJson(_$WordEntryImpl instance) =>
       'hadrami_word': instance.hadramiWord,
       'arabic_fus7a': instance.arabicFus7a,
       'full_definition': instance.fullDefinition,
+      'fus7a_short': instance.fus7aShort,
+      'aliases': instance.aliases,
+      'examples': instance.examples,
     };
 
 _$TranslateResultImpl _$$TranslateResultImplFromJson(

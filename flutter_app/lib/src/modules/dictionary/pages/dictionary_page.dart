@@ -31,7 +31,6 @@ class DictionaryPage extends HookConsumerWidget {
           ref.read(wordListProvider.notifier).loadMore();
         }
       }
-
       scrollController.addListener(onScroll);
       return () => scrollController.removeListener(onScroll);
     }, [scrollController]);
@@ -55,21 +54,36 @@ class DictionaryPage extends HookConsumerWidget {
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
             child: Row(children: [
               wordsAsync.when(
-                data: (_) => Text(
-                  '${ref.read(wordListProvider.notifier).total} كلمة',
-                  style: TextStyle(
-                      color: colorScheme.primary, fontWeight: FontWeight.bold),
-                ),
+                data: (_) {
+                  final total = ref.read(wordListProvider.notifier).total;
+                  return Container(
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                    decoration: BoxDecoration(
+                      color: colorScheme.primaryContainer,
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: Text(
+                      '$total كلمة',
+                      style: TextStyle(
+                        color: colorScheme.onPrimaryContainer,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 12,
+                      ),
+                    ),
+                  );
+                },
                 loading: () => const SizedBox.shrink(),
                 error: (_, __) => const SizedBox.shrink(),
               ),
               if (selectedLetter != null) ...[
                 const SizedBox(width: 8),
-                Chip(
+                InputChip(
                   label: Text('حرف $selectedLetter'),
                   onDeleted: () =>
                       ref.read(selectedLetterProvider.notifier).setLetter(null),
-                  deleteIcon: const Icon(Icons.close, size: 16),
+                  deleteIcon: const Icon(Icons.close_rounded, size: 16),
+                  visualDensity: VisualDensity.compact,
                 ),
               ],
             ]),
@@ -79,7 +93,8 @@ class DictionaryPage extends HookConsumerWidget {
               data: (words) {
                 if (words.isEmpty) {
                   return const EmptyState(
-                      icon: Icons.menu_book, message: 'لا توجد كلمات');
+                      icon: Icons.menu_book_rounded,
+                      message: 'لا توجد كلمات');
                 }
                 final total = ref.read(wordListProvider.notifier).total;
                 return ListView.builder(
@@ -140,23 +155,30 @@ class _LetterFilter extends StatelessWidget {
                 label: const Text('الكل'),
                 selected: isAll,
                 onSelected: (_) => onSelect(null),
-                backgroundColor: isAll ? colorScheme.primary : null,
+                selectedColor: colorScheme.primary,
+                checkmarkColor: Colors.white,
                 labelStyle: TextStyle(
-                    color: isAll ? Colors.white : null, fontSize: 12),
+                    color: isAll ? Colors.white : null,
+                    fontSize: 12,
+                    fontWeight: isAll ? FontWeight.bold : FontWeight.normal),
               ),
             );
           }
           final letter = letters[i - 1];
           final isSelected = selected == letter;
           return Padding(
-            padding: const EdgeInsets.only(left: 6),
+            padding: const EdgeInsets.only(left: 5),
             child: FilterChip(
               label: Text(letter),
               selected: isSelected,
               onSelected: (_) => onSelect(isSelected ? null : letter),
-              backgroundColor: isSelected ? colorScheme.primary : null,
+              selectedColor: colorScheme.primary,
+              checkmarkColor: Colors.white,
+              showCheckmark: false,
               labelStyle: TextStyle(
-                  color: isSelected ? Colors.white : null, fontSize: 14),
+                  color: isSelected ? Colors.white : null,
+                  fontSize: 14,
+                  fontWeight: isSelected ? FontWeight.bold : FontWeight.normal),
             ),
           );
         },

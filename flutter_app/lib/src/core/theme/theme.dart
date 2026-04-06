@@ -127,10 +127,10 @@ class AppTheme {
           fontSize: 11,
         ),
       ),
-      navigationRailTheme: NavigationRailThemeData(
+      navigationRailTheme: const NavigationRailThemeData(
         backgroundColor: AppColors.surfaceLight,
-        selectedIconTheme: const IconThemeData(color: AppColors.primaryLight),
-        unselectedIconTheme: const IconThemeData(color: AppColors.outlineLight),
+        selectedIconTheme: IconThemeData(color: AppColors.primaryLight),
+        unselectedIconTheme: IconThemeData(color: AppColors.outlineLight),
         indicatorColor: AppColors.primaryContainer,
       ),
     );
@@ -219,17 +219,17 @@ class AppTheme {
         shape: RoundedRectangleBorder(borderRadius: AppRadius.xl),
         backgroundColor: AppColors.surfaceDark,
       ),
-      bottomNavigationBarTheme: BottomNavigationBarThemeData(
+      bottomNavigationBarTheme: const BottomNavigationBarThemeData(
         backgroundColor: AppColors.surfaceDark,
         selectedItemColor: AppColors.primaryDark,
         unselectedItemColor: AppColors.outlineDark,
         type: BottomNavigationBarType.fixed,
         elevation: 8,
       ),
-      navigationRailTheme: NavigationRailThemeData(
+      navigationRailTheme: const NavigationRailThemeData(
         backgroundColor: AppColors.surfaceDark,
-        selectedIconTheme: const IconThemeData(color: AppColors.primaryDark),
-        unselectedIconTheme: const IconThemeData(color: AppColors.outlineDark),
+        selectedIconTheme: IconThemeData(color: AppColors.primaryDark),
+        unselectedIconTheme: IconThemeData(color: AppColors.outlineDark),
         indicatorColor: AppColors.primaryContainerDark,
       ),
     );

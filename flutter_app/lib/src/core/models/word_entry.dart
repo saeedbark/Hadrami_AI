@@ -4,6 +4,18 @@ part 'word_entry.freezed.dart';
 part 'word_entry.g.dart';
 
 @freezed
+class ExamplePair with _$ExamplePair {
+  @JsonSerializable(fieldRename: FieldRename.snake)
+  const factory ExamplePair({
+    @Default('') String hadrami,
+    @Default('') String fusha,
+  }) = _ExamplePair;
+
+  factory ExamplePair.fromJson(Map<String, dynamic> json) =>
+      _$ExamplePairFromJson(json);
+}
+
+@freezed
 class WordEntry with _$WordEntry {
   @JsonSerializable(fieldRename: FieldRename.snake)
   const factory WordEntry({
@@ -11,6 +23,9 @@ class WordEntry with _$WordEntry {
     @Default('') String hadramiWord,
     @Default('') String arabicFus7a,
     @Default('') String fullDefinition,
+    String? fus7aShort,
+    List<String>? aliases,
+    List<ExamplePair>? examples,
   }) = _WordEntry;
 
   factory WordEntry.fromJson(Map<String, dynamic> json) =>
