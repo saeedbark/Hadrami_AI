@@ -15,7 +15,8 @@ class SearchPage extends HookConsumerWidget {
     final controller = useTextEditingController();
     final query = ref.watch(searchQueryProvider);
     final resultsAsync = ref.watch(searchResultsProvider);
-    final hasQuery = useMemoized(() => query.trim().isNotEmpty, [query]);
+    final hasQuery = query.trim().isNotEmpty;
+    final colorScheme = Theme.of(context).colorScheme;
 
     return AppScaffold(
       appBar: AppAppBar(
@@ -32,13 +33,15 @@ class SearchPage extends HookConsumerWidget {
                   ref.read(searchQueryProvider.notifier).set(value),
               decoration: InputDecoration(
                 hintText: 'ابحث بالحضرمي أو الفصحى...',
-                prefixIcon: const Icon(Icons.search),
+                prefixIcon: const Icon(Icons.search_rounded),
                 suffixIcon: hasQuery
                     ? IconButton(
-                        icon: const Icon(Icons.clear),
+                        icon: const Icon(Icons.clear_rounded),
                         onPressed: () {
                           controller.clear();
-                          ref.read(searchQueryProvider.notifier).set('');
+                          ref
+                              .read(searchQueryProvider.notifier)
+                              .setImmediate('');
                         },
                       )
                     : null,
@@ -47,49 +50,66 @@ class SearchPage extends HookConsumerWidget {
           ),
         ),
       ),
-      body: !hasQuery
-          ? const EmptyState(
-              icon: Icons.menu_book,
-              message: 'ابحث عن أي كلمة حضرمية',
-              subtitle: 'يمكنك البحث بالحضرمي أو الفصحى',
-            )
-          : resultsAsync.when(
-              data: (result) {
-                if (result.results.isEmpty) {
-                  return EmptyState(
-                    icon: Icons.search_off,
-                    message: 'لا نتائج لـ "$query"',
-                  );
-                }
-                return Column(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 16, vertical: 8),
-                      child: Row(children: [
-                        Text(
-                          '${result.total} نتيجة',
-                          style: TextStyle(
-                            color: Theme.of(context).colorScheme.primary,
-                            fontWeight: FontWeight.bold,
+      body: AnimatedSwitcher(
+        duration: const Duration(milliseconds: 200),
+        child: !hasQuery
+            ? const EmptyState(
+                key: ValueKey('empty'),
+                icon: Icons.menu_book_rounded,
+                message: 'ابحث عن أي كلمة حضرمية',
+                subtitle: 'يمكنك البحث بالحضرمي أو الفصحى',
+              )
+            : resultsAsync.when(
+                data: (result) {
+                  if (result.results.isEmpty) {
+                    return EmptyState(
+                      key: const ValueKey('no-results'),
+                      icon: Icons.search_off_rounded,
+                      message: 'لا نتائج لـ "$query"',
+                      subtitle: 'جرّب كلمة مختلفة أو تهجئة أخرى',
+                    );
+                  }
+                  return Column(
+                    key: const ValueKey('results'),
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 16, vertical: 8),
+                        child: Row(children: [
+                          Container(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 10, vertical: 4),
+                            decoration: BoxDecoration(
+                              color: colorScheme.primaryContainer,
+                              borderRadius: BorderRadius.circular(12),
+                            ),
+                            child: Text(
+                              '${result.total} نتيجة',
+                              style: TextStyle(
+                                color: colorScheme.onPrimaryContainer,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 12,
+                              ),
+                            ),
                           ),
-                        ),
-                      ]),
-                    ),
-                    Expanded(
-                      child: ListView.builder(
-                        padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
-                        itemCount: result.results.length,
-                        itemBuilder: (_, i) =>
-                            WordCard(entry: result.results[i]),
+                        ]),
                       ),
-                    ),
-                  ],
-                );
-              },
-              loading: () => const LoadingWidget(),
-              error: (e, _) => Center(child: Text('$e')),
-            ),
+                      Expanded(
+                        child: ListView.builder(
+                          padding: const EdgeInsets.fromLTRB(16, 4, 16, 16),
+                          itemCount: result.results.length,
+                          itemBuilder: (_, i) =>
+                              WordCard(entry: result.results[i]),
+                        ),
+                      ),
+                    ],
+                  );
+                },
+                loading: () => const LoadingWidget(key: ValueKey('loading')),
+                error: (e, _) => Center(
+                    key: const ValueKey('error'), child: Text('$e')),
+              ),
+      ),
     );
   }
 }

@@ -33,22 +33,28 @@ class WordCard extends ConsumerWidget {
           builder: (_) => WordDetailSheet(entry: entry),
         ),
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
           child: Row(
             children: [
               Container(
                 width: 36,
                 height: 36,
                 decoration: BoxDecoration(
-                  color: colorScheme.primaryContainer,
-                  borderRadius: BorderRadius.circular(8),
+                  color: highlight
+                      ? colorScheme.secondary.withValues(alpha: 0.15)
+                      : colorScheme.primaryContainer,
+                  borderRadius: BorderRadius.circular(10),
                 ),
                 alignment: Alignment.center,
                 child: Text(
-                  '${entry.id}',
+                  entry.hadramiWord.isNotEmpty
+                      ? entry.hadramiWord.characters.first
+                      : '؟',
                   style: TextStyle(
-                    fontSize: 11,
-                    color: colorScheme.onPrimaryContainer,
+                    fontSize: 16,
+                    color: highlight
+                        ? colorScheme.secondary
+                        : colorScheme.onPrimaryContainer,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
@@ -61,31 +67,39 @@ class WordCard extends ConsumerWidget {
                     Text(
                       entry.hadramiWord,
                       style: const TextStyle(
-                          fontSize: 17, fontWeight: FontWeight.bold),
+                          fontSize: 16, fontWeight: FontWeight.bold),
                     ),
                     if (entry.arabicFus7a.isNotEmpty) ...[
                       const SizedBox(height: 2),
                       Text(
                         entry.arabicFus7a,
-                        style:
-                            TextStyle(fontSize: 14, color: colorScheme.primary),
+                        style: TextStyle(
+                            fontSize: 13, color: colorScheme.primary),
                       ),
                     ],
-                    const SizedBox(height: 4),
-                    Text(
-                      entry.fullDefinition,
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(
-                          fontSize: 12, color: colorScheme.onSurfaceVariant),
-                    ),
+                    if (entry.fullDefinition.isNotEmpty) ...[
+                      const SizedBox(height: 4),
+                      Text(
+                        entry.fullDefinition,
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                            fontSize: 12,
+                            color: colorScheme.onSurfaceVariant,
+                            height: 1.4),
+                      ),
+                    ],
                   ],
                 ),
               ),
               IconButton(
-                icon: Icon(
-                  isFav ? Icons.star : Icons.star_border,
-                  color: isFav ? Colors.amber : colorScheme.outline,
+                icon: AnimatedSwitcher(
+                  duration: const Duration(milliseconds: 250),
+                  child: Icon(
+                    isFav ? Icons.star_rounded : Icons.star_border_rounded,
+                    key: ValueKey(isFav),
+                    color: isFav ? Colors.amber : colorScheme.outline,
+                  ),
                 ),
                 onPressed: () =>
                     ref.read(favoritesProvider.notifier).toggle(entry),

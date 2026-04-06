@@ -41,10 +41,8 @@ class PhraseTranslatePage extends HookConsumerWidget {
     final state = ref.watch(phraseTranslateProvider);
     final colorScheme = Theme.of(context).colorScheme;
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    final highlightBg = (isDark
-            ? AppColors.secondaryContainerDark
-            : AppColors.tertiaryContainer)
-        .withValues(alpha: isDark ? 0.2 : 0.24);
+    final highlightBg = AppColors.hadramiLexiconHighlightBackground(
+        Theme.of(context).brightness);
     final highlightFg =
         colorScheme.onSurface.withValues(alpha: isDark ? 0.92 : 0.88);
 
@@ -125,7 +123,9 @@ class PhraseTranslatePage extends HookConsumerWidget {
                     final n = v.runes.length;
                     const maxL = PhraseTranslateConfig.maxLength;
                     const soft = PhraseTranslateConfig.softRecommendLength;
+                    const chunk = PhraseTranslateConfig.chunkWarningLength;
                     final overSoft = n > soft;
+                    final overChunk = n > chunk;
                     return Padding(
                       padding: const EdgeInsets.only(top: 6),
                       child: Column(
@@ -140,13 +140,24 @@ class PhraseTranslatePage extends HookConsumerWidget {
                                     .textTheme
                                     .labelMedium
                                     ?.copyWith(
-                                      color: overSoft
-                                          ? colorScheme.tertiary
-                                          : colorScheme.outline,
+                                      color: overChunk
+                                          ? colorScheme.error
+                                          : overSoft
+                                              ? colorScheme.tertiary
+                                              : colorScheme.outline,
                                     ),
                               ),
                               const Spacer(),
-                              if (overSoft)
+                              if (overChunk)
+                                Text(
+                                  'سيُقسّم النص تلقائياً لترجمة أفضل',
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .labelSmall
+                                      ?.copyWith(color: colorScheme.error),
+                                  textDirection: TextDirection.rtl,
+                                )
+                              else if (overSoft)
                                 Text(
                                   'للجودة الأفضل قسّم النص',
                                   style: Theme.of(context)
@@ -165,9 +176,12 @@ class PhraseTranslatePage extends HookConsumerWidget {
                               minHeight: 4,
                               backgroundColor:
                                   colorScheme.surfaceContainerHighest,
-                              color: overSoft
-                                  ? colorScheme.tertiary
-                                  : colorScheme.primary.withValues(alpha: 0.5),
+                              color: overChunk
+                                  ? colorScheme.error.withValues(alpha: 0.7)
+                                  : overSoft
+                                      ? colorScheme.tertiary
+                                      : colorScheme.primary
+                                          .withValues(alpha: 0.5),
                             ),
                           ),
                         ],

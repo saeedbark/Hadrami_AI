@@ -14,6 +14,175 @@ T _$identity<T>(T value) => value;
 final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models');
 
+ExamplePair _$ExamplePairFromJson(Map<String, dynamic> json) {
+  return _ExamplePair.fromJson(json);
+}
+
+/// @nodoc
+mixin _$ExamplePair {
+  String get hadrami => throw _privateConstructorUsedError;
+  String get fusha => throw _privateConstructorUsedError;
+
+  /// Serializes this ExamplePair to a JSON map.
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+
+  /// Create a copy of ExamplePair
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  $ExamplePairCopyWith<ExamplePair> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $ExamplePairCopyWith<$Res> {
+  factory $ExamplePairCopyWith(
+          ExamplePair value, $Res Function(ExamplePair) then) =
+      _$ExamplePairCopyWithImpl<$Res, ExamplePair>;
+  @useResult
+  $Res call({String hadrami, String fusha});
+}
+
+/// @nodoc
+class _$ExamplePairCopyWithImpl<$Res, $Val extends ExamplePair>
+    implements $ExamplePairCopyWith<$Res> {
+  _$ExamplePairCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+
+  /// Create a copy of ExamplePair
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? hadrami = null,
+    Object? fusha = null,
+  }) {
+    return _then(_value.copyWith(
+      hadrami: null == hadrami
+          ? _value.hadrami
+          : hadrami // ignore: cast_nullable_to_non_nullable
+              as String,
+      fusha: null == fusha
+          ? _value.fusha
+          : fusha // ignore: cast_nullable_to_non_nullable
+              as String,
+    ) as $Val);
+  }
+}
+
+/// @nodoc
+abstract class _$$ExamplePairImplCopyWith<$Res>
+    implements $ExamplePairCopyWith<$Res> {
+  factory _$$ExamplePairImplCopyWith(
+          _$ExamplePairImpl value, $Res Function(_$ExamplePairImpl) then) =
+      __$$ExamplePairImplCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call({String hadrami, String fusha});
+}
+
+/// @nodoc
+class __$$ExamplePairImplCopyWithImpl<$Res>
+    extends _$ExamplePairCopyWithImpl<$Res, _$ExamplePairImpl>
+    implements _$$ExamplePairImplCopyWith<$Res> {
+  __$$ExamplePairImplCopyWithImpl(
+      _$ExamplePairImpl _value, $Res Function(_$ExamplePairImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of ExamplePair
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? hadrami = null,
+    Object? fusha = null,
+  }) {
+    return _then(_$ExamplePairImpl(
+      hadrami: null == hadrami
+          ? _value.hadrami
+          : hadrami // ignore: cast_nullable_to_non_nullable
+              as String,
+      fusha: null == fusha
+          ? _value.fusha
+          : fusha // ignore: cast_nullable_to_non_nullable
+              as String,
+    ));
+  }
+}
+
+/// @nodoc
+
+@JsonSerializable(fieldRename: FieldRename.snake)
+class _$ExamplePairImpl implements _ExamplePair {
+  const _$ExamplePairImpl({this.hadrami = '', this.fusha = ''});
+
+  factory _$ExamplePairImpl.fromJson(Map<String, dynamic> json) =>
+      _$$ExamplePairImplFromJson(json);
+
+  @override
+  @JsonKey()
+  final String hadrami;
+  @override
+  @JsonKey()
+  final String fusha;
+
+  @override
+  String toString() {
+    return 'ExamplePair(hadrami: $hadrami, fusha: $fusha)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$ExamplePairImpl &&
+            (identical(other.hadrami, hadrami) || other.hadrami == hadrami) &&
+            (identical(other.fusha, fusha) || other.fusha == fusha));
+  }
+
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  int get hashCode => Object.hash(runtimeType, hadrami, fusha);
+
+  /// Create a copy of ExamplePair
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$ExamplePairImplCopyWith<_$ExamplePairImpl> get copyWith =>
+      __$$ExamplePairImplCopyWithImpl<_$ExamplePairImpl>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$ExamplePairImplToJson(
+      this,
+    );
+  }
+}
+
+abstract class _ExamplePair implements ExamplePair {
+  const factory _ExamplePair({final String hadrami, final String fusha}) =
+      _$ExamplePairImpl;
+
+  factory _ExamplePair.fromJson(Map<String, dynamic> json) =
+      _$ExamplePairImpl.fromJson;
+
+  @override
+  String get hadrami;
+  @override
+  String get fusha;
+
+  /// Create a copy of ExamplePair
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$ExamplePairImplCopyWith<_$ExamplePairImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
 WordEntry _$WordEntryFromJson(Map<String, dynamic> json) {
   return _WordEntry.fromJson(json);
 }
@@ -24,6 +193,9 @@ mixin _$WordEntry {
   String get hadramiWord => throw _privateConstructorUsedError;
   String get arabicFus7a => throw _privateConstructorUsedError;
   String get fullDefinition => throw _privateConstructorUsedError;
+  String? get fus7aShort => throw _privateConstructorUsedError;
+  List<String>? get aliases => throw _privateConstructorUsedError;
+  List<ExamplePair>? get examples => throw _privateConstructorUsedError;
 
   /// Serializes this WordEntry to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -41,7 +213,13 @@ abstract class $WordEntryCopyWith<$Res> {
       _$WordEntryCopyWithImpl<$Res, WordEntry>;
   @useResult
   $Res call(
-      {int id, String hadramiWord, String arabicFus7a, String fullDefinition});
+      {int id,
+      String hadramiWord,
+      String arabicFus7a,
+      String fullDefinition,
+      String? fus7aShort,
+      List<String>? aliases,
+      List<ExamplePair>? examples});
 }
 
 /// @nodoc
@@ -63,6 +241,9 @@ class _$WordEntryCopyWithImpl<$Res, $Val extends WordEntry>
     Object? hadramiWord = null,
     Object? arabicFus7a = null,
     Object? fullDefinition = null,
+    Object? fus7aShort = freezed,
+    Object? aliases = freezed,
+    Object? examples = freezed,
   }) {
     return _then(_value.copyWith(
       id: null == id
@@ -81,6 +262,18 @@ class _$WordEntryCopyWithImpl<$Res, $Val extends WordEntry>
           ? _value.fullDefinition
           : fullDefinition // ignore: cast_nullable_to_non_nullable
               as String,
+      fus7aShort: freezed == fus7aShort
+          ? _value.fus7aShort
+          : fus7aShort // ignore: cast_nullable_to_non_nullable
+              as String?,
+      aliases: freezed == aliases
+          ? _value.aliases
+          : aliases // ignore: cast_nullable_to_non_nullable
+              as List<String>?,
+      examples: freezed == examples
+          ? _value.examples
+          : examples // ignore: cast_nullable_to_non_nullable
+              as List<ExamplePair>?,
     ) as $Val);
   }
 }
@@ -94,7 +287,13 @@ abstract class _$$WordEntryImplCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {int id, String hadramiWord, String arabicFus7a, String fullDefinition});
+      {int id,
+      String hadramiWord,
+      String arabicFus7a,
+      String fullDefinition,
+      String? fus7aShort,
+      List<String>? aliases,
+      List<ExamplePair>? examples});
 }
 
 /// @nodoc
@@ -114,6 +313,9 @@ class __$$WordEntryImplCopyWithImpl<$Res>
     Object? hadramiWord = null,
     Object? arabicFus7a = null,
     Object? fullDefinition = null,
+    Object? fus7aShort = freezed,
+    Object? aliases = freezed,
+    Object? examples = freezed,
   }) {
     return _then(_$WordEntryImpl(
       id: null == id
@@ -132,6 +334,18 @@ class __$$WordEntryImplCopyWithImpl<$Res>
           ? _value.fullDefinition
           : fullDefinition // ignore: cast_nullable_to_non_nullable
               as String,
+      fus7aShort: freezed == fus7aShort
+          ? _value.fus7aShort
+          : fus7aShort // ignore: cast_nullable_to_non_nullable
+              as String?,
+      aliases: freezed == aliases
+          ? _value._aliases
+          : aliases // ignore: cast_nullable_to_non_nullable
+              as List<String>?,
+      examples: freezed == examples
+          ? _value._examples
+          : examples // ignore: cast_nullable_to_non_nullable
+              as List<ExamplePair>?,
     ));
   }
 }
@@ -144,7 +358,12 @@ class _$WordEntryImpl implements _WordEntry {
       {this.id = 0,
       this.hadramiWord = '',
       this.arabicFus7a = '',
-      this.fullDefinition = ''});
+      this.fullDefinition = '',
+      this.fus7aShort,
+      final List<String>? aliases,
+      final List<ExamplePair>? examples})
+      : _aliases = aliases,
+        _examples = examples;
 
   factory _$WordEntryImpl.fromJson(Map<String, dynamic> json) =>
       _$$WordEntryImplFromJson(json);
@@ -161,10 +380,31 @@ class _$WordEntryImpl implements _WordEntry {
   @override
   @JsonKey()
   final String fullDefinition;
+  @override
+  final String? fus7aShort;
+  final List<String>? _aliases;
+  @override
+  List<String>? get aliases {
+    final value = _aliases;
+    if (value == null) return null;
+    if (_aliases is EqualUnmodifiableListView) return _aliases;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(value);
+  }
+
+  final List<ExamplePair>? _examples;
+  @override
+  List<ExamplePair>? get examples {
+    final value = _examples;
+    if (value == null) return null;
+    if (_examples is EqualUnmodifiableListView) return _examples;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(value);
+  }
 
   @override
   String toString() {
-    return 'WordEntry(id: $id, hadramiWord: $hadramiWord, arabicFus7a: $arabicFus7a, fullDefinition: $fullDefinition)';
+    return 'WordEntry(id: $id, hadramiWord: $hadramiWord, arabicFus7a: $arabicFus7a, fullDefinition: $fullDefinition, fus7aShort: $fus7aShort, aliases: $aliases, examples: $examples)';
   }
 
   @override
@@ -178,13 +418,24 @@ class _$WordEntryImpl implements _WordEntry {
             (identical(other.arabicFus7a, arabicFus7a) ||
                 other.arabicFus7a == arabicFus7a) &&
             (identical(other.fullDefinition, fullDefinition) ||
-                other.fullDefinition == fullDefinition));
+                other.fullDefinition == fullDefinition) &&
+            (identical(other.fus7aShort, fus7aShort) ||
+                other.fus7aShort == fus7aShort) &&
+            const DeepCollectionEquality().equals(other._aliases, _aliases) &&
+            const DeepCollectionEquality().equals(other._examples, _examples));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, id, hadramiWord, arabicFus7a, fullDefinition);
+  int get hashCode => Object.hash(
+      runtimeType,
+      id,
+      hadramiWord,
+      arabicFus7a,
+      fullDefinition,
+      fus7aShort,
+      const DeepCollectionEquality().hash(_aliases),
+      const DeepCollectionEquality().hash(_examples));
 
   /// Create a copy of WordEntry
   /// with the given fields replaced by the non-null parameter values.
@@ -207,7 +458,10 @@ abstract class _WordEntry implements WordEntry {
       {final int id,
       final String hadramiWord,
       final String arabicFus7a,
-      final String fullDefinition}) = _$WordEntryImpl;
+      final String fullDefinition,
+      final String? fus7aShort,
+      final List<String>? aliases,
+      final List<ExamplePair>? examples}) = _$WordEntryImpl;
 
   factory _WordEntry.fromJson(Map<String, dynamic> json) =
       _$WordEntryImpl.fromJson;
@@ -220,6 +474,12 @@ abstract class _WordEntry implements WordEntry {
   String get arabicFus7a;
   @override
   String get fullDefinition;
+  @override
+  String? get fus7aShort;
+  @override
+  List<String>? get aliases;
+  @override
+  List<ExamplePair>? get examples;
 
   /// Create a copy of WordEntry
   /// with the given fields replaced by the non-null parameter values.

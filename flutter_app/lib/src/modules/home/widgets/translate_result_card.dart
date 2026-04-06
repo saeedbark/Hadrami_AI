@@ -37,6 +37,19 @@ class TranslateResultCard extends ConsumerWidget {
     }
   }
 
+  IconData _confidenceIcon(String confidence) {
+    switch (confidence) {
+      case 'exact':
+        return Icons.check_circle_rounded;
+      case 'partial':
+        return Icons.info_outline_rounded;
+      case 'not_found':
+        return Icons.search_off_rounded;
+      default:
+        return Icons.error_outline_rounded;
+    }
+  }
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final colorScheme = Theme.of(context).colorScheme;
@@ -49,7 +62,8 @@ class TranslateResultCard extends ConsumerWidget {
           padding: const EdgeInsets.all(16),
           child: Row(
             children: [
-              Icon(Icons.search_off, color: colorScheme.onErrorContainer),
+              Icon(Icons.search_off_rounded,
+                  color: colorScheme.onErrorContainer),
               const SizedBox(width: 12),
               Expanded(
                 child: Text(
@@ -73,7 +87,7 @@ class TranslateResultCard extends ConsumerWidget {
         (list) => list.any((e) => e.hadramiWord == entry.hadramiWord)));
 
     return Card(
-      elevation: 3,
+      elevation: 2,
       color: colorScheme.surfaceContainerLow,
       child: Padding(
         padding: const EdgeInsets.all(16),
@@ -84,32 +98,44 @@ class TranslateResultCard extends ConsumerWidget {
               children: [
                 Container(
                   padding:
-                      const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                      const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                   decoration: BoxDecoration(
-                    color: confidenceColor.withValues(alpha: .15),
+                    color: confidenceColor.withValues(alpha: .12),
                     borderRadius: BorderRadius.circular(20),
-                    border: Border.all(color: confidenceColor),
                   ),
-                  child: Text(
-                    _confidenceLabel(result.confidence),
-                    style: TextStyle(
-                        color: confidenceColor,
-                        fontSize: 12,
-                        fontWeight: FontWeight.bold),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(_confidenceIcon(result.confidence),
+                          size: 14, color: confidenceColor),
+                      const SizedBox(width: 4),
+                      Text(
+                        _confidenceLabel(result.confidence),
+                        style: TextStyle(
+                            color: confidenceColor,
+                            fontSize: 12,
+                            fontWeight: FontWeight.bold),
+                      ),
+                    ],
                   ),
                 ),
                 const Spacer(),
                 IconButton(
-                  icon: Icon(
-                    isFav ? Icons.star : Icons.star_border,
-                    color: isFav ? Colors.amber : colorScheme.outline,
+                  icon: AnimatedSwitcher(
+                    duration: const Duration(milliseconds: 250),
+                    child: Icon(
+                      isFav ? Icons.star_rounded : Icons.star_border_rounded,
+                      key: ValueKey(isFav),
+                      color: isFav ? Colors.amber : colorScheme.outline,
+                    ),
                   ),
                   onPressed: () =>
                       ref.read(favoritesProvider.notifier).toggle(entry),
                   visualDensity: VisualDensity.compact,
                 ),
                 IconButton(
-                  icon: const Icon(Icons.copy),
+                  icon: const Icon(Icons.copy_rounded, size: 20),
+                  tooltip: 'نسخ',
                   onPressed: () {
                     Clipboard.setData(ClipboardData(
                         text:
@@ -121,7 +147,7 @@ class TranslateResultCard extends ConsumerWidget {
                 ),
               ],
             ),
-            const SizedBox(height: 12),
+            const SizedBox(height: 14),
             Row(
               children: [
                 Expanded(
@@ -129,21 +155,37 @@ class TranslateResultCard extends ConsumerWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text('الكلمة الحضرمية',
-                          style: Theme.of(context).textTheme.labelSmall),
+                          style: Theme.of(context)
+                              .textTheme
+                              .labelSmall
+                              ?.copyWith(color: colorScheme.outline)),
+                      const SizedBox(height: 2),
                       Text(result.hadramiWord,
                           style: const TextStyle(
                               fontSize: 22, fontWeight: FontWeight.bold)),
                     ],
                   ),
                 ),
-                Icon(Icons.arrow_forward, color: colorScheme.outline, size: 20),
+                Container(
+                  padding: const EdgeInsets.all(6),
+                  decoration: BoxDecoration(
+                    color: colorScheme.primaryContainer.withValues(alpha: 0.5),
+                    shape: BoxShape.circle,
+                  ),
+                  child: Icon(Icons.arrow_forward_rounded,
+                      color: colorScheme.primary, size: 16),
+                ),
                 const SizedBox(width: 12),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text('الفصحى',
-                          style: Theme.of(context).textTheme.labelSmall),
+                          style: Theme.of(context)
+                              .textTheme
+                              .labelSmall
+                              ?.copyWith(color: colorScheme.outline)),
+                      const SizedBox(height: 2),
                       Text(
                         result.arabicFus7a.isNotEmpty
                             ? result.arabicFus7a
