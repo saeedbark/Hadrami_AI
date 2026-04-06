@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart' as http;
 import 'package:hadrami_nlp/src/configs/api_config.dart';
+import 'package:hadrami_nlp/src/core/models/lexicon_section.dart';
 import 'package:hadrami_nlp/src/core/models/word_entry.dart';
 
 final apiServiceProvider = Provider<ApiService>((_) => ApiService());
@@ -107,6 +108,23 @@ class ApiService {
       return Map<String, dynamic>.from(data);
     } catch (_) {
       return {};
+    }
+  }
+
+  Future<List<LexiconSection>> getSections() async {
+    try {
+      final data = await _getJson(
+        '/sections',
+        timeout: const Duration(seconds: 5),
+      ) as Map<String, dynamic>;
+      final raw = data['sections'];
+      if (raw is! List) return [];
+      return raw
+          .whereType<Map<String, dynamic>>()
+          .map(LexiconSection.fromJson)
+          .toList();
+    } catch (_) {
+      return [];
     }
   }
 

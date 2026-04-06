@@ -7,6 +7,7 @@ from .core.data_store import ENTRIES
 from .schemas import (
     Entry,
     FeedbackRequest,
+    LexiconSectionsResponse,
     SearchResult,
     TranslatePhraseRequest,
     TranslatePhraseResponse,
@@ -42,6 +43,7 @@ def root():
             "/search",
             "/word/{id}",
             "/stats",
+            "/sections",
             "/feedback",
             "/ask",
         ],
@@ -51,6 +53,11 @@ def root():
 @app.get("/stats")
 def get_stats():
     return dictionary_service.get_stats()
+
+
+@app.get("/sections", response_model=LexiconSectionsResponse)
+def list_sections():
+    return dictionary_service.get_sections()
 
 
 @app.get("/translate", response_model=TranslateResponse)
