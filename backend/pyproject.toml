@@ -1,0 +1,9 @@
+[project]
+name = "hadrami-api"
+version = "1.0.0"
+description = "Hadrami dialect NLP API (FastAPI on Vercel)"
+requires-python = ">=3.11"
+
+# Vercel discovers the ASGI app via this entry (see Vercel FastAPI docs).
+[project.scripts]
+app = "app.main:app"

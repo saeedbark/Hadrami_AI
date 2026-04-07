@@ -18,6 +18,8 @@ flutter_app/.metadata
 **/*.freezed.dart
 **/*.g.dart
 **/*.gform.dart
+# flutter_app/build/
+flutter_app/_flutter/
 
 # ── IDE / Editor ──
 .vscode/
