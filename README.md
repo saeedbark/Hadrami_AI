@@ -1,140 +1,185 @@
-# 🗺️ قاموس اللهجة الحضرمية - Hadrami NLP Project
+# Hadrami NLP Project
 
-مشروع NLP كامل للهجة الحضرمية: Backend FastAPI + Frontend Flutter
+A bilingual dictionary and translation tool for the **Hadrami dialect** of Yemeni Arabic.
+Combines a curated 1 000+ entry lexicon with RAG (Retrieval-Augmented Generation) powered by Gemini
+to provide word-level translation, phrase translation, and AI-powered Q&A.
+
+**Backend:** FastAPI (Python) &nbsp;|&nbsp; **Frontend:** Flutter (Riverpod + go_router)
 
 ---
 
-## 📁 هيكل المشروع
+## Project Structure
 
 ```
 hadrami_project/
-├── backend/
+├── backend/                     ← FastAPI REST API
 │   ├── app/
-│   │   └── main.py          ← FastAPI server (كل الـ API)
+│   │   ├── main.py              ← Routes & middleware
+│   │   ├── schemas.py           ← Pydantic request/response models
+│   │   ├── rag_engine.py        ← RAG + Gemini pipeline (/ask, /translate-phrase)
+│   │   ├── core/
+│   │   │   ├── config.py        ← Constants, paths, limits
+│   │   │   └── data_store.py    ← Dataset loading at startup
+│   │   └── services/
+│   │       ├── dictionary_service.py        ← Search, translate, feedback
+│   │       └── phrase_translation_service.py ← Chunked phrase translation
 │   ├── data/
-│   │   ├── hadrami_dataset.json   ← 954 كلمة حضرمية
-│   │   └── feedback.json    ← ملاحظات المستخدمين (يُنشأ تلقائياً)
+│   │   ├── hadrami_dataset.json ← Main lexicon (1 026 entries, v1.1.0)
+│   │   └── eval_pairs.json      ← Held-out evaluation pairs
+│   ├── scripts/                 ← Data quality & maintenance scripts
+│   ├── tests/                   ← Pytest API smoke tests
 │   ├── requirements.txt
-│   └── run.sh               ← سكريبت التشغيل
+│   ├── run.ps1                  ← Windows: install deps + start server
+│   └── run.sh                   ← Linux/macOS: install deps + start server
 │
-└── flutter_app/
-    ├── lib/
-    │   ├── main.dart         ← Entry point + Navigation
-    │   ├── models/
-    │   │   └── word_entry.dart    ← Data models
-    │   ├── services/
-    │   │   ├── api_service.dart   ← HTTP calls to backend
-    │   │   └── app_provider.dart  ← State management (Provider)
-    │   ├── screens/
-    │   │   ├── home_screen.dart       ← الرئيسية + ترجمة
-    │   │   ├── search_screen.dart     ← البحث
-    │   │   ├── dictionary_screen.dart ← القاموس الكامل
-    │   │   └── favorites_screen.dart  ← المفضلة
-    │   └── widgets/
-    │       ├── word_card.dart             ← بطاقة الكلمة
-    │       ├── word_detail_sheet.dart     ← تفاصيل الكلمة
-    │       └── translate_result_card.dart ← نتيجة الترجمة
-    └── pubspec.yaml
+├── flutter_app/                 ← Flutter mobile/web/desktop client
+│   ├── lib/
+│   │   ├── main.dart            ← Entry point (ProviderScope)
+│   │   └── src/
+│   │       ├── app.dart         ← MaterialApp.router + theme
+│   │       ├── configs/         ← API URL, colors, radii, phrase limits
+│   │       ├── core/            ← Models, services, providers, routing, theme
+│   │       ├── widgets/         ← Shared UI components
+│   │       └── modules/         ← Feature modules (home, search, dictionary, ...)
+│   └── pubspec.yaml
+│
+├── docs/
+│   └── methods_evaluation.md    ← System architecture & evaluation protocol
+│
+└── ROADMAP.md                   ← Future improvement ideas
 ```
 
 ---
 
-## 🚀 التشغيل
+## Quick Start
 
-### 1. Backend (FastAPI)
+### Prerequisites
+
+- **Python 3.10+** with pip
+- **Flutter SDK 3.x** ([install guide](https://docs.flutter.dev/get-started/install))
+- A **Gemini API key** (for AI features — set in `backend/.env`)
+
+### 1. Start the Backend
 
 ```bash
 cd backend
+python -m venv venv
+```
+
+Activate the virtual environment:
+
+```powershell
+# Windows PowerShell
+.\venv\Scripts\Activate.ps1
+```
+```bash
+# Linux / macOS
+source venv/bin/activate
+```
+
+Install dependencies and launch:
+
+```bash
 pip install -r requirements.txt
 uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
 ```
 
-**أو شغّل:**
+Or use the helper script: `.\run.ps1` (Windows) / `./run.sh` (Linux/macOS).
+
+Verify at:
+- API root: http://localhost:8000
+- Swagger docs: http://localhost:8000/docs
+
+### 2. Run Tests
+
 ```bash
-chmod +x run.sh && ./run.sh
+cd backend
+python -m pytest tests/ -v
 ```
 
-**الـ API يعمل على:** http://localhost:8000
-**الـ Docs على:** http://localhost:8000/docs
-
----
-
-### 2. Flutter App
+### 3. Start the Frontend
 
 ```bash
 cd flutter_app
 flutter pub get
+dart run build_runner build --delete-conflicting-outputs
 flutter run
 ```
 
-> **ملاحظة:** للتشغيل على جهاز حقيقي، غيّر `baseUrl` في `api_service.dart`:
-> ```dart
-> static const String baseUrl = 'http://YOUR_COMPUTER_IP:8000';
-> ```
+### 4. Connect Frontend to Backend
+
+The API URL defaults to `http://localhost:8000`. Override with `--dart-define`:
+
+| Platform | Command |
+|----------|---------|
+| Web / Desktop (same machine) | `flutter run` (default works) |
+| Android emulator | `flutter run --dart-define=API_BASE_URL=http://10.0.2.2:8000` |
+| Physical phone | `flutter run --dart-define=API_BASE_URL=http://<your-lan-ip>:8000` |
 
 ---
 
-## 🔌 API Endpoints
+## API Endpoints
 
-| Method | Endpoint | الوصف |
-|--------|----------|-------|
-| GET | `/` | معلومات الـ API |
-| GET | `/stats` | إحصائيات القاموس |
-| GET | `/translate?q=كلمة` | ترجمة كلمة حضرمية |
-| GET | `/search?q=كلمة` | بحث في القاموس |
-| GET | `/words?page=1&size=20` | قائمة الكلمات |
-| GET | `/word/{id}` | كلمة محددة |
-| GET | `/random` | كلمة عشوائية |
-| POST | `/feedback` | إرسال تصحيح |
-
----
-
-## 📊 Dataset
-
-- **954 كلمة** حضرمية مستخرجة من القاموس الحضرمي
-- كل كلمة تحتوي على: الكلمة الحضرمية، الفصحى، الشرح الكامل
-- الملف: `backend/data/hadrami_dataset.json`
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | `/` | API info + version |
+| GET | `/stats` | Dictionary statistics |
+| GET | `/translate?q=word` | Translate a Hadrami word |
+| POST | `/translate-phrase` | Phrase translation (body: `text`, `direction`) |
+| GET | `/search?q=word&limit=20` | Search the dictionary |
+| GET | `/words?page=1&size=20` | Paginated word list (optional `letter` filter) |
+| GET | `/word/{id}` | Single word by ID |
+| GET | `/random` | Random word |
+| POST | `/feedback` | Submit a correction or new word |
+| GET | `/ask?q=question` | AI-powered Q&A (RAG) |
+| POST | `/admin/build-index` | Rebuild vector index |
 
 ---
 
-## 🏗️ المرحلة القادمة (RAG + AI)
+## Dataset (v1.1.0)
 
-لإضافة الذكاء الاصطناعي:
+The lexicon lives in `backend/data/hadrami_dataset.json` with **1 026 entries**.
 
-```bash
-# Local (مجاني)
-pip install chromadb sentence-transformers ollama
+Each entry has:
 
-# Production
-pip install google-generativeai firebase-admin
-```
-
-ثم أضف في `main.py`:
-```python
-from chromadb import Client
-# Vector search + Gemini embeddings
-```
+| Field | Type | Description |
+|-------|------|-------------|
+| `id` | int | Unique identifier |
+| `hadrami_word` | string | Hadrami dialect word |
+| `arabic_fus7a` | string | Modern Standard Arabic equivalent |
+| `full_definition` | string | Detailed definition with context |
+| `fus7a_short` | string? | Concise 1-3 word MSA gloss |
+| `aliases` | string[]? | Variant spellings or forms |
+| `examples` | ExamplePair[]? | Usage examples (`hadrami` + `fusha` fields) |
 
 ---
 
-## 📱 شاشات التطبيق
-
-1. **الرئيسية** - ترجمة سريعة + إحصائيات + كلمة اليوم
-2. **البحث** - بحث فوري أثناء الكتابة
-3. **القاموس** - كل الكلمات + فلتر بالحروف
-4. **المفضلة** - الكلمات المحفوظة
-
----
-
-## 🛠️ Tech Stack
+## Tech Stack
 
 | Layer | Technology |
 |-------|-----------|
-| Backend | FastAPI + Python |
-| Frontend | Flutter + Provider |
-| Database | JSON → Firebase (مرحلة الإنتاج) |
-| AI (مستقبل) | Gemini + ChromaDB RAG |
+| Backend | FastAPI, Pydantic, Uvicorn |
+| AI / RAG | Google Gemini via `google-generativeai` |
+| Frontend | Flutter 3.x, Riverpod, go_router |
+| Forms | reactive_forms + code generation |
+| Models | freezed + json_serializable |
+| Theme | Material 3, responsive layout |
+| Testing | pytest (backend), flutter_test (frontend) |
 
 ---
 
-*بُني لمؤتمر ذكاء اصطناعي - سعيد 2025*
+## App Screens
+
+1. **Home** — translate a word, view stats, word of the day
+2. **Search** — live debounced search with result count
+3. **Dictionary** — full word list with Arabic letter filter
+4. **Favorites** — locally saved words
+5. **Ask** — AI Q&A about the Hadrami dialect
+6. **Phrases** — phrase-level MSA ↔ Hadrami translation with highlighted spans
+7. **Settings** — connection test, theme toggle, about info
+
+---
+
+## Contributing
+
+See [ROADMAP.md](ROADMAP.md) for planned improvements. Contributions welcome.

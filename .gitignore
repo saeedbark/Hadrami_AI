@@ -1,22 +1,40 @@
-### Python / FastAPI backend
+# ── Python / FastAPI backend ──
+backend/.env
 backend/venv/
 **/__pycache__/
 *.pyc
+*.pyo
+backend/data/feedback.json
+backend/data/*.backup.json
+backend/hadrami_chroma_db/
 
-### Flutter / Dart
+# ── Flutter / Dart ──
 flutter_app/.dart_tool/
 flutter_app/.flutter-plugins
 flutter_app/.flutter-plugins-dependencies
 flutter_app/.packages
+flutter_app/build/
+flutter_app/.metadata
+**/*.freezed.dart
+**/*.g.dart
+**/*.gform.dart
 # flutter_app/build/
 flutter_app/_flutter/
 
-### Editor / OS
+# ── IDE / Editor ──
 .vscode/
 .idea/
+*.iml
+
+# ── OS ──
 .DS_Store
 Thumbs.db
+desktop.ini
 
-### Cursor / tooling
+# ── Cursor / tooling ──
 .cursor/
 
+# ── Misc ──
+*.log
+*.bak
+*.tmp

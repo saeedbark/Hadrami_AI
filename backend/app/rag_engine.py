@@ -1,88 +1,250 @@
-"""
-RAG Engine for Hadrami NLP
-==========================
-Two modes:
-  - LOCAL  : Ollama (aya:8b) + ChromaDB  — free, runs on your machine
-  - PROD   : Gemini 1.5 Flash + Firebase  — paid, for deployment
-
-Switch by setting RAG_MODE env var or changing MODE below.
-"""
-
 import os
-import json
+import re
 from pathlib import Path
-from typing import List, Optional
+from typing import Any, Optional
 
-MODE = os.getenv("RAG_MODE", "simple")  # "simple" | "local" | "prod" — simple works without Ollama
+try:
+    from dotenv import load_dotenv
 
-DATA_FILE = Path(__file__).parent.parent / "data" / "hadrami_dataset.json"
+    load_dotenv(Path(__file__).resolve().parent.parent / ".env")
+except ImportError:
+    pass
 
-# ── Load dataset ────────────────────────────────────────────────────────────
-def _load_entries():
-    if DATA_FILE.exists():
-        with open(DATA_FILE, encoding="utf-8") as f:
-            return json.load(f)["entries"]
-    return []
+from .core.data_store import ENTRIES
+from .services.dictionary_service import search as keyword_search
+from .services.dictionary_service import search_expanded
+from .services.dictionary_service import search_phrase_lexicon
 
-ENTRIES = _load_entries()
-
-# ══════════════════════════════════════════════════════════════════════════════
-# SIMPLE MODE — keyword matching, no AI needed, works right now
-# ══════════════════════════════════════════════════════════════════════════════
-def simple_search(query: str, top_k: int = 5) -> List[dict]:
-    """Fast keyword search without any AI"""
-    q = query.strip()
-    scored = []
-    for e in ENTRIES:
-        score = 0
-        if e["hadrami_word"].strip() == q:
-            score = 100
-        elif q in e["hadrami_word"]:
-            score = 80
-        elif e["hadrami_word"] in q:
-            score = 70
-        elif q in e.get("arabic_fus7a", ""):
-            score = 60
-        elif q in e.get("full_definition", ""):
-            score = 40
-        if score > 0:
-            scored.append((score, e))
-    scored.sort(key=lambda x: -x[0])
-    return [r[1] for r in scored[:top_k]]
+MODE = os.getenv("RAG_MODE", "local")
+# Gemini: set GEMINI_API_KEY and optional GEMINI_MODEL.
+# Default gemini-2.5-flash matches current AI Studio free-tier naming; 2.0-flash often hits separate quotas first.
+# Fallbacks are tried in order on quota / NotFound (see logs). Invalid preview IDs are omitted.
+# Heavy Chroma/HF is off until RAG_USE_CHROMA=1 after POST /admin/build-index.
+GEMINI_MODEL = os.getenv("GEMINI_MODEL", "gemini-2.5-flash")
+_GEMINI_FALLBACK_MODELS = [
+    "gemini-2.0-flash",
+    "gemini-2.5-flash-lite",
+    "gemini-1.5-flash-002",
+]
 
 
-# ══════════════════════════════════════════════════════════════════════════════
-# LOCAL MODE — Ollama + ChromaDB (FREE)
-# Install: pip install chromadb sentence-transformers
-#          ollama pull aya:8b
-# ══════════════════════════════════════════════════════════════════════════════
+def _use_chroma() -> bool:
+    return os.getenv("RAG_USE_CHROMA", "0").lower() in ("1", "true", "yes")
+
+
+def _rag_log(msg: str) -> None:
+    if os.getenv("RAG_DEBUG", "1").lower() in ("0", "false", "no", "off"):
+        return
+    print(msg, flush=True)
+
+
+def _preview(text: str, max_len: int = 160) -> str:
+    t = (text or "").replace("\n", " ")
+    return t if len(t) <= max_len else t[: max_len - 3] + "..."
+
+
+def _gemini_api_key() -> str:
+    return (os.getenv("GEMINI_API_KEY") or "").strip()
+
+
+# Hadrami usage snippets often appear as ") : … (" inside dictionary prose.
+_USAGE_EXAMPLE_PATTERN = re.compile(r"\)\s*:\s*([^()]+?)\s*\(", re.UNICODE)
+
+# User asks to translate Hadrami → MSA (overrides default Q&A prompt).
+_TRANSLATION_INTENT_PATTERN = re.compile(
+    r"(ترجم|ترجمة|إلى\s*الفصحى|إلى\s*العربية|بالفصحى|بالعربية\s*الفصحى|"
+    r"translate|حول\s*إلى\s*الفصحى|عبر\s*إلى\s*الفصحى|فصحى\s*هذه)",
+    re.IGNORECASE,
+)
+
+
+def _looks_like_translation_request(question: str) -> bool:
+    q = (question or "").strip()
+    if not q:
+        return False
+    return bool(_TRANSLATION_INTENT_PATTERN.search(q))
+
+
+def _few_shot_pairs_from_entry(entry: dict[str, Any]) -> list[tuple[str, str]]:
+    """Build (Hadrami sentence, Fusha gloss) pairs from examples field and full_definition."""
+    hadrami_head = (entry.get("hadrami_word") or "").strip()
+    fus_gloss = (entry.get("arabic_fus7a") or "").strip()
+    definition = (entry.get("full_definition") or "").strip()
+    out: list[tuple[str, str]] = []
+
+    raw_examples = entry.get("examples")
+    if isinstance(raw_examples, list):
+        for ex in raw_examples[:4]:
+            if not isinstance(ex, dict):
+                continue
+            h = (ex.get("hadrami") or ex.get("hadrami_sentence") or ex.get("sentence") or "").strip()
+            f = (ex.get("fusha") or ex.get("fusha_translation") or ex.get("meaning") or "").strip()
+            if h and f:
+                out.append((h, f))
+
+    for m in _USAGE_EXAMPLE_PATTERN.finditer(definition):
+        snippet = (m.group(1) or "").strip()
+        if len(snippet) >= 3:
+            gloss = fus_gloss if fus_gloss else definition[:160]
+            out.append((snippet, gloss))
+
+    if not out and hadrami_head and fus_gloss:
+        out.append((hadrami_head, fus_gloss))
+
+    return out[:2]
+
+
+def _translation_prompt(question: str, context_entries: list[dict]) -> str:
+    """Few-shot Hadrami → MSA prompt for Gemini."""
+    blocks: list[str] = []
+    for e in context_entries[:8]:
+        for had, fusha in _few_shot_pairs_from_entry(e):
+            if len(blocks) >= 10:
+                break
+            had_clean = had.replace("\n", " ").strip()
+            fusha_clean = fusha.replace("\n", " ").strip()
+            if not had_clean or not fusha_clean:
+                continue
+            blocks.append(
+                f"- Hadrami Example: {had_clean}\n  - Fusha Translation: {fusha_clean}"
+            )
+        if len(blocks) >= 10:
+            break
+
+    examples_text = (
+        "\n\n".join(blocks)
+        if blocks
+        else "(No structured examples were retrieved from the dictionary; rely on general Hadrami-to-MSA competence.)"
+    )
+
+    system_and_examples = f"""You are a professional translator from Hadrami dialect to Modern Standard Arabic. Use the following examples as a guide for style, grammar, and vocabulary mapping.
+
+{examples_text}"""
+
+    return f"""{system_and_examples}
+
+Now, translate this sentence precisely: {question}"""
+
+
+def _merge_entries_by_id(*lists: list[dict]) -> list[dict]:
+    seen: set[int] = set()
+    out: list[dict] = []
+    for lst in lists:
+        for e in lst:
+            eid = e.get("id")
+            if eid is None or eid in seen:
+                continue
+            seen.add(eid)
+            out.append(e)
+    return out
+
+
+def _rag_prompt(question: str, context_entries: list[dict]) -> str:
+    context = "\n".join(
+        [
+            f"- الكلمة: {e['hadrami_word']} | الفصحى: {e.get('arabic_fus7a', '')} | الشرح: {e.get('full_definition', '')[:100]}"
+            for e in context_entries
+        ]
+    )
+    return f"""أنت مساعد متخصص في اللهجة الحضرمية اليمنية.
+استخدم المعلومات التالية من القاموس فقط كأساس للشرح، ووسّع الإجابة بجملة أو جملتين واضحتين بالعربية الفصحى.
+بعد الشرح مباشرة، أضف فقرة قصيرة بعنوان «مثال» تتضمن جملة حضرمية بسيطة تستخدم الكلمة أو تعبيراً قريباً منها، ثم اشرح معنى الجملة بالفصحى (يجب أن يبقى المثال متسقاً مع القاموس أعلاه ولا تخترع معانٍ جديدة).
+
+{context}
+
+السؤال: {question}
+
+الإجابة (شرح ثم مثال):"""
+
+
+def _rag_prompt_no_hits(question: str) -> str:
+    return f"""أنت مساعد متخصص في اللهجة الحضرمية اليمنية.
+لم يُعثر في القاموس الحضرمي على مدخل يطابق السؤال بوضوح.
+أجب باختصار بالعربية الفصحى: اعتذر وأوضح أن الكلمة أو العبارة غير موجودة في قاموسنا حالياً، واقترح على المستخدم إعادة الصياغة (مثلاً كتابة الكلمة كما تُقال محلياً، مع أو بدون «ال»، أو إضافة الهمزة إن وُجدت).
+لا تخترع معنىً لكلمة حضرمية محددة ولا تقدّم ترجمة وكأنها من القاموس.
+في نهاية الإجابة أضف سطراً بعنوان «مثال» يوضّح كيف يمكن صياغة سؤال أفضل للبحث (دون اختراع معنى للكلمة المذكورة في السؤال).
+
+السؤال: {question}
+
+الإجابة:"""
+
+
+def _prompt_for_gemini(question: str, context_entries: list[dict]) -> str:
+    if context_entries:
+        return _rag_prompt(question, context_entries)
+    return _rag_prompt_no_hits(question)
+
+
+def _gemini_generate(prompt: str, api_key: str) -> str:
+    if not api_key:
+        _rag_log("❌ Gemini: no API key (GEMINI_API_KEY empty)")
+        return "Gemini not available: set GEMINI_API_KEY"
+    _rag_log(
+        f"🤖 Gemini model={GEMINI_MODEL!r} chars={len(prompt)} | prompt: {_preview(prompt, 200)}"
+    )
+    try:
+        import google.generativeai as genai
+
+        genai.configure(api_key=api_key)
+
+        order: list[str] = []
+        for m in [GEMINI_MODEL, *_GEMINI_FALLBACK_MODELS]:
+            if m and m not in order:
+                order.append(m)
+
+        last_err: Exception | None = None
+        for mname in order:
+            try:
+                model = genai.GenerativeModel(mname)
+                response = model.generate_content(prompt)
+                text = (response.text or "").strip()
+                if mname != GEMINI_MODEL:
+                    _rag_log(f"✅ Gemini used fallback model={mname!r}")
+                _rag_log(f"✅ Gemini ← answer_chars={len(text)} preview: {_preview(text)}")
+                return text
+            except Exception as e:
+                last_err = e
+                _rag_log(f"⚠️ Gemini model {mname!r} failed: {e!r}")
+
+        if last_err:
+            return f"Gemini not available: {last_err}"
+        return "Gemini not available: unknown error"
+    except ImportError:
+        _rag_log("❌ Gemini: google-generativeai not installed — run: pip install -r requirements.txt")
+        return "Gemini not available: google-generativeai not installed"
+
+
+def _keyword_context(query: str, top_k: int = 5) -> list[dict]:
+    result = keyword_search(query, limit=top_k)
+    rows = result["results"]
+    labels = [f"{r.get('hadrami_word', '?')}→{r.get('arabic_fus7a', '')}" for r in rows[:5]]
+    _rag_log(f"🔎 keyword_search q={query!r} top_k={top_k} → {len(rows)} hits: {labels}")
+    return rows
+
+
+def _expanded_keyword_context(query: str, top_k: int = 8) -> list[dict]:
+    rows = search_expanded(query, limit=top_k)["results"]
+    labels = [f"{r.get('hadrami_word', '?')}→{r.get('arabic_fus7a', '')}" for r in rows[:5]]
+    _rag_log(f"🔎 search_expanded q={query!r} top_k={top_k} → {len(rows)} hits: {labels}")
+    return rows
+
+
 class LocalRAG:
-    """
-    Local RAG using ChromaDB for vector search + Ollama for generation.
-    
-    Usage:
-        rag = LocalRAG()
-        rag.build_index()          # Run once to create the index
-        result = rag.query("ويش") # Query the RAG
-    """
-    
     def __init__(self):
         self._collection = None
         self._client = None
-    
+
     def _get_collection(self):
         if self._collection is not None:
             return self._collection
         try:
             import chromadb
             from chromadb.utils import embedding_functions
-            
+
             self._client = chromadb.PersistentClient(path="./hadrami_chroma_db")
-            
             emb_fn = embedding_functions.SentenceTransformerEmbeddingFunction(
                 model_name="sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2"
             )
-            
             self._collection = self._client.get_or_create_collection(
                 name="hadrami_words",
                 embedding_function=emb_fn,
@@ -90,25 +252,19 @@ class LocalRAG:
             )
             return self._collection
         except ImportError:
-            print("⚠️  ChromaDB not installed. Run: pip install chromadb sentence-transformers")
             return None
-    
-    def build_index(self):
-        """Index all words. Run once, then the DB persists."""
+
+    def build_index(self) -> bool:
         collection = self._get_collection()
         if collection is None:
             return False
-        
+
         if collection.count() >= len(ENTRIES):
-            print(f"✅ Index already built ({collection.count()} entries)")
             return True
-        
-        print(f"🔨 Building index for {len(ENTRIES)} entries...")
-        
-        # Batch insert
+
         batch_size = 100
         for i in range(0, len(ENTRIES), batch_size):
-            batch = ENTRIES[i:i + batch_size]
+            batch = ENTRIES[i : i + batch_size]
             ids = [str(e["id"]) for e in batch]
             docs = [
                 f"{e['hadrami_word']} {e.get('arabic_fus7a', '')} {e.get('full_definition', '')}"
@@ -123,167 +279,144 @@ class LocalRAG:
                 for e in batch
             ]
             collection.upsert(ids=ids, documents=docs, metadatas=metas)
-            print(f"  Indexed {min(i + batch_size, len(ENTRIES))}/{len(ENTRIES)}")
-        
-        print("✅ Index built!")
+
         return True
-    
-    def vector_search(self, query: str, top_k: int = 5) -> List[dict]:
-        """Search using vector similarity"""
+
+    def chroma_search(self, query: str, top_k: int = 5) -> Optional[list[dict]]:
+        """Vector search only; returns None if Chroma is missing or empty (avoid duplicate keyword pass)."""
         collection = self._get_collection()
         if collection is None or collection.count() == 0:
-            return simple_search(query, top_k)
-        
-        results = collection.query(
-            query_texts=[query],
-            n_results=top_k,
-        )
-        
-        # Find full entries
+            return None
+
+        results = collection.query(query_texts=[query], n_results=top_k)
+
         found = []
-        for meta in (results["metadatas"][0] if results["metadatas"] else []):
+        for meta in results["metadatas"][0] if results["metadatas"] else []:
             word_id = meta.get("word_id")
             entry = next((e for e in ENTRIES if e["id"] == word_id), None)
             if entry:
                 found.append(entry)
+        labels = [f"{e.get('hadrami_word', '?')}→{e.get('arabic_fus7a', '')}" for e in found[:5]]
+        _rag_log(f"📚 chroma_search q={query!r} n={len(found)} → {labels}")
         return found
-    
-    def query_with_ollama(self, question: str) -> str:
-        """Generate natural language answer using Ollama"""
-        # Get context from vector search
-        context_entries = self.vector_search(question, top_k=3)
-        
-        if not context_entries:
-            return "لم أجد معلومات كافية."
-        
-        context = "\n".join([
-            f"- الكلمة: {e['hadrami_word']} | الفصحى: {e.get('arabic_fus7a', '')} | الشرح: {e.get('full_definition', '')[:100]}"
-            for e in context_entries
-        ])
-        
-        prompt = f"""أنت مساعد متخصص في اللهجة الحضرمية اليمنية.
-استخدم المعلومات التالية فقط للإجابة:
 
-{context}
-
-السؤال: {question}
-
-الإجابة:"""
-        
-        try:
-            import requests
-            resp = requests.post(
-                "http://localhost:11434/api/generate",
-                json={"model": "aya:8b", "prompt": prompt, "stream": False},
-                timeout=30
-            )
-            if resp.status_code == 200:
-                return resp.json().get("response", "").strip()
-        except Exception as e:
-            return f"Ollama not available: {e}"
-        
-        return context_entries[0].get("arabic_fus7a", "")
+    def vector_search(self, query: str, top_k: int = 5) -> list[dict]:
+        chroma_hits = self.chroma_search(query, top_k)
+        if chroma_hits is not None:
+            return chroma_hits
+        _rag_log(f"📚 vector_search: no Chroma index → fallback keyword for q={query!r}")
+        return _keyword_context(query, top_k)
 
 
-# ══════════════════════════════════════════════════════════════════════════════
-# PROD MODE — Gemini + Firebase (for deployment)
-# Install: pip install google-generativeai firebase-admin
-# ══════════════════════════════════════════════════════════════════════════════
-class ProdRAG:
-    """
-    Production RAG using Google Gemini embeddings + Firebase Vector Search.
-    
-    Usage:
-        rag = ProdRAG(gemini_key="YOUR_KEY")
-        result = rag.query("ويش معناها؟")
-    """
-    
-    def __init__(self, gemini_key: Optional[str] = None):
-        self.gemini_key = gemini_key or os.getenv("GEMINI_API_KEY", "")
-    
-    def query(self, question: str) -> str:
-        """Full RAG pipeline: embed → search → generate"""
-        try:
-            import google.generativeai as genai
-            genai.configure(api_key=self.gemini_key)
-            
-            # 1. Get context (simple search for now, replace with Firebase vector search)
-            context_entries = simple_search(question, top_k=3)
-            
-            context = "\n".join([
-                f"- {e['hadrami_word']}: {e.get('arabic_fus7a', '')} — {e.get('full_definition', '')[:150]}"
-                for e in context_entries
-            ])
-            
-            # 2. Generate with Gemini
-            model = genai.GenerativeModel("gemini-1.5-flash")
-            prompt = f"""أنت مساعد في اللهجة الحضرمية اليمنية.
-
-السياق من القاموس الحضرمي:
-{context}
-
-السؤال: {question}
-
-أجب بالعربية الفصحى بشكل موجز ومفيد:"""
-            
-            response = model.generate_content(prompt)
-            return response.text.strip()
-        
-        except ImportError:
-            return "google-generativeai not installed"
-        except Exception as e:
-            return f"Error: {e}"
-
-
-# ══════════════════════════════════════════════════════════════════════════════
-# Factory function — use this in main.py
-# ══════════════════════════════════════════════════════════════════════════════
 _local_rag = None
-_prod_rag = None
 
-def get_rag_answer(question: str) -> dict:
-    """
-    Main entry point for RAG queries.
-    Returns: {"answer": str, "context": list, "mode": str}
-    """
-    global _local_rag, _prod_rag
-    
-    # Always get keyword context
-    context = simple_search(question, top_k=3)
-    
-    if MODE == "simple" or not context:
-        answer = context[0].get("arabic_fus7a", "غير موجود") if context else "غير موجود"
-        return {"answer": answer, "context": context, "mode": "simple"}
-    
-    elif MODE == "local":
+
+def retrieve_rag_context(query: str) -> tuple[list[dict], list[dict]]:
+    """Return (entries_for_prompt, entries_for_api_response) — same retrieval as /ask."""
+    global _local_rag
+
+    if MODE == "simple":
+        context = _keyword_context(query, top_k=3)
+        return context[:5], context[:3]
+
+    kw_ctx = _expanded_keyword_context(query, top_k=8)
+    chroma_ctx: list[dict] = []
+    if MODE == "local" and _use_chroma():
         if _local_rag is None:
             _local_rag = LocalRAG()
-        answer = _local_rag.query_with_ollama(question)
-        # If Ollama is not running, fall back to dictionary answer instead of showing error
-        if answer.startswith("Ollama not available:"):
-            answer = context[0].get("arabic_fus7a", "غير موجود") if context else "غير موجود"
-            return {"answer": answer, "context": context, "mode": "simple"}
-        return {"answer": answer, "context": context, "mode": "local_ollama"}
-    
-    elif MODE == "prod":
-        if _prod_rag is None:
-            _prod_rag = ProdRAG()
-        answer = _prod_rag.query(question)
-        return {"answer": answer, "context": context, "mode": "gemini"}
-    
-    # Default fallback
-    answer = context[0].get("arabic_fus7a", "غير موجود") if context else "غير موجود"
-    return {"answer": answer, "context": context, "mode": "fallback"}
+        ch = _local_rag.chroma_search(query, top_k=6)
+        if ch is not None:
+            chroma_ctx = ch
+    elif MODE == "local":
+        _rag_log(
+            "📚 Chroma/HF skipped (RAG_USE_CHROMA is off). Keyword RAG + Gemini only. "
+            "After POST /admin/build-index set RAG_USE_CHROMA=1 for vector search."
+        )
+
+    merged = _merge_entries_by_id(kw_ctx, chroma_ctx)[:5]
+    return merged, merged[:3]
 
 
-# ── CLI test ─────────────────────────────────────────────────────────────────
+def retrieve_phrase_context(query: str) -> tuple[list[dict], list[dict]]:
+    """Retrieval for /translate-phrase: stricter lexicon matching so Gemini is not misled on long text."""
+    global _local_rag
+
+    if MODE == "simple":
+        rows = search_phrase_lexicon(query, 8)["results"]
+        return rows[:5], rows[:3]
+
+    kw_ctx = search_phrase_lexicon(query, 10)["results"]
+    chroma_ctx: list[dict] = []
+    if MODE == "local" and _use_chroma():
+        if _local_rag is None:
+            _local_rag = LocalRAG()
+        ch = _local_rag.chroma_search(query, top_k=6)
+        if ch is not None:
+            chroma_ctx = ch
+    elif MODE == "local":
+        _rag_log(
+            "📚 phrase: Chroma off — phrase-safe keyword + Gemini. "
+            "Set RAG_USE_CHROMA=1 after build-index for vector recall."
+        )
+
+    merged = _merge_entries_by_id(kw_ctx, chroma_ctx)[:5]
+    return merged, merged[:3]
+
+
+def get_translation_answer(question: str) -> dict:
+    """Hadrami → MSA translation using phrase-safe retrieval and few-shot prompting."""
+    merged, ctx_for_api = retrieve_phrase_context(question)
+    prompt = _translation_prompt(question, merged)
+    answer = _gemini_generate(prompt, _gemini_api_key())
+
+    if answer.startswith("Gemini not available:"):
+        fb = merged[0].get("arabic_fus7a", "غير موجود") if merged else "غير موجود"
+        _rag_log(f"🔁 translation Gemini failed → fallback answer_preview={_preview(fb)}")
+        return {"answer": fb, "context": ctx_for_api, "mode": "simple"}
+
+    mode_tag = "local_gemini" if MODE == "local" else "gemini"
+    _rag_log(f"⬅️ get_translation_answer END mode={mode_tag} answer_preview={_preview(answer)}")
+    return {"answer": answer, "context": ctx_for_api, "mode": mode_tag}
+
+
+def get_rag_answer(question: str) -> dict:
+    q = (question or "").strip()
+
+    if _looks_like_translation_request(q):
+        return get_translation_answer(q)
+
+    if MODE == "simple":
+        merged, ctx_for_api = retrieve_rag_context(q)
+        if not merged:
+            answer = "غير موجود"
+            _rag_log(f"📌 branch=simple (no hits) answer_preview={_preview(answer)}")
+            return {"answer": answer, "context": ctx_for_api, "mode": "simple"}
+        answer = merged[0].get("arabic_fus7a", "غير موجود")
+        _rag_log(f"📌 branch=simple mode=simple answer_preview={_preview(answer)}")
+        return {"answer": answer, "context": ctx_for_api, "mode": "simple"}
+
+    merged, ctx_for_api = retrieve_rag_context(q)
+    prompt = _prompt_for_gemini(q, merged)
+    answer = _gemini_generate(prompt, _gemini_api_key())
+
+    if answer.startswith("Gemini not available:"):
+        fb = merged[0].get("arabic_fus7a", "غير موجود") if merged else "غير موجود"
+        _rag_log(f"🔁 Gemini failed → fallback simple answer_preview={_preview(fb)}")
+        return {"answer": fb, "context": ctx_for_api, "mode": "simple"}
+
+    mode_tag = "local_gemini" if MODE == "local" else "gemini"
+    _rag_log(f"⬅️ get_rag_answer END mode={mode_tag} answer_preview={_preview(answer)}")
+    return {"answer": answer, "context": ctx_for_api, "mode": mode_tag}
+
+
 if __name__ == "__main__":
     import sys
+
     query = sys.argv[1] if len(sys.argv) > 1 else "ما معنى كلمة ويش؟"
     print(f"Query: {query}")
     print(f"Mode: {MODE}")
     result = get_rag_answer(query)
     print(f"Answer: {result['answer']}")
     print(f"Context ({len(result['context'])} entries):")
-    for e in result['context']:
-        print(f"  - {e['hadrami_word']} → {e.get('arabic_fus7a', '')}")
+    for e in result["context"]:
+        print(f"  - {e['hadrami_word']} -> {e.get('arabic_fus7a', '')}")
