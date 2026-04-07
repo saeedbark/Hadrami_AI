@@ -25395,7 +25395,7 @@ VN(a){return A.aBA(a)},
 aBA(a){var s=0,r=A.O(t.eg),q,p=2,o,n,m,l,k,j,i,h,g,f,e
 var $async$VN=A.P(function(b,c){if(b===1){o=c
 s=p}while(true)switch(s){case 0:p=4
-n=A.dN("http://localhost:8000/translate?q="+A.mN(B.h2,a,B.K,!1),0,null)
+n=A.dN("hadrami-4zrbzb73s-saeedbarks-projects.vercel.app/translate?q="+A.mN(B.h2,a,B.K,!1),0,null)
 s=7
 return A.U($.pN().mO("GET",n,null).nM(B.j8),$async$VN)
 case 7:m=c
@@ -25436,7 +25436,7 @@ aBy(a){var s=0,r=A.O(t.u0),q,p=2,o,n,m,l,k,j,i,h
 var $async$VL=A.P(function(b,c){if(b===1){o=c
 s=p}while(true)switch(s){case 0:i=20
 p=4
-n=A.dN("http://localhost:8000/search?q="+A.mN(B.h2,a,B.K,!1)+"&limit="+A.l(i),0,null)
+n=A.dN("hadrami-4zrbzb73s-saeedbarks-projects.vercel.app/search?q="+A.mN(B.h2,a,B.K,!1)+"&limit="+A.l(i),0,null)
 s=7
 return A.U($.pN().mO("GET",n,null).nM(B.j8),$async$VL)
 case 7:m=c
@@ -25466,7 +25466,7 @@ VJ(a,b,c){return A.aBx(a,b,c)},
 aBx(a,b,c){var s=0,r=A.O(t.u0),q,p=2,o,n,m,l,k,j,i
 var $async$VJ=A.P(function(d,e){if(d===1){o=e
 s=p}while(true)switch(s){case 0:p=4
-n="http://localhost:8000/words?page="+b+"&size="+c
+n="hadrami-4zrbzb73s-saeedbarks-projects.vercel.app/words?page="+b+"&size="+c
 if(a!=null)n=J.arv(n,"&letter="+A.mN(B.h2,a,B.K,!1))
 s=7
 return A.U($.pN().mO("GET",A.dN(n,0,null),null).nM(B.j8),$async$VJ)
@@ -25497,7 +25497,7 @@ G6(){var s=0,r=A.O(t.a),q,p=2,o,n,m,l,k
 var $async$G6=A.P(function(a,b){if(a===1){o=b
 s=p}while(true)switch(s){case 0:p=4
 s=7
-return A.U($.pN().mO("GET",A.dN("http://localhost:8000/stats",0,null),null).nM(B.jc),$async$G6)
+return A.U($.pN().mO("GET",A.dN("hadrami-4zrbzb73s-saeedbarks-projects.vercel.app/stats",0,null),null).nM(B.jc),$async$G6)
 case 7:n=b
 if(n.b===200){m=B.bh.dd(B.K.dd(n.w))
 q=m
@@ -25521,7 +25521,7 @@ VK(){var s=0,r=A.O(t.AJ),q,p=2,o,n,m,l,k,j
 var $async$VK=A.P(function(a,b){if(a===1){o=b
 s=p}while(true)switch(s){case 0:p=4
 s=7
-return A.U($.pN().mO("GET",A.dN("http://localhost:8000/random",0,null),null).nM(B.jc),$async$VK)
+return A.U($.pN().mO("GET",A.dN("hadrami-4zrbzb73s-saeedbarks-projects.vercel.app/random",0,null),null).nM(B.jc),$async$VK)
 case 7:n=b
 if(n.b===200){m=B.bh.dd(B.K.dd(n.w))
 l=A.avI(m)
@@ -25546,7 +25546,7 @@ VI(a){return A.aBw(a)},
 aBw(a){var s=0,r=A.O(t.f0),q,p=2,o,n,m,l,k,j,i
 var $async$VI=A.P(function(b,c){if(b===1){o=c
 s=p}while(true)switch(s){case 0:p=4
-n=A.dN("http://localhost:8000/ask?q="+A.mN(B.h2,a,B.K,!1),0,null)
+n=A.dN("hadrami-4zrbzb73s-saeedbarks-projects.vercel.app/ask?q="+A.mN(B.h2,a,B.K,!1),0,null)
 s=7
 return A.U($.pN().mO("GET",n,null).nM(B.DP),$async$VI)
 case 7:m=c
@@ -25578,7 +25578,7 @@ var $async$VM=A.P(function(e,f){if(e===1){o=f
 s=p}while(true)switch(s){case 0:p=4
 m=t.N
 s=7
-return A.U($.pN().rf("POST",A.dN("http://localhost:8000/feedback",0,null),A.ao(["Content-Type","application/json"],m,m),B.bh.lN(A.ao(["word_id",d,"hadrami_word",b,"suggested_fus7a",c,"comment",a],m,t.X)),null).nM(B.jc),$async$VM)
+return A.U($.pN().rf("POST",A.dN("hadrami-4zrbzb73s-saeedbarks-projects.vercel.app/feedback",0,null),A.ao(["Content-Type","application/json"],m,m),B.bh.lN(A.ao(["word_id",d,"hadrami_word",b,"suggested_fus7a",c,"comment",a],m,t.X)),null).nM(B.jc),$async$VM)
 case 7:n=f
 m=n.b
 q=m===200
@@ -79506,7 +79506,7 @@ if(s==null){s=p.J
 p=s==null?p.k3:s}else p=s
 return A.eG(A.d4(A.b([q,B.cT,B.TE,B.cU,A.ba("\u064a\u0645\u0643\u0646\u0643 \u0627\u0644\u0628\u062d\u062b \u0628\u0627\u0644\u062d\u0636\u0631\u0645\u064a \u0623\u0648 \u0627\u0644\u0641\u0635\u062d\u0649",r,r,r,A.bL(r,r,p,r,r,r,r,r,r,r,r,13,r,r,r,r,r,!0,r,r,r,r,r,r,r,r),r,r)],t.p),B.S,B.eB,B.I),r,r)}}
 A.p1.prototype={
-af(){return new A.DS(new A.ku(new A.c4("http://localhost:8000",B.f_,B.ba),$.ad()))}}
+af(){return new A.DS(new A.ku(new A.c4("hadrami-4zrbzb73s-saeedbarks-projects.vercel.app",B.f_,B.ba),$.ad()))}}
 A.DS.prototype={
 wx(){var s=0,r=A.O(t.H),q=1,p,o=this,n,m,l,k
 var $async$wx=A.P(function(a,b){if(a===1){p=b
