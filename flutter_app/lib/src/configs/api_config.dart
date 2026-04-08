@@ -11,12 +11,9 @@ class ApiConfig {
     defaultValue: 'http://localhost:8000',
   );
 
-  /// Default HTTP timeout for typical GETs (stats, list, search).
   static const Duration defaultTimeout = Duration(seconds: 30);
 
-  /// Longer timeout for /ask and /translate-phrase.
   static const Duration longTimeout = Duration(seconds: 120);
 
-  /// Matches backend `DEFAULT_PAGE_SIZE` (20).
   static const int defaultPageSize = 20;
 }
