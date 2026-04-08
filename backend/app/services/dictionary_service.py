@@ -7,6 +7,67 @@ from ..core.config import FEEDBACK_FILE
 from ..core.data_store import ENTRIES
 from ..schemas import TranslateResponse
 
+# Order matches typical Arabic dictionary / app letter strip (28 letters + hamza forms).
+_AR_LETTER_ORDER = (
+    "أ",
+    "إ",
+    "آ",
+    "ا",
+    "ب",
+    "ت",
+    "ث",
+    "ج",
+    "ح",
+    "خ",
+    "د",
+    "ذ",
+    "ر",
+    "ز",
+    "س",
+    "ش",
+    "ص",
+    "ض",
+    "ط",
+    "ظ",
+    "ع",
+    "غ",
+    "ف",
+    "ق",
+    "ك",
+    "ل",
+    "م",
+    "ن",
+    "ه",
+    "و",
+    "ي",
+    "ء",
+    "ؤ",
+    "ئ",
+    "ة",
+    "ى",
+)
+
+
+def _section_sort_key(letter: str) -> tuple[int, str]:
+    try:
+        return (_AR_LETTER_ORDER.index(letter[0]), letter)
+    except (ValueError, IndexError):
+        return (len(_AR_LETTER_ORDER), letter)
+
+
+def get_sections() -> dict[str, Any]:
+    """Group headwords by first character (after strip) for browse-by-letter sections."""
+    counts: dict[str, int] = {}
+    for entry in ENTRIES:
+        word = (entry.get("hadrami_word") or "").strip()
+        if not word:
+            continue
+        key = word[0]
+        counts[key] = counts.get(key, 0) + 1
+    sections = [{"letter": letter, "word_count": n} for letter, n in counts.items()]
+    sections.sort(key=lambda row: _section_sort_key(row["letter"]))
+    return {"sections": sections}
+
 
 def get_stats() -> dict[str, Any]:
     total = len(ENTRIES)

@@ -98,7 +98,7 @@ class WordCard extends ConsumerWidget {
                   child: Icon(
                     isFav ? Icons.star_rounded : Icons.star_border_rounded,
                     key: ValueKey(isFav),
-                    color: isFav ? Colors.amber : colorScheme.outline,
+                    color: isFav ? colorScheme.secondary : colorScheme.outline,
                   ),
                 ),
                 onPressed: () =>

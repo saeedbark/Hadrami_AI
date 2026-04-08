@@ -134,7 +134,12 @@ class LandingPage extends HookConsumerWidget {
             indicatorColor: colorScheme.primaryContainer,
           ),
           VerticalDivider(
-              thickness: 1, width: 1, color: colorScheme.outlineVariant),
+            thickness: 1,
+            width: 1,
+            color: colorScheme.outline.withValues(
+              alpha: colorScheme.brightness == Brightness.dark ? 0.08 : 0.14,
+            ),
+          ),
           Expanded(child: navigationShell),
         ],
       ),
