@@ -38,19 +38,40 @@ final randomWordProvider = AutoDisposeFutureProvider<WordEntry?>.internal(
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
 typedef RandomWordRef = AutoDisposeFutureProviderRef<WordEntry?>;
-String _$translateHash() => r'b19247f84b28f30a474ec269e076f0e06a38373e';
+String _$sectionsHash() => r'7201a2788b0111b7f84aa786267acfae9b81fcea';
 
-/// See also [Translate].
-@ProviderFor(Translate)
-final translateProvider = NotifierProvider<Translate, TranslateState>.internal(
-  Translate.new,
-  name: r'translateProvider',
+/// See also [sections].
+@ProviderFor(sections)
+final sectionsProvider =
+    AutoDisposeFutureProvider<List<LexiconSection>>.internal(
+  sections,
+  name: r'sectionsProvider',
   debugGetCreateSourceHash:
-      const bool.fromEnvironment('dart.vm.product') ? null : _$translateHash,
+      const bool.fromEnvironment('dart.vm.product') ? null : _$sectionsHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
 
-typedef _$Translate = Notifier<TranslateState>;
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
+typedef SectionsRef = AutoDisposeFutureProviderRef<List<LexiconSection>>;
+String _$featuredWordsHash() => r'4bbed905d4cef2cddf0fb8636687dc40857dac18';
+
+/// See also [featuredWords].
+@ProviderFor(featuredWords)
+final featuredWordsProvider =
+    AutoDisposeFutureProvider<List<WordEntry>>.internal(
+  featuredWords,
+  name: r'featuredWordsProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$featuredWordsHash,
+  dependencies: null,
+  allTransitiveDependencies: null,
+);
+
+@Deprecated('Will be removed in 3.0. Use Ref instead')
+// ignore: unused_element
+typedef FeaturedWordsRef = AutoDisposeFutureProviderRef<List<WordEntry>>;
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member, deprecated_member_use_from_same_package

@@ -53,6 +53,17 @@ class SearchResult(BaseModel):
     results: list[Entry]
 
 
+class LexiconSection(BaseModel):
+    """First-letter partition (حرف الابتداء) with live word count."""
+
+    letter: str = Field(..., description="First Arabic letter of headwords in this section")
+    word_count: int = Field(..., ge=0)
+
+
+class LexiconSectionsResponse(BaseModel):
+    sections: list[LexiconSection]
+
+
 class TranslatePhraseDirection(str, Enum):
     ar_to_hadrami = "ar_to_hadrami"
     hadrami_to_ar = "hadrami_to_ar"

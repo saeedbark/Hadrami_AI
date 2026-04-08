@@ -72,6 +72,23 @@ class TestSearch:
         assert data["total"] == 0
 
 
+class TestSections:
+    def test_sections_returns_counts(self):
+        resp = client.get("/sections")
+        assert resp.status_code == 200
+        data = resp.json()
+        assert "sections" in data
+        assert isinstance(data["sections"], list)
+        assert len(data["sections"]) > 0
+        first = data["sections"][0]
+        assert "letter" in first
+        assert "word_count" in first
+        assert first["word_count"] > 0
+        total_from_sections = sum(s["word_count"] for s in data["sections"])
+        stats = client.get("/stats").json()
+        assert total_from_sections == stats["total_words"]
+
+
 class TestWords:
     def test_list_words_paginated(self):
         resp = client.get("/words", params={"page": 1, "size": 10})
