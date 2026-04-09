@@ -92,8 +92,13 @@ def list_words(
     page: int = Query(1, ge=1),
     size: int = Query(DEFAULT_PAGE_SIZE, ge=1, le=MAX_PAGE_SIZE),
     letter: Optional[str] = None,
+    pos: Optional[str] = Query(None, description="Filter by part_of_speech (Noun, Verb, Adjective, Expression)"),
+    category: Optional[str] = Query(None, description="Filter by thematic_category"),
+    archaic: Optional[bool] = Query(None, description="Filter archaic words only"),
 ):
-    payload = dictionary_service.list_words(page=page, size=size, letter=letter)
+    payload = dictionary_service.list_words(
+        page=page, size=size, letter=letter, pos=pos, category=category, archaic=archaic,
+    )
     return SearchResult(total=payload["total"], results=payload["results"])
 
 

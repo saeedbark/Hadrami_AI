@@ -64,10 +64,21 @@ class WordCard extends ConsumerWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      entry.hadramiWord,
-                      style: const TextStyle(
-                          fontSize: 16, fontWeight: FontWeight.bold),
+                    Row(
+                      children: [
+                        Flexible(
+                          child: Text(
+                            entry.hadramiWord,
+                            style: const TextStyle(
+                                fontSize: 16, fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                        if (entry.isArchaic) ...[
+                          const SizedBox(width: 6),
+                          Icon(Icons.history_rounded,
+                              size: 14, color: colorScheme.error),
+                        ],
+                      ],
                     ),
                     if (entry.arabicFus7a.isNotEmpty) ...[
                       const SizedBox(height: 2),
@@ -75,6 +86,26 @@ class WordCard extends ConsumerWidget {
                         entry.arabicFus7a,
                         style: TextStyle(
                             fontSize: 13, color: colorScheme.primary),
+                      ),
+                    ],
+                    if (entry.partOfSpeech != null &&
+                        entry.partOfSpeech!.isNotEmpty) ...[
+                      const SizedBox(height: 4),
+                      Row(
+                        children: [
+                          _MiniTag(
+                            label: entry.partOfSpeech!,
+                            color: _posColor(entry.partOfSpeech!),
+                          ),
+                          if (entry.thematicCategory != null &&
+                              entry.thematicCategory!.isNotEmpty) ...[
+                            const SizedBox(width: 4),
+                            _MiniTag(
+                              label: entry.thematicCategory!,
+                              color: colorScheme.secondary,
+                            ),
+                          ],
+                        ],
                       ),
                     ],
                     if (entry.fullDefinition.isNotEmpty) ...[
@@ -108,6 +139,43 @@ class WordCard extends ConsumerWidget {
             ],
           ),
         ),
+      ),
+    );
+  }
+
+  static Color _posColor(String pos) {
+    switch (pos) {
+      case 'Noun':
+        return Colors.indigo;
+      case 'Verb':
+        return Colors.teal;
+      case 'Adjective':
+        return Colors.orange;
+      case 'Expression':
+        return Colors.purple;
+      default:
+        return Colors.grey;
+    }
+  }
+}
+
+class _MiniTag extends StatelessWidget {
+  const _MiniTag({required this.label, required this.color});
+  final String label;
+  final Color color;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+      decoration: BoxDecoration(
+        color: color.withValues(alpha: 0.1),
+        borderRadius: BorderRadius.circular(4),
+        border: Border.all(color: color.withValues(alpha: 0.3)),
+      ),
+      child: Text(
+        label,
+        style: TextStyle(fontSize: 10, color: color, fontWeight: FontWeight.w600),
       ),
     );
   }

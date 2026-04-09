@@ -194,6 +194,13 @@ mixin _$WordEntry {
   String get arabicFus7a => throw _privateConstructorUsedError;
   String get fullDefinition => throw _privateConstructorUsedError;
   String? get fus7aShort => throw _privateConstructorUsedError;
+  String? get searchKey => throw _privateConstructorUsedError;
+  String? get partOfSpeech => throw _privateConstructorUsedError;
+  String? get thematicCategory => throw _privateConstructorUsedError;
+  bool get isArchaic => throw _privateConstructorUsedError;
+  List<String>? get pronunciationNotes => throw _privateConstructorUsedError;
+  List<String>? get proverbRecord => throw _privateConstructorUsedError;
+  String? get culturalNote => throw _privateConstructorUsedError;
   List<String>? get aliases => throw _privateConstructorUsedError;
   List<ExamplePair>? get examples => throw _privateConstructorUsedError;
 
@@ -218,6 +225,13 @@ abstract class $WordEntryCopyWith<$Res> {
       String arabicFus7a,
       String fullDefinition,
       String? fus7aShort,
+      String? searchKey,
+      String? partOfSpeech,
+      String? thematicCategory,
+      bool isArchaic,
+      List<String>? pronunciationNotes,
+      List<String>? proverbRecord,
+      String? culturalNote,
       List<String>? aliases,
       List<ExamplePair>? examples});
 }
@@ -242,6 +256,13 @@ class _$WordEntryCopyWithImpl<$Res, $Val extends WordEntry>
     Object? arabicFus7a = null,
     Object? fullDefinition = null,
     Object? fus7aShort = freezed,
+    Object? searchKey = freezed,
+    Object? partOfSpeech = freezed,
+    Object? thematicCategory = freezed,
+    Object? isArchaic = null,
+    Object? pronunciationNotes = freezed,
+    Object? proverbRecord = freezed,
+    Object? culturalNote = freezed,
     Object? aliases = freezed,
     Object? examples = freezed,
   }) {
@@ -265,6 +286,34 @@ class _$WordEntryCopyWithImpl<$Res, $Val extends WordEntry>
       fus7aShort: freezed == fus7aShort
           ? _value.fus7aShort
           : fus7aShort // ignore: cast_nullable_to_non_nullable
+              as String?,
+      searchKey: freezed == searchKey
+          ? _value.searchKey
+          : searchKey // ignore: cast_nullable_to_non_nullable
+              as String?,
+      partOfSpeech: freezed == partOfSpeech
+          ? _value.partOfSpeech
+          : partOfSpeech // ignore: cast_nullable_to_non_nullable
+              as String?,
+      thematicCategory: freezed == thematicCategory
+          ? _value.thematicCategory
+          : thematicCategory // ignore: cast_nullable_to_non_nullable
+              as String?,
+      isArchaic: null == isArchaic
+          ? _value.isArchaic
+          : isArchaic // ignore: cast_nullable_to_non_nullable
+              as bool,
+      pronunciationNotes: freezed == pronunciationNotes
+          ? _value.pronunciationNotes
+          : pronunciationNotes // ignore: cast_nullable_to_non_nullable
+              as List<String>?,
+      proverbRecord: freezed == proverbRecord
+          ? _value.proverbRecord
+          : proverbRecord // ignore: cast_nullable_to_non_nullable
+              as List<String>?,
+      culturalNote: freezed == culturalNote
+          ? _value.culturalNote
+          : culturalNote // ignore: cast_nullable_to_non_nullable
               as String?,
       aliases: freezed == aliases
           ? _value.aliases
@@ -292,6 +341,13 @@ abstract class _$$WordEntryImplCopyWith<$Res>
       String arabicFus7a,
       String fullDefinition,
       String? fus7aShort,
+      String? searchKey,
+      String? partOfSpeech,
+      String? thematicCategory,
+      bool isArchaic,
+      List<String>? pronunciationNotes,
+      List<String>? proverbRecord,
+      String? culturalNote,
       List<String>? aliases,
       List<ExamplePair>? examples});
 }
@@ -314,6 +370,13 @@ class __$$WordEntryImplCopyWithImpl<$Res>
     Object? arabicFus7a = null,
     Object? fullDefinition = null,
     Object? fus7aShort = freezed,
+    Object? searchKey = freezed,
+    Object? partOfSpeech = freezed,
+    Object? thematicCategory = freezed,
+    Object? isArchaic = null,
+    Object? pronunciationNotes = freezed,
+    Object? proverbRecord = freezed,
+    Object? culturalNote = freezed,
     Object? aliases = freezed,
     Object? examples = freezed,
   }) {
@@ -338,6 +401,34 @@ class __$$WordEntryImplCopyWithImpl<$Res>
           ? _value.fus7aShort
           : fus7aShort // ignore: cast_nullable_to_non_nullable
               as String?,
+      searchKey: freezed == searchKey
+          ? _value.searchKey
+          : searchKey // ignore: cast_nullable_to_non_nullable
+              as String?,
+      partOfSpeech: freezed == partOfSpeech
+          ? _value.partOfSpeech
+          : partOfSpeech // ignore: cast_nullable_to_non_nullable
+              as String?,
+      thematicCategory: freezed == thematicCategory
+          ? _value.thematicCategory
+          : thematicCategory // ignore: cast_nullable_to_non_nullable
+              as String?,
+      isArchaic: null == isArchaic
+          ? _value.isArchaic
+          : isArchaic // ignore: cast_nullable_to_non_nullable
+              as bool,
+      pronunciationNotes: freezed == pronunciationNotes
+          ? _value._pronunciationNotes
+          : pronunciationNotes // ignore: cast_nullable_to_non_nullable
+              as List<String>?,
+      proverbRecord: freezed == proverbRecord
+          ? _value._proverbRecord
+          : proverbRecord // ignore: cast_nullable_to_non_nullable
+              as List<String>?,
+      culturalNote: freezed == culturalNote
+          ? _value.culturalNote
+          : culturalNote // ignore: cast_nullable_to_non_nullable
+              as String?,
       aliases: freezed == aliases
           ? _value._aliases
           : aliases // ignore: cast_nullable_to_non_nullable
@@ -360,9 +451,18 @@ class _$WordEntryImpl implements _WordEntry {
       this.arabicFus7a = '',
       this.fullDefinition = '',
       this.fus7aShort,
+      this.searchKey,
+      this.partOfSpeech,
+      this.thematicCategory,
+      this.isArchaic = false,
+      final List<String>? pronunciationNotes,
+      final List<String>? proverbRecord,
+      this.culturalNote,
       final List<String>? aliases,
       final List<ExamplePair>? examples})
-      : _aliases = aliases,
+      : _pronunciationNotes = pronunciationNotes,
+        _proverbRecord = proverbRecord,
+        _aliases = aliases,
         _examples = examples;
 
   factory _$WordEntryImpl.fromJson(Map<String, dynamic> json) =>
@@ -382,6 +482,38 @@ class _$WordEntryImpl implements _WordEntry {
   final String fullDefinition;
   @override
   final String? fus7aShort;
+  @override
+  final String? searchKey;
+  @override
+  final String? partOfSpeech;
+  @override
+  final String? thematicCategory;
+  @override
+  @JsonKey()
+  final bool isArchaic;
+  final List<String>? _pronunciationNotes;
+  @override
+  List<String>? get pronunciationNotes {
+    final value = _pronunciationNotes;
+    if (value == null) return null;
+    if (_pronunciationNotes is EqualUnmodifiableListView)
+      return _pronunciationNotes;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(value);
+  }
+
+  final List<String>? _proverbRecord;
+  @override
+  List<String>? get proverbRecord {
+    final value = _proverbRecord;
+    if (value == null) return null;
+    if (_proverbRecord is EqualUnmodifiableListView) return _proverbRecord;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(value);
+  }
+
+  @override
+  final String? culturalNote;
   final List<String>? _aliases;
   @override
   List<String>? get aliases {
@@ -404,7 +536,7 @@ class _$WordEntryImpl implements _WordEntry {
 
   @override
   String toString() {
-    return 'WordEntry(id: $id, hadramiWord: $hadramiWord, arabicFus7a: $arabicFus7a, fullDefinition: $fullDefinition, fus7aShort: $fus7aShort, aliases: $aliases, examples: $examples)';
+    return 'WordEntry(id: $id, hadramiWord: $hadramiWord, arabicFus7a: $arabicFus7a, fullDefinition: $fullDefinition, fus7aShort: $fus7aShort, searchKey: $searchKey, partOfSpeech: $partOfSpeech, thematicCategory: $thematicCategory, isArchaic: $isArchaic, pronunciationNotes: $pronunciationNotes, proverbRecord: $proverbRecord, culturalNote: $culturalNote, aliases: $aliases, examples: $examples)';
   }
 
   @override
@@ -421,6 +553,20 @@ class _$WordEntryImpl implements _WordEntry {
                 other.fullDefinition == fullDefinition) &&
             (identical(other.fus7aShort, fus7aShort) ||
                 other.fus7aShort == fus7aShort) &&
+            (identical(other.searchKey, searchKey) ||
+                other.searchKey == searchKey) &&
+            (identical(other.partOfSpeech, partOfSpeech) ||
+                other.partOfSpeech == partOfSpeech) &&
+            (identical(other.thematicCategory, thematicCategory) ||
+                other.thematicCategory == thematicCategory) &&
+            (identical(other.isArchaic, isArchaic) ||
+                other.isArchaic == isArchaic) &&
+            const DeepCollectionEquality()
+                .equals(other._pronunciationNotes, _pronunciationNotes) &&
+            const DeepCollectionEquality()
+                .equals(other._proverbRecord, _proverbRecord) &&
+            (identical(other.culturalNote, culturalNote) ||
+                other.culturalNote == culturalNote) &&
             const DeepCollectionEquality().equals(other._aliases, _aliases) &&
             const DeepCollectionEquality().equals(other._examples, _examples));
   }
@@ -434,6 +580,13 @@ class _$WordEntryImpl implements _WordEntry {
       arabicFus7a,
       fullDefinition,
       fus7aShort,
+      searchKey,
+      partOfSpeech,
+      thematicCategory,
+      isArchaic,
+      const DeepCollectionEquality().hash(_pronunciationNotes),
+      const DeepCollectionEquality().hash(_proverbRecord),
+      culturalNote,
       const DeepCollectionEquality().hash(_aliases),
       const DeepCollectionEquality().hash(_examples));
 
@@ -460,6 +613,13 @@ abstract class _WordEntry implements WordEntry {
       final String arabicFus7a,
       final String fullDefinition,
       final String? fus7aShort,
+      final String? searchKey,
+      final String? partOfSpeech,
+      final String? thematicCategory,
+      final bool isArchaic,
+      final List<String>? pronunciationNotes,
+      final List<String>? proverbRecord,
+      final String? culturalNote,
       final List<String>? aliases,
       final List<ExamplePair>? examples}) = _$WordEntryImpl;
 
@@ -476,6 +636,20 @@ abstract class _WordEntry implements WordEntry {
   String get fullDefinition;
   @override
   String? get fus7aShort;
+  @override
+  String? get searchKey;
+  @override
+  String? get partOfSpeech;
+  @override
+  String? get thematicCategory;
+  @override
+  bool get isArchaic;
+  @override
+  List<String>? get pronunciationNotes;
+  @override
+  List<String>? get proverbRecord;
+  @override
+  String? get culturalNote;
   @override
   List<String>? get aliases;
   @override
@@ -1646,6 +1820,10 @@ mixin _$AppStats {
   int get translated => throw _privateConstructorUsedError;
   int get pending => throw _privateConstructorUsedError;
   double get completionPercent => throw _privateConstructorUsedError;
+  Map<String, int> get byPartOfSpeech => throw _privateConstructorUsedError;
+  Map<String, int> get byThematicCategory => throw _privateConstructorUsedError;
+  int get archaicWords => throw _privateConstructorUsedError;
+  int get totalProverbs => throw _privateConstructorUsedError;
 
   /// Serializes this AppStats to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -1663,7 +1841,14 @@ abstract class $AppStatsCopyWith<$Res> {
       _$AppStatsCopyWithImpl<$Res, AppStats>;
   @useResult
   $Res call(
-      {int totalWords, int translated, int pending, double completionPercent});
+      {int totalWords,
+      int translated,
+      int pending,
+      double completionPercent,
+      Map<String, int> byPartOfSpeech,
+      Map<String, int> byThematicCategory,
+      int archaicWords,
+      int totalProverbs});
 }
 
 /// @nodoc
@@ -1685,6 +1870,10 @@ class _$AppStatsCopyWithImpl<$Res, $Val extends AppStats>
     Object? translated = null,
     Object? pending = null,
     Object? completionPercent = null,
+    Object? byPartOfSpeech = null,
+    Object? byThematicCategory = null,
+    Object? archaicWords = null,
+    Object? totalProverbs = null,
   }) {
     return _then(_value.copyWith(
       totalWords: null == totalWords
@@ -1703,6 +1892,22 @@ class _$AppStatsCopyWithImpl<$Res, $Val extends AppStats>
           ? _value.completionPercent
           : completionPercent // ignore: cast_nullable_to_non_nullable
               as double,
+      byPartOfSpeech: null == byPartOfSpeech
+          ? _value.byPartOfSpeech
+          : byPartOfSpeech // ignore: cast_nullable_to_non_nullable
+              as Map<String, int>,
+      byThematicCategory: null == byThematicCategory
+          ? _value.byThematicCategory
+          : byThematicCategory // ignore: cast_nullable_to_non_nullable
+              as Map<String, int>,
+      archaicWords: null == archaicWords
+          ? _value.archaicWords
+          : archaicWords // ignore: cast_nullable_to_non_nullable
+              as int,
+      totalProverbs: null == totalProverbs
+          ? _value.totalProverbs
+          : totalProverbs // ignore: cast_nullable_to_non_nullable
+              as int,
     ) as $Val);
   }
 }
@@ -1716,7 +1921,14 @@ abstract class _$$AppStatsImplCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {int totalWords, int translated, int pending, double completionPercent});
+      {int totalWords,
+      int translated,
+      int pending,
+      double completionPercent,
+      Map<String, int> byPartOfSpeech,
+      Map<String, int> byThematicCategory,
+      int archaicWords,
+      int totalProverbs});
 }
 
 /// @nodoc
@@ -1736,6 +1948,10 @@ class __$$AppStatsImplCopyWithImpl<$Res>
     Object? translated = null,
     Object? pending = null,
     Object? completionPercent = null,
+    Object? byPartOfSpeech = null,
+    Object? byThematicCategory = null,
+    Object? archaicWords = null,
+    Object? totalProverbs = null,
   }) {
     return _then(_$AppStatsImpl(
       totalWords: null == totalWords
@@ -1754,6 +1970,22 @@ class __$$AppStatsImplCopyWithImpl<$Res>
           ? _value.completionPercent
           : completionPercent // ignore: cast_nullable_to_non_nullable
               as double,
+      byPartOfSpeech: null == byPartOfSpeech
+          ? _value._byPartOfSpeech
+          : byPartOfSpeech // ignore: cast_nullable_to_non_nullable
+              as Map<String, int>,
+      byThematicCategory: null == byThematicCategory
+          ? _value._byThematicCategory
+          : byThematicCategory // ignore: cast_nullable_to_non_nullable
+              as Map<String, int>,
+      archaicWords: null == archaicWords
+          ? _value.archaicWords
+          : archaicWords // ignore: cast_nullable_to_non_nullable
+              as int,
+      totalProverbs: null == totalProverbs
+          ? _value.totalProverbs
+          : totalProverbs // ignore: cast_nullable_to_non_nullable
+              as int,
     ));
   }
 }
@@ -1766,7 +1998,13 @@ class _$AppStatsImpl implements _AppStats {
       {this.totalWords = 0,
       this.translated = 0,
       this.pending = 0,
-      this.completionPercent = 0.0});
+      this.completionPercent = 0.0,
+      final Map<String, int> byPartOfSpeech = const <String, int>{},
+      final Map<String, int> byThematicCategory = const <String, int>{},
+      this.archaicWords = 0,
+      this.totalProverbs = 0})
+      : _byPartOfSpeech = byPartOfSpeech,
+        _byThematicCategory = byThematicCategory;
 
   factory _$AppStatsImpl.fromJson(Map<String, dynamic> json) =>
       _$$AppStatsImplFromJson(json);
@@ -1783,10 +2021,35 @@ class _$AppStatsImpl implements _AppStats {
   @override
   @JsonKey()
   final double completionPercent;
+  final Map<String, int> _byPartOfSpeech;
+  @override
+  @JsonKey()
+  Map<String, int> get byPartOfSpeech {
+    if (_byPartOfSpeech is EqualUnmodifiableMapView) return _byPartOfSpeech;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableMapView(_byPartOfSpeech);
+  }
+
+  final Map<String, int> _byThematicCategory;
+  @override
+  @JsonKey()
+  Map<String, int> get byThematicCategory {
+    if (_byThematicCategory is EqualUnmodifiableMapView)
+      return _byThematicCategory;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableMapView(_byThematicCategory);
+  }
+
+  @override
+  @JsonKey()
+  final int archaicWords;
+  @override
+  @JsonKey()
+  final int totalProverbs;
 
   @override
   String toString() {
-    return 'AppStats(totalWords: $totalWords, translated: $translated, pending: $pending, completionPercent: $completionPercent)';
+    return 'AppStats(totalWords: $totalWords, translated: $translated, pending: $pending, completionPercent: $completionPercent, byPartOfSpeech: $byPartOfSpeech, byThematicCategory: $byThematicCategory, archaicWords: $archaicWords, totalProverbs: $totalProverbs)';
   }
 
   @override
@@ -1800,13 +2063,29 @@ class _$AppStatsImpl implements _AppStats {
                 other.translated == translated) &&
             (identical(other.pending, pending) || other.pending == pending) &&
             (identical(other.completionPercent, completionPercent) ||
-                other.completionPercent == completionPercent));
+                other.completionPercent == completionPercent) &&
+            const DeepCollectionEquality()
+                .equals(other._byPartOfSpeech, _byPartOfSpeech) &&
+            const DeepCollectionEquality()
+                .equals(other._byThematicCategory, _byThematicCategory) &&
+            (identical(other.archaicWords, archaicWords) ||
+                other.archaicWords == archaicWords) &&
+            (identical(other.totalProverbs, totalProverbs) ||
+                other.totalProverbs == totalProverbs));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(
-      runtimeType, totalWords, translated, pending, completionPercent);
+      runtimeType,
+      totalWords,
+      translated,
+      pending,
+      completionPercent,
+      const DeepCollectionEquality().hash(_byPartOfSpeech),
+      const DeepCollectionEquality().hash(_byThematicCategory),
+      archaicWords,
+      totalProverbs);
 
   /// Create a copy of AppStats
   /// with the given fields replaced by the non-null parameter values.
@@ -1829,7 +2108,11 @@ abstract class _AppStats implements AppStats {
       {final int totalWords,
       final int translated,
       final int pending,
-      final double completionPercent}) = _$AppStatsImpl;
+      final double completionPercent,
+      final Map<String, int> byPartOfSpeech,
+      final Map<String, int> byThematicCategory,
+      final int archaicWords,
+      final int totalProverbs}) = _$AppStatsImpl;
 
   factory _AppStats.fromJson(Map<String, dynamic> json) =
       _$AppStatsImpl.fromJson;
@@ -1842,6 +2125,14 @@ abstract class _AppStats implements AppStats {
   int get pending;
   @override
   double get completionPercent;
+  @override
+  Map<String, int> get byPartOfSpeech;
+  @override
+  Map<String, int> get byThematicCategory;
+  @override
+  int get archaicWords;
+  @override
+  int get totalProverbs;
 
   /// Create a copy of AppStats
   /// with the given fields replaced by the non-null parameter values.

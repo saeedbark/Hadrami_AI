@@ -72,19 +72,41 @@ def get_sections() -> dict[str, Any]:
 def get_stats() -> dict[str, Any]:
     total = len(ENTRIES)
     with_fus7a = sum(1 for entry in ENTRIES if entry.get("arabic_fus7a", "").strip())
+
+    pos_counts: dict[str, int] = {}
+    theme_counts: dict[str, int] = {}
+    archaic_count = 0
+    proverb_count = 0
+    for entry in ENTRIES:
+        pos = entry.get("part_of_speech", "Unknown")
+        pos_counts[pos] = pos_counts.get(pos, 0) + 1
+        theme = entry.get("thematic_category", "Unknown")
+        theme_counts[theme] = theme_counts.get(theme, 0) + 1
+        if entry.get("is_archaic"):
+            archaic_count += 1
+        if entry.get("proverb_record"):
+            proverb_count += len(entry["proverb_record"])
+
     return {
         "total_words": total,
         "translated": with_fus7a,
         "pending": total - with_fus7a,
         "completion_percent": round(with_fus7a / total * 100, 1) if total else 0,
+        "by_part_of_speech": pos_counts,
+        "by_thematic_category": theme_counts,
+        "archaic_words": archaic_count,
+        "total_proverbs": proverb_count,
     }
 
 
 def translate(query: str) -> TranslateResponse:
     clean_query = query.strip()
+    norm_query = _normalize_alef(clean_query)
 
     for entry in ENTRIES:
-        if entry["hadrami_word"].strip() == clean_query:
+        word = entry["hadrami_word"].strip()
+        search_key = entry.get("search_key", "")
+        if word == clean_query or search_key == norm_query:
             return TranslateResponse(
                 found=True,
                 hadrami_word=entry["hadrami_word"],
@@ -95,7 +117,8 @@ def translate(query: str) -> TranslateResponse:
 
     for entry in ENTRIES:
         word = entry["hadrami_word"].strip()
-        if clean_query in word or word in clean_query:
+        search_key = entry.get("search_key", "")
+        if clean_query in word or word in clean_query or norm_query in search_key:
             return TranslateResponse(
                 found=True,
                 hadrami_word=entry["hadrami_word"],
@@ -123,19 +146,27 @@ def translate(query: str) -> TranslateResponse:
     )
 
 
+def _normalize_alef(text: str) -> str:
+    for c in ("أ", "إ", "آ"):
+        text = text.replace(c, "ا")
+    return text
+
+
 def search(query: str, limit: int) -> dict[str, Any]:
     clean_query = query.strip()
+    norm_query = _normalize_alef(clean_query)
     scored: list[tuple[int, dict[str, Any]]] = []
 
     for entry in ENTRIES:
         score = 0
         word = entry["hadrami_word"]
+        search_key = entry.get("search_key", "")
         fus7a = entry.get("arabic_fus7a", "")
         definition = entry.get("full_definition", "")
 
-        if word == clean_query:
+        if word == clean_query or search_key == norm_query:
             score = 100
-        elif clean_query in word:
+        elif clean_query in word or norm_query in search_key:
             score = 80
         elif word in clean_query:
             score = 70
@@ -252,10 +283,23 @@ def get_word(word_id: int) -> Optional[dict[str, Any]]:
     return None
 
 
-def list_words(page: int, size: int, letter: Optional[str] = None) -> dict[str, Any]:
+def list_words(
+    page: int,
+    size: int,
+    letter: Optional[str] = None,
+    pos: Optional[str] = None,
+    category: Optional[str] = None,
+    archaic: Optional[bool] = None,
+) -> dict[str, Any]:
     filtered = ENTRIES
     if letter:
-        filtered = [entry for entry in ENTRIES if entry["hadrami_word"].strip().startswith(letter)]
+        filtered = [e for e in filtered if e["hadrami_word"].strip().startswith(letter)]
+    if pos:
+        filtered = [e for e in filtered if e.get("part_of_speech") == pos]
+    if category:
+        filtered = [e for e in filtered if e.get("thematic_category") == category]
+    if archaic is not None:
+        filtered = [e for e in filtered if e.get("is_archaic") == archaic]
 
     start = (page - 1) * size
     end = start + size

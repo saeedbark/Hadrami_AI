@@ -85,12 +85,18 @@ class ApiService {
     int page = 1,
     int size = ApiConfig.defaultPageSize,
     String? letter,
+    String? pos,
+    String? category,
+    bool? archaic,
   }) async {
     try {
       final params = <String, String>{
         'page': '$page',
         'size': '$size',
         if (letter != null) 'letter': letter,
+        if (pos != null) 'pos': pos,
+        if (category != null) 'category': category,
+        if (archaic != null) 'archaic': '$archaic',
       };
       final data = await _getJson('/words', queryParameters: params);
       return SearchResult.fromJson(data);

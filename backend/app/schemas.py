@@ -17,6 +17,13 @@ class Entry(BaseModel):
     arabic_fus7a: str
     full_definition: str
     fus7a_short: Optional[str] = None
+    search_key: Optional[str] = None
+    part_of_speech: Optional[str] = None
+    thematic_category: Optional[str] = None
+    is_archaic: bool = False
+    pronunciation_notes: Optional[list[str]] = None
+    proverb_record: Optional[list[str]] = None
+    cultural_note: Optional[str] = None
     aliases: Optional[list[str]] = None
     examples: Optional[list[ExamplePair]] = None
 
