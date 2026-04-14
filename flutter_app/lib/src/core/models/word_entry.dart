@@ -73,6 +73,8 @@ class AskResult with _$AskResult {
     @Default('') String question,
     @Default('') String answer,
     @Default('simple') String mode,
+    @Default(<HadramiSpan>[]) List<HadramiSpan> hadramiSpans,
+    @Default(<String>[]) List<String> highlightSurfaces,
     @Default(<Map<String, dynamic>>[])
     List<Map<String, dynamic>> context,
   }) = _AskResult;

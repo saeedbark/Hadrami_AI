@@ -30,11 +30,13 @@ dart run build_runner build --delete-conflicting-outputs
 
 ### API Configuration
 
-The backend URL defaults to `http://localhost:8000`. Override at build time:
+The backend URL defaults to the **deployed API** (`https://hadrami-ai.vercel.app/`).
+Override at build time to use a local or different backend:
 
 ```bash
-flutter run --dart-define=API_BASE_URL=http://10.0.2.2:8000  # Android emulator
-flutter run --dart-define=API_BASE_URL=http://192.168.1.x:8000  # Physical device
+flutter run --dart-define=API_BASE_URL=http://localhost:8000          # Local backend
+flutter run --dart-define=API_BASE_URL=http://10.0.2.2:8000           # Android emulator → host
+flutter run --dart-define=API_BASE_URL=http://192.168.1.x:8000        # Physical device on LAN
 ```
 
 Configured in `lib/src/configs/api_config.dart`.
@@ -56,15 +58,18 @@ lib/
     │
     ├── core/                  ← Shared infrastructure
     │   ├── models/
-    │   │   └── word_entry.dart        ← All data models (freezed)
+    │   │   ├── word_entry.dart        ← All data models (freezed)
+    │   │   └── lexicon_section.dart   ← Letter section model
     │   ├── services/
     │   │   └── api_service.dart       ← HTTP client for all API calls
     │   ├── providers/
     │   │   └── theme_provider.dart    ← Theme persistence (shared_preferences)
     │   ├── routing/
     │   │   └── router.dart            ← go_router with StatefulShellRoute
-    │   └── theme/
-    │       └── theme.dart             ← Material 3 light/dark themes
+    │   ├── theme/
+    │   │   └── theme.dart             ← Material 3 light/dark themes
+    │   └── utils/
+    │       └── hadrami_lexicon_spans.dart  ← Highlighted span utilities
     │
     ├── widgets/               ← Shared UI components
     │   ├── app_card.dart              ← Styled card wrapper
@@ -131,7 +136,7 @@ All models are defined in `core/models/word_entry.dart`:
 | 3 | Dictionary | `/dictionary` | Paginated list + Arabic letter filter chips |
 | 4 | Favorites | `/favorites` | Locally saved words (shared_preferences) |
 | 5 | Ask | `/ask` | AI Q&A with copy button and source mode |
-| 6 | Phrases | `/phrases` | Bidirectional phrase translation |
+| 6 | Phrases | `/phrase-translate` | Bidirectional phrase translation |
 | 7 | Settings | `/settings` | Backend test, theme selector, version info |
 
 ---

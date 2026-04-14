@@ -1094,6 +1094,8 @@ mixin _$AskResult {
   String get question => throw _privateConstructorUsedError;
   String get answer => throw _privateConstructorUsedError;
   String get mode => throw _privateConstructorUsedError;
+  List<HadramiSpan> get hadramiSpans => throw _privateConstructorUsedError;
+  List<String> get highlightSurfaces => throw _privateConstructorUsedError;
   List<Map<String, dynamic>> get context => throw _privateConstructorUsedError;
 
   /// Serializes this AskResult to a JSON map.
@@ -1115,6 +1117,8 @@ abstract class $AskResultCopyWith<$Res> {
       {String question,
       String answer,
       String mode,
+      List<HadramiSpan> hadramiSpans,
+      List<String> highlightSurfaces,
       List<Map<String, dynamic>> context});
 }
 
@@ -1136,6 +1140,8 @@ class _$AskResultCopyWithImpl<$Res, $Val extends AskResult>
     Object? question = null,
     Object? answer = null,
     Object? mode = null,
+    Object? hadramiSpans = null,
+    Object? highlightSurfaces = null,
     Object? context = null,
   }) {
     return _then(_value.copyWith(
@@ -1151,6 +1157,14 @@ class _$AskResultCopyWithImpl<$Res, $Val extends AskResult>
           ? _value.mode
           : mode // ignore: cast_nullable_to_non_nullable
               as String,
+      hadramiSpans: null == hadramiSpans
+          ? _value.hadramiSpans
+          : hadramiSpans // ignore: cast_nullable_to_non_nullable
+              as List<HadramiSpan>,
+      highlightSurfaces: null == highlightSurfaces
+          ? _value.highlightSurfaces
+          : highlightSurfaces // ignore: cast_nullable_to_non_nullable
+              as List<String>,
       context: null == context
           ? _value.context
           : context // ignore: cast_nullable_to_non_nullable
@@ -1171,6 +1185,8 @@ abstract class _$$AskResultImplCopyWith<$Res>
       {String question,
       String answer,
       String mode,
+      List<HadramiSpan> hadramiSpans,
+      List<String> highlightSurfaces,
       List<Map<String, dynamic>> context});
 }
 
@@ -1190,6 +1206,8 @@ class __$$AskResultImplCopyWithImpl<$Res>
     Object? question = null,
     Object? answer = null,
     Object? mode = null,
+    Object? hadramiSpans = null,
+    Object? highlightSurfaces = null,
     Object? context = null,
   }) {
     return _then(_$AskResultImpl(
@@ -1205,6 +1223,14 @@ class __$$AskResultImplCopyWithImpl<$Res>
           ? _value.mode
           : mode // ignore: cast_nullable_to_non_nullable
               as String,
+      hadramiSpans: null == hadramiSpans
+          ? _value._hadramiSpans
+          : hadramiSpans // ignore: cast_nullable_to_non_nullable
+              as List<HadramiSpan>,
+      highlightSurfaces: null == highlightSurfaces
+          ? _value._highlightSurfaces
+          : highlightSurfaces // ignore: cast_nullable_to_non_nullable
+              as List<String>,
       context: null == context
           ? _value._context
           : context // ignore: cast_nullable_to_non_nullable
@@ -1221,9 +1247,13 @@ class _$AskResultImpl implements _AskResult {
       {this.question = '',
       this.answer = '',
       this.mode = 'simple',
+      final List<HadramiSpan> hadramiSpans = const <HadramiSpan>[],
+      final List<String> highlightSurfaces = const <String>[],
       final List<Map<String, dynamic>> context =
           const <Map<String, dynamic>>[]})
-      : _context = context;
+      : _hadramiSpans = hadramiSpans,
+        _highlightSurfaces = highlightSurfaces,
+        _context = context;
 
   factory _$AskResultImpl.fromJson(Map<String, dynamic> json) =>
       _$$AskResultImplFromJson(json);
@@ -1237,6 +1267,25 @@ class _$AskResultImpl implements _AskResult {
   @override
   @JsonKey()
   final String mode;
+  final List<HadramiSpan> _hadramiSpans;
+  @override
+  @JsonKey()
+  List<HadramiSpan> get hadramiSpans {
+    if (_hadramiSpans is EqualUnmodifiableListView) return _hadramiSpans;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_hadramiSpans);
+  }
+
+  final List<String> _highlightSurfaces;
+  @override
+  @JsonKey()
+  List<String> get highlightSurfaces {
+    if (_highlightSurfaces is EqualUnmodifiableListView)
+      return _highlightSurfaces;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_highlightSurfaces);
+  }
+
   final List<Map<String, dynamic>> _context;
   @override
   @JsonKey()
@@ -1248,7 +1297,7 @@ class _$AskResultImpl implements _AskResult {
 
   @override
   String toString() {
-    return 'AskResult(question: $question, answer: $answer, mode: $mode, context: $context)';
+    return 'AskResult(question: $question, answer: $answer, mode: $mode, hadramiSpans: $hadramiSpans, highlightSurfaces: $highlightSurfaces, context: $context)';
   }
 
   @override
@@ -1260,12 +1309,22 @@ class _$AskResultImpl implements _AskResult {
                 other.question == question) &&
             (identical(other.answer, answer) || other.answer == answer) &&
             (identical(other.mode, mode) || other.mode == mode) &&
+            const DeepCollectionEquality()
+                .equals(other._hadramiSpans, _hadramiSpans) &&
+            const DeepCollectionEquality()
+                .equals(other._highlightSurfaces, _highlightSurfaces) &&
             const DeepCollectionEquality().equals(other._context, _context));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, question, answer, mode,
+  int get hashCode => Object.hash(
+      runtimeType,
+      question,
+      answer,
+      mode,
+      const DeepCollectionEquality().hash(_hadramiSpans),
+      const DeepCollectionEquality().hash(_highlightSurfaces),
       const DeepCollectionEquality().hash(_context));
 
   /// Create a copy of AskResult
@@ -1289,6 +1348,8 @@ abstract class _AskResult implements AskResult {
       {final String question,
       final String answer,
       final String mode,
+      final List<HadramiSpan> hadramiSpans,
+      final List<String> highlightSurfaces,
       final List<Map<String, dynamic>> context}) = _$AskResultImpl;
 
   factory _AskResult.fromJson(Map<String, dynamic> json) =
@@ -1300,6 +1361,10 @@ abstract class _AskResult implements AskResult {
   String get answer;
   @override
   String get mode;
+  @override
+  List<HadramiSpan> get hadramiSpans;
+  @override
+  List<String> get highlightSurfaces;
   @override
   List<Map<String, dynamic>> get context;
 

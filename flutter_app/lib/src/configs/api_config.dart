@@ -8,7 +8,7 @@ class ApiConfig {
 
   static const String baseUrl = String.fromEnvironment(
     'API_BASE_URL',
-    defaultValue: 'https://hadrami-ai.vercel.app/',
+    defaultValue: 'http://localhost:8000',
   );
 
   static const Duration defaultTimeout = Duration(seconds: 30);

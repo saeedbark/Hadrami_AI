@@ -1,14 +1,26 @@
+import json
 from enum import Enum
-from typing import Optional
+from typing import Any, Optional
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, field_validator
 
-from .core.config import PHRASE_TRANSLATE_MAX_CHARS
+from .core.config import ASK_MAX_CHARS, PHRASE_TRANSLATE_MAX_CHARS
 
 
 class ExamplePair(BaseModel):
     hadrami: str = ""
     fusha: str = ""
+
+
+def _parse_json_list(v: Any) -> Any:
+    """Coerce a JSON-encoded string to a list; leave lists/None untouched."""
+    if isinstance(v, str):
+        try:
+            parsed = json.loads(v)
+            return parsed if isinstance(parsed, list) else None
+        except (json.JSONDecodeError, ValueError):
+            return None
+    return v
 
 
 class Entry(BaseModel):
@@ -26,6 +38,16 @@ class Entry(BaseModel):
     cultural_note: Optional[str] = None
     aliases: Optional[list[str]] = None
     examples: Optional[list[ExamplePair]] = None
+
+    @field_validator("proverb_record", "aliases", "pronunciation_notes", mode="before")
+    @classmethod
+    def coerce_str_to_list(cls, v: Any) -> Any:
+        return _parse_json_list(v)
+
+    @field_validator("examples", mode="before")
+    @classmethod
+    def coerce_examples_str(cls, v: Any) -> Any:
+        return _parse_json_list(v)
 
 
 class TranslateResponse(BaseModel):
@@ -85,6 +107,21 @@ class HadramiSpan(BaseModel):
     start: int
     end: int
     surface: str = ""
+
+
+class AskResponse(BaseModel):
+    question: str
+    answer: str
+    mode: str
+    hadrami_spans: list[HadramiSpan] = Field(default_factory=list)
+    highlight_surfaces: list[str] = Field(default_factory=list)
+    context: list[Entry] = Field(default_factory=list)
+
+
+class AskRequest(BaseModel):
+    """POST body for /ask — keeps long questions out of the query string."""
+
+    q: str = Field(..., min_length=1, max_length=ASK_MAX_CHARS)
 
 
 class TranslatePhraseResponse(BaseModel):

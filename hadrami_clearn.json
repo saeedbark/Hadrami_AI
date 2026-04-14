@@ -1,0 +1,466 @@
+[
+    {
+      "id": 1,
+      "word_vocalized": "أُمّ حُبَيْل",
+      "word_clean": "ام حبيل",
+      "root": "حبل",
+      "pos": "Noun",
+      "fusha_equivalent": "العنكبوت",
+      "definition": "اسم يطلقه الحضارم على حشرة العنكبوت.",
+      "region": "General",
+      "synonyms": ["عنكبوت"],
+      "phonetic_variants": [],
+      "note": "",
+      "source": "قاموس اللهجة الحضرمية - فهد بن هلابي - ص 7",
+      "examples": [
+        {"h": "", "f": "انظر، العنكبوت بنت بيتها في الزاوية."},
+        {"h": "ميل أم حبيل من السقف.", "f": "أزل العنكبوت من السقف."}
+      ],
+      "proverbs": [],
+      "tags": ["Nature", "Insects"]
+    },
+    {
+      "id": 2,
+      "word_vocalized": "إبِطْ",
+      "word_clean": "ابط",
+      "root": "بطأ",
+      "pos": "Noun",
+      "fusha_equivalent": "التباطؤ والتريث",
+      "definition": "التأني وعدم الاستعجال في الأمر، ويستخدم غالباً في سياق الحث على الدقة.",
+      "region": "General",
+      "synonyms": ["تأني", "تريث"],
+      "phonetic_variants": [],
+      "note": "",
+      "source": "قاموس اللهجة الحضرمية - فهد بن هلابي - ص 7",
+      "examples": [
+        {"h": "إبط في شغلك تسرع في الإنجاز.", "f": "تأنَّ في عملك تنجزه أسرع (بجودة)."},
+        {"h": "لا تتهور، الإبط خير لك.", "f": "لا تتهور، فالتريث خير لك."}
+      ],
+      "proverbs": ["إبط تسرع", "في التأني السلامة وفي العجلة الندامة"],
+      "tags": ["Behavior", "Wisdom"]
+    },
+    {
+      "id": 4,
+      "word_vocalized": "الأَمَات",
+      "word_clean": "الامات",
+      "root": "أمم",
+      "pos": "Noun",
+      "fusha_equivalent": "المشيمة",
+      "definition": "الغشاء أو الكيس الذي يخرج مع الجنين عند الولادة.",
+      "region": "General",
+      "synonyms": ["خلاص"],
+      "phonetic_variants": [],
+      "note": "",
+      "source": "قاموس اللهجة الحضرمية - فهد بن هلابي - ص 7",
+      "examples": [
+        {"h": "خرجت الأمات بعد الولادة مباشرة.", "f": "خرجت المشيمة بعد الولادة مباشرة."}
+      ],
+      "proverbs": [],
+      "tags": ["Biology", "Medical"]
+    },
+    {
+      "id": 5,
+      "word_vocalized": "أَبُوي",
+      "word_clean": "ابوي",
+      "root": "أبو",
+      "pos": "Noun",
+      "fusha_equivalent": "الأب أو الوالد",
+      "definition": "لفظ يطلق على الأب، والواو ضرورية في نطقها فلا يقال (أبي)، وللمنادى يقال: أباه أو يابوي.",
+      "region": "General",
+      "synonyms": ["أباه", "يابه", "باه"],
+      "phonetic_variants": [],
+      "note": "تختلف صيغ المنادى حسب المنطقة والقبيلة.",
+      "source": "قاموس اللهجة الحضرمية - فهد بن هلابي - ص 7",
+      "examples": [
+        {"h": "أبوي راح السوق الصبح.", "f": "والدي ذهب إلى السوق في الصباح."},
+        {"h": "يا بوي بغيتك في كلمة.", "f": "يا أبي أريدك في موضوع."}
+      ],
+      "proverbs": [],
+      "tags": ["Social Customs", "Family"]
+    },
+    {
+      "id": 6,
+      "word_vocalized": "أُبّب",
+      "word_clean": "ابب",
+      "root": "أبب",
+      "pos": "Expression",
+      "fusha_equivalent": "تعبير عن التأكد الشديد أو الاندهاش",
+      "definition": "لفظة سماعية تستخدم للتأكيد أو المبالغة أو إظهار الاستغراب والاندهاش.",
+      "region": "General",
+      "synonyms": ["أبببب"],
+      "phonetic_variants": [],
+      "note": "تتكرر الباء حسب درجة المبالغة المطلوبة.",
+      "source": "قاموس اللهجة الحضرمية - فهد بن هلابي - ص 7",
+      "examples": [
+        {"h": "أُبب أنا معاكم وراكم.", "f": "أنا معكم بكل تأكيد."},
+        {"h": "أُببببب شوف هذا الجبل ما أطوله.", "f": "يا للهول، انظر إلى طول هذا الجبل."}
+      ],
+      "proverbs": [],
+      "tags": ["Emotions", "Expressions"]
+    },
+    {
+      "id": 7,
+      "word_vocalized": "أَبَداً",
+      "word_clean": "ابدا",
+      "root": "أبد",
+      "pos": "Expression",
+      "fusha_equivalent": "للنفي القاطع",
+      "definition": "تستخدم للنفي القاطع وتأتي منونة في الغالب.",
+      "region": "General",
+      "synonyms": ["أبد"],
+      "phonetic_variants": [],
+      "note": "البعض ينطقها (أبد) بدون تنوين.",
+      "source": "قاموس اللهجة الحضرمية - فهد بن هلابي - ص 8",
+      "examples": [
+        {"h": "ابدا ما قد خرجت الشارع اليوم.", "f": "لم أخرج إلى الشارع اليوم أبداً."},
+        {"h": "ابدا ما قد حصل كذا.", "f": "لم يحدث مثل هذا الأمر قط."}
+      ],
+      "proverbs": [],
+      "tags": ["Daily Life"]
+    },
+    {
+      "id": 8,
+      "word_vocalized": "أَثَرَه",
+      "word_clean": "اثره",
+      "root": "أثر",
+      "pos": "Expression",
+      "fusha_equivalent": "تبيّن أو اتضح أن..",
+      "definition": "تعبير يستخدم عندما يتبين خلاف ما كان يُظن أو يُتوقع.",
+      "region": "General",
+      "synonyms": ["أتاريه"],
+      "phonetic_variants": [],
+      "note": "",
+      "source": "قاموس اللهجة الحضرمية - فهد بن هلابي - ص 8",
+      "examples": [
+        {"h": "دورت عليه في المكلا أثره سافر.", "f": "بحثت عنه في المكلا واتضح لي أنه سافر."},
+        {"h": "صدقتك أثرك تكذب.", "f": "صدقتك بينما الحقيقة أنك تكذب."}
+      ],
+      "proverbs": [],
+      "tags": ["Daily Life"]
+    },
+    {
+      "id": 9,
+      "word_vocalized": "أَثَّر",
+      "word_clean": "اثر",
+      "root": "أثر",
+      "pos": "Verb",
+      "fusha_equivalent": "ترك أثراً أو نتيجة",
+      "definition": "بمعنى ترك انطباعاً أو علامة، أو تأثر بشخص أو قضية.",
+      "region": "General",
+      "synonyms": [],
+      "phonetic_variants": [],
+      "note": "تأتي بتشديد الثاء.",
+      "source": "قاموس اللهجة الحضرمية - فهد بن هلابي - ص 8",
+      "examples": [
+        {"h": "أثّر عليه صديقه في الدراسة.", "f": "تأثر بصديقه في الدراسة."},
+        {"h": "هذا الولد ما يتأثر فيه الضرب.", "f": "هذا الولد لا تنفع معه وسيلة التأديب الجسدية."}
+      ],
+      "proverbs": [],
+      "tags": ["Daily Life", "Behavior"]
+    },
+    {
+      "id": 10,
+      "word_vocalized": "إِثّم",
+      "word_clean": "اثم",
+      "root": "أثم",
+      "pos": "Noun",
+      "fusha_equivalent": "الفم",
+      "definition": "لفظ يطلق على فم الإنسان في اللهجة الحضرمية.",
+      "region": "General",
+      "synonyms": ["ثمة"],
+      "phonetic_variants": [],
+      "note": "يستخدم أحياناً في سياق ذم كثرة الكلام.",
+      "source": "قاموس اللهجة الحضرمية - فهد بن هلابي - ص 11",
+      "examples": [
+        {"h": "سالمين إثّمه ملاَن بالكلام.", "f": "سالمين لديه رغبة شديدة في الحديث."},
+        {"h": "إثّمه مفتوحة على الناس.", "f": "لسانه منطلق في غيبة الناس."}
+      ],
+      "proverbs": ["إيدي في إثمه وصبعه في عيني"],
+      "tags": ["Biology", "Emotions"]
+    },
+    {
+      "id": 11,
+      "word_vocalized": "أَرْبِيِه",
+      "word_clean": "اربيه",
+      "root": "ربى",
+      "pos": "Noun",
+      "fusha_equivalent": "التهاب غدي في الفخذ",
+      "definition": "تصلبات وآلام عضلية في منطقة الفخذ (بجانب العانة) تصاحبها حمى، تنتج غالباً عن جرح أو حقنة غير صحيحة.",
+      "region": "General",
+      "synonyms": [],
+      "phonetic_variants": [],
+      "note": "",
+      "source": "قاموس اللهجة الحضرمية - فهد بن هلابي - ص 8",
+      "examples": [
+        {"h": "مسكين الولد جت له أربيه من الابره.", "f": "أصيب الولد بالتهاب في الفخذ بسبب الحقنة."}
+      ],
+      "proverbs": [],
+      "tags": ["Medical"]
+    },
+    {
+      "id": 12,
+      "word_vocalized": "أَثَّث",
+      "word_clean": "اثث",
+      "root": "أثث",
+      "pos": "Verb",
+      "fusha_equivalent": "فرش البيت وجهزه",
+      "definition": "تجهيز البيت بالأثاث والمتاع.",
+      "region": "General",
+      "synonyms": ["فرش"],
+      "phonetic_variants": [],
+      "note": "تعتبر لفظة مستحدثة، والمرادف التقليدي هو (فرش).",
+      "source": "قاموس اللهجة الحضرمية - فهد بن هلابي - ص 9",
+      "examples": [
+        {"h": "سعيد أثث بيته الجديد أثاث زين.", "f": "سعيد جهز منزله الجديد بأثاث فاخر."}
+      ],
+      "proverbs": [],
+      "tags": ["Daily Life", "Home"]
+    },
+    {
+      "id": 13,
+      "word_vocalized": "إِثْم",
+      "word_clean": "اثم",
+      "root": "أثم",
+      "pos": "Noun",
+      "fusha_equivalent": "ذنب أو سيئة",
+      "definition": "بمعنى الذنب أو الجزاء السيئ نتيجة عمل معين.",
+      "region": "General",
+      "synonyms": ["ذنب", "خطيئة"],
+      "phonetic_variants": [],
+      "note": "",
+      "source": "قاموس اللهجة الحضرمية - فهد بن هلابي - ص 9",
+      "examples": [
+        {"h": "مسكين سعيد حصل إثم كبير.", "f": "يا للمسكين، لقد ارتكب ذنباً كبيراً."}
+      ],
+      "proverbs": [],
+      "tags": ["Religious", "Daily Life"]
+    },
+    {
+      "id": 14,
+      "word_vocalized": "الأَوَادِم",
+      "word_clean": "الاوادم",
+      "root": "أدم",
+      "pos": "Noun",
+      "fusha_equivalent": "البشر أو الناس",
+      "definition": "جمع آدمي، وتستخدم للإشارة إلى عامة الناس أو مجموعة منهم.",
+      "region": "General",
+      "synonyms": ["الناس", "الخلق"],
+      "phonetic_variants": [],
+      "note": "",
+      "source": "قاموس اللهجة الحضرمية - فهد بن هلابي - ص 12",
+      "examples": [
+        {"h": "تكلمت مع الأوادم كلهم.", "f": "تحدثت مع جميع الناس."}
+      ],
+      "proverbs": [],
+      "tags": ["Daily Life"]
+    },
+    {
+      "id": 15,
+      "word_vocalized": "إِسْتَادَى",
+      "word_clean": "استادى",
+      "root": "أذي",
+      "pos": "Verb",
+      "fusha_equivalent": "اشتكى أو تضرر",
+      "definition": "بمعنى تقديم شكوى ضد شخص بسبب أذيته.",
+      "region": "Coast",
+      "synonyms": ["اشتكى"],
+      "phonetic_variants": [],
+      "note": "تتحول الذال إلى دال (استأذى -> استأدى) خاصة في مناطق الساحل.",
+      "source": "قاموس اللهجة الحضرمية - فهد بن هلابي - ص 13",
+      "examples": [
+        {"h": "ما قد حد استأدى منه في الحارة.", "f": "لم يسبق لأحد أن اشتكى من أذيته في الحي."}
+      ],
+      "proverbs": [],
+      "tags": ["Social Customs", "Behavior"]
+    },
+    {
+      "id": 16,
+      "word_vocalized": "انْقَاص البَرْد",
+      "word_clean": "انقاص البرد",
+      "root": "نقص",
+      "pos": "Noun",
+      "fusha_equivalent": "حبات البَرَد",
+      "definition": "قطع الثلج المتساقطة مع المطر في الأجواء الباردة.",
+      "region": "General",
+      "synonyms": ["برد"],
+      "phonetic_variants": [],
+      "note": "",
+      "source": "قاموس اللهجة الحضرمية - فهد بن هلابي - ص 13",
+      "examples": [
+        {"h": "اليوم نزل مطر ومعه انقاص برد كبار.", "f": "اليوم هطل مطر ومعه حبات برد كبيرة."}
+      ],
+      "proverbs": [],
+      "tags": ["Nature", "Weather"]
+    },
+    {
+      "id": 17,
+      "word_vocalized": "إِثْل",
+      "word_clean": "اثل",
+      "root": "أثل",
+      "pos": "Noun",
+      "fusha_equivalent": "شجر الأثل",
+      "definition": "نوع من الشجر ينمو تلقائياً ويكثر في وادي حضرموت.",
+      "region": "Wadi",
+      "synonyms": [],
+      "phonetic_variants": [],
+      "note": "",
+      "source": "قاموس اللهجة الحضرمية - فهد بن هلابي - ص 13",
+      "examples": [
+        {"h": "الوادي مليان شجر أثل وسدر.", "f": "الوادي ممتلئ بأشجار الأثل والسدر."}
+      ],
+      "proverbs": [],
+      "tags": ["Nature", "Agriculture"]
+    },
+    {
+      "id": 18,
+      "word_vocalized": "الأَزْمِيل",
+      "word_clean": "الازميل",
+      "root": "زمل",
+      "pos": "Noun",
+      "fusha_equivalent": "الإزميل",
+      "definition": "أداة حديدية تستخدم للنحت والحفر في الخشب أو الصخر.",
+      "region": "General",
+      "synonyms": ["منحات"],
+      "phonetic_variants": [],
+      "note": "",
+      "source": "قاموس اللهجة الحضرمية - فهد بن هلابي - ص 14",
+      "examples": [
+        {"h": "النجار يستخدم الأزميل لنقش الباب.", "f": "يستخدم النجار الإزميل لنقش الباب."}
+      ],
+      "proverbs": [],
+      "tags": ["Tools", "Crafts"]
+    },
+    {
+      "id": 19,
+      "word_vocalized": "إِيبَلَّه",
+      "word_clean": "ايبله",
+      "root": "بله",
+      "pos": "Expression",
+      "fusha_equivalent": "إي والله (قسم للايجاب)",
+      "definition": "صيغة قسم تستخدم للتأكيد والموافقة (إي بالله)، وتكثر عند أهل البادية.",
+      "region": "Desert / Badia",
+      "synonyms": ["إي والله"],
+      "phonetic_variants": [],
+      "note": "",
+      "source": "قاموس اللهجة الحضرمية - فهد بن هلابي - ص 14",
+      "examples": [
+        {"h": "إيبله إني جاي معاكم.", "f": "إي والله، إنني آتٍ معكم."}
+      ],
+      "proverbs": [],
+      "tags": ["Daily Life", "Expressions"]
+    },
+    {
+      "id": 20,
+      "word_vocalized": "الأَقْصَام",
+      "word_clean": "الاقصام",
+      "root": "قصم",
+      "pos": "Noun",
+      "fusha_equivalent": "جريد النخل",
+      "definition": "سعف أو جريد النخل الذي جف، ويستخدم في تسقيف البيوت التقليدية.",
+      "region": "General",
+      "synonyms": ["قُصم"],
+      "phonetic_variants": [],
+      "note": "مفردها (قُصم).",
+      "source": "قاموس اللهجة الحضرمية - فهد بن هلابي - ص 15",
+      "examples": [
+        {"h": "سقفنا العريش بالأقصام.", "f": "سقفنا الكوخ بجريد النخل."}
+      ],
+      "proverbs": [],
+      "tags": ["Nature", "Agriculture", "Home"]
+    },
+    {
+      "id": 21,
+      "word_vocalized": "اللِّيف",
+      "word_clean": "الليف",
+      "root": "ليف",
+      "pos": "Noun",
+      "fusha_equivalent": "ليف النخل",
+      "definition": "الألياف المتشابكة حول جذع النخلة، وتستخدم في التنظيف وصناعة الحبال.",
+      "region": "General",
+      "synonyms": [],
+      "phonetic_variants": [],
+      "note": "",
+      "source": "قاموس اللهجة الحضرمية - فهد بن هلابي - ص 15",
+      "examples": [
+        {"h": "نظف المواعين بليف النخل.", "f": "نظف الأواني بليف النخل."}
+      ],
+      "proverbs": [],
+      "tags": ["Nature", "Agriculture"]
+    },
+    {
+      "id": 22,
+      "word_vocalized": "أَقْلِيد",
+      "word_clean": "اقليد",
+      "root": "قلد",
+      "pos": "Noun",
+      "fusha_equivalent": "مفتاح خشبي تقليدي",
+      "definition": "قفل خشبي قديم له أسنان خشبية فريدة، وهو بمثابة المفتاح الحديدي حالياً.",
+      "region": "General",
+      "synonyms": ["مفتاح"],
+      "phonetic_variants": ["أيليد", "أجليد"],
+      "note": "تنطق القاف جيماً أو ياءً في بعض مناطق الساحل (أيليد).",
+      "source": "قاموس اللهجة الحضرمية - فهد بن هلابي - ص 16",
+      "examples": [
+        {"h": "قفل الباب بالأقليد.", "f": "أقفل الباب بالمفتاح الخشبي التقليدي."}
+      ],
+      "proverbs": ["خوك إقليدك"],
+      "tags": ["Tools", "History"]
+    },
+    {
+      "id": 23,
+      "word_vocalized": "إِبْرَه",
+      "word_clean": "ابره",
+      "root": "أبر",
+      "pos": "Noun",
+      "fusha_equivalent": "الحقنة الطبية",
+      "definition": "تطلق في اللهجة الحضرمية غالباً على الحقنة الطبية (المصل).",
+      "region": "General",
+      "synonyms": ["حقنة"],
+      "phonetic_variants": [],
+      "note": "",
+      "source": "قاموس اللهجة الحضرمية - فهد بن هلابي - ص 16",
+      "examples": [
+        {"h": "الدكتور أعطاني إبره في العضل.", "f": "أعطاني الطبيب حقنة في العضل."}
+      ],
+      "proverbs": [],
+      "tags": ["Medical", "Daily Life"]
+    },
+    {
+      "id": 24,
+      "word_vocalized": "اشِر",
+      "word_clean": "اشر",
+      "root": "أشر",
+      "pos": "Verb",
+      "fusha_equivalent": "أشر أو علّم",
+      "definition": "بمعنى وضع علامة أو إشارة على شيء ما، أو الإشارة بالإصبع.",
+      "region": "General",
+      "synonyms": ["علّم"],
+      "phonetic_variants": [],
+      "note": "",
+      "source": "قاموس اللهجة الحضرمية - فهد بن هلابي - ص 16",
+      "examples": [
+        {"h": "اشر في الصفحة اللي وقفت عندها.", "f": "ضع علامة في الصفحة التي توقفت عندها."}
+      ],
+      "proverbs": [],
+      "tags": ["Daily Life"]
+    },
+    {
+      "id": 25,
+      "word_vocalized": "أَكْشَف",
+      "word_clean": "اكشف",
+      "root": "كشف",
+      "pos": "Adjective",
+      "fusha_equivalent": "سيئ الطباع أو عنيد",
+      "definition": "وصف للشخص الذي يتسم بالعناد أو سوء الخلق والرداءة.",
+      "region": "General",
+      "synonyms": ["عنيد"],
+      "phonetic_variants": [],
+      "note": "الكشافة تعني العناد في اللهجة.",
+      "source": "قاموس اللهجة الحضرمية - فهد بن هلابي - ص 17",
+      "examples": [
+        {"h": "هذا الولد أكشف ما يسمع الكلام.", "f": "هذا الولد عنيد ولا يستمع للنصيحة."}
+      ],
+      "proverbs": ["فقر وكشافه"],
+      "tags": ["Behavior", "Emotions"]
+    }
+  ]

@@ -1,5 +1,13 @@
+"""RAG engine — retrieval-augmented generation for /ask and /translate-phrase.
+
+Retrieval now uses Supabase (keyword via PostgREST, vector via pgvector RPC)
+instead of the old in-memory ENTRIES + optional Chroma index.
+"""
+
 import os
 import re
+import time
+import unicodedata
 from pathlib import Path
 from typing import Any, Optional
 
@@ -10,26 +18,21 @@ try:
 except ImportError:
     pass
 
-from .core.data_store import ENTRIES
+from .core.data_store import rpc_match_entries
+from .schemas import Entry, ExamplePair
 from .services.dictionary_service import search as keyword_search
-from .services.dictionary_service import search_expanded
-from .services.dictionary_service import search_phrase_lexicon
+from .services.dictionary_service import search_expanded, search_phrase_lexicon
 
 MODE = os.getenv("RAG_MODE", "local")
-# Gemini: set GEMINI_API_KEY and optional GEMINI_MODEL.
-# Default gemini-2.5-flash matches current AI Studio free-tier naming; 2.0-flash often hits separate quotas first.
-# Fallbacks are tried in order on quota / NotFound (see logs). Invalid preview IDs are omitted.
-# Heavy Chroma/HF is off until RAG_USE_CHROMA=1 after POST /admin/build-index.
 GEMINI_MODEL = os.getenv("GEMINI_MODEL", "gemini-2.5-flash")
 _GEMINI_FALLBACK_MODELS = [
     "gemini-2.0-flash",
     "gemini-2.5-flash-lite",
     "gemini-1.5-flash-002",
 ]
-
-
-def _use_chroma() -> bool:
-    return os.getenv("RAG_USE_CHROMA", "0").lower() in ("1", "true", "yes")
+_QUERY_CACHE_TTL_SECONDS = max(0, int((os.getenv("RAG_CACHE_TTL_SECONDS") or "90").strip()))
+_keyword_cache: dict[tuple[str, int], tuple[float, dict[str, Any]]] = {}
+_vector_cache: dict[tuple[str, int], tuple[float, list[dict[str, Any]]]] = {}
 
 
 def _rag_log(msg: str) -> None:
@@ -38,19 +41,41 @@ def _rag_log(msg: str) -> None:
     print(msg, flush=True)
 
 
+def _rag_response_mode_tag() -> str:
+    """API ``mode`` for Gemini answers and lexicon-only fallbacks (never ``simple``)."""
+    return "local_gemini" if MODE == "local" else "gemini"
+
+
 def _preview(text: str, max_len: int = 160) -> str:
     t = (text or "").replace("\n", " ")
     return t if len(t) <= max_len else t[: max_len - 3] + "..."
+
+
+def _cache_get(cache: dict[Any, tuple[float, Any]], key: Any) -> Any | None:
+    if _QUERY_CACHE_TTL_SECONDS <= 0:
+        return None
+    hit = cache.get(key)
+    if hit is None:
+        return None
+    expires_at, value = hit
+    if expires_at < time.time():
+        cache.pop(key, None)
+        return None
+    return value
+
+
+def _cache_put(cache: dict[Any, tuple[float, Any]], key: Any, value: Any) -> Any:
+    if _QUERY_CACHE_TTL_SECONDS > 0:
+        cache[key] = (time.time() + _QUERY_CACHE_TTL_SECONDS, value)
+    return value
 
 
 def _gemini_api_key() -> str:
     return (os.getenv("GEMINI_API_KEY") or "").strip()
 
 
-# Hadrami usage snippets often appear as ") : … (" inside dictionary prose.
 _USAGE_EXAMPLE_PATTERN = re.compile(r"\)\s*:\s*([^()]+?)\s*\(", re.UNICODE)
 
-# User asks to translate Hadrami → MSA (overrides default Q&A prompt).
 _TRANSLATION_INTENT_PATTERN = re.compile(
     r"(ترجم|ترجمة|إلى\s*الفصحى|إلى\s*العربية|بالفصحى|بالعربية\s*الفصحى|"
     r"translate|حول\s*إلى\s*الفصحى|عبر\s*إلى\s*الفصحى|فصحى\s*هذه)",
@@ -66,7 +91,6 @@ def _looks_like_translation_request(question: str) -> bool:
 
 
 def _few_shot_pairs_from_entry(entry: dict[str, Any]) -> list[tuple[str, str]]:
-    """Build (Hadrami sentence, Fusha gloss) pairs from examples field and full_definition."""
     hadrami_head = (entry.get("hadrami_word") or "").strip()
     fus_gloss = (entry.get("arabic_fus7a") or "").strip()
     definition = (entry.get("full_definition") or "").strip()
@@ -95,7 +119,6 @@ def _few_shot_pairs_from_entry(entry: dict[str, Any]) -> list[tuple[str, str]]:
 
 
 def _translation_prompt(question: str, context_entries: list[dict]) -> str:
-    """Few-shot Hadrami → MSA prompt for Gemini."""
     blocks: list[str] = []
     for e in context_entries[:8]:
         for had, fusha in _few_shot_pairs_from_entry(e):
@@ -139,30 +162,74 @@ def _merge_entries_by_id(*lists: list[dict]) -> list[dict]:
     return out
 
 
+def _aliases_from_entry(entry: dict[str, Any]) -> list[str]:
+    raw = entry.get("aliases")
+    if not isinstance(raw, list):
+        return []
+    return [x.strip() for x in raw if isinstance(x, str) and x.strip()]
+
+
+def _first_example(entry: dict[str, Any]) -> tuple[str, str]:
+    raw_examples = entry.get("examples")
+    if not isinstance(raw_examples, list):
+        return "", ""
+    for ex in raw_examples:
+        if not isinstance(ex, dict):
+            continue
+        hadrami = str(ex.get("hadrami") or ex.get("hadrami_sentence") or ex.get("sentence") or "").strip()
+        fusha = str(ex.get("fusha") or ex.get("fusha_translation") or ex.get("meaning") or "").strip()
+        if hadrami and fusha:
+            return hadrami, fusha
+    return "", ""
+
+
+def _context_block(entries: list[dict]) -> str:
+    blocks: list[str] = []
+    for entry in entries[:5]:
+        head = str(entry.get("hadrami_word") or "").strip()
+        fusha = str(entry.get("arabic_fus7a") or "").strip()
+        definition = str(entry.get("full_definition") or "").strip()
+        aliases = _aliases_from_entry(entry)[:4]
+        ex_h, ex_f = _first_example(entry)
+
+        lines = [f"- الكلمة الحضرمية: {head or 'غير متوفر'}"]
+        if aliases:
+            lines.append(f"  البدائل: {', '.join(aliases)}")
+        if fusha:
+            lines.append(f"  المقابل الفصيح: {fusha}")
+        if definition:
+            lines.append(f"  الشرح القاموسي: {definition[:160]}")
+        if ex_h and ex_f:
+            lines.append(f"  مثال قاموسي: {ex_h}")
+            lines.append(f"  معنى المثال: {ex_f}")
+        blocks.append("\n".join(lines))
+    return "\n\n".join(blocks)
+
+
 def _rag_prompt(question: str, context_entries: list[dict]) -> str:
-    context = "\n".join(
-        [
-            f"- الكلمة: {e['hadrami_word']} | الفصحى: {e.get('arabic_fus7a', '')} | الشرح: {e.get('full_definition', '')[:100]}"
-            for e in context_entries
-        ]
-    )
+    context = _context_block(context_entries)
     return f"""أنت مساعد متخصص في اللهجة الحضرمية اليمنية.
-استخدم المعلومات التالية من القاموس فقط كأساس للشرح، ووسّع الإجابة بجملة أو جملتين واضحتين بالعربية الفصحى.
-بعد الشرح مباشرة، أضف فقرة قصيرة بعنوان «مثال» تتضمن جملة حضرمية بسيطة تستخدم الكلمة أو تعبيراً قريباً منها، ثم اشرح معنى الجملة بالفصحى (يجب أن يبقى المثال متسقاً مع القاموس أعلاه ولا تخترع معانٍ جديدة).
+اعتمد فقط على المراجع القاموسية التالية، ولا تخترع معاني أو كلمات غير مدعومة بها.
+إذا ذكرت كلمة حضرمية موجودة في المراجع، فاكتبها حرفياً كما وردت في خانة «الكلمة الحضرمية» أو «البدائل».
+اجعل الإجابة موجزة وواضحة بهذا الشكل:
+- ابدأ باسم الكلمة الحضرمية بين علامتي تنسيق غامق.
+- بعده سطر «المعنى: ...» من المقابل الفصيح مباشرة.
+- ثم سطر «الشرح: ...» من جملة إلى جملتين قصيرتين تشرحان المقصود والاستعمال اليومي للكلمة بشكل بسيط.
+- ثم سطر «مثال: ...» بجملة حضرمية قصيرة جداً ومعناها بالفصحى.
+لا تكرر الشرح نفسه بصيغ متعددة، ولا تستخدم ألفاظاً عامة إذا كان للقاموس مقابل أدق.
 
 {context}
 
 السؤال: {question}
 
-الإجابة (شرح ثم مثال):"""
+الإجابة:"""
 
 
 def _rag_prompt_no_hits(question: str) -> str:
     return f"""أنت مساعد متخصص في اللهجة الحضرمية اليمنية.
-لم يُعثر في القاموس الحضرمي على مدخل يطابق السؤال بوضوح.
-أجب باختصار بالعربية الفصحى: اعتذر وأوضح أن الكلمة أو العبارة غير موجودة في قاموسنا حالياً، واقترح على المستخدم إعادة الصياغة (مثلاً كتابة الكلمة كما تُقال محلياً، مع أو بدون «ال»، أو إضافة الهمزة إن وُجدت).
-لا تخترع معنىً لكلمة حضرمية محددة ولا تقدّم ترجمة وكأنها من القاموس.
-في نهاية الإجابة أضف سطراً بعنوان «مثال» يوضّح كيف يمكن صياغة سؤال أفضل للبحث (دون اختراع معنى للكلمة المذكورة في السؤال).
+لم يُعثر في القاموس الحضرمي على مدخل يطابق سؤالك بوضوح.
+إذا كان سؤالك عن كلمة أو عبارة، يرجى التأكد من كتابتها كما تُنطق محلياً، مع أو بدون «ال» التعريف، أو مع إضافة الهمزة إن وُجدت (مثلاً «بَعْل» بدلاً من «بل»).
+إذا كان سؤالك عن معنىً عام، فمن الأفضل إعادة صياغة السؤال بشكل أوضح.
 
 السؤال: {question}
 
@@ -173,6 +240,135 @@ def _prompt_for_gemini(question: str, context_entries: list[dict]) -> str:
     if context_entries:
         return _rag_prompt(question, context_entries)
     return _rag_prompt_no_hits(question)
+
+
+def _normalize_match_char(ch: str) -> str:
+    if ch in {"أ", "إ", "آ", "ٱ"}:
+        return "ا"
+    if ch == "ى":
+        return "ي"
+    if ch == "ـ":
+        return ""
+    if unicodedata.combining(ch):
+        return ""
+    return ch
+
+
+def _normalized_text_with_positions(text: str) -> tuple[str, list[int]]:
+    chars: list[str] = []
+    positions: list[int] = []
+    for idx, ch in enumerate(text):
+        norm = _normalize_match_char(ch)
+        if not norm:
+            continue
+        chars.append(norm)
+        positions.append(idx)
+    return "".join(chars), positions
+
+
+def _collect_highlight_surfaces(entries: list[dict]) -> list[str]:
+    seen: set[str] = set()
+    surfaces: list[str] = []
+    for entry in entries:
+        for raw in [
+            entry.get("hadrami_word"),
+            entry.get("search_key"),
+            *(_aliases_from_entry(entry)),
+        ]:
+            text = str(raw or "").strip()
+            if len(text) < 2 or text in seen:
+                continue
+            seen.add(text)
+            surfaces.append(text)
+    surfaces.sort(key=len, reverse=True)
+    return surfaces
+
+
+def _find_hadrami_spans(text: str, surfaces: list[str]) -> list[dict[str, Any]]:
+    if not text or not surfaces:
+        return []
+
+    normalized_text, positions = _normalized_text_with_positions(text)
+    if not normalized_text:
+        return []
+
+    intervals: list[tuple[int, int]] = []
+    for surface in surfaces:
+        normalized_surface, _ = _normalized_text_with_positions(surface)
+        if len(normalized_surface) < 2:
+            continue
+        start_at = 0
+        while True:
+            idx = normalized_text.find(normalized_surface, start_at)
+            if idx < 0:
+                break
+            orig_start = positions[idx]
+            orig_end = positions[idx + len(normalized_surface) - 1] + 1
+            intervals.append((orig_start, orig_end))
+            start_at = idx + 1
+
+    if not intervals:
+        return []
+
+    intervals.sort()
+    merged: list[list[int]] = [[intervals[0][0], intervals[0][1]]]
+    for start, end in intervals[1:]:
+        last = merged[-1]
+        if start <= last[1]:
+            if end > last[1]:
+                last[1] = end
+            continue
+        merged.append([start, end])
+
+    return [
+        {"start": start, "end": end, "surface": text[start:end]}
+        for start, end in merged
+        if start < end
+    ]
+
+
+def _entries_to_response(entries: list[dict]) -> list[Entry]:
+    out: list[Entry] = []
+    for entry in entries:
+        examples = None
+        raw_examples = entry.get("examples")
+        if isinstance(raw_examples, list):
+            examples = [
+                ExamplePair(
+                    hadrami=str(ex.get("hadrami", "")),
+                    fusha=str(ex.get("fusha", "")),
+                )
+                for ex in raw_examples
+                if isinstance(ex, dict)
+            ]
+        out.append(
+            Entry(
+                id=int(entry.get("id", 0)),
+                hadrami_word=str(entry.get("hadrami_word", "")),
+                arabic_fus7a=str(entry.get("arabic_fus7a", "")),
+                full_definition=str(entry.get("full_definition", "")),
+                search_key=entry.get("search_key"),
+                part_of_speech=entry.get("part_of_speech"),
+                thematic_category=entry.get("thematic_category"),
+                is_archaic=bool(entry.get("is_archaic", False)),
+                cultural_note=entry.get("cultural_note"),
+                proverb_record=entry.get("proverb_record"),
+                aliases=entry.get("aliases"),
+                examples=examples,
+            )
+        )
+    return out
+
+
+def _finalize_ask_payload(answer: str, mode: str, entries: list[dict]) -> dict[str, Any]:
+    highlight_surfaces = _collect_highlight_surfaces(entries)
+    return {
+        "answer": answer,
+        "mode": mode,
+        "context": _entries_to_response(entries),
+        "highlight_surfaces": highlight_surfaces,
+        "hadrami_spans": _find_hadrami_spans(answer, highlight_surfaces),
+    }
 
 
 def _gemini_generate(prompt: str, api_key: str) -> str:
@@ -214,6 +410,31 @@ def _gemini_generate(prompt: str, api_key: str) -> str:
         return "Gemini not available: google-generativeai not installed"
 
 
+# ---------------------------------------------------------------------------
+# Vector retrieval helpers (pgvector via Supabase RPC)
+# ---------------------------------------------------------------------------
+
+def _vector_context(query: str, top_k: int = 6) -> list[dict]:
+    """Embed the query and call match_entries RPC for semantic retrieval."""
+    cache_key = (query.strip(), top_k)
+    cached = _cache_get(_vector_cache, cache_key)
+    if cached is not None:
+        _rag_log(f"📚 vector_context cache hit q={query!r} → {len(cached)} hits")
+        return cached
+
+    from .services.embedding_service import embed_text
+
+    embedding = embed_text(query)
+    if embedding is None:
+        _rag_log("📚 vector_context: embedding unavailable — skipping vector search")
+        return []
+
+    rows = rpc_match_entries(embedding, match_threshold=0.25, match_count=top_k)
+    labels = [f"{r.get('hadrami_word', '?')}→{r.get('arabic_fus7a', '')} ({r.get('similarity', 0):.2f})" for r in rows[:5]]
+    _rag_log(f"📚 vector_context q={query!r} → {len(rows)} hits: {labels}")
+    return _cache_put(_vector_cache, cache_key, rows)
+
+
 def _keyword_context(query: str, top_k: int = 5) -> list[dict]:
     result = keyword_search(query, limit=top_k)
     rows = result["results"]
@@ -222,161 +443,76 @@ def _keyword_context(query: str, top_k: int = 5) -> list[dict]:
     return rows
 
 
-def _expanded_keyword_context(query: str, top_k: int = 8) -> list[dict]:
-    rows = search_expanded(query, limit=top_k)["results"]
+def _expanded_keyword_context(query: str, top_k: int = 8) -> dict[str, Any]:
+    cache_key = (query.strip(), top_k)
+    cached = _cache_get(_keyword_cache, cache_key)
+    if cached is not None:
+        _rag_log(
+            f"🔎 search_expanded cache hit q={query!r} top_k={top_k} → {len(cached.get('results', []))} hits"
+        )
+        return cached
+
+    payload = search_expanded(query, limit=top_k)
+    rows = payload["results"]
     labels = [f"{r.get('hadrami_word', '?')}→{r.get('arabic_fus7a', '')}" for r in rows[:5]]
-    _rag_log(f"🔎 search_expanded q={query!r} top_k={top_k} → {len(rows)} hits: {labels}")
-    return rows
+    _rag_log(
+        f"🔎 search_expanded q={query!r} top_k={top_k} "
+        f"score={payload.get('top_score', 0)} → {len(rows)} hits: {labels}"
+    )
+    return _cache_put(_keyword_cache, cache_key, payload)
 
 
-class LocalRAG:
-    def __init__(self):
-        self._collection = None
-        self._client = None
-
-    def _get_collection(self):
-        if self._collection is not None:
-            return self._collection
-        try:
-            import chromadb
-            from chromadb.utils import embedding_functions
-
-            self._client = chromadb.PersistentClient(path="./hadrami_chroma_db")
-            emb_fn = embedding_functions.SentenceTransformerEmbeddingFunction(
-                model_name="sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2"
-            )
-            self._collection = self._client.get_or_create_collection(
-                name="hadrami_words",
-                embedding_function=emb_fn,
-                metadata={"hnsw:space": "cosine"},
-            )
-            return self._collection
-        except ImportError:
-            return None
-
-    def build_index(self) -> bool:
-        collection = self._get_collection()
-        if collection is None:
-            return False
-
-        if collection.count() >= len(ENTRIES):
-            return True
-
-        batch_size = 100
-        for i in range(0, len(ENTRIES), batch_size):
-            batch = ENTRIES[i : i + batch_size]
-            ids = [str(e["id"]) for e in batch]
-            docs = [
-                f"{e['hadrami_word']} {e.get('arabic_fus7a', '')} {e.get('full_definition', '')}"
-                for e in batch
-            ]
-            metas = [
-                {
-                    "hadrami_word": e["hadrami_word"],
-                    "arabic_fus7a": e.get("arabic_fus7a", ""),
-                    "word_id": e["id"],
-                }
-                for e in batch
-            ]
-            collection.upsert(ids=ids, documents=docs, metadatas=metas)
-
-        return True
-
-    def chroma_search(self, query: str, top_k: int = 5) -> Optional[list[dict]]:
-        """Vector search only; returns None if Chroma is missing or empty (avoid duplicate keyword pass)."""
-        collection = self._get_collection()
-        if collection is None or collection.count() == 0:
-            return None
-
-        results = collection.query(query_texts=[query], n_results=top_k)
-
-        found = []
-        for meta in results["metadatas"][0] if results["metadatas"] else []:
-            word_id = meta.get("word_id")
-            entry = next((e for e in ENTRIES if e["id"] == word_id), None)
-            if entry:
-                found.append(entry)
-        labels = [f"{e.get('hadrami_word', '?')}→{e.get('arabic_fus7a', '')}" for e in found[:5]]
-        _rag_log(f"📚 chroma_search q={query!r} n={len(found)} → {labels}")
-        return found
-
-    def vector_search(self, query: str, top_k: int = 5) -> list[dict]:
-        chroma_hits = self.chroma_search(query, top_k)
-        if chroma_hits is not None:
-            return chroma_hits
-        _rag_log(f"📚 vector_search: no Chroma index → fallback keyword for q={query!r}")
-        return _keyword_context(query, top_k)
-
-
-_local_rag = None
-
+# ---------------------------------------------------------------------------
+# Retrieval orchestration
+# ---------------------------------------------------------------------------
 
 def retrieve_rag_context(query: str) -> tuple[list[dict], list[dict]]:
-    """Return (entries_for_prompt, entries_for_api_response) — same retrieval as /ask."""
-    global _local_rag
-
+    """Return (entries_for_prompt, entries_for_api_response)."""
     if MODE == "simple":
         context = _keyword_context(query, top_k=3)
-        return context[:5], context[:3]
+        return context[:5], context[:5]
 
-    kw_ctx = _expanded_keyword_context(query, top_k=8)
-    chroma_ctx: list[dict] = []
-    if MODE == "local" and _use_chroma():
-        if _local_rag is None:
-            _local_rag = LocalRAG()
-        ch = _local_rag.chroma_search(query, top_k=6)
-        if ch is not None:
-            chroma_ctx = ch
-    elif MODE == "local":
-        _rag_log(
-            "📚 Chroma/HF skipped (RAG_USE_CHROMA is off). Keyword RAG + Gemini only. "
-            "After POST /admin/build-index set RAG_USE_CHROMA=1 for vector search."
-        )
+    kw_payload = _expanded_keyword_context(query, top_k=8)
+    kw_ctx = kw_payload["results"]
+    top_score = int(kw_payload.get("top_score") or 0)
+    if top_score >= 100:
+        _rag_log(f"⚡ exact keyword hit for q={query!r} — skipping vector search")
+        merged = kw_ctx[:5]
+        return merged, merged[:5]
 
-    merged = _merge_entries_by_id(kw_ctx, chroma_ctx)[:5]
-    return merged, merged[:3]
+    vec_ctx = _vector_context(query, top_k=4)
+
+    merged = _merge_entries_by_id(kw_ctx, vec_ctx)[:5]
+    return merged, merged[:5]
 
 
 def retrieve_phrase_context(query: str) -> tuple[list[dict], list[dict]]:
-    """Retrieval for /translate-phrase: stricter lexicon matching so Gemini is not misled on long text."""
-    global _local_rag
-
+    """Retrieval for /translate-phrase: stricter lexicon matching."""
     if MODE == "simple":
         rows = search_phrase_lexicon(query, 8)["results"]
-        return rows[:5], rows[:3]
+        return rows[:5], rows[:5]
 
     kw_ctx = search_phrase_lexicon(query, 10)["results"]
-    chroma_ctx: list[dict] = []
-    if MODE == "local" and _use_chroma():
-        if _local_rag is None:
-            _local_rag = LocalRAG()
-        ch = _local_rag.chroma_search(query, top_k=6)
-        if ch is not None:
-            chroma_ctx = ch
-    elif MODE == "local":
-        _rag_log(
-            "📚 phrase: Chroma off — phrase-safe keyword + Gemini. "
-            "Set RAG_USE_CHROMA=1 after build-index for vector recall."
-        )
+    vec_ctx = _vector_context(query, top_k=4)
 
-    merged = _merge_entries_by_id(kw_ctx, chroma_ctx)[:5]
-    return merged, merged[:3]
+    merged = _merge_entries_by_id(kw_ctx, vec_ctx)[:5]
+    return merged, merged[:5]
 
 
 def get_translation_answer(question: str) -> dict:
-    """Hadrami → MSA translation using phrase-safe retrieval and few-shot prompting."""
     merged, ctx_for_api = retrieve_phrase_context(question)
     prompt = _translation_prompt(question, merged)
     answer = _gemini_generate(prompt, _gemini_api_key())
 
     if answer.startswith("Gemini not available:"):
         fb = merged[0].get("arabic_fus7a", "غير موجود") if merged else "غير موجود"
-        _rag_log(f"🔁 translation Gemini failed → fallback answer_preview={_preview(fb)}")
-        return {"answer": fb, "context": ctx_for_api, "mode": "simple"}
+        tag = _rag_response_mode_tag()
+        _rag_log(f"🔁 translation Gemini failed → fallback mode={tag} answer_preview={_preview(fb)}")
+        return _finalize_ask_payload(fb, tag, ctx_for_api)
 
-    mode_tag = "local_gemini" if MODE == "local" else "gemini"
+    mode_tag = _rag_response_mode_tag()
     _rag_log(f"⬅️ get_translation_answer END mode={mode_tag} answer_preview={_preview(answer)}")
-    return {"answer": answer, "context": ctx_for_api, "mode": mode_tag}
+    return _finalize_ask_payload(answer, mode_tag, ctx_for_api)
 
 
 def get_rag_answer(question: str) -> dict:
@@ -385,28 +521,25 @@ def get_rag_answer(question: str) -> dict:
     if _looks_like_translation_request(q):
         return get_translation_answer(q)
 
-    if MODE == "simple":
-        merged, ctx_for_api = retrieve_rag_context(q)
-        if not merged:
-            answer = "غير موجود"
-            _rag_log(f"📌 branch=simple (no hits) answer_preview={_preview(answer)}")
-            return {"answer": answer, "context": ctx_for_api, "mode": "simple"}
-        answer = merged[0].get("arabic_fus7a", "غير موجود")
-        _rag_log(f"📌 branch=simple mode=simple answer_preview={_preview(answer)}")
-        return {"answer": answer, "context": ctx_for_api, "mode": "simple"}
-
     merged, ctx_for_api = retrieve_rag_context(q)
     prompt = _prompt_for_gemini(q, merged)
     answer = _gemini_generate(prompt, _gemini_api_key())
 
+    if MODE == "simple" and answer.startswith("Gemini not available:"):
+        fb = merged[0].get("arabic_fus7a", "غير موجود") if merged else "غير موجود"
+        tag = _rag_response_mode_tag()
+        _rag_log(f"📌 branch=RAG_MODE=simple retrieval (Gemini failed) mode={tag} answer_preview={_preview(fb)}")
+        return _finalize_ask_payload(fb, tag, ctx_for_api)
+
     if answer.startswith("Gemini not available:"):
         fb = merged[0].get("arabic_fus7a", "غير موجود") if merged else "غير موجود"
-        _rag_log(f"🔁 Gemini failed → fallback simple answer_preview={_preview(fb)}")
-        return {"answer": fb, "context": ctx_for_api, "mode": "simple"}
+        tag = _rag_response_mode_tag()
+        _rag_log(f"🔁 Gemini failed → fallback lexicon mode={tag} answer_preview={_preview(fb)}")
+        return _finalize_ask_payload(fb, tag, ctx_for_api)
 
-    mode_tag = "local_gemini" if MODE == "local" else "gemini"
+    mode_tag = _rag_response_mode_tag()
     _rag_log(f"⬅️ get_rag_answer END mode={mode_tag} answer_preview={_preview(answer)}")
-    return {"answer": answer, "context": ctx_for_api, "mode": mode_tag}
+    return _finalize_ask_payload(answer, mode_tag, ctx_for_api)
 
 
 if __name__ == "__main__":

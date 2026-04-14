@@ -11,9 +11,7 @@ import json
 import re
 from pathlib import Path
 
-DATA_PATH = Path(
-    r"C:/Users/hp/Downloads/hadrami_project/backend/data/hadrami_dataset.json"
-)
+DATA_PATH = Path(__file__).resolve().parent.parent / "data" / "hadrami_dataset.json"
 
 # ────────────────────────────────────────────────────────────
 # TEXT UTILITIES
