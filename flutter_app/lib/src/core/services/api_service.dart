@@ -194,11 +194,23 @@ class ApiService {
 
   Future<AskResult> ask(String question) async {
     try {
-      final data = await _getJson(
-        '/ask',
-        queryParameters: {'q': question},
-        timeout: ApiConfig.longTimeout,
-      );
+      final response = await _client
+          .post(
+            _buildUri('/ask'),
+            headers: const {'Content-Type': 'application/json'},
+            body: json.encode({'q': question}),
+          )
+          .timeout(ApiConfig.longTimeout);
+      if (response.statusCode != 200) {
+        return AskResult(
+          question: question,
+          answer:
+              'خطأ من الخادم (${response.statusCode}). جرّب تقصير السؤال أو تقسيمه.',
+          mode: 'error',
+        );
+      }
+      final data =
+          json.decode(utf8.decode(response.bodyBytes)) as Map<String, dynamic>;
       return AskResult.fromJson(data);
     } on TimeoutException {
       return AskResult(
