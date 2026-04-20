@@ -19061,5 +19061,1330 @@
       "Tools",
       "Traditional"
     ]
+  },
+  {
+    "id": 670,
+    "word_vocalized": "فَرَقَزَ",
+    "word_clean": "فرقز",
+    "root": "فرقز",
+    "pos": "Verb",
+    "fusha_equivalent": "وسّع أو فتح عيونه",
+    "definition": "فتح عيونه بقوة أو وسع نظرته لشيء ما.",
+    "region": "General",
+    "synonyms": [
+      "بحلق",
+      "فتح"
+    ],
+    "note": "تستخدم غالباً مع العينين",
+    "source": "قاموس اللهجة الحضرمية - فهد بن هلابي - ص 101",
+    "examples": [
+      {
+        "h": "فرقز عيونه من الصدمة.",
+        "f": "فتح عيونه واسعاً من الصدمة."
+      },
+      {
+        "h": "لا تفرقز بي عيونك هكذا.",
+        "f": "لا تنظر إليّ بعيون مفتوحة بغضب."
+      }
+    ],
+    "proverbs": [],
+    "tags": [
+      "Actions",
+      "Body Language",
+      "Eye"
+    ]
+  },
+  {
+    "id": 671,
+    "word_vocalized": "فَخْسَسَه",
+    "word_clean": "فخسسه",
+    "root": "فخس",
+    "pos": "Noun",
+    "fusha_equivalent": "التذلل والمسكنة",
+    "definition": "إظهار الضعف والمسكنة لاستعطاف الآخرين، وهي مشتقة من حشرة (الفخسوس).",
+    "region": "General",
+    "synonyms": [
+      "تسمكن",
+      "تذلل"
+    ],
+    "note": "وصف للشخص الذي يتظاهر بالضعف",
+    "source": "قاموس اللهجة الحضرمية - فهد بن هلابي - ص 101",
+    "examples": [
+      {
+        "h": "بطل الفخسسه، خليك قوي.",
+        "f": "توقف عن التذلل، كن قوياً."
+      }
+    ],
+    "proverbs": [],
+    "tags": [
+      "Personality Traits",
+      "Behavior",
+      "Weakness"
+    ]
+  },
+  {
+    "id": 672,
+    "word_vocalized": "فَتْلَه",
+    "word_clean": "فتله",
+    "root": "فتل",
+    "pos": "Noun",
+    "fusha_equivalent": "خيط الغزل",
+    "definition": "الخيوط المبرومة التي تستخدم في الخياطة أو الغزل.",
+    "region": "General",
+    "synonyms": [
+      "خيط"
+    ],
+    "note": "بكسر الفاء",
+    "source": "قاموس اللهجة الحضرمية - فهد بن هلابي - ص 101",
+    "examples": [
+      {
+        "h": "هات الفتله نصلح الثوب.",
+        "f": "أحضر الخيط لنصلح الثوب."
+      }
+    ],
+    "proverbs": [],
+    "tags": [
+      "Tools",
+      "Clothing",
+      "Sewing"
+    ]
+  },
+  {
+    "id": 673,
+    "word_vocalized": "فُكَّه",
+    "word_clean": "فكه",
+    "root": "فكك",
+    "pos": "Verb",
+    "fusha_equivalent": "دعه أو اتركه",
+    "definition": "طلب لترك شخص ما وشأنه، و'فُكَّني' تعني اتركني.",
+    "region": "General",
+    "synonyms": [
+      "اتركه",
+      "سيبه"
+    ],
+    "note": "فعل أمر بضم الفاء",
+    "source": "قاموس اللهجة الحضرمية - فهد بن هلابي - ص 101",
+    "examples": [
+      {
+        "h": "فكه من شرك.",
+        "f": "اتركه وشأنه ولا تؤذه."
+      },
+      {
+        "h": "يا أخي فُكني الحين.",
+        "f": "يا أخي اتركني الآن."
+      }
+    ],
+    "proverbs": [],
+    "tags": [
+      "Daily Life",
+      "Imperative",
+      "Leave"
+    ]
+  },
+  {
+    "id": 674,
+    "word_vocalized": "اَلْفَخْطَه",
+    "word_clean": "الفخطه",
+    "root": "فخط",
+    "pos": "Noun",
+    "fusha_equivalent": "طلع النخيل (للتلقيح)",
+    "definition": "ما يخرج من فحل النخل ويستخدم لتلقيح النخيل المثمرة.",
+    "region": "General",
+    "synonyms": [
+      "القراف",
+      "اللقاح"
+    ],
+    "note": "مصطلح زراعي",
+    "source": "قاموس اللهجة الحضرمية - فهد بن هلابي - ص 101",
+    "examples": [
+      {
+        "h": "اليوم فخطنا النخله.",
+        "f": "اليوم لقّحنا النخلة بطلع الفحل."
+      }
+    ],
+    "proverbs": [],
+    "tags": [
+      "Agriculture",
+      "Palm Trees"
+    ]
+  },
+  {
+    "id": 675,
+    "word_vocalized": "اَلْقَرّ",
+    "word_clean": "القر",
+    "root": "قرر",
+    "pos": "Noun",
+    "fusha_equivalent": "البرد الشديد",
+    "definition": "البرودة القارسة في الجو.",
+    "region": "General",
+    "synonyms": [
+      "برد",
+      "صقيع"
+    ],
+    "note": " بضم القاف",
+    "source": "قاموس اللهجة الحضرمية - فهد بن هلابي - ص 102",
+    "examples": [
+      {
+        "h": "اليوم القر يكسر العظام.",
+        "f": "البرد اليوم شديد جداً."
+      }
+    ],
+    "proverbs": [],
+    "tags": [
+      "Weather",
+      "Nature",
+      "Cold"
+    ]
+  },
+  {
+    "id": 676,
+    "word_vocalized": "قَتَم",
+    "word_clean": "قتم",
+    "root": "قتم",
+    "pos": "Noun",
+    "fusha_equivalent": "غبار",
+    "definition": "الأتربة المثارة في الجو بفعل الرياح.",
+    "region": "General",
+    "synonyms": [
+      "عجاج",
+      "غبار"
+    ],
+    "note": "",
+    "source": "قاموس اللهجة الحضرمية - فهد بن هلابي - ص 102",
+    "examples": [
+      {
+        "h": "الجو كله قتم اليوم.",
+        "f": "الجو مليء بالغبار اليوم."
+      }
+    ],
+    "proverbs": [],
+    "tags": [
+      "Weather",
+      "Nature",
+      "Dust"
+    ]
+  },
+  {
+    "id": 677,
+    "word_vocalized": "قَتَب",
+    "word_clean": "قتب",
+    "root": "قتب",
+    "pos": "Noun",
+    "fusha_equivalent": "إكاف الدابة",
+    "definition": "ما يوضع على ظهر البعير أو الحمير تحت الأحمال لحمايتها.",
+    "region": "General",
+    "synonyms": [],
+    "note": "فتح التاء والقاف",
+    "source": "قاموس اللهجة الحضرمية - فهد بن هلابي - ص 102",
+    "examples": [
+      {
+        "h": "شد القتب على الحمار.",
+        "f": "ثبّت الإكاف على ظهر الحمار."
+      }
+    ],
+    "proverbs": [],
+    "tags": [
+      "Tools",
+      "Animals"
+    ]
+  },
+  {
+    "id": 678,
+    "word_vocalized": "قَاق",
+    "word_clean": "قاق",
+    "root": "قوق",
+    "pos": "Expression",
+    "fusha_equivalent": "لفظ للاستسلام",
+    "definition": "كلمة تقال عند اليأس أو العجز أو الاستسلام التام للشيء.",
+    "region": "General",
+    "synonyms": [],
+    "note": "",
+    "source": "قاموس اللهجة الحضرمية - فهد بن هلابي - ص 102",
+    "examples": [
+      {
+        "h": "ما قدرت عليه، قلت قاق.",
+        "f": "لم أستطع هزيمته، فاستسلمت."
+      }
+    ],
+    "proverbs": [],
+    "tags": [
+      "Daily Life",
+      "Expressions",
+      "Submission"
+    ]
+  },
+  {
+    "id": 679,
+    "word_vocalized": "قَبْصَه",
+    "word_clean": "قبصه",
+    "root": "قبص",
+    "pos": "Noun",
+    "fusha_equivalent": "قرصة أو لدغة",
+    "definition": "لدغ الحشرات أو الضغط على الجلد بالأصابع.",
+    "region": "General",
+    "synonyms": [
+      "قرصة"
+    ],
+    "note": "سكون الباء",
+    "source": "قاموس اللهجة الحضرمية - فهد بن هلابي - ص 102",
+    "examples": [
+      {
+        "h": "قبصتني النوبة (النحلة).",
+        "f": "لدغتني النحلة."
+      }
+    ],
+    "proverbs": [
+      "قبصة في قرن ثور."
+    ],
+    "tags": [
+      "Daily Life",
+      "Nature"
+    ]
+  },
+  {
+    "id": 680,
+    "word_vocalized": "قُمْرِي",
+    "word_clean": "قمري",
+    "root": "قمر",
+    "pos": "Noun",
+    "fusha_equivalent": "ذكر طيور الحمام (العول)",
+    "definition": "يطلق على ذكر الحمام البري أو طيور العول.",
+    "region": "General",
+    "synonyms": [],
+    "note": "",
+    "source": "قاموس اللهجة الحضرمية - فهد بن هلابي - ص 105",
+    "examples": [
+      {
+        "h": "سمعت صوت القمري يغرد.",
+        "f": "سمعت صوت ذكر الحمام يغرد."
+      }
+    ],
+    "proverbs": [],
+    "tags": [
+      "Nature",
+      "Birds"
+    ]
+  },
+  {
+    "id": 681,
+    "word_vocalized": "قُبَّه",
+    "word_clean": "قبه",
+    "root": "قبب",
+    "pos": "Noun",
+    "fusha_equivalent": "قبة المعلم أو الضريح",
+    "definition": "بناء مخروطي الشكل يبنى فوق الأضرحة أو الأماكن التاريخية.",
+    "region": "General",
+    "synonyms": [],
+    "note": "",
+    "source": "قاموس اللهجة الحضرمية - فهد بن هلابي - ص 102",
+    "examples": [
+      {
+        "h": "بنى قبه على قبر جده.",
+        "f": "بنى قبة فوق قبر جده."
+      }
+    ],
+    "proverbs": [],
+    "tags": [
+      "Architecture",
+      "Culture"
+    ]
+  },
+  {
+    "id": 682,
+    "word_vocalized": "قَهَاوِل",
+    "word_clean": "قهاول",
+    "root": "قهل",
+    "pos": "Noun",
+    "fusha_equivalent": "مكيال حضرمي",
+    "definition": "أداة قديمة تستخدم كمعيار للكيل والوزن في الأسواق.",
+    "region": "General",
+    "synonyms": [],
+    "note": "أصغر من الربع أو المكيال الكبير",
+    "source": "قاموس اللهجة الحضرمية - فهد بن هلابي - ص 102",
+    "examples": [
+      {
+        "h": "كِل لي قهاول من البر.",
+        "f": "زِن لي مكيالاً من القمح."
+      }
+    ],
+    "proverbs": [],
+    "tags": [
+      "Tools",
+      "Trade"
+    ]
+  },
+  {
+    "id": 683,
+    "word_vocalized": "اَلْقَوَارَه",
+    "word_clean": "القواره",
+    "root": "قور",
+    "pos": "Noun",
+    "fusha_equivalent": "العناد",
+    "definition": "الإصرار على الرأي والتمسك به حتى في الخطأ.",
+    "region": "General",
+    "synonyms": [
+      "عناد"
+    ],
+    "note": "",
+    "source": "قاموس اللهجة الحضرمية - فهد بن هلابي - ص 102",
+    "examples": [
+      {
+        "h": "بطل القواره وسمع الكلام.",
+        "f": "اترك العناد واستمع للنصيحة."
+      }
+    ],
+    "proverbs": [],
+    "tags": [
+      "Personality Traits",
+      "Persistence"
+    ]
+  },
+  {
+    "id": 684,
+    "word_vocalized": "قِطْبَه",
+    "word_clean": "قطبه",
+    "root": "قطب",
+    "pos": "Noun",
+    "fusha_equivalent": "قطعة",
+    "definition": "جزء مقطوع من شيء ما.",
+    "region": "General",
+    "synonyms": [
+      "وصلة",
+      "فتكة"
+    ],
+    "note": "",
+    "source": "قاموس اللهجة الحضرمية - فهد بن هلابي - ص 103",
+    "examples": [
+      {
+        "h": "أعطني قطبه من اللحم.",
+        "f": "أعطني قطعة من اللحم."
+      }
+    ],
+    "proverbs": [
+      "الجبر قِطْبه من الخنثْ."
+    ],
+    "tags": [
+      "General",
+      "Pieces"
+    ]
+  },
+  {
+    "id": 685,
+    "word_vocalized": "قُدَّامِي",
+    "word_clean": "قدامي",
+    "root": "قدم",
+    "pos": "Preposition",
+    "fusha_equivalent": "أمامي",
+    "definition": "ظرف مكان يعني في الجهة المقابلة لوجه الشخص.",
+    "region": "General",
+    "synonyms": [
+      "قبلي"
+    ],
+    "note": "بشد الدال",
+    "source": "قاموس اللهجة الحضرمية - فهد بن هلابي - ص 103",
+    "examples": [
+      {
+        "h": "امشِ قدامي.",
+        "f": "امشِ أمامي."
+      }
+    ],
+    "proverbs": [],
+    "tags": [
+      "General",
+      "Directions",
+      "Front"
+    ]
+  },
+  {
+    "id": 686,
+    "word_vocalized": "قُرُوْح",
+    "word_clean": "قروح",
+    "root": "قرح",
+    "pos": "Noun",
+    "fusha_equivalent": "أصوات الانفجار أو البنادق",
+    "definition": "صوت دوي الرصاص أو المفرقعات.",
+    "region": "General",
+    "synonyms": [
+      "انفجار"
+    ],
+    "note": "",
+    "source": "قاموس اللهجة الحضرمية - فهد بن هلابي - ص 103",
+    "examples": [
+      {
+        "h": "سمعنا قروح بنادق في العرس.",
+        "f": "سمعنا صوت إطلاق رصاص في العرس."
+      }
+    ],
+    "proverbs": [],
+    "tags": [
+      "Daily Life",
+      "Explosions"
+    ]
+  },
+  {
+    "id": 687,
+    "word_vocalized": "اَلْقُرَاف",
+    "word_clean": "القراف",
+    "root": "قرف",
+    "pos": "Noun",
+    "fusha_equivalent": "تلقيح النخل",
+    "definition": "عملية وضع طلع الفحل في العذوق لتلقيحها.",
+    "region": "General",
+    "synonyms": [
+      "فخطة"
+    ],
+    "note": "",
+    "source": "قاموس اللهجة الحضرمية - فهد بن هلابي - ص 103",
+    "examples": [
+      {
+        "h": "جاء وقت القراف.",
+        "f": "جاء وقت تلقيح النخيل."
+      }
+    ],
+    "proverbs": [],
+    "tags": [
+      "Agriculture",
+      "Flower"
+    ]
+  },
+  {
+    "id": 688,
+    "word_vocalized": "اَلْقَبْع",
+    "word_clean": "القبع",
+    "root": "قبع",
+    "pos": "Noun",
+    "fusha_equivalent": "الضرب",
+    "definition": "توجيه ضربة قوية لشخص ما.",
+    "region": "General",
+    "synonyms": [
+      "لطم",
+      "ضرب"
+    ],
+    "note": "",
+    "source": "قاموس اللهجة الحضرمية - فهد بن هلابي - ص 103",
+    "examples": [
+      {
+        "h": "قبعه على راسه.",
+        "f": "ضربه على رأسه."
+      }
+    ],
+    "proverbs": [],
+    "tags": [
+      "Actions",
+      "Beating"
+    ]
+  },
+  {
+    "id": 689,
+    "word_vocalized": "اَلْقَزَازَة",
+    "word_clean": "القزازة",
+    "root": "قزز",
+    "pos": "Noun",
+    "fusha_equivalent": "الزجاجة",
+    "definition": "أي وعاء مصنوع من مادة الزجاج.",
+    "region": "General",
+    "synonyms": [
+      "زجاج"
+    ],
+    "note": "",
+    "source": "قاموس اللهجة الحضرمية - فهد بن هلابي - ص 103",
+    "examples": [
+      {
+        "h": "انكسرت القزازة.",
+        "f": "انكسرت الزجاجة."
+      }
+    ],
+    "proverbs": [],
+    "tags": [
+      "Tools",
+      "Glass"
+    ]
+  },
+  {
+    "id": 690,
+    "word_vocalized": "اَلْقَصِيْرَة",
+    "word_clean": "القصيرة",
+    "root": "قصر",
+    "pos": "Noun",
+    "fusha_equivalent": "الجنبية",
+    "definition": "اسم يطلق أحياناً على الجنبية (الخنجر الحضرمي) لقصر طولها.",
+    "region": "General",
+    "synonyms": [
+      "جنبية"
+    ],
+    "note": "وصف مجازي",
+    "source": "قاموس اللهجة الحضرمية - فهد بن هلابي - ص 103",
+    "examples": [
+      {
+        "h": "لبس القصيرة وخرج.",
+        "f": "لبس الجنبية وخرج."
+      }
+    ],
+    "proverbs": [],
+    "tags": [
+      "Culture",
+      "Clothing",
+      "Short"
+    ]
+  },
+  {
+    "id": 691,
+    "word_vocalized": "قَرْقَعَه",
+    "word_clean": "قرقعه",
+    "root": "قرقع",
+    "pos": "Noun",
+    "fusha_equivalent": "طراقة الباب (الجرس القديم)",
+    "definition": "قطعة معدنية تثبت على الباب الخشبي تُضرب باليد لإعلام أهل البيت بوجود طارق.",
+    "region": "General",
+    "synonyms": [],
+    "note": "",
+    "source": "قاموس اللهجة الحضرمية - فهد بن هلابي - ص 103",
+    "examples": [
+      {
+        "h": "دق القرقعه بقوة.",
+        "f": "طرق طراقة الباب بقوة."
+      }
+    ],
+    "proverbs": [],
+    "tags": [
+      "Tools",
+      "Home",
+      "Door"
+    ]
+  },
+  {
+    "id": 692,
+    "word_vocalized": "اَلْقَامِزِي",
+    "word_clean": "القامزي",
+    "root": "قمز",
+    "pos": "Noun",
+    "fusha_equivalent": "البارود",
+    "definition": "المادة المتفجرة التي تستخدم في البنادق القديمة.",
+    "region": "General",
+    "synonyms": [
+      "بارود"
+    ],
+    "note": "",
+    "source": "قاموس اللهجة الحضرمية - فهد بن هلابي - ص 104",
+    "examples": [
+      {
+        "h": "عبّ البندق بالقامزي.",
+        "f": "ملأ البندقية بالبارود."
+      }
+    ],
+    "proverbs": [],
+    "tags": [
+      "Tools",
+      "Explosive"
+    ]
+  },
+  {
+    "id": 693,
+    "word_vocalized": "قَعَتْ",
+    "word_clean": "قعت",
+    "root": "وقع",
+    "pos": "Verb",
+    "fusha_equivalent": "صارت أو أصبحت",
+    "definition": "فعل ماضي للمؤنث بمعنى تحول الشيء إلى حالة أخرى.",
+    "region": "General",
+    "synonyms": [
+      "وقعت",
+      "صارت"
+    ],
+    "note": "",
+    "source": "قاموس اللهجة الحضرمية - فهد بن هلابي - ص 104",
+    "examples": [
+      {
+        "h": "قعت الدنيا مطر.",
+        "f": "صارت الدنيا تمطر."
+      }
+    ],
+    "proverbs": [],
+    "tags": [
+      "Actions",
+      "Changed"
+    ]
+  },
+  {
+    "id": 694,
+    "word_vocalized": "اَلْقشَار",
+    "word_clean": "القشار",
+    "root": "قشر",
+    "pos": "Noun",
+    "fusha_equivalent": "أحجار بحرية كبيرة",
+    "definition": "مجموعة من الصخور الضخمة الموجودة في قاع البحر أو على سطحه.",
+    "region": "Coastal",
+    "synonyms": [],
+    "note": "",
+    "source": "قاموس اللهجة الحضرمية - فهد بن هلابي - ص 104",
+    "examples": [
+      {
+        "h": "قربت السفينة من القشار.",
+        "f": "اقتربت السفينة من الصخور البحرية."
+      }
+    ],
+    "proverbs": [],
+    "tags": [
+      "Nature",
+      "Sea"
+    ]
+  },
+  {
+    "id": 695,
+    "word_vocalized": "اَلْقَاسِم",
+    "word_clean": "القاسم",
+    "root": "قسم",
+    "pos": "Noun",
+    "fusha_equivalent": "أعمدة السقف",
+    "definition": "الأعمدة الأساسية (الجسور الخشبية) التي يقوم عليها سقف البيت.",
+    "region": "General",
+    "synonyms": [],
+    "note": "جمعها: قواسم",
+    "source": "قاموس اللهجة الحضرمية - فهد بن هلابي - ص 104",
+    "examples": [
+      {
+        "h": "عرب القاسم حق الغرفة.",
+        "f": "أصلح عمود سقف الغرفة."
+      }
+    ],
+    "proverbs": [],
+    "tags": [
+      "Architecture",
+      "Home",
+      "Columns"
+    ]
+  },
+  {
+    "id": 696,
+    "word_vocalized": "اَلْقُبُوْع",
+    "word_clean": "القبوع",
+    "root": "قبع",
+    "pos": "Noun",
+    "fusha_equivalent": "زخارف معمارية مذبذبة",
+    "definition": "هياكل صغيرة تبنى على أطراف أسطح المساجد أو الحصون للزينة.",
+    "region": "General",
+    "synonyms": [],
+    "note": "",
+    "source": "قاموس اللهجة الحضرمية - فهد بن هلابي - ص 104",
+    "examples": [
+      {
+        "h": "القبوع تعطي الحصن منظر زين.",
+        "f": "هذه الزخارف تعطي الحصن منظراً جميلاً."
+      }
+    ],
+    "proverbs": [],
+    "tags": [
+      "Architecture",
+      "Decorations",
+      "Beauty"
+    ]
+  },
+  {
+    "id": 697,
+    "word_vocalized": "قَفَا",
+    "word_clean": "قفا",
+    "root": "قفو",
+    "pos": "Preposition",
+    "fusha_equivalent": "خلف أو وراء",
+    "definition": "ظرف مكان يعني الجهة الخلفية، و'قفاك' تعني وراءك.",
+    "region": "General",
+    "synonyms": [
+      "خلف"
+    ],
+    "note": "",
+    "source": "قاموس اللهجة الحضرمية - فهد بن هلابي - ص 104",
+    "examples": [
+      {
+        "h": "دور القلم قفا الباب.",
+        "f": "ابحث عن القلم خلف الباب."
+      }
+    ],
+    "proverbs": [],
+    "tags": [
+      "Directions",
+      "Back"
+    ]
+  },
+  {
+    "id": 698,
+    "word_vocalized": "اَلْقِبَاض",
+    "word_clean": "القباض",
+    "root": "قبض",
+    "pos": "Noun",
+    "fusha_equivalent": "الخطوبة الرسمية (دفع المهر)",
+    "definition": "مناسبة اجتماعية يتم فيها تسليم المهر لأهل العروس وتثبيت الخطبة.",
+    "region": "General",
+    "synonyms": [
+      "المداد"
+    ],
+    "note": "",
+    "source": "قاموس اللهجة الحضرمية - فهد بن هلابي - ص 104",
+    "examples": [
+      {
+        "h": "الليلة قباض فلان.",
+        "f": "الليلة موعد تسليم مهر فلان لخطيبته."
+      }
+    ],
+    "proverbs": [],
+    "tags": [
+      "Social Customs",
+      "Marriage",
+      "Wedding"
+    ]
+  },
+  {
+    "id": 699,
+    "word_vocalized": "اَلْقَلْبَه",
+    "word_clean": "القلبة",
+    "root": "قلب",
+    "pos": "Noun",
+    "fusha_equivalent": "قلب النخلة",
+    "definition": "الجريد الصغير الأبيض الذي يظهر حديثاً من وسط رأس النخلة.",
+    "region": "General",
+    "synonyms": [],
+    "note": "",
+    "source": "قاموس اللهجة الحضرمية - فهد بن هلابي - ص 104",
+    "examples": [
+      {
+        "h": "قلبة النخلة طالعة جديدة.",
+        "f": "جريد قلب النخلة بدأ بالظهور."
+      }
+    ],
+    "proverbs": [],
+    "tags": [
+      "Agriculture",
+      "Palm Trees",
+      "Leaf"
+    ]
+  },
+  {
+    "id": 700,
+    "word_vocalized": "اَلْقَسّ",
+    "word_clean": "القس",
+    "root": "قسس",
+    "pos": "Noun",
+    "fusha_equivalent": "مفتاح الكهرباء",
+    "definition": "الزر أو المفتاح المستخدم لتشغيل أو إطفاء الضوء.",
+    "region": "General",
+    "synonyms": [],
+    "note": "سكون السين",
+    "source": "قاموس اللهجة الحضرمية - فهد بن هلابي - ص 104",
+    "examples": [
+      {
+        "h": "اضغط القس طفي السراج.",
+        "f": "اضغط المفتاح لإطفاء المصباح."
+      }
+    ],
+    "proverbs": [],
+    "tags": [
+      "Tools",
+      "Daily Life",
+      "Light"
+    ]
+  },
+  {
+    "id": 701,
+    "word_vocalized": "اَلْقَسّ",
+    "word_clean": "القس",
+    "root": "قسس",
+    "pos": "Noun",
+    "fusha_equivalent": "التمر اليابس",
+    "definition": "التمر الذي جف تماماً وأصبح صلباً وقاسياً.",
+    "region": "General",
+    "synonyms": [
+      "صلب"
+    ],
+    "note": "شد السين",
+    "source": "قاموس اللهجة الحضرمية - فهد بن هلابي - ص 105",
+    "examples": [
+      {
+        "h": "هذا التمر رجع قس.",
+        "f": "هذا التمر أصبح جافاً وقاسياً."
+      }
+    ],
+    "proverbs": [],
+    "tags": [
+      "Food",
+      "Dry"
+    ]
+  },
+  {
+    "id": 702,
+    "word_vocalized": "اَلْقَوْقَرَه",
+    "word_clean": "القوقرة",
+    "root": "قوقر",
+    "pos": "Noun",
+    "fusha_equivalent": "تنورة داخلية",
+    "definition": "قطعة من الملابس الداخلية كانت تلبسها المرأة الحضرمية تحت الفستان.",
+    "region": "General",
+    "synonyms": [],
+    "note": "",
+    "source": "قاموس اللهجة الحضرمية - فهد بن هلابي - ص 105",
+    "examples": [
+      {
+        "h": "ملابس المرة قديماً فيها القوقرة.",
+        "f": "ملابس المرأة قديماً كانت تتضمن التنورة الداخلية."
+      }
+    ],
+    "proverbs": [],
+    "tags": [
+      "Clothing",
+      "Culture",
+      "Underwear"
+    ]
+  },
+  {
+    "id": 703,
+    "word_vocalized": "اَلْقِنْفَان",
+    "word_clean": "القنفان",
+    "root": "قنف",
+    "pos": "Noun",
+    "fusha_equivalent": "السحاب المتراكم",
+    "definition": "الغيوم الكثيفة المتراكمة فوق بعضها والتي تنذر بالمطر.",
+    "region": "General",
+    "synonyms": [
+      "سحاب",
+      "مزن"
+    ],
+    "note": "",
+    "source": "قاموس اللهجة الحضرمية - فهد بن هلابي - ص 105",
+    "examples": [
+      {
+        "h": "شوف القنفان في السماء.",
+        "f": "انظر للسحاب المتراكم في السماء."
+      }
+    ],
+    "proverbs": [],
+    "tags": [
+      "Nature",
+      "Weather",
+      "Cloud"
+    ]
+  },
+  {
+    "id": 704,
+    "word_vocalized": "قُوْز",
+    "word_clean": "قوز",
+    "root": "قوز",
+    "pos": "Noun",
+    "fusha_equivalent": "تلة رملية",
+    "definition": "الجبل الصغير المكون من الرمال.",
+    "region": "General",
+    "synonyms": [
+      "كثيب"
+    ],
+    "note": "",
+    "source": "قاموس اللهجة الحضرمية - فهد بن هلابي - ص 105",
+    "examples": [
+      {
+        "h": "طلعنا فوق القوز الكبير.",
+        "f": "صعدنا فوق التلة الرملية الكبيرة."
+      }
+    ],
+    "proverbs": [],
+    "tags": [
+      "Nature",
+      "Sand"
+    ]
+  },
+  {
+    "id": 705,
+    "word_vocalized": "قَفْلَه",
+    "word_clean": "قفله",
+    "root": "قفل",
+    "pos": "Noun",
+    "fusha_equivalent": "وحدة وزن صغيرة",
+    "definition": "وحدة وزن تساوي تقريباً 2-3 غرامات، تستخدم لوزن الذهب والسلع الثمينة.",
+    "region": "General",
+    "synonyms": [],
+    "note": "جمعها: قفال",
+    "source": "قاموس اللهجة الحضرمية - فهد بن هلابي - ص 105",
+    "examples": [
+      {
+        "h": "وزنت الذهب بالقفال.",
+        "f": "وزنت الذهب بوحدة القفلة."
+      }
+    ],
+    "proverbs": [],
+    "tags": [
+      "Trade",
+      "Weights",
+      "Gold"
+    ]
+  },
+  {
+    "id": 706,
+    "word_vocalized": "قَابْلَه",
+    "word_clean": "قابله",
+    "root": "قبل",
+    "pos": "Noun",
+    "fusha_equivalent": "ليلة غد",
+    "definition": "الوقت الذي سيأتي في مساء اليوم التالي (عكس البارحة).",
+    "region": "General",
+    "synonyms": [
+      "بكرة"
+    ],
+    "note": "",
+    "source": "قاموس اللهجة الحضرمية - فهد بن هلابي - ص 105",
+    "examples": [
+      {
+        "h": "موعدنا ليلة القابله.",
+        "f": "موعدنا ليلة غد."
+      }
+    ],
+    "proverbs": [],
+    "tags": [
+      "Time",
+      "Morning"
+    ]
+  },
+  {
+    "id": 707,
+    "word_vocalized": "قِرْبَه",
+    "word_clean": "قربه",
+    "root": "قرب",
+    "pos": "Noun",
+    "fusha_equivalent": "وعاء جلدي للماء",
+    "definition": "وعاء مصنوع من جلد الحيوان لحفظ وتبريد الماء.",
+    "region": "General",
+    "synonyms": [],
+    "note": "",
+    "source": "قاموس اللهجة الحضرمية - فهد بن هلابي - ص 105",
+    "examples": [
+      {
+        "h": "ماء القربة بارد.",
+        "f": "ماء الوعاء الجلدي بارد."
+      }
+    ],
+    "proverbs": [],
+    "tags": [
+      "Tools",
+      "Nature",
+      "Water"
+    ]
+  },
+  {
+    "id": 708,
+    "word_vocalized": "اَلْقَلْت",
+    "word_clean": "القلت",
+    "root": "قلت",
+    "pos": "Noun",
+    "fusha_equivalent": "صهاريج جبلية طبيعية",
+    "definition": "حفر في الجبال تحفظ مياه السيول لفترات طويلة.",
+    "region": "General",
+    "synonyms": [
+      "مجلجل"
+    ],
+    "note": "جمعها: قلوت",
+    "source": "قاموس اللهجة الحضرمية - فهد بن هلابي - ص 105",
+    "examples": [
+      {
+        "h": "شربنا من ماء القلت.",
+        "f": "شربنا من ماء الصهاريج الجبلية."
+      }
+    ],
+    "proverbs": [],
+    "tags": [
+      "Nature",
+      "Water",
+      "Well"
+    ]
+  },
+  {
+    "id": 709,
+    "word_vocalized": "اَلْقَمِيْص",
+    "word_clean": "القميص",
+    "root": "قمص",
+    "pos": "Noun",
+    "fusha_equivalent": "الثوب الأبيض",
+    "definition": "الثوب الطويل الذي يلبسه الرجل الحضرمي.",
+    "region": "General",
+    "synonyms": [
+      "ثوب"
+    ],
+    "note": "",
+    "source": "قاموس اللهجة الحضرمية - فهد بن هلابي - ص 106",
+    "examples": [
+      {
+        "h": "لبس قميصه الجديد.",
+        "f": "لبس ثوبه الجديد."
+      }
+    ],
+    "proverbs": [],
+    "tags": [
+      "Clothing",
+      "White"
+    ]
+  },
+  {
+    "id": 710,
+    "word_vocalized": "اَلْقَنَاقِن",
+    "word_clean": "القناقن",
+    "root": "قنكن",
+    "pos": "Noun",
+    "fusha_equivalent": "أجراس صغيرة",
+    "definition": "كرات نحاسية صغيرة مجوفة تصدر صوتاً، توضع في خلاخيل الأطفال أو النساء.",
+    "region": "General",
+    "synonyms": [],
+    "note": "",
+    "source": "قاموس اللهجة الحضرمية - فهد بن هلابي - ص 106",
+    "examples": [
+      {
+        "h": "اسمع حس القناقن.",
+        "f": "اسمع صوت الأجراس الصغيرة."
+      }
+    ],
+    "proverbs": [],
+    "tags": [
+      "Jewelry",
+      "Culture"
+    ]
+  },
+  {
+    "id": 711,
+    "word_vocalized": "قَاع",
+    "word_clean": "قاع",
+    "root": "قوع",
+    "pos": "Noun",
+    "fusha_equivalent": "الأرض",
+    "definition": "سطح الأرض أو القاع.",
+    "region": "General",
+    "synonyms": [
+      "أرض"
+    ],
+    "note": "",
+    "source": "قاموس اللهجة الحضرمية - فهد بن هلابي - ص 106",
+    "examples": [
+      {
+        "h": "اجلس على القاع.",
+        "f": "اجلس على الأرض."
+      }
+    ],
+    "proverbs": [
+      "الحصاه من القاع والدم من ضرسك."
+    ],
+    "tags": [
+      "General",
+      "Ground"
+    ]
+  },
+  {
+    "id": 712,
+    "word_vocalized": "اَلْقَبِيْل",
+    "word_clean": "القبيل",
+    "root": "قبل",
+    "pos": "Noun",
+    "fusha_equivalent": "مساعد المعلم",
+    "definition": "الشخص الذي يساعد المعلم (البناء) في العمل ليتعلم المهنة.",
+    "region": "General",
+    "synonyms": [
+      "مساعد"
+    ],
+    "note": "",
+    "source": "قاموس اللهجة الحضرمية - فهد بن هلابي - ص 106",
+    "examples": [
+      {
+        "h": "هذا الولد قبيل عند المعلم.",
+        "f": "هذا الولد مساعد للمبّني (المعمار)."
+      }
+    ],
+    "proverbs": [],
+    "tags": [
+      "Jobs",
+      "Teacher",
+      "Assistant"
+    ]
+  },
+  {
+    "id": 713,
+    "word_vocalized": "اَلْقَرْع",
+    "word_clean": "القرع",
+    "root": "قرع",
+    "pos": "Noun",
+    "fusha_equivalent": "بسر بدأ ينضج",
+    "definition": "ثمرة النخيل التي نضج نصفها وأصبح تمراً وبقي نصفها الآخر بسراً.",
+    "region": "General",
+    "synonyms": [
+      "منصف"
+    ],
+    "note": "",
+    "source": "قاموس اللهجة الحضرمية - فهد بن هلابي - ص 106",
+    "examples": [
+      {
+        "h": "لقينا قرع في العذق.",
+        "f": "وجدنا تمراً بدأ بالنضج في العذق."
+      }
+    ],
+    "proverbs": [],
+    "tags": [
+      "Agriculture",
+      "Food",
+      "Palm Tree"
+    ]
+  },
+  {
+    "id": 714,
+    "word_vocalized": "قَشْعَه",
+    "word_clean": "قشعه",
+    "root": "قشع",
+    "pos": "Adjective",
+    "fusha_equivalent": "مؤدب ومطيع",
+    "definition": "وصف يطلق غالباً على الطفل الذي يسمع الكلام ولا يثير المشاكل.",
+    "region": "General",
+    "synonyms": [
+      "هادئ",
+      "مطيع"
+    ],
+    "note": "",
+    "source": "قاموس اللهجة الحضرمية - فهد بن هلابي - ص 106",
+    "examples": [
+      {
+        "h": "ولده قشعه ما شاء الله.",
+        "f": "ابنه مؤدب ومطيع جداً."
+      }
+    ],
+    "proverbs": [],
+    "tags": [
+      "Personality Traits",
+      "Children",
+      "Quiet"
+    ]
+  },
+  {
+    "id": 715,
+    "word_vocalized": "اَلْقَضْب",
+    "word_clean": "القضب",
+    "root": "قضب",
+    "pos": "Noun",
+    "fusha_equivalent": "البرسيم",
+    "definition": "نبات يستخدم كعلف للحيوانات.",
+    "region": "General",
+    "synonyms": [
+      "قت"
+    ],
+    "note": "",
+    "source": "قاموس اللهجة الحضرمية - فهد بن هلابي - ص 106",
+    "examples": [
+      {
+        "h": "اشترِ قضب للغنم.",
+        "f": "اشترِ برسيماً للأغنام."
+      }
+    ],
+    "proverbs": [],
+    "tags": [
+      "Agriculture",
+      "Animals",
+      "Grass"
+    ]
+  },
+  {
+    "id": 716,
+    "word_vocalized": "اَلْقَمْبَر",
+    "word_clean": "القمبر",
+    "root": "قمبر",
+    "pos": "Noun",
+    "fusha_equivalent": "الإطار أو البرواز",
+    "definition": "البرواز الذي توضع فيه الصور أو المرايا.",
+    "region": "General",
+    "synonyms": [
+      "برواز"
+    ],
+    "note": "",
+    "source": "قاموس اللهجة الحضرمية - فهد بن هلابي - ص 106",
+    "examples": [
+      {
+        "h": "هذا القمبر حق الصورة زين.",
+        "f": "هذا الإطار الخاص بالصورة جميل."
+      }
+    ],
+    "proverbs": [],
+    "tags": [
+      "Tools",
+      "Home",
+      "Frame"
+    ]
+  },
+  {
+    "id": 717,
+    "word_vocalized": "اَلْقَلَامَه",
+    "word_clean": "القلامه",
+    "root": "قلم",
+    "pos": "Noun",
+    "fusha_equivalent": "تشذيب النخل",
+    "definition": "عملية قص السعف اليابس وتكريب النخلة.",
+    "region": "General",
+    "synonyms": [
+      "تكريب"
+    ],
+    "note": "",
+    "source": "قاموس اللهجة الحضرمية - فهد بن هلابي - ص 106",
+    "examples": [
+      {
+        "h": "المعلم يشتغل في القلامه.",
+        "f": "العامل منشغل بتشذيب النخلة."
+      }
+    ],
+    "proverbs": [],
+    "tags": [
+      "Agriculture",
+      "Palm Trees",
+      "Branch"
+    ]
+  },
+  {
+    "id": 718,
+    "word_vocalized": "قَنَص",
+    "word_clean": "قنص",
+    "root": "قنص",
+    "pos": "Noun",
+    "fusha_equivalent": "رحلة الصيد",
+    "definition": "الخروج لصيد الوعول أو الطيور.",
+    "region": "General",
+    "synonyms": [
+      "قنيص"
+    ],
+    "note": "",
+    "source": "قاموس اللهجة الحضرمية - فهد بن هلابي - ص 107",
+    "examples": [
+      {
+        "h": "راحوا الشباب للقنص.",
+        "f": "ذهب الشباب في رحلة صيد."
+      }
+    ],
+    "proverbs": [],
+    "tags": [
+      "Daily Life",
+      "Traditions",
+      "Fishing"
+    ]
+  },
+  {
+    "id": 719,
+    "word_vocalized": "اَلْقَامَة",
+    "word_clean": "القامة",
+    "root": "قوم",
+    "pos": "Noun",
+    "fusha_equivalent": "معيار طول (ارتفاع الماء)",
+    "definition": "مقياس لطول الإنسان تقريباً، يستخدم لقياس عمق الآبار أو ارتفاع مياه السيول.",
+    "region": "General",
+    "synonyms": [],
+    "note": "",
+    "source": "قاموس اللهجة الحضرمية - فهد بن هلابي - ص 107",
+    "examples": [
+      {
+        "h": "البير عمقها عشر قامت.",
+        "f": "البئر عمقها عشر قامات."
+      },
+      {
+        "h": "السيل طلع قامة.",
+        "f": "ارتفاع السيل وصل لمقدار طول الإنسان."
+      }
+    ],
+    "proverbs": [],
+    "tags": [
+      "Weights",
+      "Water",
+      "Depth"
+    ]
   }
 ]
