@@ -27071,7 +27071,1361 @@
     "proverbs": [],
     "tags": [
       "Nature",
+      "Daily Life",
+      "Transportation"
+    ]
+  },
+  {
+    "id": 948,
+    "word_vocalized": "نَوْش",
+    "word_clean": "نوش",
+    "root": "نوش",
+    "pos": "Verb",
+    "fusha_equivalent": "أرمي / أقذف",
+    "definition": "بمعنى الرمي باليد، ويقال نوشه أي رماه بشيء.",
+    "region": "General",
+    "synonyms": [
+      "حذف",
+      "رمى"
+    ],
+    "phonetic_variants": [],
+    "note": "وردت في الشعر الشعبي: (فزعان لا نوش بحذفه اتصيد وإلا ما اتصيد).",
+    "source": "قاموس اللهجة الحضرمية - فهد بن هلابي - ص 145",
+    "examples": [
+      {
+        "h": "نوش الحجر بعيد عن الدار.",
+        "f": "ألقِ الحجر بعيداً عن المنزل."
+      },
+      {
+        "h": "لا تنوشني بالكرة.",
+        "f": "لا ترمني بالكرة."
+      }
+    ],
+    "proverbs": [],
+    "tags": [
+      "Daily Life",
+      "Actions"
+    ]
+  },
+  {
+    "id": 949,
+    "word_vocalized": "اَلنَّظَف",
+    "word_clean": "النظف",
+    "root": "نظف",
+    "pos": "Noun",
+    "fusha_equivalent": "حبل لإخافة الطيور",
+    "definition": "حبل طويل يُستعمل في المزارع لإصدار صوت أو حركة لإبعاد الطيور عن المحاصيل.",
+    "region": "General",
+    "synonyms": [],
+    "phonetic_variants": [],
+    "note": "أداة زراعية تقليدية لحماية الثمار.",
+    "source": "قاموس اللهجة الحضرمية - فهد بن هلابي - ص 138",
+    "examples": [
+      {
+        "h": "حط النظف في الساحة عشان العصافير.",
+        "f": "ضع حبل إخافة الطيور في الساحة لأجل العصافير."
+      }
+    ],
+    "proverbs": [],
+    "tags": [
+      "Agriculture",
+      "Tools",
       "Daily Life"
+    ]
+  },
+  {
+    "id": 950,
+    "word_vocalized": "نَيْرَة",
+    "word_clean": "نيرة",
+    "root": "نير",
+    "pos": "Noun",
+    "fusha_equivalent": "فضيحة",
+    "definition": "تُطلق على الأمر المخزي أو الفضيحة التي تنتشر بين الناس.",
+    "region": "General",
+    "synonyms": [
+      "فضيحة",
+      "خزوة"
+    ],
+    "phonetic_variants": [],
+    "note": "تستخدم للتحذير من الوقوع في العيب. بكسر النون",
+    "source": "قاموس اللهجة الحضرمية - فهد بن هلابي - ص 138",
+    "examples": [
+      {
+        "h": "هذه نيرة كبيرة وقعت في الحافة.",
+        "f": "هذه فضيحة كبيرة حدثت في الحي."
+      }
+    ],
+    "proverbs": [],
+    "tags": [
+      "Social Customs",
+      "Ethics",
+      "Daily Life"
+    ]
+  },
+  {
+    "id": 951,
+    "word_vocalized": "اَلنَّدْوَة",
+    "word_clean": "الندوة",
+    "root": "ندى",
+    "pos": "Noun",
+    "fusha_equivalent": "الطل / الندى",
+    "definition": "قطرات الماء التي تتكون على أوراق الشجر والأسطح في الصباح الباكر.",
+    "region": "General",
+    "synonyms": [
+      "طل"
+    ],
+    "phonetic_variants": [],
+    "note": "",
+    "source": "قاموس اللهجة الحضرمية - فهد بن هلابي - ص 138",
+    "examples": [
+      {
+        "h": "الندوة مغطية الشجر اليوم الصبح.",
+        "f": "الندى يغطي الأشجار هذا الصباح."
+      }
+    ],
+    "proverbs": [],
+    "tags": [
+      "Nature",
+      "Weather"
+    ]
+  },
+  {
+    "id": 952,
+    "word_vocalized": "اَلنَّوْش",
+    "word_clean": "النوش",
+    "root": "نوش",
+    "pos": "Noun",
+    "fusha_equivalent": "هز أغصان الشجر",
+    "definition": "عملية هز وتحريك أغصان شجر (العلوب) بقصد إسقاط الثمار (الدوم).",
+    "region": "General",
+    "synonyms": [],
+    "phonetic_variants": [],
+    "note": "تختلف عن الفعل 'نوش' بمعنى رمى، فهذه اسم لعملية الجني. بشد النون",
+    "source": "قاموس اللهجة الحضرمية - فهد بن هلابي - ص 138",
+    "examples": [
+      {
+        "h": "بدا وقت النوش في العلوب.",
+        "f": "بدأ وقت هز أغصان السدر لجني الثمار."
+      }
+    ],
+    "proverbs": [],
+    "tags": [
+      "Agriculture",
+      "Nature",
+      "Movement"
+    ]
+  },
+  {
+    "id": 953,
+    "word_vocalized": "اَلنَّامُوس",
+    "word_clean": "الناموس",
+    "root": "نمس",
+    "pos": "Noun",
+    "fusha_equivalent": "عزة النفس / الكرامة",
+    "definition": "الشرف والكرامة والمكانة الاجتماعية المرموقة.",
+    "region": "General",
+    "synonyms": [
+      "كرامة",
+      "عزة",
+      "شرف"
+    ],
+    "phonetic_variants": [],
+    "note": "تقال أيضاً للمدح: (فلان راعي ناموس). بشد النون",
+    "source": "قاموس اللهجة الحضرمية - فهد بن هلابي - ص 138",
+    "examples": [
+      {
+        "h": "الناموس ما يشترى بالفلوس.",
+        "f": "الكرامة لا تُشترى بالمال."
+      }
+    ],
+    "proverbs": [],
+    "tags": [
+      "Personality Traits",
+      "Values",
+      "Daily Life"
+    ]
+  },
+  {
+    "id": 954,
+    "word_vocalized": "اَلنَّوْخَذَة",
+    "word_clean": "النوخذه",
+    "root": "نخذ",
+    "pos": "Noun",
+    "fusha_equivalent": "ربان السفينة",
+    "definition": "القائد المسؤول عن السفينة وإدارتها في البحر.",
+    "region": "Coastal",
+    "synonyms": [
+      "ربان",
+      "قبطان"
+    ],
+    "phonetic_variants": [],
+    "note": "مصطلح شائع في المناطق الساحلية الحضرمية. بشد النون",
+    "source": "قاموس اللهجة الحضرمية - فهد بن هلابي - ص 138",
+    "examples": [
+      {
+        "h": "النوخذه يعرف مسالك البحر زين.",
+        "f": "الربان يعرف طرق البحر جيداً."
+      }
+    ],
+    "proverbs": [],
+    "tags": [
+      "Jobs",
+      "Sea",
+      "Daily Life"
+    ]
+  },
+  {
+    "id": 955,
+    "word_vocalized": "اَلتَّنْصُورَة",
+    "word_clean": "التنصورة",
+    "root": "نصر",
+    "pos": "Noun",
+    "fusha_equivalent": "أهازيج قبلية",
+    "definition": "نوع من (الهوكة) ترددها القبائل تفاخراً بالنصر، وتوضع فيها الأيدي على رأس العريس.",
+    "region": "General",
+    "synonyms": [
+      "هوكة"
+    ],
+    "phonetic_variants": [],
+    "note": "تقليد تراثي في الأعراس الحضرمية لتعزيز الروابط القبلية.",
+    "source": "قاموس اللهجة الحضرمية - فهد بن هلابي - ص 138",
+    "examples": [
+      {
+        "h": "سوا تنصورة للعريس في ليلة الزفاف.",
+        "f": "أقاموا أهازيج النصر للعريس في ليلة الزفاف."
+      }
+    ],
+    "proverbs": [],
+    "tags": [
+      "Social Customs",
+      "Weddings"
+    ]
+  },
+  {
+    "id": 956,
+    "word_vocalized": "اَلنَّفْظَة",
+    "word_clean": "النفظة",
+    "root": "نفط",
+    "pos": "Verb",
+    "fusha_equivalent": "الصعق الكهربائي",
+    "definition": "تستخدم لوصف الشخص الذي يتعرض لصعقة كهربائية مفاجئة.",
+    "region": "General",
+    "synonyms": [
+      "صعقة"
+    ],
+    "phonetic_variants": [],
+    "note": "",
+    "source": "قاموس اللهجة الحضرمية - فهد بن هلابي - ص 138",
+    "examples": [
+      {
+        "h": "نفظته الكهرباء لما مس السلك.",
+        "f": "صعقته الكهرباء عندما لمس السلك."
+      }
+    ],
+    "proverbs": [],
+    "tags": [
+      "Daily Life",
+      "Health",
+      "Electricity"
+    ]
+  },
+  {
+    "id": 957,
+    "word_vocalized": "اَلنَّقْلَاه",
+    "word_clean": "النقلاه",
+    "root": "نقل",
+    "pos": "Noun",
+    "fusha_equivalent": "وليمة الأقارب",
+    "definition": "دعوة العريسين لتناول الطعام من قبل الأقارب في المناطق المجاورة بعد الزواج.",
+    "region": "General",
+    "synonyms": [],
+    "phonetic_variants": [],
+    "note": "جزء من طقوس الضيافة بعد الزفاف.",
+    "source": "قاموس اللهجة الحضرمية - فهد بن هلابي - ص 138",
+    "examples": [
+      {
+        "h": "اليوم معهم نقلاه عند عمهم.",
+        "f": "اليوم لديهم وليمة زفاف عند عمهم."
+      }
+    ],
+    "proverbs": [],
+    "tags": [
+      "Social Customs",
+      "Food",
+      "Daily Life"
+    ]
+  },
+  {
+    "id": 958,
+    "word_vocalized": "اَلنُّقْبَة",
+    "word_clean": "النقبة",
+    "root": "نقب",
+    "pos": "Noun",
+    "fusha_equivalent": "وشاح / نقاب",
+    "definition": "وشاح قطني خفيف ملون ترتديه المرأة لتغطية الرأس والوجه.",
+    "region": "General",
+    "synonyms": [
+      "نقاب",
+      "وشاح"
+    ],
+    "phonetic_variants": [],
+    "note": "تكون عادة بألوان متعددة أو سادة.",
+    "source": "قاموس اللهجة الحضرمية - فهد بن هلابي - ص 139",
+    "examples": [
+      {
+        "h": "اشترت نقبة قطنية جديدة.",
+        "f": "اشترت وشاحاً قطنياً جديداً."
+      }
+    ],
+    "proverbs": [],
+    "tags": [
+      "Clothing",
+      "Women"
+    ]
+  },
+  {
+    "id": 959,
+    "word_vocalized": "نحنا",
+    "word_clean": "نحنا",
+    "root": "نحن",
+    "pos": "Expression",
+    "fusha_equivalent": "نحن",
+    "definition": "ضمير المتكلم للجمع.",
+    "region": "General",
+    "synonyms": [
+      "نحن",
+      "إنحن",
+      "إحنا"
+    ],
+    "phonetic_variants": [
+      "إنحن"
+    ],
+    "note": "تستخدم 'إنحن' في بعض مناطق الوادي.",
+    "source": "قاموس اللهجة الحضرمية - فهد بن هلابي - ص 139",
+    "examples": [
+      {
+        "h": "نحنا بنروح البلاد بكرة.",
+        "f": "نحن سنذهب إلى القرية غداً."
+      }
+    ],
+    "proverbs": [],
+    "tags": [
+      "Grammar",
+      "Expressions"
+    ]
+  },
+  {
+    "id": 960,
+    "word_vocalized": "نَخْرَة",
+    "word_clean": "نخره",
+    "root": "نخر",
+    "pos": "Noun",
+    "fusha_equivalent": "الأنف",
+    "definition": "عضو الشم في الوجه.",
+    "region": "General",
+    "synonyms": [
+      "خشم",
+      "هنجو",
+      "شخنة"
+    ],
+    "phonetic_variants": [],
+    "note": "",
+    "source": "قاموس اللهجة الحضرمية - فهد بن هلابي - ص 139",
+    "examples": [
+      {
+        "h": "نخرته تعوره من الزكام.",
+        "f": "أنفه يؤلمه من الرشح."
+      }
+    ],
+    "proverbs": [],
+    "tags": [
+      "Body Parts",
+      "Nose"
+    ]
+  },
+  {
+    "id": 961,
+    "word_vocalized": "اَلنَّوْء",
+    "word_clean": "النوء",
+    "root": "نواء",
+    "pos": "Noun",
+    "fusha_equivalent": "السحاب",
+    "definition": "السحب المحملة بالمطر.",
+    "region": "General",
+    "synonyms": [
+      "غيم",
+      "سحاب"
+    ],
+    "phonetic_variants": [],
+    "note": "بشد النون",
+    "source": "قاموس اللهجة الحضرمية - فهد بن هلابي - ص 139",
+    "examples": [
+      {
+        "h": "النوء متردم في السماء.",
+        "f": "السحاب متراكم في السماء."
+      }
+    ],
+    "proverbs": [
+      "ما معك نوء ترعد فيه"
+    ],
+    "tags": [
+      "Nature",
+      "Weather"
+    ]
+  },
+  {
+    "id": 962,
+    "word_vocalized": "اَلنشْرَة",
+    "word_clean": "النشره",
+    "root": "نشر",
+    "pos": "Noun",
+    "fusha_equivalent": "المواشي / الأنعام",
+    "definition": "تطلق على الحيوانات الأليفة وخاصة الإبل والبقر والأغنام.",
+    "region": "General",
+    "synonyms": [
+      "أنعام",
+      "حلال"
+    ],
+    "phonetic_variants": [],
+    "note": "بكسر النون",
+    "source": "قاموس اللهجة الحضرمية - فهد بن هلابي - ص 139",
+    "examples": [
+      {
+        "h": "سرحوا النشره للمرعى.",
+        "f": "أخرجوا المواشي إلى المرعى."
+      }
+    ],
+    "proverbs": [],
+    "tags": [
+      "Agriculture",
+      "Animals"
+    ]
+  },
+  {
+    "id": 963,
+    "word_vocalized": "اَلنِّيْلَة",
+    "word_clean": "النيلة",
+    "root": "نيل",
+    "pos": "Noun",
+    "fusha_equivalent": "مادة صبغية",
+    "definition": "نبات يستخرج منه مادة تستخدم في الصباغة وتبييض الملابس.",
+    "region": "General",
+    "synonyms": [],
+    "phonetic_variants": [],
+    "note": "بكسر الباء والياء",
+    "source": "قاموس اللهجة الحضرمية - فهد بن هلابي - ص 139",
+    "examples": [
+      {
+        "h": "صبغ ثوبه بالنيلة.",
+        "f": "صبغ ثوبه بمادة النيلة."
+      }
+    ],
+    "proverbs": [],
+    "tags": [
+      "Nature",
+      "Clothing"
+    ]
+  },
+  {
+    "id": 964,
+    "word_vocalized": "اَلنُّوب",
+    "word_clean": "النوب",
+    "root": "نوب",
+    "pos": "Noun",
+    "fusha_equivalent": "النحل",
+    "definition": "حشرة النحل التي تنتج العسل.",
+    "region": "General",
+    "synonyms": [
+      "نحل"
+    ],
+    "phonetic_variants": [],
+    "note": "مشهور في حضرموت لإنتاج عسل السدر. بشد النون",
+    "source": "قاموس اللهجة الحضرمية - فهد بن هلابي - ص 139",
+    "examples": [
+      {
+        "h": "النوب بنى له خلية في الشجرة.",
+        "f": "النحل بنى له خلية في الشجرة."
+      }
+    ],
+    "proverbs": [],
+    "tags": [
+      "Nature",
+      "Insects",
+      "Honey"
+    ]
+  },
+  {
+    "id": 965,
+    "word_vocalized": "ني",
+    "word_clean": "ني",
+    "root": "نيأ",
+    "pos": "Adjective",
+    "fusha_equivalent": "نيئ / غير ناضج",
+    "definition": "تُطلق على الطعام الذي لم ينضج تماماً، أو الشخص الفظ.",
+    "region": "General",
+    "synonyms": [
+      "غير ناضج"
+    ],
+    "phonetic_variants": [],
+    "note": "",
+    "source": "قاموس اللهجة الحضرمية - فهد بن هلابي - ص 139",
+    "examples": [
+      {
+        "h": "اللحم عاده ني، رده فوق النار.",
+        "f": "اللحم ما يزال نيئاً، أعده فوق النار."
+      }
+    ],
+    "proverbs": [],
+    "tags": [
+      "Food",
+      "Daily Life"
+    ]
+  },
+  {
+    "id": 966,
+    "word_vocalized": "اَلنَّزْوح / النُّزُوحَة",
+    "word_clean": "النزوح",
+    "root": "نزح",
+    "pos": "Noun",
+    "fusha_equivalent": "استخراج الماء",
+    "definition": "عملية إخراج الماء من البئر يدوياً أو بالدلو.",
+    "region": "General",
+    "synonyms": [],
+    "phonetic_variants": [
+      "نزح"
+    ],
+    "note": "",
+    "source": "قاموس اللهجة الحضرمية - فهد بن هلابي - ص 139",
+    "examples": [
+      {
+        "h": "النزوح من البئر يتعب الظهر.",
+        "f": "استخراج الماء من البئر يرهق الظهر."
+      }
+    ],
+    "proverbs": [],
+    "tags": [
+      "Daily Life",
+      "Water",
+      "Extraction"
+    ]
+  },
+  {
+    "id": 967,
+    "word_vocalized": "اَلنَّنَة",
+    "word_clean": "الننه",
+    "root": "نن",
+    "pos": "Noun",
+    "fusha_equivalent": "البومة",
+    "definition": "طائر البومة المعروف بصياحه في الليل.",
+    "region": "General",
+    "synonyms": [],
+    "phonetic_variants": [],
+    "note": "بشد النون",
+    "source": "قاموس اللهجة الحضرمية - فهد بن هلابي - ص 139",
+    "examples": [
+      {
+        "h": "سمعنا صياح الننه فوق الدار.",
+        "f": "سمعنا صياح البومة فوق المنزل."
+      }
+    ],
+    "proverbs": [],
+    "tags": [
+      "Nature",
+      "Birds"
+    ]
+  },
+  {
+    "id": 968,
+    "word_vocalized": "نخشوش",
+    "word_clean": "نخشوش",
+    "root": "شخن",
+    "pos": "Noun",
+    "fusha_equivalent": "الأنف",
+    "definition": "تسمية أخرى للأنف في بعض اللهجات الحضرمية.",
+    "region": "General",
+    "synonyms": [
+      "نخرة",
+      "خشم",
+      "هنجو"
+    ],
+    "phonetic_variants": [
+      "نخشن"
+    ],
+    "note": "",
+    "source": "قاموس اللهجة الحضرمية - فهد بن هلابي - ص 140",
+    "examples": [
+      {
+        "h": "لا تحط يدك في نخشوشك.",
+        "f": "لا تضع يدك في أنفك."
+      }
+    ],
+    "proverbs": [],
+    "tags": [
+      "Body Parts",
+      "Nose"
+    ]
+  },
+ 
+  {
+    "id": 969,
+    "word_vocalized": "اَلنَّصْلَة",
+    "word_clean": "النصلة",
+    "root": "نصل",
+    "pos": "Noun",
+    "fusha_equivalent": "نصل الجنبية",
+    "definition": "الجزء المعدني الحاد من الجنبية (الخنجر).",
+    "region": "General",
+    "synonyms": [
+      "نصل"
+    ],
+    "phonetic_variants": [],
+    "note": "",
+    "source": "قاموس اللهجة الحضرمية - فهد بن هلابي - ص 140",
+    "examples": [
+      {
+        "h": "نصلة جنبيته حادة ولامعة.",
+        "f": "نصل خنجره حاد ولامع."
+      }
+    ],
+    "proverbs": [],
+    "tags": [
+      "Tools",
+      "Traditions"
+    ]
+  },
+  {
+    "id": 970,
+    "word_vocalized": "وِيْش",
+    "word_clean": "ويش",
+    "root": "أيش",
+    "pos": "Expression",
+    "fusha_equivalent": "ماذا",
+    "definition": "أداة استفهام تستخدم للسؤال عن الشيء.",
+    "region": "General",
+    "synonyms": [
+      "ايش",
+      "واه"
+    ],
+    "phonetic_variants": [],
+    "note": "",
+    "source": "قاموس اللهجة الحضرمية - فهد بن هلابي - ص 141",
+    "examples": [
+      {
+        "h": "ويش أسوي في هذا الحال؟",
+        "f": "ماذا أفعل في هذا الموقف؟"
+      }
+    ],
+    "proverbs": [],
+    "tags": [
+      "Expressions",
+      "Grammar"
+    ]
+  },
+  {
+    "id": 971,
+    "word_vocalized": "وَصّ",
+    "word_clean": "وص",
+    "root": "وصي",
+    "pos": "Verb",
+    "fusha_equivalent": "أرسل / كلّف",
+    "definition": "بمعنى إرسال شخص لقضاء حاجة أو تبليغ رسالة.",
+    "region": "General",
+    "synonyms": [
+      "أرسل"
+    ],
+    "phonetic_variants": [],
+    "note": "",
+    "source": "قاموس اللهجة الحضرمية - فهد بن هلابي - ص 141",
+    "examples": [
+      {
+        "h": "وصيناه يروح السوق يجيب عشاء.",
+        "f": "أرسلناه إلى السوق ليحضر العشاء."
+      }
+    ],
+    "proverbs": [],
+    "tags": [
+      "Actions",
+      "Daily Life",
+      "Sending"
+    ]
+  },
+  {
+    "id": 972,
+    "word_vocalized": "اَلْوَطَاء",
+    "word_clean": "الوطاء",
+    "root": "وطأ",
+    "pos": "Noun",
+    "fusha_equivalent": "المنخفض",
+    "definition": "المكان المعتدل أو المنخفض من الأرض.",
+    "region": "General",
+    "synonyms": [
+      "منخفض"
+    ],
+    "phonetic_variants": [],
+    "note": "بضم الواو",
+    "source": "قاموس اللهجة الحضرمية - فهد بن هلابي - ص 141",
+    "examples": [
+      {
+        "h": "الماء يتبع الوطاء دائماً.",
+        "f": "الماء يجري دائماً نحو المكان المنخفض."
+      }
+    ],
+    "proverbs": [
+      "السيل يتبع الوطَاء"
+    ],
+    "tags": [
+      "Nature",
+      "Geography"
+    ]
+  },
+  {
+    "id": 973,
+    "word_vocalized": "وَخِّر",
+    "word_clean": "وخر",
+    "root": "أخر",
+    "pos": "Verb",
+    "fusha_equivalent": "تنحَّ / ابتعد",
+    "definition": "فعل أمر يطلب من الشخص الابتعاد أو إفساح الطريق.",
+    "region": "General",
+    "synonyms": [
+      "ابعد",
+      "تنحى"
+    ],
+    "phonetic_variants": [],
+    "note": "بتشديد الخاء",
+    "source": "قاموس اللهجة الحضرمية - فهد بن هلابي - ص 141",
+    "examples": [
+      {
+        "h": "وخر شوي من قدام السيارة.",
+        "f": "ابتعد قليلاً من أمام السيارة."
+      }
+    ],
+    "proverbs": [],
+    "tags": [
+      "Actions",
+      "Daily Life",
+      "Distance"
+    ]
+  },
+  {
+    "id": 974,
+    "word_vocalized": "اَلْوَدَف",
+    "word_clean": "الودف",
+    "root": "ودف",
+    "pos": "Noun",
+    "fusha_equivalent": "السقف",
+    "definition": "سقف الغرفة أو البناء.",
+    "region": "General",
+    "synonyms": [
+      "سقف"
+    ],
+    "phonetic_variants": [],
+    "note": "",
+    "source": "قاموس اللهجة الحضرمية - فهد بن هلابي - ص 141",
+    "examples": [
+      {
+        "h": "الودف يقطر ماء من المطر.",
+        "f": "السقف يسرب الماء بسبب المطر."
+      }
+    ],
+    "proverbs": [],
+    "tags": [
+      "House",
+      "Construction",
+      "Roof"
+    ]
+  },
+  {
+    "id": 975,
+    "word_vocalized": "وحل",
+    "word_clean": "وحل",
+    "root": "وحل",
+    "pos": "Verb",
+    "fusha_equivalent": "تحيَّر / عجز",
+    "definition": "الوقوع في حيرة أو مشكلة يصعب حلها.",
+    "region": "General",
+    "synonyms": [
+      "تورط",
+      "احتار"
+    ],
+    "phonetic_variants": [],
+    "note": "الوحلة هي الورطة أو المشكلة. بكسر الواو والحاء",
+    "source": "قاموس اللهجة الحضرمية - فهد بن هلابي - ص 141",
+    "examples": [
+      {
+        "h": "وحلنا في حل هذه المسألة.",
+        "f": "تحيرنا في حل هذه المسألة."
+      }
+    ],
+    "proverbs": [],
+    "tags": [
+      "Emotions",
+      "Social Issues",
+      "Problems"
+    ]
+  },
+  {
+    "id": 976,
+    "word_vocalized": "اَلْوَضِيْع",
+    "word_clean": "الوضيع",
+    "root": "وضع",
+    "pos": "Noun",
+    "fusha_equivalent": "المخزن",
+    "definition": "مخزن صغير داخل البيت لحفظ الغلال والطعام.",
+    "region": "General",
+    "synonyms": [
+      "مخزن",
+      "كوت"
+    ],
+    "phonetic_variants": [],
+    "note": "",
+    "source": "قاموس اللهجة الحضرمية - فهد بن هلابي - ص 141",
+    "examples": [
+      {
+        "h": "حطوا كيس التمر في الوضيع.",
+        "f": "ضعوا كيس التمر في المخزن."
+      }
+    ],
+    "proverbs": [],
+    "tags": [
+      "House",
+      "Food",
+      "Storage"
+    ]
+  },
+  {
+    "id": 977,
+    "word_vocalized": "وَاه",
+    "word_clean": "واه",
+    "root": "أيش",
+    "pos": "Expression",
+    "fusha_equivalent": "ماذا / ماذا يقرب لك",
+    "definition": "أداة استفهام تستخدم للسؤال عن الشيء أو القرابة.",
+    "region": "General",
+    "synonyms": [
+      "ويش",
+      "ايش"
+    ],
+    "phonetic_variants": [],
+    "note": "يقال: واه يشك لك؟ أي ما هي صلة قرابتك به؟",
+    "source": "قاموس اللهجة الحضرمية - فهد بن هلابي - ص 142",
+    "examples": [
+      {
+        "h": "واه بغيت من السوق؟",
+        "f": "ماذا أردت من السوق؟"
+      }
+    ],
+    "proverbs": [],
+    "tags": [
+      "Expressions",
+      "Grammar",
+      "Proximity"
+    ]
+  },
+  {
+    "id": 978,
+    "word_vocalized": "اَلْوَضَر",
+    "word_clean": "الوضر",
+    "root": "وضر",
+    "pos": "Noun",
+    "fusha_equivalent": "الحجر الصغير",
+    "definition": "تُطلق على الأحجار الصغيرة أو الحصى.",
+    "region": "General",
+    "synonyms": [
+      "حصى"
+    ],
+    "phonetic_variants": [],
+    "note": "",
+    "source": "قاموس اللهجة الحضرمية - فهد بن هلابي - ص 142",
+    "examples": [
+      {
+        "h": "الولد يلعب بالوضر في الشارع.",
+        "f": "الولد يلعب بالحصى في الشارع."
+      }
+    ],
+    "proverbs": [],
+    "tags": [
+      "Nature",
+      "Daily Life",
+      "Stones"
+    ]
+  },
+  {
+    "id": 979,
+    "word_vocalized": "اَلْوَصَر",
+    "word_clean": "الوصر",
+    "root": "وصر",
+    "pos": "Noun",
+    "fusha_equivalent": "جانب البيت / غرفة زراعية",
+    "definition": "مساحة بجانب البيت أو المزرعة، وقد تطلق على غرفة خاصة.",
+    "region": "General",
+    "synonyms": [],
+    "phonetic_variants": [],
+    "note": "جمعها أوصار.",
+    "source": "قاموس اللهجة الحضرمية - فهد بن هلابي - ص 142",
+    "examples": [
+      {
+        "h": "قعدنا في الوصر وقت العصر.",
+        "f": "جلسنا في جانب البيت وقت العصر."
+      }
+    ],
+    "proverbs": [],
+    "tags": [
+      "House",
+      "Agriculture"
+    ]
+  },
+  {
+    "id": 980,
+    "word_vocalized": "وَرَاك",
+    "word_clean": "وراك",
+    "root": "ورى",
+    "pos": "Expression",
+    "fusha_equivalent": "ماذا بك",
+    "definition": "تعبير للسؤال عن حال الشخص أو سبب انزعاجه.",
+    "region": "General",
+    "synonyms": [
+      "ما بك",
+      "ايش فيك"
+    ],
+    "phonetic_variants": [],
+    "note": "",
+    "source": "قاموس اللهجة الحضرمية - فهد بن هلابي - ص 142",
+    "examples": [
+      {
+        "h": "وراك اليوم زعلان؟",
+        "f": "ماذا بك اليوم حزيناً؟"
+      }
+    ],
+    "proverbs": [],
+    "tags": [
+      "Expressions",
+      "Daily Life",
+      "Proximity"
+    ]
+  },
+  {
+    "id": 981,
+    "word_vocalized": "اَلْوِقَاء",
+    "word_clean": "الوقاء",
+    "root": "وقي",
+    "pos": "Noun",
+    "fusha_equivalent": "فراش النوم",
+    "definition": "المرتبة أو الفراش المحشو بالقطن (العطب).",
+    "region": "General",
+    "synonyms": [
+      "فراش"
+    ],
+    "phonetic_variants": [],
+    "note": "",
+    "source": "قاموس اللهجة الحضرمية - فهد بن هلابي - ص 142",
+    "examples": [
+      {
+        "h": "فرش لي الوقاء بغيت أرقد.",
+        "f": "افتح لي الفراش أريد أن أنام."
+      }
+    ],
+    "proverbs": [],
+    "tags": [
+      "House",
+      "Daily Life",
+      "Sleep"
+    ]
+  },
+  {
+    "id": 982,
+    "word_vocalized": "وَغْم",
+    "word_clean": "وغم",
+    "root": "وغم",
+    "pos": "Noun",
+    "fusha_equivalent": "ثمار صغيرة",
+    "definition": "تطلق على ثمار (الفقوز) الصغيرة قبل نضجها.",
+    "region": "General",
+    "synonyms": [],
+    "phonetic_variants": [],
+    "note": "",
+    "source": "قاموس اللهجة الحضرمية - فهد بن هلابي - ص 142",
+    "examples": [
+      {
+        "h": "الفقوز عاده وغم صغير.",
+        "f": "الثمار ما تزال صغيرة جداً."
+      }
+    ],
+    "proverbs": [],
+    "tags": [
+      "Agriculture",
+      "Nature",
+      "Fruits"
+    ]
+  },
+  {
+    "id": 983,
+    "word_vocalized": "اَلْوَضْعَة",
+    "word_clean": "الوضعة",
+    "root": "وضع",
+    "pos": "Noun",
+    "fusha_equivalent": "نبات شوكي",
+    "definition": "نبات بري شوكي مليء بالماء، تستخدم عصارته في الطب الشعبي لعلاج المغص.",
+    "region": "General",
+    "synonyms": [],
+    "phonetic_variants": [],
+    "note": "من النباتات الطبية المشهورة في البادية.",
+    "source": "قاموس اللهجة الحضرمية - فهد بن هلابي - ص 142",
+    "examples": [
+      {
+        "h": "شرب من عصارة الوضعة لبطنه.",
+        "f": "شرب من عصارة نبات الوضعة لآلام بطنه."
+      }
+    ],
+    "proverbs": [],
+    "tags": [
+      "Nature",
+      "Medical",
+      "Medicine"
+    ]
+  },
+  {
+    "id": 984,
+    "word_vocalized": "وَلْعَاد",
+    "word_clean": "ولعاد",
+    "root": "عاد",
+    "pos": "Expression",
+    "fusha_equivalent": "لا فائدة / لم يعد",
+    "definition": "تعبير يفيد انتهاء الحاجة لشيء ما أو اليأس من أمر.",
+    "region": "General",
+    "synonyms": [
+      "ما عاد"
+    ],
+    "phonetic_variants": [],
+    "note": "كقول الشاعر: (ولعاد حاجة لكثر المشقَّة والنكد).",
+    "source": "قاموس اللهجة الحضرمية - فهد بن هلابي - ص 142",
+    "examples": [
+      {
+        "h": "ولعاد بغينا منه شيء.",
+        "f": "ولم نعد نريد منه شيئاً."
+      }
+    ],
+    "proverbs": [],
+    "tags": [
+      "Expressions",
+      "Daily Life",
+      "Despair"
+    ]
+  },
+  {
+    "id": 985,
+    "word_vocalized": "وِزْرَة",
+    "word_clean": "وزرة",
+    "root": "وزر",
+    "pos": "Noun",
+    "fusha_equivalent": "الصارون / الإزار",
+    "definition": "لباس يغطي النصف الأسفل من جسم الرجل.",
+    "region": "General",
+    "synonyms": [
+      "إزار",
+      "صارون"
+    ],
+    "phonetic_variants": [],
+    "note": "",
+    "source": "قاموس اللهجة الحضرمية - فهد بن هلابي - ص 143",
+    "examples": [
+      {
+        "h": "لبس وزرة جديدة للعيد.",
+        "f": "لبس إزاراً جديداً للعيد."
+      }
+    ],
+    "proverbs": [],
+    "tags": [
+      "Clothing",
+      "Men",
+      "Dress"
+    ]
+  },
+  {
+    "id": 986,
+    "word_vocalized": "وِعْيَة",
+    "word_clean": "وعيه",
+    "root": "وعي",
+    "pos": "Noun",
+    "fusha_equivalent": "أواني المطبخ",
+    "definition": "تُجمع على أوعية، وتطلق على القدور والصحون.",
+    "region": "General",
+    "synonyms": [
+      "أواني"
+    ],
+    "phonetic_variants": [],
+    "note": "",
+    "source": "قاموس اللهجة الحضرمية - فهد بن هلابي - ص 143",
+    "examples": [
+      {
+        "h": "غسلوا الوعية بعد العشاء.",
+        "f": "غسلوا الأواني بعد العشاء."
+      }
+    ],
+    "proverbs": [],
+    "tags": [
+      "House",
+      "Kitchen",
+      "Cooking"
+    ]
+  },
+  {
+    "id": 987,
+    "word_vocalized": "وَكَّد",
+    "word_clean": "وكد",
+    "root": "أكد",
+    "pos": "Verb",
+    "fusha_equivalent": "أكد / حجز",
+    "definition": "تأكيد الدعوة لوليمة، أو حجز وسيلة مواصلات.",
+    "region": "General",
+    "synonyms": [
+      "أكد",
+      "ثبت"
+    ],
+    "phonetic_variants": [],
+    "note": "يقال: وكد سيارة، أي حجزها لنفسه مسبقاً.",
+    "source": "قاموس اللهجة الحضرمية - فهد بن هلابي - ص 143",
+    "examples": [
+      {
+        "h": "وكدت السيارة للسفر بكرة.",
+        "f": "حجزت السيارة للسفر غداً."
+      },
+      {
+        "h": "وكد على الناس للزواج.",
+        "f": "أكد على الناس دعوة الزواج."
+      }
+    ],
+    "proverbs": [],
+    "tags": [
+      "Daily Life",
+      "Social Customs",
+      "Invitation"
+    ]
+  },
+  {
+    "id": 988,
+    "word_vocalized": "وِيَّاه",
+    "word_clean": "وياه",
+    "root": "إيا",
+    "pos": "Expression",
+    "fusha_equivalent": "معه",
+    "definition": "تفيد الرفقة أو المعية.",
+    "region": "General",
+    "synonyms": [
+      "معه"
+    ],
+    "phonetic_variants": [],
+    "note": "",
+    "source": "قاموس اللهجة الحضرمية - فهد بن هلابي - ص 143",
+    "examples": [
+      {
+        "h": "أنا رحت وياه المحضرة.",
+        "f": "أنا ذهبت معه إلى الاجتماع."
+      }
+    ],
+    "proverbs": [],
+    "tags": [
+      "Grammar",
+      "Daily Life",
+      "Proximity"
+    ]
+  },
+  {
+    "id": 989,
+    "word_vocalized": "وَار",
+    "word_clean": "وار",
+    "root": "وار",
+    "pos": "Noun",
+    "fusha_equivalent": "وحدة قياس (ياردا)",
+    "definition": "وحدة قياس للأطوال تساوي تقريباً 90 سم.",
+    "region": "General",
+    "synonyms": [],
+    "phonetic_variants": [],
+    "note": "تستخدم بكثرة في قياس الأقمشة.",
+    "source": "قاموس اللهجة الحضرمية - فهد بن هلابي - ص 143",
+    "examples": [
+      {
+        "h": "اشتريت خمسة ورات من القماش.",
+        "f": "اشتريت خمسة ياردات من القماش."
+      }
+    ],
+    "proverbs": [],
+    "tags": [
+      "Daily Life",
+      "Trade",
+      "Clothing"
+    ]
+  },
+  {
+    "id": 990,
+    "word_vocalized": "وِيْشْكُمْ",
+    "word_clean": "ويشكم",
+    "root": "ويش",
+    "pos": "Expression",
+    "fusha_equivalent": "كيف حالكم",
+    "definition": "صيغة سؤال للترحيب بجماعة والاطمئنان على أحوالهم.",
+    "region": "General",
+    "synonyms": [
+      "كيف حالكم"
+    ],
+    "phonetic_variants": [],
+    "note": "مفردها: ويشك؟",
+    "source": "قاموس اللهجة الحضرمية - فهد بن هلابي - ص 143",
+    "examples": [
+      {
+        "h": "يا هلا، ويشكم اليوم؟",
+        "f": "أهلاً بك، كيف حالكم اليوم؟"
+      }
+    ],
+    "proverbs": [],
+    "tags": [
+      "Expressions",
+      "Social Customs",
+      "Greeting"
+    ]
+  },
+  {
+    "id": 991,
+    "word_vocalized": "وَنِعْم",
+    "word_clean": "ونعم",
+    "root": "نعم",
+    "pos": "Expression",
+    "fusha_equivalent": "نِعمَ الرجل / ثناء",
+    "definition": "كلمة تقال للإطراء والمدح وذكر محاسن الشخص.",
+    "region": "General",
+    "synonyms": [
+      "كفو"
+    ],
+    "phonetic_variants": [],
+    "note": "",
+    "source": "قاموس اللهجة الحضرمية - فهد بن هلابي - ص 143",
+    "examples": [
+      {
+        "h": "فلان ونعم فيه، راعي كرم.",
+        "f": "فلان نِعمَ الرجل، هو صاحب كرم."
+      }
+    ],
+    "proverbs": [],
+    "tags": [
+      "Expressions",
+      "Values",
+      "Praise"
+    ]
+  },
+  {
+    "id": 992,
+    "word_vocalized": "اَلْوَثَن",
+    "word_clean": "الوثن",
+    "root": "وثن",
+    "pos": "Noun",
+    "fusha_equivalent": "فاصل الحدود الزراعية",
+    "definition": "أحجار أو علامات توضع للفصل بين الأراضي الزراعية.",
+    "region": "General",
+    "synonyms": [
+      "حد"
+    ],
+    "phonetic_variants": [],
+    "note": "",
+    "source": "قاموس اللهجة الحضرمية - فهد بن هلابي - ص 143",
+    "examples": [
+      {
+        "h": "لا تحرك الوثن من مكانه.",
+        "f": "لا تحرك علامة الحدود من مكانها."
+      }
+    ],
+    "proverbs": [
+      "خلوه كما الوثن"
+    ],
+    "tags": [
+      "Agriculture",
+      "Law",
+      "Boundaries"
+    ]
+  },
+  {
+    "id": 993,
+    "word_vocalized": "وَقَع",
+    "word_clean": "وقع",
+    "root": "وقع",
+    "pos": "Verb",
+    "fusha_equivalent": "صار / حدث",
+    "definition": "تستخدم بمعنى الحدوث أو التحول إلى حال معينة.",
+    "region": "General",
+    "synonyms": [
+      "صار",
+      "استوى"
+    ],
+    "phonetic_variants": [],
+    "note": "",
+    "source": "قاموس اللهجة الحضرمية - فهد بن هلابي - ص 143",
+    "examples": [
+      {
+        "h": "وقع لنا حادث في الطريق.",
+        "f": "حدث لنا حادث في الطريق."
+      }
+    ],
+    "proverbs": [],
+    "tags": [
+      "Actions",
+      "Daily Life",
+      "Accident"
+    ]
+  },
+  {
+    "id": 994,
+    "word_vocalized": "وِلْفَة",
+    "word_clean": "ولفه",
+    "root": "ولف",
+    "pos": "Noun",
+    "fusha_equivalent": "اعتياد / تألف",
+    "definition": "تُطلق على الشخص أو الحيوان الذي اعتاد على مكان أو شخص معين.",
+    "region": "General",
+    "synonyms": [
+      "عادة",
+      "ألفة"
+    ],
+    "phonetic_variants": [],
+    "note": "يقال: ولف على الأمر، أي نشأ وتربى عليه.",
+    "source": "قاموس اللهجة الحضرمية - فهد بن هلابي - ص 143",
+    "examples": [
+      {
+        "h": "الحمام ولف على السطح.",
+        "f": "الحمام اعتاد على السطح."
+      }
+    ],
+    "proverbs": [],
+    "tags": [
+      "Daily Life",
+      "Behavior",
+      "Habit"
+    ]
+  },
+  {
+    "id": 995,
+    "word_vocalized": "اَلْهُوْش",
+    "word_clean": "الهوش",
+    "root": "هاش",
+    "pos": "Noun",
+    "fusha_equivalent": "الهجوم / السلب",
+    "definition": "تطلق على عمليات الاقتحام أو السطو المفاجئ.",
+    "region": "General",
+    "synonyms": [
+      "هجوم"
+    ],
+    "phonetic_variants": [],
+    "note": "",
+    "source": "قاموس اللهجة الحضرمية - فهد بن هلابي - ص 145",
+    "examples": [
+      {
+        "h": "وقع هوش في الحارة ليلة أمس.",
+        "f": "حدث هجوم في الحي ليلة أمس."
+      }
+    ],
+    "proverbs": [],
+    "tags": [
+      "Social Issues",
+      "History",
+      "Attack"
     ]
   }
 ]
