@@ -27665,7 +27665,6 @@
       "Nose"
     ]
   },
- 
   {
     "id": 969,
     "word_vocalized": "اَلنَّصْلَة",
@@ -28426,6 +28425,1474 @@
       "Social Issues",
       "History",
       "Attack"
+    ]
+  },
+  {
+    "id": 996,
+    "word_vocalized": "اَلْهَيْج",
+    "word_clean": "الهيج",
+    "root": "هيج",
+    "pos": "Noun",
+    "fusha_equivalent": "البعير الفحل",
+    "definition": "يطلق على الجمل القوي المخصص للتلقيح أو القيادة في القافلة.",
+    "region": "General",
+    "synonyms": [
+      "جمل",
+      "بعير"
+    ],
+    "phonetic_variants": [],
+    "note": "",
+    "source": "قاموس اللهجة الحضرمية - فهد بن هلابي - ص 145",
+    "examples": [
+      {
+        "h": "ذا الهيج ما حد يقدر يثني خطامه.",
+        "f": "هذا البعير الفحل لا يستطيع أحد ثني زمامه."
+      }
+    ],
+    "proverbs": [],
+    "tags": [
+      "Nature",
+      "Animals"
+    ]
+  },
+  {
+    "id": 997,
+    "word_vocalized": "اَلْهَرْش",
+    "word_clean": "الهرش",
+    "root": "هرش",
+    "pos": "Noun",
+    "fusha_equivalent": "الثعبان",
+    "definition": "تسمية محلية تطلق على الأفعى أو الثعبان.",
+    "region": "General",
+    "synonyms": [
+      "حنش",
+      "ثعبان"
+    ],
+    "phonetic_variants": [],
+    "note": "يكثر استخدامه في الأمثال الشعبية للتحذير.",
+    "source": "قاموس اللهجة الحضرمية - فهد بن هلابي - ص 145",
+    "examples": [
+      {
+        "h": "الهرش ما ينقبض بذيله.",
+        "f": "الثعبان لا يمسك من ذيله (بمعنى لا بد من الحذر)."
+      },
+      {
+        "h": "انتبه من الهرش بين الشجر.",
+        "f": "احذر من الثعبان الموجود بين الأشجار."
+      }
+    ],
+    "proverbs": [
+      "الهرش ما ينقبض بذيلة"
+    ],
+    "tags": [
+      "Nature",
+      "Animals",
+      "Snakes"
+    ]
+  },
+  {
+    "id": 998,
+    "word_vocalized": "اَلْهَوْكَة",
+    "word_clean": "الهوكة",
+    "root": "هوك",
+    "pos": "Noun",
+    "fusha_equivalent": "الصيحة / الزغاريد الرجالية",
+    "definition": "صيحة جماعية حماسية يؤديها الرجال في الزوامل أو رقصة العدة تعبيراً عن القوة والفخر.",
+    "region": "General",
+    "synonyms": [
+      "صيحة",
+      "زامل"
+    ],
+    "phonetic_variants": [],
+    "note": "تجمع على 'هوك'.",
+    "source": "قاموس اللهجة الحضرمية - فهد بن هلابي - ص 144",
+    "examples": [
+      {
+        "h": "سمعت الهوكة من آخر الوادي.",
+        "f": "سمعت صيحات الفخر من نهاية الوادي."
+      }
+    ],
+    "proverbs": [],
+    "tags": [
+      "Social Customs",
+      "Arts"
+    ]
+  },
+  {
+    "id": 999,
+    "word_vocalized": "اَلْهِنْدِرَاب",
+    "word_clean": "الهندراب",
+    "root": "هندرب",
+    "pos": "Noun",
+    "fusha_equivalent": "المفتاح اليدوي / الكرنك",
+    "definition": "أداة حديدية يدوية كانت تستخدم قديماً لتشغيل المحركات أو الآلات.",
+    "region": "General",
+    "synonyms": [
+      "هندل"
+    ],
+    "phonetic_variants": [],
+    "note": "كلمة من أصل أجنبي معربة محلياً.",
+    "source": "قاموس اللهجة الحضرمية - فهد بن هلابي - ص 145",
+    "examples": [
+      {
+        "h": "دور المكينة بالهندراب لين تشتغل.",
+        "f": "أدر المحرك بالمفتاح اليدوي حتى يعمل."
+      }
+    ],
+    "proverbs": [],
+    "tags": [
+      "Daily Life",
+      "Tools"
+    ]
+  },
+  {
+    "id": 1000,
+    "word_vocalized": "اَلْهَبِيش",
+    "word_clean": "الهبيش",
+    "root": "هبش",
+    "pos": "Noun",
+    "fusha_equivalent": "رقصة شعبية",
+    "definition": "لون من ألوان الرقص الشعبي البدوي يصاحبه عزف المزمار والطبول.",
+    "region": "Badiyah",
+    "synonyms": [],
+    "phonetic_variants": [],
+    "note": "مرتبط غالباً بأهل البادية.",
+    "source": "قاموس اللهجة الحضرمية - فهد بن هلابي - ص 145",
+    "examples": [
+      {
+        "h": "الليلة في زواج فلان بيقع هبيش.",
+        "f": "الليلة في زواج فلان ستكون هناك رقصة الهبيش."
+      }
+    ],
+    "proverbs": [],
+    "tags": [
+      "Social Customs",
+      "Arts",
+      "Dance"
+    ]
+  },
+  {
+    "id": 1001,
+    "word_vocalized": "هَمْلَة",
+    "word_clean": "هملة",
+    "root": "همل",
+    "pos": "Noun",
+    "fusha_equivalent": "وقت هطول المطر",
+    "definition": "لحظة نزول الغيث أو الفترة التي ينهمر فيها المطر.",
+    "region": "General",
+    "synonyms": [
+      "مطر",
+      "غيث"
+    ],
+    "phonetic_variants": [],
+    "note": "",
+    "source": "قاموس اللهجة الحضرمية - فهد بن هلابي - ص 145",
+    "examples": [
+      {
+        "h": "جت الهملة والناس فرحت.",
+        "f": "نزل المطر والناس استبشروا."
+      }
+    ],
+    "proverbs": [],
+    "tags": [
+      "Nature",
+      "Weather"
+    ]
+  },
+  {
+    "id": 1002,
+    "word_vocalized": "اَلْهَمِيم",
+    "word_clean": "الهميم",
+    "root": "همم",
+    "pos": "Noun",
+    "fusha_equivalent": "السيل الكبير",
+    "definition": "يطلق على السيل الجارف والقوي الذي يملأ بطن الوادي.",
+    "region": "General",
+    "synonyms": [
+      "سيل",
+      "جارف"
+    ],
+    "phonetic_variants": [],
+    "note": "",
+    "source": "قاموس اللهجة الحضرمية - فهد بن هلابي - ص 145",
+    "examples": [
+      {
+        "h": "الوادي اليوم ساقي بالهميم.",
+        "f": "الوادي اليوم ممتلئ بالسيل الكبير."
+      }
+    ],
+    "proverbs": [],
+    "tags": [
+      "Nature",
+      "Weather",
+      "Floods"
+    ]
+  },
+  {
+    "id": 1003,
+    "word_vocalized": "هِمْبَالَة",
+    "word_clean": "همبالة",
+    "root": "هبل",
+    "pos": "Noun",
+    "fusha_equivalent": "أداة حرث خشبية",
+    "definition": "أداة خشبية تقليدية توضع على رقاب الحمير أو الثيران لجر المحراث (الحلي).",
+    "region": "Rural",
+    "synonyms": [],
+    "phonetic_variants": [],
+    "note": "",
+    "source": "قاموس اللهجة الحضرمية - فهد بن هلابي - ص 146",
+    "examples": [
+      {
+        "h": "ركب الهمبالة على الحمار با نحرث.",
+        "f": "ثبت أداة الحرث على الحمار لنبدأ الحرث."
+      }
+    ],
+    "proverbs": [],
+    "tags": [
+      "Agriculture",
+      "Tools"
+    ]
+  },
+  {
+    "id": 1004,
+    "word_vocalized": "اَلْهَشّ",
+    "word_clean": "الهش",
+    "root": "هشش",
+    "pos": "Noun",
+    "fusha_equivalent": "المطر الخفيف",
+    "definition": "رذاذ المطر أو المطر البسيط الذي لا يستمر طويلاً.",
+    "region": "General",
+    "synonyms": [
+      "رذاذ",
+      "نضوح"
+    ],
+    "phonetic_variants": [],
+    "note": "",
+    "source": "قاموس اللهجة الحضرمية - فهد بن هلابي - ص 146",
+    "examples": [
+      {
+        "h": "ما هو سيل، عاده إلا هش بسيط.",
+        "f": "ليس سيلاً، لا يزال مجرد مطر خفيف."
+      }
+    ],
+    "proverbs": [],
+    "tags": [
+      "Nature",
+      "Weather",
+      "Rain"
+    ]
+  },
+  {
+    "id": 1005,
+    "word_vocalized": "هَدَأَة / هِنْدُول",
+    "word_clean": "هدأة هندول",
+    "root": "هدأ",
+    "pos": "Noun",
+    "fusha_equivalent": "المهد / سرير الطفل",
+    "definition": "السرير الذي ينام فيه الطفل الرضيع، ويكون غالباً معلقاً أو قابلاً للهز.",
+    "region": "General",
+    "synonyms": [
+      "منز",
+      "سرير"
+    ],
+    "phonetic_variants": [],
+    "note": "يضرب بها المثل في راحة البال.",
+    "source": "قاموس اللهجة الحضرمية - فهد بن هلابي - ص 146",
+    "examples": [
+      {
+        "h": "حط الصغير في الهدأة با يرقد.",
+        "f": "ضع الطفل في المهد لكي ينام."
+      }
+    ],
+    "proverbs": [
+      "ضحك في الهدأة"
+    ],
+    "tags": [
+      "Daily Life",
+      "Home",
+      "Children"
+    ]
+  },
+  {
+    "id": 1006,
+    "word_vocalized": "هُوْرِي",
+    "word_clean": "هوري",
+    "root": "هري",
+    "pos": "Noun",
+    "fusha_equivalent": "صحن أرز بيضاوي",
+    "definition": "وعاء كبير لتقديم الأرز يتميز بشكل بيضاوي، بينما يسمى المستدير 'صحن'.",
+    "region": "General",
+    "synonyms": [],
+    "phonetic_variants": [],
+    "note": "",
+    "source": "قاموس اللهجة الحضرمية - فهد بن هلابي - ص 146",
+    "examples": [
+      {
+        "h": "غرف العشاء في الهوري الكبير.",
+        "f": "ضع العشاء في الصحن البيضاوي الكبير."
+      }
+    ],
+    "proverbs": [],
+    "tags": [
+      "Daily Life",
+      "Kitchen",
+      "Food"
+    ]
+  },
+  {
+    "id": 1007,
+    "word_vocalized": "اَلْهَجْرِي",
+    "word_clean": "الهجري",
+    "root": "هجر",
+    "pos": "Noun",
+    "fusha_equivalent": "نوع من التمر",
+    "definition": "نوع من أنواع التمور الحضرمية، لونه أحمر يميل للشقرة وبلحه أصفر.",
+    "region": "General",
+    "synonyms": [],
+    "phonetic_variants": [],
+    "note": "",
+    "source": "قاموس اللهجة الحضرمية - فهد بن هلابي - ص 146",
+    "examples": [
+      {
+        "h": "تمر الهجري طعمه حالي مع القهوة.",
+        "f": "تمر الهجري طعمه حلو مع القهوة."
+      }
+    ],
+    "proverbs": [],
+    "tags": [
+      "Food",
+      "Agriculture"
+    ]
+  },
+  {
+    "id": 1008,
+    "word_vocalized": "اَلْهَابِطِي",
+    "word_clean": "الهابطي",
+    "root": "هبط",
+    "pos": "Noun",
+    "fusha_equivalent": "نوع من الرقص",
+    "definition": "أحد الفنون الاستعراضية أو أنواع الرقص الشعبي في المنطقة.",
+    "region": "General",
+    "synonyms": [],
+    "phonetic_variants": [],
+    "note": "",
+    "source": "قاموس اللهجة الحضرمية - فهد بن هلابي - ص 146",
+    "examples": [
+      {
+        "h": "في المناسبات يرقصون الهابطي.",
+        "f": "في المناسبات يرقصون رقصة الهابطي."
+      }
+    ],
+    "proverbs": [],
+    "tags": [
+      "Social Customs",
+      "Arts",
+      "Dance"
+    ]
+  },
+  {
+    "id": 1009,
+    "word_vocalized": "يِشْرِد",
+    "word_clean": "يشرد",
+    "root": "شرد",
+    "pos": "Verb",
+    "fusha_equivalent": "يهرب",
+    "definition": "فعل يعني الهروب أو الفرار من مكان ما.",
+    "region": "General",
+    "synonyms": [
+      "يهرب",
+      "يفلح"
+    ],
+    "phonetic_variants": [],
+    "note": "",
+    "source": "قاموس اللهجة الحضرمية - فهد بن هلابي - ص 147",
+    "examples": [
+      {
+        "h": "يوم شاف العسكري شرد.",
+        "f": "عندما رأى الشرطي هرب."
+      }
+    ],
+    "proverbs": [],
+    "tags": [
+      "Verbs",
+      "Actions",
+      "Escape"
+    ]
+  },
+  {
+    "id": 1010,
+    "word_vocalized": "يِهَيِّض",
+    "word_clean": "يهيض",
+    "root": "هيض",
+    "pos": "Verb",
+    "fusha_equivalent": "يعجب / يثير الشجن",
+    "definition": "بمعنى يثير الإعجاب أو يحرك المشاعر والذكريات.",
+    "region": "General",
+    "synonyms": [
+      "يعجب",
+      "يشوّق"
+    ],
+    "phonetic_variants": [],
+    "note": "تقال غالباً عند سماع شعر أو غناء جميل. بشد الياء",
+    "source": "قاموس اللهجة الحضرمية - فهد بن هلابي - ص 147",
+    "examples": [
+      {
+        "h": "ذا الصوت يهيض الخاطر.",
+        "f": "هذا الصوت يثير الشجن في النفس."
+      }
+    ],
+    "proverbs": [],
+    "tags": [
+      "Verbs",
+      "Emotions",
+      "Music"
+    ]
+  },
+  {
+    "id": 1011,
+    "word_vocalized": "يِلْقَم",
+    "word_clean": "يلقم",
+    "root": "لقم",
+    "pos": "Verb",
+    "fusha_equivalent": "يأكل / يتلقف",
+    "definition": "بمعنى الأكل، وتستخدم مجازاً لمن لا يفهم الكلام كأنه يبتلعه بلا وعي.",
+    "region": "General",
+    "synonyms": [
+      "يأكل"
+    ],
+    "phonetic_variants": [],
+    "note": "يقال: يلقم الكلام أي لا يفقهه.",
+    "source": "قاموس اللهجة الحضرمية - فهد بن هلابي - ص 147",
+    "examples": [
+      {
+        "h": "شفه جالس يلقم العشاء.",
+        "f": "انظر إليه وهو يتناول العشاء."
+      }
+    ],
+    "proverbs": [],
+    "tags": [
+      "Verbs",
+      "Actions",
+      "Eat"
+    ]
+  },
+  {
+    "id": 1012,
+    "word_vocalized": "يِنْقَع",
+    "word_clean": "ينقع",
+    "root": "نقع",
+    "pos": "Verb",
+    "fusha_equivalent": "يبلل",
+    "definition": "غمر الشيء بالماء أو رشه بكثرة حتى يبتل.",
+    "region": "General",
+    "synonyms": [
+      "يبلل"
+    ],
+    "phonetic_variants": [],
+    "note": "",
+    "source": "قاموس اللهجة الحضرمية - فهد بن هلابي - ص 147",
+    "examples": [
+      {
+        "h": "نقع رأسه بالماء البارد.",
+        "f": "بلل رأسه بالماء البارد."
+      }
+    ],
+    "proverbs": [],
+    "tags": [
+      "Verbs",
+      "Actions",
+      "Wash"
+    ]
+  },
+  {
+    "id": 1013,
+    "word_vocalized": "يُوْه",
+    "word_clean": "يوه",
+    "root": "يوه",
+    "pos": "Expression",
+    "fusha_equivalent": "نعم (للنساء)",
+    "definition": "كلمة تستخدمها النساء حصراً لتلبية النداء أو الإجابة بنعم.",
+    "region": "General",
+    "synonyms": [
+      "لبيك",
+      "نعم"
+    ],
+    "phonetic_variants": [],
+    "note": "",
+    "source": "قاموس اللهجة الحضرمية - فهد بن هلابي - ص 147",
+    "examples": [
+      {
+        "h": "يا أمي! قالت: يوه يا وليدي.",
+        "f": "يا أمي! قالت: نعم يا بني."
+      }
+    ],
+    "proverbs": [],
+    "tags": [
+      "Expressions",
+      "Social Customs",
+      "Yes"
+    ]
+  },
+  {
+    "id": 1014,
+    "word_vocalized": "يِحْنِبِك",
+    "word_clean": "يحنبك",
+    "root": "حنك",
+    "pos": "Verb",
+    "fusha_equivalent": "ينشبك / يتعقد",
+    "definition": "بمعنى الاشتباك أو التعقد في أمر ما أو الوقوع في ورطة.",
+    "region": "General",
+    "synonyms": [
+      "ينشبك",
+      "يتورط"
+    ],
+    "phonetic_variants": [],
+    "note": "",
+    "source": "قاموس اللهجة الحضرمية - فهد بن هلابي - ص 147",
+    "examples": [
+      {
+        "h": "يحنبك الثوب في المسمار.",
+        "f": "اشتبك الثوب في المسمار."
+      }
+    ],
+    "proverbs": [],
+    "tags": [
+      "Verbs",
+      "Actions",
+      "Climb"
+    ]
+  },
+  {
+    "id": 1015,
+    "word_vocalized": "يِعّ",
+    "word_clean": "يع",
+    "root": "يعع",
+    "pos": "Expression",
+    "fusha_equivalent": "كلمة تقزز / أف",
+    "definition": "تعبير عن عدم الاستساغة أو التقزز من شيء ما.",
+    "region": "General",
+    "synonyms": [
+      "أف"
+    ],
+    "phonetic_variants": [],
+    "note": "",
+    "source": "قاموس اللهجة الحضرمية - فهد بن هلابي - ص 147",
+    "examples": [
+      {
+        "h": "يعّ! ذا الأكل طعمه ماهو زين.",
+        "f": "أف! هذا الطعام طعمه سيء."
+      }
+    ],
+    "proverbs": [],
+    "tags": [
+      "Expressions",
+      "Emotions",
+      "Dislike"
+    ]
+  },
+  {
+    "id": 1016,
+    "word_vocalized": "يِئَثِّث",
+    "word_clean": "يئثث",
+    "root": "أثث",
+    "pos": "Verb",
+    "fusha_equivalent": "يفرش البيت",
+    "definition": "وضع الأثاث والمتاع داخل الدار لتجهيزها للسكن.",
+    "region": "General",
+    "synonyms": [],
+    "phonetic_variants": [],
+    "note": "",
+    "source": "قاموس اللهجة الحضرمية - فهد بن هلابي - ص 148",
+    "examples": [
+      {
+        "h": "جالس يئثث بيته الجديد.",
+        "f": "يقوم بفرش منزله الجديد."
+      }
+    ],
+    "proverbs": [],
+    "tags": [
+      "Verbs",
+      "Actions",
+      "Furniture"
+    ]
+  },
+  {
+    "id": 1017,
+    "word_vocalized": "يِسَاهِن",
+    "word_clean": "يساهن",
+    "root": "سهن",
+    "pos": "Verb",
+    "fusha_equivalent": "ينتظر / يترقب",
+    "definition": "الانتظار بشوق أو ترقب وصول شخص أو أمر ما.",
+    "region": "General",
+    "synonyms": [
+      "ينتظر",
+      "يرجو"
+    ],
+    "phonetic_variants": [],
+    "note": "السهن هو الانتظار.",
+    "source": "قاموس اللهجة الحضرمية - فهد بن هلابي - ص 148",
+    "examples": [
+      {
+        "h": "أساهنك من الصبح ولا جيت.",
+        "f": "أنتظرك منذ الصباح ولم تأتِ."
+      }
+    ],
+    "proverbs": [],
+    "tags": [
+      "Verbs",
+      "Daily Life",
+      "Wait"
+    ]
+  },
+  {
+    "id": 1018,
+    "word_vocalized": "يِبَرِّح",
+    "word_clean": "يبرح",
+    "root": "برح",
+    "pos": "Verb",
+    "fusha_equivalent": "ينشر الغسيل",
+    "definition": "بمعنى بسط الثياب المبلولة في الشمس لتجف.",
+    "region": "General",
+    "synonyms": [
+      "ينشر"
+    ],
+    "phonetic_variants": [],
+    "note": "",
+    "source": "قاموس اللهجة الحضرمية - فهد بن هلابي - ص 148",
+    "examples": [
+      {
+        "h": "برحي الملابس فوق الحبل.",
+        "f": "انشري الملابس فوق الحبل."
+      }
+    ],
+    "proverbs": [],
+    "tags": [
+      "Verbs",
+      "Daily Life",
+      "Laundry"
+    ]
+  },
+  {
+    "id": 1019,
+    "word_vocalized": "يِكَعْدِر",
+    "word_clean": "يكعدر",
+    "root": "كعدر",
+    "pos": "Verb",
+    "fusha_equivalent": "يدحرج",
+    "definition": "جعل الشيء يستدير ويتحرك على الأرض.",
+    "region": "General",
+    "synonyms": [
+      "يدحرج"
+    ],
+    "phonetic_variants": [],
+    "note": "",
+    "source": "قاموس اللهجة الحضرمية - فهد بن هلابي - ص 148",
+    "examples": [
+      {
+        "h": "كعدر الحجر من فوق الجبل.",
+        "f": "دحرج الحجر من فوق الجبل."
+      }
+    ],
+    "proverbs": [],
+    "tags": [
+      "Verbs",
+      "Actions",
+      "Roll"
+    ]
+  },
+  {
+    "id": 1020,
+    "word_vocalized": "يِدَمْدِم",
+    "word_clean": "يدمدم",
+    "root": "دمدم",
+    "pos": "Verb",
+    "fusha_equivalent": "يرعد",
+    "definition": "إصدار صوت قوي ومستمر يشبه صوت الرعد أو الصواعق.",
+    "region": "General",
+    "synonyms": [
+      "يرعد"
+    ],
+    "phonetic_variants": [],
+    "note": "",
+    "source": "قاموس اللهجة الحضرمية - فهد بن هلابي - ص 148",
+    "examples": [
+      {
+        "h": "السماء تدمدم، با يجي مطر.",
+        "f": "السماء ترعد، سينزل المطر."
+      }
+    ],
+    "proverbs": [],
+    "tags": [
+      "Verbs",
+      "Nature",
+      "Thunder"
+    ]
+  },
+  {
+    "id": 1021,
+    "word_vocalized": "يِتْفَلْقَح",
+    "word_clean": "يتفلقح",
+    "root": "فلقح",
+    "pos": "Verb",
+    "fusha_equivalent": "ينبطح / يسقط بقوة",
+    "definition": "السقوط على الأرض مع تمدد الأطراف بشكل عشوائي.",
+    "region": "General",
+    "synonyms": [
+      "ينسدح"
+    ],
+    "phonetic_variants": [],
+    "note": "",
+    "source": "قاموس اللهجة الحضرمية - فهد بن هلابي - ص 148",
+    "examples": [
+      {
+        "h": "زلق في الطين وتفلقح.",
+        "f": "انزلق في الطين وسقط منبطحاً."
+      }
+    ],
+    "proverbs": [],
+    "tags": [
+      "Verbs",
+      "Actions",
+      "Fall"
+    ]
+  },
+  {
+    "id": 1022,
+    "word_vocalized": "يِهْرِج",
+    "word_clean": "يهرج",
+    "root": "هرج",
+    "pos": "Verb",
+    "fusha_equivalent": "يتحدث / يتكلم",
+    "definition": "فعل الكلام أو الحديث مع الآخرين، والهرج هو الحديث.",
+    "region": "General",
+    "synonyms": [
+      "يتحدث",
+      "يتكلم"
+    ],
+    "phonetic_variants": [],
+    "note": "",
+    "source": "قاموس اللهجة الحضرمية - فهد بن هلابي - ص 148",
+    "examples": [
+      {
+        "h": "خل فلان يهرج بالصدق.",
+        "f": "دع فلاناً يتحدث بالصدق."
+      }
+    ],
+    "proverbs": [],
+    "tags": [
+      "Verbs",
+      "Actions",
+      "Talk"
+    ]
+  },
+  {
+    "id": 1023,
+    "word_vocalized": "يِنِفّ",
+    "word_clean": "ينف",
+    "root": "نفف",
+    "pos": "Verb",
+    "fusha_equivalent": "يظهر الغضب بأنفه",
+    "definition": "إصدار صوت من الأنف تعبيراً عن الرفض أو العدوانية أو التكبر في الكلام.",
+    "region": "General",
+    "synonyms": [],
+    "phonetic_variants": [],
+    "note": "",
+    "source": "قاموس اللهجة الحضرمية - فهد بن هلابي - ص 148",
+    "examples": [
+      {
+        "h": "تكلم معه وهو ينف بوجهه.",
+        "f": "تحدث معه وهو يظهر الغضب والرفض بأنفه."
+      }
+    ],
+    "proverbs": [],
+    "tags": [
+      "Verbs",
+      "Emotions",
+      "Anger",
+      "Reject"
+    ]
+  },
+  {
+    "id": 1024,
+    "word_vocalized": "يَالْخَام",
+    "word_clean": "يالخام",
+    "root": "لخم",
+    "pos": "Noun",
+    "fusha_equivalent": "كلمة توبيخ / سب",
+    "definition": "لفظ يستخدم للتوبيخ أو وصف شخص بالبلادة أو سوء التصرف.",
+    "region": "General",
+    "synonyms": [],
+    "phonetic_variants": [],
+    "note": "",
+    "source": "قاموس اللهجة الحضرمية - فهد بن هلابي - ص 149",
+    "examples": [
+      {
+        "h": "قم يا لخام صلح شغلك.",
+        "f": "قم يا هذا (توبيخ) وأصلح عملك."
+      }
+    ],
+    "proverbs": [],
+    "tags": [
+      "Expressions",
+      "Social Issues",
+      "Curse"
+    ]
+  },
+  {
+    "id": 1025,
+    "word_vocalized": "يُبْرُق",
+    "word_clean": "يبرق",
+    "root": "برق",
+    "pos": "Verb",
+    "fusha_equivalent": "يلمع بشدة",
+    "definition": "ظهور بصيص أو لمعان شديد من الشيء.",
+    "region": "General",
+    "synonyms": [
+      "يلمع"
+    ],
+    "phonetic_variants": [],
+    "note": "بضم الياءوالراء",
+    "source": "قاموس اللهجة الحضرمية - فهد بن هلابي - ص 149",
+    "examples": [
+      {
+        "h": "الخاتم يبرق في يدها.",
+        "f": "الخاتم يلمع بشدة في يدها."
+      }
+    ],
+    "proverbs": [],
+    "tags": [
+      "Verbs",
+      "Actions",
+      "Shine"
+    ]
+  },
+  {
+    "id": 1026,
+    "word_vocalized": "يِنْسِدِح",
+    "word_clean": "ينسدح",
+    "root": "سدح",
+    "pos": "Verb",
+    "fusha_equivalent": "ينبطح / يتمدد",
+    "definition": "الاستلقاء على الأرض للراحة أو النوم.",
+    "region": "General",
+    "synonyms": [
+      "ينبطح"
+    ],
+    "phonetic_variants": [],
+    "note": "",
+    "source": "قاموس اللهجة الحضرمية - فهد بن هلابي - ص 149",
+    "examples": [
+      {
+        "h": "انسدح شوي لين يروح التعب.",
+        "f": "تمدد قليلاً حتى يزول التعب."
+      }
+    ],
+    "proverbs": [],
+    "tags": [
+      "Verbs",
+      "Daily Life",
+      "Sleep"
+    ]
+  },
+  {
+    "id": 1027,
+    "word_vocalized": "يِفْقِش",
+    "word_clean": "يفقش",
+    "root": "فقش",
+    "pos": "Verb",
+    "fusha_equivalent": "يمزق / يفجر",
+    "definition": "إحداث ثقب أو خرق في الشيء، أو كسر البيض مثلاً.",
+    "region": "General",
+    "synonyms": [
+      "يمزق",
+      "يكسر"
+    ],
+    "phonetic_variants": [],
+    "note": "",
+    "source": "قاموس اللهجة الحضرمية - فهد بن هلابي - ص 149",
+    "examples": [
+      {
+        "h": "جرذ يفقش جونية.",
+        "f": "جرذ يمزق كيس الخيش."
+      }
+    ],
+    "proverbs": [
+      "جرذ يفقش جونية"
+    ],
+    "tags": [
+      "Verbs",
+      "Actions",
+      "Break"
+    ]
+  },
+  {
+    "id": 1028,
+    "word_vocalized": "يِغْفِل",
+    "word_clean": "يغفل",
+    "root": "غفل",
+    "pos": "Verb",
+    "fusha_equivalent": "يذكر الله",
+    "definition": "ترديد عبارة 'لا إله إلا الله يا غافلين' للتنبيه أو في حلقات الذكر.",
+    "region": "General",
+    "synonyms": [],
+    "phonetic_variants": [],
+    "note": "",
+    "source": "قاموس اللهجة الحضرمية - فهد بن هلابي - ص 149",
+    "examples": [
+      {
+        "h": "جالس يغفل في المسجد.",
+        "f": "جالس يذكر الله في المسجد."
+      }
+    ],
+    "proverbs": [],
+    "tags": [
+      "Verbs",
+      "Religion",
+      "Pray"
+    ]
+  },
+  {
+    "id": 1029,
+    "word_vocalized": "يِشْكِيلَك",
+    "word_clean": "يشكيلك",
+    "root": "شكل",
+    "pos": "Expression",
+    "fusha_equivalent": "ماذا يقرب لك؟",
+    "definition": "سؤال يستخدم للاستفسار عن صلة القرابة بين شخصين.",
+    "region": "General",
+    "synonyms": [
+      "يقرب لك"
+    ],
+    "phonetic_variants": [],
+    "note": "",
+    "source": "قاموس اللهجة الحضرمية - فهد بن هلابي - ص 149",
+    "examples": [
+      {
+        "h": "فلان ذا، أيش يشكيلك؟",
+        "f": "فلان هذا، ماذا يقرب لك؟"
+      }
+    ],
+    "proverbs": [],
+    "tags": [
+      "Expressions",
+      "Social Customs",
+      "Relation"
+    ]
+  },
+  {
+    "id": 1030,
+    "word_vocalized": "يَامّ / يُمَّه",
+    "word_clean": "يام يمه",
+    "root": "أمم",
+    "pos": "Expression",
+    "fusha_equivalent": "يا أمي",
+    "definition": "نداء للأم، وتستخدم أيضاً كصرخة دهشة أو فزع عند المفاجأة.",
+    "region": "General",
+    "synonyms": [
+      "أمي"
+    ],
+    "phonetic_variants": [],
+    "note": "",
+    "source": "قاموس اللهجة الحضرمية - فهد بن هلابي - ص 149",
+    "examples": [
+      {
+        "h": "يام! شف أيش وقع.",
+        "f": "يا أمي! انظر ماذا حدث (نداء أو دهشة)."
+      }
+    ],
+    "proverbs": [],
+    "tags": [
+      "Expressions",
+      "Family",
+      "Mother"
+    ]
+  },
+  {
+    "id": 1031,
+    "word_vocalized": "اَلْيِكَّة",
+    "word_clean": "اليكة",
+    "root": "يكك",
+    "pos": "Noun",
+    "fusha_equivalent": "الآص (في الكوتشينة)",
+    "definition": "الورقة الأولى أو الرقم واحد في ورق اللعب (الكوتشينة).",
+    "region": "General",
+    "synonyms": [],
+    "phonetic_variants": [],
+    "note": "",
+    "source": "قاموس اللهجة الحضرمية - فهد بن هلابي - ص 149",
+    "examples": [
+      {
+        "h": "طرح اليكة وفاز في اللعبة.",
+        "f": "وضع ورقة 'الآص' وفاز في اللعبة."
+      }
+    ],
+    "proverbs": [],
+    "tags": [
+      "Daily Life",
+      "Games",
+      "Card"
+    ]
+  },
+  {
+    "id": 1032,
+    "word_vocalized": "يَوْم",
+    "word_clean": "يوم",
+    "root": "يوم",
+    "pos": "Expression",
+    "fusha_equivalent": "لأن / بسبب",
+    "definition": "تستخدم بمعنى التعليل لربط الجمل ببعضها.",
+    "region": "General",
+    "synonyms": [
+      "لأن"
+    ],
+    "phonetic_variants": [],
+    "note": "",
+    "source": "قاموس اللهجة الحضرمية - فهد بن هلابي - ص 150",
+    "examples": [
+      {
+        "h": "ما جيت يوم كنت مشغول.",
+        "f": "لم آتِ لأنني كنت مشغولاً."
+      }
+    ],
+    "proverbs": [],
+    "tags": [
+      "Expressions",
+      "Verbs",
+      "Day",
+      "Reason"
+    ]
+  },
+  {
+    "id": 1033,
+    "word_vocalized": "يِطْرِح",
+    "word_clean": "يطرح",
+    "root": "طرح",
+    "pos": "Verb",
+    "fusha_equivalent": "يركض / يتدفق",
+    "definition": "بمعنى الجري السريع، أو تدفق السوائل بقوة وسرعة.",
+    "region": "General",
+    "synonyms": [
+      "يركض",
+      "يسيل"
+    ],
+    "phonetic_variants": [],
+    "note": "يقال: الدم يسيل طوارح.",
+    "source": "قاموس اللهجة الحضرمية - فهد بن هلابي - ص 150",
+    "examples": [
+      {
+        "h": "السيل طارح في الوادي.",
+        "f": "السيل يتدفق بقوة في الوادي."
+      }
+    ],
+    "proverbs": [
+      "إذا استكبرت أمر طرح مثناته"
+    ],
+    "tags": [
+      "Verbs",
+      "Actions",
+      "Run"
+    ]
+  },
+  {
+    "id": 1034,
+    "word_vocalized": "يِحَوِّل",
+    "word_clean": "يحول",
+    "root": "حول",
+    "pos": "Verb",
+    "fusha_equivalent": "ينادي بوصول السيل",
+    "definition": "صياح بصوت عالٍ لتنبيه الناس عند رؤية السيل قادماً من بعيد.",
+    "region": "General",
+    "synonyms": [],
+    "phonetic_variants": [],
+    "note": "يقال: حول يا حولاه.",
+    "source": "قاموس اللهجة الحضرمية - فهد بن هلابي - ص 150",
+    "examples": [
+      {
+        "h": "الناس يحولون، السيل قرب.",
+        "f": "الناس ينادون بصوت عالٍ، السيل قد اقترب."
+      }
+    ],
+    "proverbs": [],
+    "tags": [
+      "Verbs",
+      "Nature",
+      "Warning"
+    ]
+  },
+  {
+    "id": 1035,
+    "word_vocalized": "يِرْمَح السيل",
+    "word_clean": "يرمح السيل",
+    "root": "رمح",
+    "pos": "Verb",
+    "fusha_equivalent": "يشتد جريانه",
+    "definition": "وصف لقوة اندفاع السيل وضغطه العالي عند الجريان.",
+    "region": "General",
+    "synonyms": [],
+    "phonetic_variants": [],
+    "note": "",
+    "source": "قاموس اللهجة الحضرمية - فهد بن هلابي - ص 150",
+    "examples": [
+      {
+        "h": "السيل يرمح اليوم، انتبه تقطعه.",
+        "f": "السيل يندفع بقوة اليوم، احذر من عبوره."
+      }
+    ],
+    "proverbs": [],
+    "tags": [
+      "Verbs",
+      "Nature",
+      "Warning"
+    ]
+  },
+  {
+    "id": 1036,
+    "word_vocalized": "اَلْيِنْضَال",
+    "word_clean": "الينضال",
+    "root": "نضل",
+    "pos": "Noun",
+    "fusha_equivalent": "الباذنجان",
+    "definition": "الاسم المحلي لنبات الباذنجان.",
+    "region": "General",
+    "synonyms": [
+      "باذنجان"
+    ],
+    "phonetic_variants": [],
+    "note": "",
+    "source": "قاموس اللهجة الحضرمية - فهد بن هلابي - ص 150",
+    "examples": [
+      {
+        "h": "اشتر لنا ينضال من السوق.",
+        "f": "اشترِ لنا باذنجاناً من السوق."
+      }
+    ],
+    "proverbs": [],
+    "tags": [
+      "Daily Life",
+      "Food",
+      "Pumpkin"
+    ]
+  },
+  {
+    "id": 1037,
+    "word_vocalized": "يِتْمَرْقَح",
+    "word_clean": "يتمرقح",
+    "root": "مرقح",
+    "pos": "Verb",
+    "fusha_equivalent": "يتبختر",
+    "definition": "المشي بزهو وخيلاء مع عدم المبالاة بالآخرين.",
+    "region": "General",
+    "synonyms": [
+      "يتبختر"
+    ],
+    "phonetic_variants": [],
+    "note": "",
+    "source": "قاموس اللهجة الحضرمية - فهد بن هلابي - ص 151",
+    "examples": [
+      {
+        "h": "شفه جالس يتمرقح في السوق.",
+        "f": "انظر إليه وهو يتبختر في السوق."
+      }
+    ],
+    "proverbs": [],
+    "tags": [
+      "Verbs",
+      "Actions",
+      "Walk"
+    ]
+  },
+  {
+    "id": 1038,
+    "word_vocalized": "يِنِشّ",
+    "word_clean": "ينش",
+    "root": "نشوش",
+    "pos": "Verb",
+    "fusha_equivalent": "يزجر / يطرد",
+    "definition": "إبعاد الحشرات أو الحيوانات الصغيرة باليد أو الصوت.",
+    "region": "General",
+    "synonyms": [
+      "يطرد"
+    ],
+    "phonetic_variants": [],
+    "note": "",
+    "source": "قاموس اللهجة الحضرمية - فهد بن هلابي - ص 151",
+    "examples": [
+      {
+        "h": "نش الذبان من فوق الأكل.",
+        "f": "اطرد الذباب من فوق الطعام."
+      }
+    ],
+    "proverbs": [],
+    "tags": [
+      "Verbs",
+      "Nature",
+      "Fly"
+    ]
+  },
+  {
+    "id": 1039,
+    "word_vocalized": "يِنِشْغ",
+    "word_clean": "ينشغ",
+    "root": "نشغ",
+    "pos": "Verb",
+    "fusha_equivalent": "يسحب (بالسنارة)",
+    "definition": "سحب السمكة من البحر بسرعة بعد أن تبتلع الطعم في السنارة.",
+    "region": "Coastal",
+    "synonyms": [],
+    "phonetic_variants": [],
+    "note": "",
+    "source": "قاموس اللهجة الحضرمية - فهد بن هلابي - ص 151",
+    "examples": [
+      {
+        "h": "نشغ السمكة قبل لا تفلت.",
+        "f": "اسحب السمكة بالسنارة قبل أن تفلت."
+      }
+    ],
+    "proverbs": [],
+    "tags": [
+      "Verbs",
+      "Actions",
+      "Fish"
+    ]
+  },
+  {
+    "id": 1040,
+    "word_vocalized": "يِوَلِّف",
+    "word_clean": "يولف",
+    "root": "ولف",
+    "pos": "Verb",
+    "fusha_equivalent": "يصلح / يجمع",
+    "definition": "إصلاح الآلات بتجميع قطع غيار مختلفة لها أو تعديلها يدوياً.",
+    "region": "General",
+    "synonyms": [
+      "يصلح"
+    ],
+    "phonetic_variants": [],
+    "note": "من التوليف.",
+    "source": "قاموس اللهجة الحضرمية - فهد بن هلابي - ص 151",
+    "examples": [
+      {
+        "h": "يولف المكينة بقطع غيار قديمة.",
+        "f": "يصلح المحرك بتجميع قطع غيار قديمة."
+      }
+    ],
+    "proverbs": [],
+    "tags": [
+      "Verbs",
+      "Tools",
+      "Repair"
+    ]
+  },
+  {
+    "id": 1023,
+    "word_vocalized": "يِولَف",
+    "word_clean": "يولف",
+    "root": "ولف",
+    "pos": "Verb",
+    "fusha_equivalent": "يعتاد / يألف",
+    "definition": "التعود على مكان أو عادة أو شخص ما حتى يشعر بالأمان.",
+    "region": "General",
+    "synonyms": [
+      "يعتاد"
+    ],
+    "phonetic_variants": [],
+    "note": "",
+    "source": "قاموس اللهجة الحضرمية - فهد بن هلابي - ص 152",
+    "examples": [
+      {
+        "h": "ولف الحمام على المكان.",
+        "f": "اعتاد الحمام على المكان."
+      }
+    ],
+    "proverbs": [],
+    "tags": [
+      "Verbs",
+      "Nature"
+    ]
+  },
+  {
+    "id": 1041,
+    "word_vocalized": "يِئَلِّف",
+    "word_clean": "يئلف",
+    "root": "ألف",
+    "pos": "Verb",
+    "fusha_equivalent": "يخترع الأكاذيب",
+    "definition": "اختلاق قصص أو حكايات غير حقيقية من الخيال.",
+    "region": "General",
+    "synonyms": [
+      "يكذب"
+    ],
+    "phonetic_variants": [],
+    "note": "",
+    "source": "قاموس اللهجة الحضرمية - فهد بن هلابي - ص 151",
+    "examples": [
+      {
+        "h": "جالس يئلف كلام من راسه.",
+        "f": "جالس يخترع كلاماً من خياله."
+      }
+    ],
+    "proverbs": [],
+    "tags": [
+      "Verbs",
+      "Social Issues",
+      "Lie"
+    ]
+  },
+  {
+    "id": 1042,
+    "word_vocalized": "يِوَدِّيه",
+    "word_clean": "يوديه",
+    "root": "ودي",
+    "pos": "Verb",
+    "fusha_equivalent": "يوصله / يذهب به",
+    "definition": "توصيل الشيء أو الشخص إلى وجهة معينة.",
+    "region": "General",
+    "synonyms": [
+      "يوصل"
+    ],
+    "phonetic_variants": [],
+    "note": "",
+    "source": "قاموس اللهجة الحضرمية - فهد بن هلابي - ص 151",
+    "examples": [
+      {
+        "h": "وداه للمدرسة الصبح.",
+        "f": "أوصله إلى المدرسة في الصباح."
+      }
+    ],
+    "proverbs": [],
+    "tags": [
+      "Verbs",
+      "Actions",
+      "Send"
+    ]
+  },
+  {
+    "id": 1043,
+    "word_vocalized": "يدهل",
+    "word_clean": "يدهل",
+    "root": "دهل",
+    "pos": "Noun",
+    "fusha_equivalent": "تكرار الشيء / اعتياد",
+    "definition": "تكرار فعل معين حتى يصبح عادة، أو الإلحاح في الطلب.",
+    "region": "General",
+    "synonyms": [
+      "اعتياد"
+    ],
+    "phonetic_variants": [],
+    "note": "",
+    "source": "قاموس اللهجة الحضرمية - فهد بن هلابي - ص 152",
+    "examples": [
+      {
+        "h": "دهل الزقر للمدرسة.",
+        "f": "اعتياد الطفل للمدرسة."
+      }
+    ],
+    "proverbs": [],
+    "tags": [
+      "Actions",
+      "Daily Life",
+      "Habit"
+    ]
+  },
+  {
+    "id": 1044,
+    "word_vocalized": "يَابُويَاه / يَابُويْ",
+    "word_clean": "يابوياه يابوي",
+    "root": "بوي",
+    "pos": "Expression",
+    "fusha_equivalent": "وا أسفاه / للتوجع",
+    "definition": "صيحة تستخدم للتعبير عن التوجع الجسدي، أو التحسر على فوات شيء، أو الشعور بالقهر والظلم.",
+    "region": "General",
+    "synonyms": [
+      "واقهراه",
+      "وا أسفاه"
+    ],
+    "phonetic_variants": [
+      "يمه",
+      "يوه"
+    ],
+    "note": "غالباً ما يتبعها ضمير متصل للتوكيد مثل: يابوياه منه، يابوياه منك.",
+    "source": "قاموس اللهجة الحضرمية - فهد بن هلابي - ص 147",
+    "examples": [
+      {
+        "h": "يابوياه من ذا الوجع لي في راسي.",
+        "f": "يا إلهي (للتوجع) من هذا الألم الذي في رأسي."
+      },
+      {
+        "h": "يابوياه منك يا فلان، عذبتنا معاك.",
+        "f": "يا للتحسر منك يا فلان، لقد أتعبتنا معك."
+      }
+    ],
+    "proverbs": [],
+    "tags": [
+      "Expressions",
+      "Emotions"
+    ]
+  },
+  {
+    "id": 1045,
+    "word_vocalized": "يِدْوِي",
+    "word_clean": "يدوي",
+    "root": "دوي",
+    "pos": "Verb",
+    "fusha_equivalent": "يمشي / يتحرك بهدوء",
+    "definition": "الحركة أو المشي، وتستخدم غالباً لوصف المشي المتأني أو حركة الكائنات الصغيرة.",
+    "region": "General",
+    "synonyms": [
+      "يمشي",
+      "يسير"
+    ],
+    "phonetic_variants": [],
+    "note": "وردت في الشعر الشعبي لوصف حركة النمل الخفية.",
+    "source": "قاموس اللهجة الحضرمية - فهد بن هلابي - ص 148",
+    "examples": [
+      {
+        "h": "ياسامع النمل لي يدوي بروس القور.",
+        "f": "يا من تسمع مشي النمل على رؤوس الجبال الصخرية."
+      },
+      {
+        "h": "شف فلان جالس يدوي في الحوش من الصبح.",
+        "f": "انظر لفلان يسير في الفناء منذ الصباح."
+      }
+    ],
+    "proverbs": [],
+    "tags": [
+      "Verbs",
+      "Actions",
+      "Walk"
+    ]
+  },
+  {
+    "id": 1046,
+    "word_vocalized": "يِبَرْطُم",
+    "word_clean": "يبرطم",
+    "root": "برطم",
+    "pos": "Verb",
+    "fusha_equivalent": "يتجهم / يقطب جبينه",
+    "definition": "تغير تعابير الوجه وظهور ملامح الزعل أو عدم الرضا، مع مد الشفتين للأمام غالباً.",
+    "region": "General",
+    "synonyms": [
+      "يزعل",
+      "يتجهم"
+    ],
+    "phonetic_variants": [],
+    "note": "تستخدم لوصف الشخص الذي يظهر غضبه صامتاً من خلال ملامحه.",
+    "source": "قاموس اللهجة الحضرمية - فهد بن هلابي",
+    "examples": [
+      {
+        "h": "علامك جالس تبرطم علينا؟ حد حنقك؟",
+        "f": "لماذا تبدو متجهماً في وجوهنا؟ هل زعلك أحد؟"
+      },
+      {
+        "h": "يوم درى إننا بنسافر خلاه يبرطم.",
+        "f": "عندما علم أننا سنغادر بدأ يظهر عدم الرضا على وجهه."
+      }
+    ],
+    "proverbs": [],
+    "tags": [
+      "Verbs",
+      "Emotions"
     ]
   }
 ]
