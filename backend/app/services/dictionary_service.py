@@ -1,50 +1,37 @@
+"""Dictionary service — all read queries go through Supabase (PostgREST).
+
+Replaces the former in-memory ENTRIES iteration with real DB queries.
+Scoring / ranking logic that cannot be expressed as pure SQL is done
+client-side on the (small) result sets returned by the DB.
+"""
+
+from __future__ import annotations
+
 import json
 import random
 import re
 from typing import Any, Optional
 
 from ..core.config import FEEDBACK_FILE
-from ..core.data_store import ENTRIES
+from ..core.data_store import (
+    TABLE,
+    _SELECT_COLS,
+    _execute_with_retry,
+    count_rows,
+    fetch_all,
+    fetch_by_id,
+    get_client,
+    rpc_match_entries,
+    rpc_search_entries_expanded,
+)
 from ..schemas import TranslateResponse
 
-# Order matches typical Arabic dictionary / app letter strip (28 letters + hamza forms).
+# Arabic letter ordering for sections view.
 _AR_LETTER_ORDER = (
-    "أ",
-    "إ",
-    "آ",
-    "ا",
-    "ب",
-    "ت",
-    "ث",
-    "ج",
-    "ح",
-    "خ",
-    "د",
-    "ذ",
-    "ر",
-    "ز",
-    "س",
-    "ش",
-    "ص",
-    "ض",
-    "ط",
-    "ظ",
-    "ع",
-    "غ",
-    "ف",
-    "ق",
-    "ك",
-    "ل",
-    "م",
-    "ن",
-    "ه",
-    "و",
-    "ي",
-    "ء",
-    "ؤ",
-    "ئ",
-    "ة",
-    "ى",
+    "أ", "إ", "آ", "ا", "ب", "ت", "ث", "ج", "ح", "خ",
+    "د", "ذ", "ر", "ز", "س", "ش", "ص", "ض", "ط", "ظ",
+    "ع", "غ", "ف", "ق", "ك", "ل", "م", "ن", "ه", "و",
+    "ي", "ء", "ؤ", "ئ", "ة", "ى",
 )
 
 
@@ -55,11 +42,43 @@ def _section_sort_key(letter: str) -> tuple[int, str]:
         return (len(_AR_LETTER_ORDER), letter)
 
 
+def _normalize_alef(text: str) -> str:
+    for c in ("أ", "إ", "آ"):
+        text = text.replace(c, "ا")
+    return text
+
+
+def _entry_match_score(entry: dict[str, Any], clean: str, norm: str) -> int:
+    word = (entry.get("hadrami_word") or "").strip()
+    search_key = (entry.get("search_key") or "").strip()
+    fus7a = (entry.get("arabic_fus7a") or "").strip()
+    definition = (entry.get("full_definition") or "").strip()
+    aliases = entry.get("aliases")
+    alias_values = [a.strip() for a in aliases if isinstance(a, str) and a.strip()] if isinstance(aliases, list) else []
+
+    if word == clean or search_key == norm or clean in alias_values or norm in alias_values:
+        return 100
+    if clean in word or norm in search_key or any(clean in a or norm in a for a in alias_values):
+        return 80
+    if word and word in clean:
+        return 70
+    if clean in fus7a:
+        return 60
+    if clean in definition:
+        return 40
+    return 0
+
+
+# ---------------------------------------------------------------------------
+# Public service functions
+# ---------------------------------------------------------------------------
+
 def get_sections() -> dict[str, Any]:
-    """Group headwords by first character (after strip) for browse-by-letter sections."""
+    """Group headwords by first character for browse-by-letter sections."""
+    rows = fetch_all("hadrami_word")
     counts: dict[str, int] = {}
-    for entry in ENTRIES:
-        word = (entry.get("hadrami_word") or "").strip()
+    for row in rows:
+        word = (row.get("hadrami_word") or "").strip()
         if not word:
             continue
         key = word[0]
@@ -70,53 +89,115 @@ def get_sections() -> dict[str, Any]:
 
 
 def get_stats() -> dict[str, Any]:
-    total = len(ENTRIES)
-    with_fus7a = sum(1 for entry in ENTRIES if entry.get("arabic_fus7a", "").strip())
+    rows = fetch_all(
+        "id, arabic_fus7a, part_of_speech, thematic_category, is_archaic, proverb_record"
+    )
+    total = len(rows)
+    with_fus7a = sum(1 for r in rows if (r.get("arabic_fus7a") or "").strip())
+
+    pos_counts: dict[str, int] = {}
+    theme_counts: dict[str, int] = {}
+    archaic_count = 0
+    proverb_count = 0
+    for entry in rows:
+        pos = entry.get("part_of_speech") or "Unknown"
+        pos_counts[pos] = pos_counts.get(pos, 0) + 1
+        theme = entry.get("thematic_category") or "Unknown"
+        theme_counts[theme] = theme_counts.get(theme, 0) + 1
+        if entry.get("is_archaic"):
+            archaic_count += 1
+        pr = entry.get("proverb_record")
+        if isinstance(pr, list):
+            proverb_count += len(pr)
+
     return {
         "total_words": total,
         "translated": with_fus7a,
         "pending": total - with_fus7a,
         "completion_percent": round(with_fus7a / total * 100, 1) if total else 0,
+        "by_part_of_speech": pos_counts,
+        "by_thematic_category": theme_counts,
+        "archaic_words": archaic_count,
+        "total_proverbs": proverb_count,
     }
 
 
 def translate(query: str) -> TranslateResponse:
-    clean_query = query.strip()
+    clean = query.strip()
+    norm = _normalize_alef(clean)
 
-    for entry in ENTRIES:
-        if entry["hadrami_word"].strip() == clean_query:
-            return TranslateResponse(
-                found=True,
-                hadrami_word=entry["hadrami_word"],
-                arabic_fus7a=entry["arabic_fus7a"],
-                full_definition=entry["full_definition"],
-                confidence="exact",
-            )
+    # Exact match on hadrami_word
+    resp = (
+        get_client().table(TABLE).select(_SELECT_COLS)
+        .eq("hadrami_word", clean)
+        .limit(1)
+        .execute()
+    )
+    if resp.data:
+        e = resp.data[0]
+        return TranslateResponse(
+            found=True,
+            hadrami_word=e["hadrami_word"],
+            arabic_fus7a=e.get("arabic_fus7a", ""),
+            full_definition=e.get("full_definition", ""),
+            confidence="exact",
+        )
 
-    for entry in ENTRIES:
-        word = entry["hadrami_word"].strip()
-        if clean_query in word or word in clean_query:
-            return TranslateResponse(
-                found=True,
-                hadrami_word=entry["hadrami_word"],
-                arabic_fus7a=entry["arabic_fus7a"],
-                full_definition=entry["full_definition"],
-                confidence="partial",
-            )
+    # Exact match on search_key (normalised)
+    resp = (
+        get_client().table(TABLE).select(_SELECT_COLS)
+        .eq("search_key", norm)
+        .limit(1)
+        .execute()
+    )
+    if resp.data:
+        e = resp.data[0]
+        return TranslateResponse(
+            found=True,
+            hadrami_word=e["hadrami_word"],
+            arabic_fus7a=e.get("arabic_fus7a", ""),
+            full_definition=e.get("full_definition", ""),
+            confidence="exact",
+        )
 
-    for entry in ENTRIES:
-        if clean_query in entry.get("full_definition", ""):
-            return TranslateResponse(
-                found=True,
-                hadrami_word=entry["hadrami_word"],
-                arabic_fus7a=entry["arabic_fus7a"],
-                full_definition=entry["full_definition"],
-                confidence="partial",
-            )
+    # Partial match via ilike
+    pattern = f"%{clean}%"
+    resp = (
+        get_client().table(TABLE).select(_SELECT_COLS)
+        .or_(f"hadrami_word.ilike.{pattern},search_key.ilike.{pattern}")
+        .limit(1)
+        .execute()
+    )
+    if resp.data:
+        e = resp.data[0]
+        return TranslateResponse(
+            found=True,
+            hadrami_word=e["hadrami_word"],
+            arabic_fus7a=e.get("arabic_fus7a", ""),
+            full_definition=e.get("full_definition", ""),
+            confidence="partial",
+        )
+
+    # Fallback: search in full_definition
+    resp = (
+        get_client().table(TABLE).select(_SELECT_COLS)
+        .ilike("full_definition", pattern)
+        .limit(1)
+        .execute()
+    )
+    if resp.data:
+        e = resp.data[0]
+        return TranslateResponse(
+            found=True,
+            hadrami_word=e["hadrami_word"],
+            arabic_fus7a=e.get("arabic_fus7a", ""),
+            full_definition=e.get("full_definition", ""),
+            confidence="partial",
+        )
 
     return TranslateResponse(
         found=False,
-        hadrami_word=clean_query,
+        hadrami_word=clean,
         arabic_fus7a="",
         full_definition="الكلمة غير موجودة في القاموس",
         confidence="not_found",
@@ -124,33 +205,55 @@ def translate(query: str) -> TranslateResponse:
 
 
 def search(query: str, limit: int) -> dict[str, Any]:
-    clean_query = query.strip()
+    """Keyword search with client-side relevance scoring."""
+    clean = query.strip()
+    norm = _normalize_alef(clean)
+    try:
+        rows = rpc_search_entries_expanded(clean, match_count=max(limit * 3, limit))
+        if rows:
+            top_score = max(int(r.get("match_score") or 0) for r in rows)
+            return {"total": len(rows), "results": rows[:limit], "top_score": top_score}
+    except Exception:
+        pass
+
+    pattern = f"%{clean}%"
+
+    resp = (
+        get_client().table(TABLE).select(_SELECT_COLS)
+        .or_(
+            f"hadrami_word.ilike.{pattern},"
+            f"search_key.ilike.{pattern},"
+            f"arabic_fus7a.ilike.{pattern},"
+            f"full_definition.ilike.{pattern}"
+        )
+        .limit(limit * 3)
+        .execute()
+    )
+    candidates = resp.data or []
+
     scored: list[tuple[int, dict[str, Any]]] = []
-
-    for entry in ENTRIES:
-        score = 0
-        word = entry["hadrami_word"]
-        fus7a = entry.get("arabic_fus7a", "")
-        definition = entry.get("full_definition", "")
-
-        if word == clean_query:
-            score = 100
-        elif clean_query in word:
-            score = 80
-        elif word in clean_query:
-            score = 70
-        elif clean_query in fus7a:
-            score = 60
-        elif clean_query in definition:
-            score = 40
-
+    for entry in candidates:
+        score = _entry_match_score(entry, clean, norm)
         if score > 0:
-            scored.append((score, entry))
+            scored.append((score, {**entry, "match_score": score}))
 
     scored.sort(key=lambda item: -item[0])
     top = [item[1] for item in scored[:limit]]
-    return {"total": len(scored), "results": top}
+    return {"total": len(scored), "results": top, "top_score": scored[0][0] if scored else 0}
 
+
+def semantic_search(
+    query_embedding: list[float],
+    match_threshold: float = 0.3,
+    match_count: int = 10,
+) -> list[dict[str, Any]]:
+    """Vector similarity search via the ``match_entries`` Postgres RPC."""
+    return rpc_match_entries(query_embedding, match_threshold, match_count)
+
+
+# ---------------------------------------------------------------------------
+# Expanded / phrase search (used by RAG layer)
+# ---------------------------------------------------------------------------
 
 _AR_QUESTION_FRAG = re.compile(
     r"ما\s*معنى|مامعنى|ما\s*هو\s*معنى|وش\s*يعني|يعني\s*ايش|ايش\s*يعني|معنى\s*كلمة|^كلمة\s*",
@@ -159,7 +262,6 @@ _AR_QUESTION_FRAG = re.compile(
 
 
 def _extract_search_candidates(raw: str) -> list[str]:
-    """Split questions like 'ما معنى الزقر' into tokens so 'الزقر' can match 'الزقره'."""
     q = raw.strip()
     if not q:
         return []
@@ -184,28 +286,36 @@ def _extract_search_candidates(raw: str) -> list[str]:
 
 
 def search_expanded(query: str, limit: int) -> dict[str, Any]:
-    """Merge keyword search across the full question and extracted tokens (higher recall for /ask)."""
+    """Merge keyword search across the full question and extracted tokens."""
+    try:
+        rows = rpc_search_entries_expanded(query, match_count=limit)
+        if rows:
+            top_score = max(int(r.get("match_score") or 0) for r in rows)
+            return {"total": len(rows), "results": rows[:limit], "top_score": top_score}
+    except Exception:
+        pass
+
     seen_ids: set[int] = set()
     merged: list[dict[str, Any]] = []
+    top_score = 0
     inner = max(limit, 12)
     for cand in _extract_search_candidates(query):
-        for entry in search(cand, limit=inner)["results"]:
+        payload = search(cand, limit=inner)
+        top_score = max(top_score, int(payload.get("top_score") or 0))
+        for entry in payload["results"]:
             eid = entry["id"]
             if eid not in seen_ids:
                 seen_ids.add(eid)
                 merged.append(entry)
             if len(merged) >= limit:
-                return {"total": len(merged), "results": merged}
-    return {"total": len(merged), "results": merged}
+                return {"total": len(merged), "results": merged, "top_score": top_score}
+    return {"total": len(merged), "results": merged, "top_score": top_score}
 
 
-# For long phrases: `search()` matched 2-codepoint headwords inside unrelated tokens (e.g. "أح" in "يحكيلنا").
-# Allow 3+ codepoint headwords as substrings of a token; block 1–2 (noise).
 _MIN_SUBWORD_LEN = 3
 
 
 def _score_phrase_token_match(cand: str, entry: dict[str, Any]) -> int:
-    """Stricter matching per whitespace token — reduces garbage RAG for /translate-phrase."""
     cand = cand.strip()
     if len(cand) < 2:
         return 0
@@ -229,10 +339,21 @@ def _score_phrase_token_match(cand: str, entry: dict[str, Any]) -> int:
 
 
 def search_phrase_lexicon(query: str, limit: int) -> dict[str, Any]:
-    """Lexicon hits for phrase translation: token-wise scoring, no short substring noise."""
+    """Lexicon hits for phrase translation — token-wise scoring."""
+    candidates = _extract_search_candidates(query)
+    all_entries: list[dict[str, Any]] = []
+    seen_ids: set[int] = set()
+
+    for cand in candidates:
+        rows = search(cand, limit=limit * 2)["results"]
+        for r in rows:
+            if r["id"] not in seen_ids:
+                seen_ids.add(r["id"])
+                all_entries.append(r)
+
     best: dict[int, tuple[int, dict[str, Any]]] = {}
-    for cand in _extract_search_candidates(query):
-        for entry in ENTRIES:
+    for cand in candidates:
+        for entry in all_entries:
             sc = _score_phrase_token_match(cand, entry)
             if sc <= 0:
                 continue
@@ -240,32 +361,46 @@ def search_phrase_lexicon(query: str, limit: int) -> dict[str, Any]:
             prev = best.get(eid)
             if prev is None or sc > prev[0]:
                 best[eid] = (sc, entry)
+
     ranked = sorted(best.values(), key=lambda x: -x[0])
     merged = [e for _, e in ranked[:limit]]
     return {"total": len(merged), "results": merged}
 
 
 def get_word(word_id: int) -> Optional[dict[str, Any]]:
-    for entry in ENTRIES:
-        if entry["id"] == word_id:
-            return entry
-    return None
+    return fetch_by_id(word_id)
 
 
-def list_words(page: int, size: int, letter: Optional[str] = None) -> dict[str, Any]:
-    filtered = ENTRIES
-    if letter:
-        filtered = [entry for entry in ENTRIES if entry["hadrami_word"].strip().startswith(letter)]
-
+def list_words(
+    page: int,
+    size: int,
+    letter: Optional[str] = None,
+    pos: Optional[str] = None,
+    category: Optional[str] = None,
+    archaic: Optional[bool] = None,
+) -> dict[str, Any]:
     start = (page - 1) * size
-    end = start + size
-    return {"total": len(filtered), "results": filtered[start:end]}
+    end = start + size - 1
+
+    def _build(c):
+        q = c.table(TABLE).select(_SELECT_COLS, count="exact")
+        if letter:
+            q = q.ilike("hadrami_word", f"{letter}%")
+        if pos:
+            q = q.eq("part_of_speech", pos)
+        if category:
+            q = q.eq("thematic_category", category)
+        if archaic is not None:
+            q = q.eq("is_archaic", archaic)
+        return q.range(start, end)
+
+    resp = _execute_with_retry(_build)
+    return {"total": resp.count or 0, "results": resp.data or []}
 
 
 def _load_feedback() -> list[dict[str, Any]]:
     if not FEEDBACK_FILE.exists():
         return []
-
     try:
         with open(FEEDBACK_FILE, encoding="utf-8") as file:
             data = json.load(file)
@@ -273,7 +408,6 @@ def _load_feedback() -> list[dict[str, Any]]:
             return data
     except (json.JSONDecodeError, OSError):
         pass
-
     return []
 
 
@@ -286,6 +420,11 @@ def save_feedback(payload: dict[str, Any]) -> None:
 
 
 def random_word() -> Optional[dict[str, Any]]:
-    if not ENTRIES:
+    total = count_rows()
+    if total == 0:
         return None
-    return random.choice(ENTRIES)
+    offset = random.randint(0, total - 1)
+    resp = _execute_with_retry(
+        lambda c, o=offset: c.table(TABLE).select(_SELECT_COLS).range(o, o)
+    )
+    return resp.data[0] if resp.data else None

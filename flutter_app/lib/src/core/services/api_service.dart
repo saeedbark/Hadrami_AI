@@ -85,12 +85,18 @@ class ApiService {
     int page = 1,
     int size = ApiConfig.defaultPageSize,
     String? letter,
+    String? pos,
+    String? category,
+    bool? archaic,
   }) async {
     try {
       final params = <String, String>{
         'page': '$page',
         'size': '$size',
         if (letter != null) 'letter': letter,
+        if (pos != null) 'pos': pos,
+        if (category != null) 'category': category,
+        if (archaic != null) 'archaic': '$archaic',
       };
       final data = await _getJson('/words', queryParameters: params);
       return SearchResult.fromJson(data);
@@ -188,11 +194,23 @@ class ApiService {
 
   Future<AskResult> ask(String question) async {
     try {
-      final data = await _getJson(
-        '/ask',
-        queryParameters: {'q': question},
-        timeout: ApiConfig.longTimeout,
-      );
+      final response = await _client
+          .post(
+            _buildUri('/ask'),
+            headers: const {'Content-Type': 'application/json'},
+            body: json.encode({'q': question}),
+          )
+          .timeout(ApiConfig.longTimeout);
+      if (response.statusCode != 200) {
+        return AskResult(
+          question: question,
+          answer:
+              'خطأ من الخادم (${response.statusCode}). جرّب تقصير السؤال أو تقسيمه.',
+          mode: 'error',
+        );
+      }
+      final data =
+          json.decode(utf8.decode(response.bodyBytes)) as Map<String, dynamic>;
       return AskResult.fromJson(data);
     } on TimeoutException {
       return AskResult(

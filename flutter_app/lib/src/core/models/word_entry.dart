@@ -24,6 +24,13 @@ class WordEntry with _$WordEntry {
     @Default('') String arabicFus7a,
     @Default('') String fullDefinition,
     String? fus7aShort,
+    String? searchKey,
+    String? partOfSpeech,
+    String? thematicCategory,
+    @Default(false) bool isArchaic,
+    List<String>? pronunciationNotes,
+    List<String>? proverbRecord,
+    String? culturalNote,
     List<String>? aliases,
     List<ExamplePair>? examples,
   }) = _WordEntry;
@@ -66,6 +73,8 @@ class AskResult with _$AskResult {
     @Default('') String question,
     @Default('') String answer,
     @Default('simple') String mode,
+    @Default(<HadramiSpan>[]) List<HadramiSpan> hadramiSpans,
+    @Default(<String>[]) List<String> highlightSurfaces,
     @Default(<Map<String, dynamic>>[])
     List<Map<String, dynamic>> context,
   }) = _AskResult;
@@ -112,6 +121,10 @@ class AppStats with _$AppStats {
     @Default(0) int translated,
     @Default(0) int pending,
     @Default(0.0) double completionPercent,
+    @Default(<String, int>{}) Map<String, int> byPartOfSpeech,
+    @Default(<String, int>{}) Map<String, int> byThematicCategory,
+    @Default(0) int archaicWords,
+    @Default(0) int totalProverbs,
   }) = _AppStats;
 
   factory AppStats.fromJson(Map<String, dynamic> json) =>

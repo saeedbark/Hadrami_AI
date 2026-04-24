@@ -1,9 +1,12 @@
 # ── Python / FastAPI backend ──
 backend/.env
 backend/venv/
+venv/
 **/__pycache__/
 *.pyc
 *.pyo
+*.egg-info/
+.pytest_cache/
 backend/data/feedback.json
 backend/data/*.backup.json
 backend/hadrami_chroma_db/
@@ -13,13 +16,13 @@ flutter_app/.dart_tool/
 flutter_app/.flutter-plugins
 flutter_app/.flutter-plugins-dependencies
 flutter_app/.packages
-flutter_app/build/
+# flutter_app/build/
 flutter_app/.metadata
 **/*.freezed.dart
 **/*.g.dart
 **/*.gform.dart
 # flutter_app/build/
-flutter_app/_flutter/
+# flutter_app/_flutter/
 
 # ── IDE / Editor ──
 .vscode/
@@ -38,3 +41,4 @@ desktop.ini
 *.log
 *.bak
 *.tmp
+hadrami_clearn.json

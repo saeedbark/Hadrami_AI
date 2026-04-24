@@ -512,36 +512,74 @@ class _StatsRow extends StatelessWidget {
     final colorScheme = Theme.of(context).colorScheme;
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8),
-      child: Row(
+      child: Column(
         children: [
-          Expanded(
-            child: _StatCard(
-              '${stats.totalWords}',
-              'كلمة',
-              Icons.menu_book_rounded,
-              colorScheme.primary,
-              colorScheme.primaryContainer,
-            ),
+          Row(
+            children: [
+              Expanded(
+                child: _StatCard(
+                  '${stats.totalWords}',
+                  'كلمة',
+                  Icons.menu_book_rounded,
+                  colorScheme.primary,
+                  colorScheme.primaryContainer,
+                ),
+              ),
+              const SizedBox(width: 8),
+              Expanded(
+                child: _StatCard(
+                  '${stats.translated}',
+                  'مترجمة',
+                  Icons.check_circle_rounded,
+                  colorScheme.secondary,
+                  colorScheme.secondaryContainer,
+                ),
+              ),
+              const SizedBox(width: 8),
+              Expanded(
+                child: _StatCard(
+                  '${stats.completionPercent.toStringAsFixed(0)}%',
+                  'الاكتمال',
+                  Icons.trending_up_rounded,
+                  colorScheme.primary.withValues(alpha: 0.75),
+                  colorScheme.surfaceContainerHigh,
+                ),
+              ),
+            ],
           ),
-          const SizedBox(width: 8),
-          Expanded(
-            child: _StatCard(
-              '${stats.translated}',
-              'مترجمة',
-              Icons.check_circle_rounded,
-              colorScheme.secondary,
-              colorScheme.secondaryContainer,
-            ),
-          ),
-          const SizedBox(width: 8),
-          Expanded(
-            child: _StatCard(
-              '${stats.completionPercent.toStringAsFixed(0)}%',
-              'الاكتمال',
-              Icons.trending_up_rounded,
-              colorScheme.primary.withValues(alpha: 0.75),
-              colorScheme.surfaceContainerHigh,
-            ),
+          const SizedBox(height: 8),
+          Row(
+            children: [
+              Expanded(
+                child: _StatCard(
+                  '${stats.totalProverbs}',
+                  'مثل شعبي',
+                  Icons.auto_stories_rounded,
+                  colorScheme.tertiary,
+                  colorScheme.tertiaryContainer,
+                ),
+              ),
+              const SizedBox(width: 8),
+              Expanded(
+                child: _StatCard(
+                  '${stats.archaicWords}',
+                  'كلمة قديمة',
+                  Icons.history_rounded,
+                  colorScheme.error,
+                  colorScheme.errorContainer,
+                ),
+              ),
+              const SizedBox(width: 8),
+              Expanded(
+                child: _StatCard(
+                  '${stats.byPartOfSpeech.length}',
+                  'أصناف نحوية',
+                  Icons.label_rounded,
+                  Colors.indigo,
+                  Colors.indigo.withValues(alpha: 0.08),
+                ),
+              ),
+            ],
           ),
         ],
       ),

@@ -1,6 +1,7 @@
 # Backend — Hadrami NLP API
 
-FastAPI REST API serving the Hadrami dialect dictionary, word/phrase translation, and AI-powered Q&A.
+FastAPI REST API serving the Hadrami dialect dictionary, word/phrase translation, semantic search, and AI-powered Q&A.
+Data is stored in **Supabase** (PostgreSQL + pgvector).
 
 ---
 
@@ -17,13 +18,16 @@ pip install -r requirements.txt
 
 ### Environment Variables
 
-Create a `.env` file (never commit it):
+Create a `.env` file (never commit it) — see `.env.example` for all options:
 
 ```
+SUPABASE_URL=https://your-project.supabase.co
+SUPABASE_SERVICE_KEY=your-service-role-key
 GEMINI_API_KEY=your-google-gemini-api-key
 ```
 
-The API key is required for `/ask` and `/translate-phrase`. All other endpoints work without it.
+- `SUPABASE_URL` + `SUPABASE_SERVICE_KEY` are **required** for all endpoints.
+- `GEMINI_API_KEY` is required for `/ask`, `/translate-phrase`, and `/semantic-search`.
 
 ### Run the Server
 
@@ -41,22 +45,27 @@ Open http://localhost:8000/docs for interactive Swagger documentation.
 
 ```
 app/
-├── main.py                  ← FastAPI app, all route handlers
+├── __init__.py
+├── main.py                  ← FastAPI app (lifespan, routes, CORS)
 ├── schemas.py               ← Pydantic models (Entry, FeedbackRequest, etc.)
-├── rag_engine.py            ← RAG pipeline: Gemini integration, vector search
+├── rag_engine.py            ← RAG pipeline: retrieval + Gemini generation
 ├── core/
-│   ├── config.py            ← App constants, file paths, translation limits
-│   └── data_store.py        ← Loads hadrami_dataset.json into memory at startup
+│   ├── __init__.py
+│   ├── config.py            ← App constants, Supabase config, translation limits
+│   └── data_store.py        ← Supabase client + query helpers (PostgREST + pgvector RPC)
 └── services/
+    ├── __init__.py
     ├── dictionary_service.py         ← Word search, translate, feedback, pagination
+    ├── embedding_service.py          ← Gemini text-embedding-004 wrapper
     └── phrase_translation_service.py ← Chunked phrase translation via Gemini
 ```
 
 ### Key Design Decisions
 
-- **In-memory dataset**: The entire lexicon (~1 000 entries) is loaded into a Python list at startup via `data_store.py`. This makes search and scoring fast with zero database overhead.
-- **Scoring-based search**: `dictionary_service.py` scores matches by exact → substring → definition containment with numeric weights, then sorts by score.
-- **RAG for AI features**: `/ask` and `/translate-phrase` use keyword retrieval from the lexicon to build a context prompt sent to Gemini. No external vector DB is required for basic operation.
+- **Supabase-backed storage**: The lexicon is stored in a PostgreSQL `entries` table on Supabase. All reads go through PostgREST via the `supabase` Python client.
+- **pgvector semantic search**: Entries have a 768-dim `embedding` column (Gemini `text-embedding-004`). The `match_entries` Postgres function provides cosine-similarity search.
+- **Scoring-based keyword search**: `dictionary_service.py` scores matches by exact → substring → definition containment with numeric weights, then sorts by score.
+- **RAG for AI features**: `/ask` and `/translate-phrase` combine keyword + vector retrieval to build a context prompt sent to Gemini.
 - **Chunked translation**: Long texts are split on paragraph/sentence boundaries and translated chunk-by-chunk to stay within Gemini's quality sweet spot.
 
 ---
@@ -70,9 +79,11 @@ app/
 | `/` | GET | API info and version |
 | `/stats` | GET | Total words, translated count, completion % |
 | `/translate?q=<word>` | GET | Translate a single Hadrami word (exact → partial → definition match) |
-| `/search?q=<query>&limit=20` | GET | Scored search across word, fus7a, and definition |
-| `/words?page=1&size=20&letter=أ` | GET | Paginated word list with optional letter filter |
+| `/search?q=<query>&limit=20` | GET | Scored keyword search across word, fus7a, and definition |
+| `/semantic-search?q=<query>&limit=10&threshold=0.3` | GET | Vector similarity search using pgvector embeddings |
+| `/words?page=1&size=20&letter=أ` | GET | Paginated word list with optional letter, pos, category, archaic filters |
 | `/word/<id>` | GET | Single entry by ID |
+| `/sections` | GET | Browse-by-letter sections with counts |
 | `/random` | GET | Random dictionary entry |
 
 ### AI / Translation
@@ -101,7 +112,7 @@ python -m pytest tests/ -v
 ```
 
 The test suite (`tests/test_api.py`) covers all endpoints with 21 smoke tests:
-- Root and stats endpoints
+- Root, stats, and sections endpoints
 - Translate (known word, unknown word, missing query)
 - Search (results and empty query)
 - Word listing, filtering, single word, not found
@@ -119,6 +130,7 @@ The test suite (`tests/test_api.py`) covers all endpoints with 21 smoke tests:
 | `scripts/validate_dataset.py` | Check dataset integrity: unique IDs, required keys, short fus7a, schema validation |
 | `scripts/audit_dataset.py` | Audit arabic_fus7a quality: empty, single-char, truncated glosses |
 | `scripts/refactor_dataset.py` | One-time refactoring: fix truncated fus7a, merge duplicates, extract examples, add fields |
+| `scripts/deep_structure.py` | Deep semantic structuring: POS classification, thematic categories, proverb extraction, archaic detection |
 
 Run any script from the `backend/` directory:
 
@@ -153,3 +165,9 @@ python scripts/audit_dataset.py
 ```
 
 Optional fields (`fus7a_short`, `aliases`, `examples`) are omitted when null to keep the file compact.
+
+---
+
+## Deployment
+
+The backend is deployable to Vercel via `vercel.json`. The `pyproject.toml` declares the ASGI entry point for Vercel's Python runtime.
