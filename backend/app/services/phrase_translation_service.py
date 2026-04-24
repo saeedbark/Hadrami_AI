@@ -1,4 +1,4 @@
-"""RAG-grounded phrase translation (MSA ↔ Hadrami) via Gemini, same retrieval as /ask."""
+"""RAG-grounded phrase translation (MSA <-> Hadrami) via Gemini."""
 
 from __future__ import annotations
 
@@ -27,8 +27,8 @@ def _context_block(entries: list[dict], *, definition_cap: int) -> str:
     lines = []
     for e in entries:
         lines.append(
-            f"- حضرمي: {e.get('hadrami_word', '')} | فصحى: {e.get('arabic_fus7a', '')} | "
-            f"شرح: {(e.get('full_definition') or '')[:definition_cap]}"
+            f"- حضرمي: {e.get('word_vocalized', '')} | فصحى: {e.get('fusha_equivalent', '')} | "
+            f"شرح: {(e.get('definition') or '')[:definition_cap]}"
         )
     return (
         "\n".join(lines)
@@ -38,7 +38,6 @@ def _context_block(entries: list[dict], *, definition_cap: int) -> str:
 
 
 def _normalize_span_token(s: str) -> str:
-    """Trim outer whitespace and common Arabic / Latin sentence punctuation."""
     t = (s or "").strip()
     while t and t[-1] in "؟!.,،؛:!?)】」":
         t = t[:-1].rstrip()
@@ -48,13 +47,12 @@ def _normalize_span_token(s: str) -> str:
 
 
 def _allowed_surfaces_from_entries(merged: list[dict], direction: str) -> set[str]:
-    """Surfaces the model is allowed to highlight (must match retrieved lexicon)."""
     raw: set[str] = set()
     for e in merged:
         if direction == "ar_to_hadrami":
-            w = (e.get("hadrami_word") or "").strip()
+            w = (e.get("word_vocalized") or "").strip()
         else:
-            w = (e.get("arabic_fus7a") or "").strip()
+            w = (e.get("fusha_equivalent") or "").strip()
         if w:
             raw.add(w)
     return {_normalize_span_token(x) for x in raw if _normalize_span_token(x)}
@@ -201,8 +199,8 @@ def _entries_to_response(entries: list[dict]) -> list[Entry]:
         if isinstance(raw_ex, list):
             examples = [
                 ExamplePair(
-                    hadrami=str(x.get("hadrami", "")),
-                    fusha=str(x.get("fusha", "")),
+                    h=str(x.get("h", "")),
+                    f=str(x.get("f", "")),
                 )
                 for x in raw_ex
                 if isinstance(x, dict)
@@ -210,11 +208,14 @@ def _entries_to_response(entries: list[dict]) -> list[Entry]:
         out.append(
             Entry(
                 id=int(e.get("id", 0)),
-                hadrami_word=str(e.get("hadrami_word", "")),
-                arabic_fus7a=str(e.get("arabic_fus7a", "")),
-                full_definition=str(e.get("full_definition", "")),
-                fus7a_short=e.get("fus7a_short"),
-                aliases=e.get("aliases"),
+                word_vocalized=str(e.get("word_vocalized", "")),
+                word_clean=e.get("word_clean"),
+                root=e.get("root"),
+                pos=e.get("pos"),
+                fusha_equivalent=str(e.get("fusha_equivalent", "")),
+                definition=str(e.get("definition", "")),
+                region=e.get("region", "General"),
+                synonyms=e.get("synonyms"),
                 examples=examples,
             )
         )
@@ -222,7 +223,6 @@ def _entries_to_response(entries: list[dict]) -> list[Entry]:
 
 
 def _split_into_chunks(text: str, max_chunk: int) -> list[str]:
-    """Split text on paragraph/sentence boundaries to stay under max_chunk chars per piece."""
     if len(text) <= max_chunk:
         return [text]
 
@@ -276,7 +276,7 @@ def translate_phrase(text: str, direction: str) -> dict[str, Any]:
     if len(chunks) == 1:
         translated, spans = _translate_single_chunk(stripped, direction, merged, api_key)
         if translated.startswith("Gemini not available:"):
-            _rag_log(f"🌐 translate-phrase Gemini fail → {_preview(translated)}")
+            _rag_log(f"translate-phrase Gemini fail -> {_preview(translated)}")
             return {
                 "input_text": stripped,
                 "direction": direction,
@@ -289,7 +289,7 @@ def translate_phrase(text: str, direction: str) -> dict[str, Any]:
     else:
         workers = min(PHRASE_TRANSLATE_MAX_WORKERS, len(chunks))
         _rag_log(
-            f"🌐 translate-phrase chunked: {len(chunks)} chunks for {len(stripped)} chars "
+            f"translate-phrase chunked: {len(chunks)} chunks for {len(stripped)} chars "
             f"(workers={workers})"
         )
 
@@ -340,7 +340,7 @@ def translate_phrase(text: str, direction: str) -> dict[str, Any]:
 
     mode_tag = "local_gemini" if MODE == "local" else "gemini"
     _rag_log(
-        f"🌐 translate-phrase dir={direction!r} mode={mode_tag} "
+        f"translate-phrase dir={direction!r} mode={mode_tag} "
         f"chars={len(translated)} spans={len(spans)} preview={_preview(translated)}"
     )
 

@@ -1,7 +1,10 @@
 from contextlib import asynccontextmanager
+from pathlib import Path
+
 from dotenv import load_dotenv
 
-load_dotenv() # Load environment variables from .env file
+# backend/.env (same directory as app package parent), not dependent on shell cwd
+load_dotenv(Path(__file__).resolve().parent.parent / ".env")
 
 from fastapi import FastAPI, HTTPException, Query
 from fastapi.middleware.cors import CORSMiddleware
@@ -19,6 +22,8 @@ from .core.data_store import count_rows
 from .schemas import (
     AskRequest,
     AskResponse,
+    ChatRequest,
+    ChatResponse,
     Entry,
     FeedbackRequest,
     LexiconSectionsResponse,
@@ -74,6 +79,7 @@ def root():
             "/sections",
             "/feedback",
             "/ask",
+            "/chat",
         ],
     }
 
@@ -136,12 +142,12 @@ def list_words(
     page: int = Query(1, ge=1),
     size: int = Query(DEFAULT_PAGE_SIZE, ge=1, le=MAX_PAGE_SIZE),
     letter: Optional[str] = None,
-    pos: Optional[str] = Query(None, description="Filter by part_of_speech (Noun, Verb, Adjective, Expression)"),
-    category: Optional[str] = Query(None, description="Filter by thematic_category"),
-    archaic: Optional[bool] = Query(None, description="Filter archaic words only"),
+    pos: Optional[str] = Query(None, description="Filter by pos (Noun, Verb, Adjective, Expression)"),
+    region: Optional[str] = Query(None, description="Filter by region"),
+    tag: Optional[str] = Query(None, description="Filter by tag"),
 ):
     payload = dictionary_service.list_words(
-        page=page, size=size, letter=letter, pos=pos, category=category, archaic=archaic,
+        page=page, size=size, letter=letter, pos=pos, region=region, tag=tag,
     )
     return SearchResult(total=payload["total"], results=payload["results"])
 
@@ -150,8 +156,8 @@ def list_words(
 def submit_feedback(fb: FeedbackRequest):
     payload: dict = {
         "word_id": fb.word_id,
-        "hadrami_word": fb.hadrami_word,
-        "suggested_fus7a": fb.suggested_fus7a,
+        "word_vocalized": fb.word_vocalized,
+        "suggested_fusha": fb.suggested_fusha,
         "comment": fb.comment,
         "feedback_type": fb.feedback_type.value,
         "consent": fb.consent,
@@ -179,10 +185,10 @@ def _run_ask(q: str) -> AskResponse:
 
     result = get_rag_answer(q)
     ctx_snip = [
-        f"{e.hadrami_word}→{e.arabic_fus7a}" for e in result["context"][:3]
+        f"{e.word_vocalized}->{e.fusha_equivalent}" for e in result["context"][:3]
     ]
     _rag_log(
-        f"📝 /ask q={q!r} → mode={result['mode']!r} | context={ctx_snip} | answer={_preview(result['answer'])}"
+        f"/ask q={q!r} -> mode={result['mode']!r} | context={ctx_snip} | answer={_preview(result['answer'])}"
     )
     return AskResponse(
         question=q,
@@ -208,5 +214,20 @@ def ask_get(
 
 @app.post("/ask", response_model=AskResponse)
 def ask_post(body: AskRequest):
-    """Same as GET /ask but accepts the question in the JSON body (better for long text)."""
+    """Same as GET /ask but accepts the question in the JSON body."""
     return _run_ask(body.q)
+
+
+@app.post("/chat", response_model=ChatResponse)
+def chat(body: ChatRequest):
+    """Conversational chat with RAG context and message history."""
+    from .rag_engine import get_chat_answer
+
+    history = [{"role": m.role.value, "content": m.content} for m in body.history]
+    result = get_chat_answer(body.message, history)
+    return ChatResponse(
+        reply=result["reply"],
+        context=result.get("context", []),
+        hadrami_spans=result.get("hadrami_spans", []),
+        highlight_surfaces=result.get("highlight_surfaces", []),
+    )

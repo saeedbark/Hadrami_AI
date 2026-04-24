@@ -7,8 +7,8 @@ part 'word_entry.g.dart';
 class ExamplePair with _$ExamplePair {
   @JsonSerializable(fieldRename: FieldRename.snake)
   const factory ExamplePair({
-    @Default('') String hadrami,
-    @Default('') String fusha,
+    @Default('') String h,
+    @Default('') String f,
   }) = _ExamplePair;
 
   factory ExamplePair.fromJson(Map<String, dynamic> json) =>
@@ -20,19 +20,20 @@ class WordEntry with _$WordEntry {
   @JsonSerializable(fieldRename: FieldRename.snake)
   const factory WordEntry({
     @Default(0) int id,
-    @Default('') String hadramiWord,
-    @Default('') String arabicFus7a,
-    @Default('') String fullDefinition,
-    String? fus7aShort,
-    String? searchKey,
-    String? partOfSpeech,
-    String? thematicCategory,
-    @Default(false) bool isArchaic,
-    List<String>? pronunciationNotes,
-    List<String>? proverbRecord,
-    String? culturalNote,
-    List<String>? aliases,
+    @Default('') String wordVocalized,
+    String? wordClean,
+    String? root,
+    String? pos,
+    String? fushaEquivalent,
+    String? definition,
+    @Default('General') String region,
+    List<String>? synonyms,
+    List<String>? phoneticVariants,
+    String? note,
+    String? source,
     List<ExamplePair>? examples,
+    List<String>? proverbs,
+    List<String>? tags,
   }) = _WordEntry;
 
   factory WordEntry.fromJson(Map<String, dynamic> json) =>
@@ -44,9 +45,9 @@ class TranslateResult with _$TranslateResult {
   @JsonSerializable(fieldRename: FieldRename.snake)
   const factory TranslateResult({
     @Default(false) bool found,
-    @Default('') String hadramiWord,
-    @Default('') String arabicFus7a,
-    @Default('') String fullDefinition,
+    @Default('') String wordVocalized,
+    @Default('') String fushaEquivalent,
+    @Default('') String definition,
     @Default('not_found') String confidence,
   }) = _TranslateResult;
 
@@ -121,12 +122,25 @@ class AppStats with _$AppStats {
     @Default(0) int translated,
     @Default(0) int pending,
     @Default(0.0) double completionPercent,
-    @Default(<String, int>{}) Map<String, int> byPartOfSpeech,
-    @Default(<String, int>{}) Map<String, int> byThematicCategory,
-    @Default(0) int archaicWords,
+    @Default(<String, int>{}) Map<String, int> byPos,
+    @Default(<String, int>{}) Map<String, int> byTag,
     @Default(0) int totalProverbs,
   }) = _AppStats;
 
   factory AppStats.fromJson(Map<String, dynamic> json) =>
       _$AppStatsFromJson(json);
+}
+
+@freezed
+class ChatResult with _$ChatResult {
+  @JsonSerializable(fieldRename: FieldRename.snake)
+  const factory ChatResult({
+    @Default('') String reply,
+    @Default(<WordEntry>[]) List<WordEntry> context,
+    @Default(<HadramiSpan>[]) List<HadramiSpan> hadramiSpans,
+    @Default(<String>[]) List<String> highlightSurfaces,
+  }) = _ChatResult;
+
+  factory ChatResult.fromJson(Map<String, dynamic> json) =>
+      _$ChatResultFromJson(json);
 }

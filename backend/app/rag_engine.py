@@ -1,7 +1,6 @@
-"""RAG engine — retrieval-augmented generation for /ask and /translate-phrase.
+"""RAG engine -- retrieval-augmented generation for /ask, /translate-phrase, and /chat.
 
-Retrieval now uses Supabase (keyword via PostgREST, vector via pgvector RPC)
-instead of the old in-memory ENTRIES + optional Chroma index.
+Retrieval uses Supabase (keyword via PostgREST, vector via pgvector RPC).
 """
 
 import os
@@ -42,7 +41,6 @@ def _rag_log(msg: str) -> None:
 
 
 def _rag_response_mode_tag() -> str:
-    """API ``mode`` for Gemini answers and lexicon-only fallbacks (never ``simple``)."""
     return "local_gemini" if MODE == "local" else "gemini"
 
 
@@ -91,9 +89,9 @@ def _looks_like_translation_request(question: str) -> bool:
 
 
 def _few_shot_pairs_from_entry(entry: dict[str, Any]) -> list[tuple[str, str]]:
-    hadrami_head = (entry.get("hadrami_word") or "").strip()
-    fus_gloss = (entry.get("arabic_fus7a") or "").strip()
-    definition = (entry.get("full_definition") or "").strip()
+    hadrami_head = (entry.get("word_vocalized") or "").strip()
+    fus_gloss = (entry.get("fusha_equivalent") or "").strip()
+    definition = (entry.get("definition") or "").strip()
     out: list[tuple[str, str]] = []
 
     raw_examples = entry.get("examples")
@@ -101,8 +99,8 @@ def _few_shot_pairs_from_entry(entry: dict[str, Any]) -> list[tuple[str, str]]:
         for ex in raw_examples[:4]:
             if not isinstance(ex, dict):
                 continue
-            h = (ex.get("hadrami") or ex.get("hadrami_sentence") or ex.get("sentence") or "").strip()
-            f = (ex.get("fusha") or ex.get("fusha_translation") or ex.get("meaning") or "").strip()
+            h = (ex.get("h") or "").strip()
+            f = (ex.get("f") or "").strip()
             if h and f:
                 out.append((h, f))
 
@@ -119,6 +117,7 @@ def _few_shot_pairs_from_entry(entry: dict[str, Any]) -> list[tuple[str, str]]:
 
 
 def _translation_prompt(question: str, context_entries: list[dict]) -> str:
+    """Hadrami→MSA translation prompt: demand grounding in retrieved lexicon only."""
     blocks: list[str] = []
     for e in context_entries[:8]:
         for had, fusha in _few_shot_pairs_from_entry(e):
@@ -134,19 +133,33 @@ def _translation_prompt(question: str, context_entries: list[dict]) -> str:
         if len(blocks) >= 10:
             break
 
-    examples_text = (
-        "\n\n".join(blocks)
-        if blocks
-        else "(No structured examples were retrieved from the dictionary; rely on general Hadrami-to-MSA competence.)"
-    )
+    if blocks:
+        reference_text = "\n\n".join(blocks)
+        intro = (
+            "You are a professional translator from Hadrami Arabic to Modern Standard Arabic. "
+            "Every content word mapping MUST be licensed by the Hadrami↔MSA pairs below. "
+            "Do not invent senses, synonyms, or free paraphrase beyond what these pairs support. "
+            "If the sentence cannot be translated faithfully from these pairs alone, output exactly one line:\n"
+            "لم يُسترجَع قاموسياً ما يكفي لترجمة هذه الجملة بدقة."
+        )
+    else:
+        reference_text = _context_block(context_entries, definition_max_chars=220)
+        intro = (
+            "You are a professional translator from Hadrami Arabic to Modern Standard Arabic. "
+            "You MUST ground the translation ONLY in the Arabic lexicon excerpt below "
+            "(headwords, MSA glosses, definitions, examples). "
+            "Do not use general bilingual knowledge to fill gaps. "
+            "If the excerpt does not license a faithful full-sentence translation, output exactly:\n"
+            "لم يُسترجَع قاموسياً ما يكفي لترجمة هذه الجملة بدقة.\n"
+            "Otherwise output only the MSA translation."
+        )
 
-    system_and_examples = f"""You are a professional translator from Hadrami dialect to Modern Standard Arabic. Use the following examples as a guide for style, grammar, and vocabulary mapping.
+    return f"""{intro}
 
-{examples_text}"""
+{reference_text}
 
-    return f"""{system_and_examples}
-
-Now, translate this sentence precisely: {question}"""
+Translate the following Hadrami text to Modern Standard Arabic. Output only the MSA translation, or the exact refusal sentence above:
+{question}"""
 
 
 def _merge_entries_by_id(*lists: list[dict]) -> list[dict]:
@@ -162,8 +175,8 @@ def _merge_entries_by_id(*lists: list[dict]) -> list[dict]:
     return out
 
 
-def _aliases_from_entry(entry: dict[str, Any]) -> list[str]:
-    raw = entry.get("aliases")
+def _synonyms_from_entry(entry: dict[str, Any]) -> list[str]:
+    raw = entry.get("synonyms")
     if not isinstance(raw, list):
         return []
     return [x.strip() for x in raw if isinstance(x, str) and x.strip()]
@@ -176,29 +189,30 @@ def _first_example(entry: dict[str, Any]) -> tuple[str, str]:
     for ex in raw_examples:
         if not isinstance(ex, dict):
             continue
-        hadrami = str(ex.get("hadrami") or ex.get("hadrami_sentence") or ex.get("sentence") or "").strip()
-        fusha = str(ex.get("fusha") or ex.get("fusha_translation") or ex.get("meaning") or "").strip()
+        hadrami = str(ex.get("h") or "").strip()
+        fusha = str(ex.get("f") or "").strip()
         if hadrami and fusha:
             return hadrami, fusha
     return "", ""
 
 
-def _context_block(entries: list[dict]) -> str:
+def _context_block(entries: list[dict], definition_max_chars: int = 160) -> str:
     blocks: list[str] = []
+    cap = max(80, definition_max_chars)
     for entry in entries[:5]:
-        head = str(entry.get("hadrami_word") or "").strip()
-        fusha = str(entry.get("arabic_fus7a") or "").strip()
-        definition = str(entry.get("full_definition") or "").strip()
-        aliases = _aliases_from_entry(entry)[:4]
+        head = str(entry.get("word_vocalized") or "").strip()
+        fusha = str(entry.get("fusha_equivalent") or "").strip()
+        definition = str(entry.get("definition") or "").strip()
+        synonyms = _synonyms_from_entry(entry)[:4]
         ex_h, ex_f = _first_example(entry)
 
         lines = [f"- الكلمة الحضرمية: {head or 'غير متوفر'}"]
-        if aliases:
-            lines.append(f"  البدائل: {', '.join(aliases)}")
+        if synonyms:
+            lines.append(f"  المرادفات: {', '.join(synonyms)}")
         if fusha:
             lines.append(f"  المقابل الفصيح: {fusha}")
         if definition:
-            lines.append(f"  الشرح القاموسي: {definition[:160]}")
+            lines.append(f"  الشرح القاموسي: {definition[:cap]}")
         if ex_h and ex_f:
             lines.append(f"  مثال قاموسي: {ex_h}")
             lines.append(f"  معنى المثال: {ex_f}")
@@ -209,14 +223,15 @@ def _context_block(entries: list[dict]) -> str:
 def _rag_prompt(question: str, context_entries: list[dict]) -> str:
     context = _context_block(context_entries)
     return f"""أنت مساعد متخصص في اللهجة الحضرمية اليمنية.
-اعتمد فقط على المراجع القاموسية التالية، ولا تخترع معاني أو كلمات غير مدعومة بها.
-إذا ذكرت كلمة حضرمية موجودة في المراجع، فاكتبها حرفياً كما وردت في خانة «الكلمة الحضرمية» أو «البدائل».
-اجعل الإجابة موجزة وواضحة بهذا الشكل:
+التزم حصراً بالمراجع القاموسية أدناه. لا تذكر معانٍ أو أشكالاً حضرمية أو فصحى لم ترد فيها صراحة.
+إذا لم تغطِ المراجعُ السؤال، فقل ذلك في جملة واحدة ولا تكمل بمعرفة عامة أو تخمين.
+إذا ذكرت كلمة حضرمية من المراجع، فاكتبها حرفياً كما في «الكلمة الحضرمية» أو «المرادفات».
+اجعل الإجابة موجزة بهذا الشكل:
 - ابدأ باسم الكلمة الحضرمية بين علامتي تنسيق غامق.
-- بعده سطر «المعنى: ...» من المقابل الفصيح مباشرة.
-- ثم سطر «الشرح: ...» من جملة إلى جملتين قصيرتين تشرحان المقصود والاستعمال اليومي للكلمة بشكل بسيط.
-- ثم سطر «مثال: ...» بجملة حضرمية قصيرة جداً ومعناها بالفصحى.
-لا تكرر الشرح نفسه بصيغ متعددة، ولا تستخدم ألفاظاً عامة إذا كان للقاموس مقابل أدق.
+- سطر «المعنى: ...» من المقابل الفصيح من المراجع فقط.
+- سطر «الشرح: ...» جملة أو جملتان تلخصان الشرح القاموسي دون إضافة معلومات من خارج المراجع.
+- سطر «مثال: ...» فقط إذا وُجد في المراجع مثال حضرمي+فصيح؛ وإلا اكتب «لا يوجد في المراجع مثال جاهز».
+لا تكرر الشرح بصيغ متعددة، ولا تستخدم ألفاظاً عامة إذا كان للقاموس مقابل أدق.
 
 {context}
 
@@ -226,10 +241,10 @@ def _rag_prompt(question: str, context_entries: list[dict]) -> str:
 
 
 def _rag_prompt_no_hits(question: str) -> str:
+    """Safety template only: prefer skipping LLM when retrieval is empty (see get_rag_answer)."""
     return f"""أنت مساعد متخصص في اللهجة الحضرمية اليمنية.
-لم يُعثر في القاموس الحضرمي على مدخل يطابق سؤالك بوضوح.
-إذا كان سؤالك عن كلمة أو عبارة، يرجى التأكد من كتابتها كما تُنطق محلياً، مع أو بدون «ال» التعريف، أو مع إضافة الهمزة إن وُجدت (مثلاً «بَعْل» بدلاً من «بل»).
-إذا كان سؤالك عن معنىً عام، فمن الأفضل إعادة صياغة السؤال بشكل أوضح.
+لم يُسترجَع أي مدخل قاموسي يدعم إجابةً موثوقة عن السؤال.
+يجب أن ترد بجملة واحدة فقط تطلب من المستخدم إعادة الصياغة أو البحث في القاموس، دون ذكر معانٍ أو ترجمات من عندك.
 
 السؤال: {question}
 
@@ -271,9 +286,9 @@ def _collect_highlight_surfaces(entries: list[dict]) -> list[str]:
     surfaces: list[str] = []
     for entry in entries:
         for raw in [
-            entry.get("hadrami_word"),
-            entry.get("search_key"),
-            *(_aliases_from_entry(entry)),
+            entry.get("word_vocalized"),
+            entry.get("word_clean"),
+            *(_synonyms_from_entry(entry)),
         ]:
             text = str(raw or "").strip()
             if len(text) < 2 or text in seen:
@@ -335,8 +350,8 @@ def _entries_to_response(entries: list[dict]) -> list[Entry]:
         if isinstance(raw_examples, list):
             examples = [
                 ExamplePair(
-                    hadrami=str(ex.get("hadrami", "")),
-                    fusha=str(ex.get("fusha", "")),
+                    h=str(ex.get("h", "")),
+                    f=str(ex.get("f", "")),
                 )
                 for ex in raw_examples
                 if isinstance(ex, dict)
@@ -344,16 +359,19 @@ def _entries_to_response(entries: list[dict]) -> list[Entry]:
         out.append(
             Entry(
                 id=int(entry.get("id", 0)),
-                hadrami_word=str(entry.get("hadrami_word", "")),
-                arabic_fus7a=str(entry.get("arabic_fus7a", "")),
-                full_definition=str(entry.get("full_definition", "")),
-                search_key=entry.get("search_key"),
-                part_of_speech=entry.get("part_of_speech"),
-                thematic_category=entry.get("thematic_category"),
-                is_archaic=bool(entry.get("is_archaic", False)),
-                cultural_note=entry.get("cultural_note"),
-                proverb_record=entry.get("proverb_record"),
-                aliases=entry.get("aliases"),
+                word_vocalized=str(entry.get("word_vocalized", "")),
+                word_clean=entry.get("word_clean"),
+                root=entry.get("root"),
+                pos=entry.get("pos"),
+                fusha_equivalent=str(entry.get("fusha_equivalent", "")),
+                definition=str(entry.get("definition", "")),
+                region=entry.get("region", "General"),
+                synonyms=entry.get("synonyms"),
+                phonetic_variants=entry.get("phonetic_variants"),
+                note=entry.get("note"),
+                source=entry.get("source"),
+                proverbs=entry.get("proverbs"),
+                tags=entry.get("tags"),
                 examples=examples,
             )
         )
@@ -371,12 +389,16 @@ def _finalize_ask_payload(answer: str, mode: str, entries: list[dict]) -> dict[s
     }
 
 
-def _gemini_generate(prompt: str, api_key: str) -> str:
+def _gemini_generate(
+    prompt: str,
+    api_key: str,
+    generation_config: Any | None = None,
+) -> str:
     if not api_key:
-        _rag_log("❌ Gemini: no API key (GEMINI_API_KEY empty)")
+        _rag_log("Gemini: no API key (GEMINI_API_KEY empty)")
         return "Gemini not available: set GEMINI_API_KEY"
     _rag_log(
-        f"🤖 Gemini model={GEMINI_MODEL!r} chars={len(prompt)} | prompt: {_preview(prompt, 200)}"
+        f"Gemini model={GEMINI_MODEL!r} chars={len(prompt)} | prompt: {_preview(prompt, 200)}"
     )
     try:
         import google.generativeai as genai
@@ -388,25 +410,29 @@ def _gemini_generate(prompt: str, api_key: str) -> str:
             if m and m not in order:
                 order.append(m)
 
+        gen_kwargs: dict[str, Any] = {}
+        if generation_config is not None:
+            gen_kwargs["generation_config"] = generation_config
+
         last_err: Exception | None = None
         for mname in order:
             try:
                 model = genai.GenerativeModel(mname)
-                response = model.generate_content(prompt)
+                response = model.generate_content(prompt, **gen_kwargs)
                 text = (response.text or "").strip()
                 if mname != GEMINI_MODEL:
-                    _rag_log(f"✅ Gemini used fallback model={mname!r}")
-                _rag_log(f"✅ Gemini ← answer_chars={len(text)} preview: {_preview(text)}")
+                    _rag_log(f"Gemini used fallback model={mname!r}")
+                _rag_log(f"Gemini answer_chars={len(text)} preview: {_preview(text)}")
                 return text
             except Exception as e:
                 last_err = e
-                _rag_log(f"⚠️ Gemini model {mname!r} failed: {e!r}")
+                _rag_log(f"Gemini model {mname!r} failed: {e!r}")
 
         if last_err:
             return f"Gemini not available: {last_err}"
         return "Gemini not available: unknown error"
     except ImportError:
-        _rag_log("❌ Gemini: google-generativeai not installed — run: pip install -r requirements.txt")
+        _rag_log("Gemini: google-generativeai not installed")
         return "Gemini not available: google-generativeai not installed"
 
 
@@ -415,31 +441,30 @@ def _gemini_generate(prompt: str, api_key: str) -> str:
 # ---------------------------------------------------------------------------
 
 def _vector_context(query: str, top_k: int = 6) -> list[dict]:
-    """Embed the query and call match_entries RPC for semantic retrieval."""
     cache_key = (query.strip(), top_k)
     cached = _cache_get(_vector_cache, cache_key)
     if cached is not None:
-        _rag_log(f"📚 vector_context cache hit q={query!r} → {len(cached)} hits")
+        _rag_log(f"vector_context cache hit q={query!r} -> {len(cached)} hits")
         return cached
 
     from .services.embedding_service import embed_text
 
     embedding = embed_text(query)
     if embedding is None:
-        _rag_log("📚 vector_context: embedding unavailable — skipping vector search")
+        _rag_log("vector_context: embedding unavailable -- skipping vector search")
         return []
 
     rows = rpc_match_entries(embedding, match_threshold=0.25, match_count=top_k)
-    labels = [f"{r.get('hadrami_word', '?')}→{r.get('arabic_fus7a', '')} ({r.get('similarity', 0):.2f})" for r in rows[:5]]
-    _rag_log(f"📚 vector_context q={query!r} → {len(rows)} hits: {labels}")
+    labels = [f"{r.get('word_vocalized', '?')}->{r.get('fusha_equivalent', '')} ({r.get('similarity', 0):.2f})" for r in rows[:5]]
+    _rag_log(f"vector_context q={query!r} -> {len(rows)} hits: {labels}")
     return _cache_put(_vector_cache, cache_key, rows)
 
 
 def _keyword_context(query: str, top_k: int = 5) -> list[dict]:
     result = keyword_search(query, limit=top_k)
     rows = result["results"]
-    labels = [f"{r.get('hadrami_word', '?')}→{r.get('arabic_fus7a', '')}" for r in rows[:5]]
-    _rag_log(f"🔎 keyword_search q={query!r} top_k={top_k} → {len(rows)} hits: {labels}")
+    labels = [f"{r.get('word_vocalized', '?')}->{r.get('fusha_equivalent', '')}" for r in rows[:5]]
+    _rag_log(f"keyword_search q={query!r} top_k={top_k} -> {len(rows)} hits: {labels}")
     return rows
 
 
@@ -448,16 +473,16 @@ def _expanded_keyword_context(query: str, top_k: int = 8) -> dict[str, Any]:
     cached = _cache_get(_keyword_cache, cache_key)
     if cached is not None:
         _rag_log(
-            f"🔎 search_expanded cache hit q={query!r} top_k={top_k} → {len(cached.get('results', []))} hits"
+            f"search_expanded cache hit q={query!r} top_k={top_k} -> {len(cached.get('results', []))} hits"
         )
         return cached
 
     payload = search_expanded(query, limit=top_k)
     rows = payload["results"]
-    labels = [f"{r.get('hadrami_word', '?')}→{r.get('arabic_fus7a', '')}" for r in rows[:5]]
+    labels = [f"{r.get('word_vocalized', '?')}->{r.get('fusha_equivalent', '')}" for r in rows[:5]]
     _rag_log(
-        f"🔎 search_expanded q={query!r} top_k={top_k} "
-        f"score={payload.get('top_score', 0)} → {len(rows)} hits: {labels}"
+        f"search_expanded q={query!r} top_k={top_k} "
+        f"score={payload.get('top_score', 0)} -> {len(rows)} hits: {labels}"
     )
     return _cache_put(_keyword_cache, cache_key, payload)
 
@@ -476,7 +501,7 @@ def retrieve_rag_context(query: str) -> tuple[list[dict], list[dict]]:
     kw_ctx = kw_payload["results"]
     top_score = int(kw_payload.get("top_score") or 0)
     if top_score >= 100:
-        _rag_log(f"⚡ exact keyword hit for q={query!r} — skipping vector search")
+        _rag_log(f"exact keyword hit for q={query!r} -- skipping vector search")
         merged = kw_ctx[:5]
         return merged, merged[:5]
 
@@ -505,13 +530,13 @@ def get_translation_answer(question: str) -> dict:
     answer = _gemini_generate(prompt, _gemini_api_key())
 
     if answer.startswith("Gemini not available:"):
-        fb = merged[0].get("arabic_fus7a", "غير موجود") if merged else "غير موجود"
+        fb = merged[0].get("fusha_equivalent", "غير موجود") if merged else "غير موجود"
         tag = _rag_response_mode_tag()
-        _rag_log(f"🔁 translation Gemini failed → fallback mode={tag} answer_preview={_preview(fb)}")
+        _rag_log(f"translation Gemini failed -> fallback mode={tag} answer_preview={_preview(fb)}")
         return _finalize_ask_payload(fb, tag, ctx_for_api)
 
     mode_tag = _rag_response_mode_tag()
-    _rag_log(f"⬅️ get_translation_answer END mode={mode_tag} answer_preview={_preview(answer)}")
+    _rag_log(f"get_translation_answer END mode={mode_tag} answer_preview={_preview(answer)}")
     return _finalize_ask_payload(answer, mode_tag, ctx_for_api)
 
 
@@ -525,21 +550,116 @@ def get_rag_answer(question: str) -> dict:
     prompt = _prompt_for_gemini(q, merged)
     answer = _gemini_generate(prompt, _gemini_api_key())
 
-    if MODE == "simple" and answer.startswith("Gemini not available:"):
-        fb = merged[0].get("arabic_fus7a", "غير موجود") if merged else "غير موجود"
-        tag = _rag_response_mode_tag()
-        _rag_log(f"📌 branch=RAG_MODE=simple retrieval (Gemini failed) mode={tag} answer_preview={_preview(fb)}")
-        return _finalize_ask_payload(fb, tag, ctx_for_api)
-
     if answer.startswith("Gemini not available:"):
-        fb = merged[0].get("arabic_fus7a", "غير موجود") if merged else "غير موجود"
+        fb = merged[0].get("fusha_equivalent", "غير موجود") if merged else "غير موجود"
         tag = _rag_response_mode_tag()
-        _rag_log(f"🔁 Gemini failed → fallback lexicon mode={tag} answer_preview={_preview(fb)}")
+        _rag_log(f"Gemini failed -> fallback lexicon mode={tag} answer_preview={_preview(fb)}")
         return _finalize_ask_payload(fb, tag, ctx_for_api)
 
     mode_tag = _rag_response_mode_tag()
-    _rag_log(f"⬅️ get_rag_answer END mode={mode_tag} answer_preview={_preview(answer)}")
+    _rag_log(f"get_rag_answer END mode={mode_tag} answer_preview={_preview(answer)}")
     return _finalize_ask_payload(answer, mode_tag, ctx_for_api)
+
+
+# ---------------------------------------------------------------------------
+# Chat (multi-turn conversation with RAG)
+# ---------------------------------------------------------------------------
+
+def _chat_prompt(
+    user_message: str,
+    history: list[dict[str, str]],
+    context_entries: list[dict],
+) -> str:
+    context = _context_block(context_entries, definition_max_chars=320)
+    history_block = ""
+    if history:
+        turns: list[str] = []
+        for msg in history[-10:]:
+            role = msg.get("role", "user")
+            content = msg.get("content", "")
+            label = "المستخدم" if role == "user" else "المساعد"
+            turns.append(f"{label}: {content}")
+        history_block = "\n".join(turns)
+
+    return f"""أنت مساعد ذكي ومتخصص في اللهجة الحضرمية اليمنية. تتحدث بأسلوب ودود وواضح.
+اعتمد على المراجع القاموسية عندما تكون صلة السؤال بها واضحة؛ لا تلصق معنى مدخل قاموسي لا يطابق سؤال المستخدم الحالي.
+إذا لم يكن أي مرجع يطابق السؤال، قل ذلك صراحة ثم يمكنك اقتراح معنى محتمل بلهجة حضرمية مع تنبيه أنه ليس من القاموس.
+
+مهم جداً: لا تكتفي بكلمة أو بعبارة قصيرة جداً كإجابة كاملة. يجب أن يشرح ردك المعنى والسياق.
+
+للإجابة عن معنى كلمة أو عبارة حضرمية، التزم بهذا التنسيق (بعناوين واضحة):
+- **الكلمة أو العبارة:** (الشكل الحضرمي المناسب من المراجع إن وُجد)
+- **المعنى بالفصحى:** (مقابل مباشر)
+- **الشرح:** فقرتان على الأكثر تشرحان الاستعمال اليومي، الندرة، أو الفرق عن الفصحى إن لزم.
+- **مثال:** جملة حضرمية قصيرة جداً ثم معناها بالفصحى (من المراجع إن وُجد، وإلا اذكر أن المثال تقريبي).
+
+إذا كان السؤال ترجمة جملة (مثلاً «قال لي رح وديه»)، فسّر العبارة سطراً بسطراً ضمن **الشرح** ولا تكتف بذكر موضوع غير مرتبط من القاموس.
+
+مراجع من القاموس:
+{context if context else "(لا توجد مطابقات قاموسية واضحة)"}
+
+{"سجل المحادثة السابقة (للسياق فقط؛ ركّز على آخر سؤال):" + chr(10) + history_block if history_block else ""}
+
+المستخدم: {user_message}
+
+المساعد:"""
+
+
+def _chat_fallback_reply(entries: list[dict]) -> str:
+    """Structured offline reply when Gemini is unavailable (not a single MSA gloss)."""
+    if not entries:
+        return (
+            "تعذّر الاتصال بنموذج الإجابة الآن، ولم تُسترجَع مطابقة قاموسية واضحة لهذا السؤال. "
+            "جرّب إعادة صياغة الكلمة كما تُنطق محلياً، أو استخدم صفحة ترجمة العبارات إن كان السؤال جملة."
+        )
+    parts: list[str] = []
+    for entry in entries[:3]:
+        head = str(entry.get("word_vocalized") or "").strip() or "—"
+        fusha = str(entry.get("fusha_equivalent") or "").strip() or "—"
+        definition = str(entry.get("definition") or "").strip()
+        ex_h, ex_f = _first_example(entry)
+        block = f"**{head}**\n\nالمعنى بالفصحى: {fusha}"
+        if definition:
+            block += f"\n\nالشرح (من القاموس): {definition[:500]}"
+        if ex_h and ex_f:
+            block += f"\n\nمثال: {ex_h} — {ex_f}"
+        parts.append(block)
+    tail = "\n\n_(إجابة مبسّطة من القاموس فقط؛ لتفسير أغنى فعّل نموذج Gemini.)_"
+    return "\n\n---\n\n".join(parts) + tail
+
+
+def get_chat_answer(
+    message: str,
+    history: list[dict[str, str]],
+) -> dict[str, Any]:
+    """Process a chat message with RAG context and conversation history."""
+    q = (message or "").strip()
+    merged, ctx_for_api = retrieve_rag_context(q)
+    prompt = _chat_prompt(q, history, merged)
+    chat_gen_cfg: Any | None = None
+    try:
+        import google.generativeai as genai
+
+        chat_gen_cfg = genai.types.GenerationConfig(
+            max_output_tokens=1536,
+            temperature=0.35,
+        )
+    except ImportError:
+        pass
+
+    answer = _gemini_generate(prompt, _gemini_api_key(), chat_gen_cfg)
+
+    if answer.startswith("Gemini not available:"):
+        _rag_log("Chat Gemini failed -> fallback")
+        answer = _chat_fallback_reply(merged)
+
+    highlight_surfaces = _collect_highlight_surfaces(merged)
+    return {
+        "reply": answer,
+        "context": _entries_to_response(ctx_for_api),
+        "hadrami_spans": _find_hadrami_spans(answer, highlight_surfaces),
+        "highlight_surfaces": highlight_surfaces,
+    }
 
 
 if __name__ == "__main__":
@@ -552,4 +672,4 @@ if __name__ == "__main__":
     print(f"Answer: {result['answer']}")
     print(f"Context ({len(result['context'])} entries):")
     for e in result["context"]:
-        print(f"  - {e['hadrami_word']} -> {e.get('arabic_fus7a', '')}")
+        print(f"  - {e.word_vocalized} -> {e.fusha_equivalent}")

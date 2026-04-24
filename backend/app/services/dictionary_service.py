@@ -1,6 +1,5 @@
-"""Dictionary service — all read queries go through Supabase (PostgREST).
+"""Dictionary service -- all read queries go through Supabase (PostgREST).
 
-Replaces the former in-memory ENTRIES iteration with real DB queries.
 Scoring / ranking logic that cannot be expressed as pure SQL is done
 client-side on the (small) result sets returned by the DB.
 """
@@ -26,7 +25,6 @@ from ..core.data_store import (
 )
 from ..schemas import TranslateResponse
 
-# Arabic letter ordering for sections view.
 _AR_LETTER_ORDER = (
     "أ", "إ", "آ", "ا", "ب", "ت", "ث", "ج", "ح", "خ",
     "د", "ذ", "ر", "ز", "س", "ش", "ص", "ض", "ط", "ظ",
@@ -49,20 +47,20 @@ def _normalize_alef(text: str) -> str:
 
 
 def _entry_match_score(entry: dict[str, Any], clean: str, norm: str) -> int:
-    word = (entry.get("hadrami_word") or "").strip()
-    search_key = (entry.get("search_key") or "").strip()
-    fus7a = (entry.get("arabic_fus7a") or "").strip()
-    definition = (entry.get("full_definition") or "").strip()
-    aliases = entry.get("aliases")
-    alias_values = [a.strip() for a in aliases if isinstance(a, str) and a.strip()] if isinstance(aliases, list) else []
+    word = (entry.get("word_vocalized") or "").strip()
+    word_clean = (entry.get("word_clean") or "").strip()
+    fusha = (entry.get("fusha_equivalent") or "").strip()
+    definition = (entry.get("definition") or "").strip()
+    synonyms = entry.get("synonyms")
+    syn_values = [a.strip() for a in synonyms if isinstance(a, str) and a.strip()] if isinstance(synonyms, list) else []
 
-    if word == clean or search_key == norm or clean in alias_values or norm in alias_values:
+    if word == clean or word_clean == norm or clean in syn_values or norm in syn_values:
         return 100
-    if clean in word or norm in search_key or any(clean in a or norm in a for a in alias_values):
+    if clean in word or norm in word_clean or any(clean in a or norm in a for a in syn_values):
         return 80
     if word and word in clean:
         return 70
-    if clean in fus7a:
+    if clean in fusha:
         return 60
     if clean in definition:
         return 40
@@ -75,10 +73,10 @@ def _entry_match_score(entry: dict[str, Any], clean: str, norm: str) -> int:
 
 def get_sections() -> dict[str, Any]:
     """Group headwords by first character for browse-by-letter sections."""
-    rows = fetch_all("hadrami_word")
+    rows = fetch_all("word_vocalized")
     counts: dict[str, int] = {}
     for row in rows:
-        word = (row.get("hadrami_word") or "").strip()
+        word = (row.get("word_vocalized") or "").strip()
         if not word:
             continue
         key = word[0]
@@ -90,34 +88,33 @@ def get_sections() -> dict[str, Any]:
 
 def get_stats() -> dict[str, Any]:
     rows = fetch_all(
-        "id, arabic_fus7a, part_of_speech, thematic_category, is_archaic, proverb_record"
+        "id, fusha_equivalent, pos, tags, proverbs"
     )
     total = len(rows)
-    with_fus7a = sum(1 for r in rows if (r.get("arabic_fus7a") or "").strip())
+    with_fusha = sum(1 for r in rows if (r.get("fusha_equivalent") or "").strip())
 
     pos_counts: dict[str, int] = {}
-    theme_counts: dict[str, int] = {}
-    archaic_count = 0
+    tag_counts: dict[str, int] = {}
     proverb_count = 0
     for entry in rows:
-        pos = entry.get("part_of_speech") or "Unknown"
+        pos = entry.get("pos") or "Unknown"
         pos_counts[pos] = pos_counts.get(pos, 0) + 1
-        theme = entry.get("thematic_category") or "Unknown"
-        theme_counts[theme] = theme_counts.get(theme, 0) + 1
-        if entry.get("is_archaic"):
-            archaic_count += 1
-        pr = entry.get("proverb_record")
+        tags = entry.get("tags")
+        if isinstance(tags, list):
+            for tag in tags:
+                if isinstance(tag, str) and tag.strip():
+                    tag_counts[tag.strip()] = tag_counts.get(tag.strip(), 0) + 1
+        pr = entry.get("proverbs")
         if isinstance(pr, list):
             proverb_count += len(pr)
 
     return {
         "total_words": total,
-        "translated": with_fus7a,
-        "pending": total - with_fus7a,
-        "completion_percent": round(with_fus7a / total * 100, 1) if total else 0,
-        "by_part_of_speech": pos_counts,
-        "by_thematic_category": theme_counts,
-        "archaic_words": archaic_count,
+        "translated": with_fusha,
+        "pending": total - with_fusha,
+        "completion_percent": round(with_fusha / total * 100, 1) if total else 0,
+        "by_pos": pos_counts,
+        "by_tag": tag_counts,
         "total_proverbs": proverb_count,
     }
 
@@ -126,10 +123,9 @@ def translate(query: str) -> TranslateResponse:
     clean = query.strip()
     norm = _normalize_alef(clean)
 
-    # Exact match on hadrami_word
     resp = (
         get_client().table(TABLE).select(_SELECT_COLS)
-        .eq("hadrami_word", clean)
+        .eq("word_vocalized", clean)
         .limit(1)
         .execute()
     )
@@ -137,16 +133,15 @@ def translate(query: str) -> TranslateResponse:
         e = resp.data[0]
         return TranslateResponse(
             found=True,
-            hadrami_word=e["hadrami_word"],
-            arabic_fus7a=e.get("arabic_fus7a", ""),
-            full_definition=e.get("full_definition", ""),
+            word_vocalized=e["word_vocalized"],
+            fusha_equivalent=e.get("fusha_equivalent", ""),
+            definition=e.get("definition", ""),
             confidence="exact",
         )
 
-    # Exact match on search_key (normalised)
     resp = (
         get_client().table(TABLE).select(_SELECT_COLS)
-        .eq("search_key", norm)
+        .eq("word_clean", norm)
         .limit(1)
         .execute()
     )
@@ -154,17 +149,16 @@ def translate(query: str) -> TranslateResponse:
         e = resp.data[0]
         return TranslateResponse(
             found=True,
-            hadrami_word=e["hadrami_word"],
-            arabic_fus7a=e.get("arabic_fus7a", ""),
-            full_definition=e.get("full_definition", ""),
+            word_vocalized=e["word_vocalized"],
+            fusha_equivalent=e.get("fusha_equivalent", ""),
+            definition=e.get("definition", ""),
             confidence="exact",
         )
 
-    # Partial match via ilike
     pattern = f"%{clean}%"
     resp = (
         get_client().table(TABLE).select(_SELECT_COLS)
-        .or_(f"hadrami_word.ilike.{pattern},search_key.ilike.{pattern}")
+        .or_(f"word_vocalized.ilike.{pattern},word_clean.ilike.{pattern}")
         .limit(1)
         .execute()
     )
@@ -172,16 +166,15 @@ def translate(query: str) -> TranslateResponse:
         e = resp.data[0]
         return TranslateResponse(
             found=True,
-            hadrami_word=e["hadrami_word"],
-            arabic_fus7a=e.get("arabic_fus7a", ""),
-            full_definition=e.get("full_definition", ""),
+            word_vocalized=e["word_vocalized"],
+            fusha_equivalent=e.get("fusha_equivalent", ""),
+            definition=e.get("definition", ""),
             confidence="partial",
         )
 
-    # Fallback: search in full_definition
     resp = (
         get_client().table(TABLE).select(_SELECT_COLS)
-        .ilike("full_definition", pattern)
+        .ilike("definition", pattern)
         .limit(1)
         .execute()
     )
@@ -189,17 +182,17 @@ def translate(query: str) -> TranslateResponse:
         e = resp.data[0]
         return TranslateResponse(
             found=True,
-            hadrami_word=e["hadrami_word"],
-            arabic_fus7a=e.get("arabic_fus7a", ""),
-            full_definition=e.get("full_definition", ""),
+            word_vocalized=e["word_vocalized"],
+            fusha_equivalent=e.get("fusha_equivalent", ""),
+            definition=e.get("definition", ""),
             confidence="partial",
         )
 
     return TranslateResponse(
         found=False,
-        hadrami_word=clean,
-        arabic_fus7a="",
-        full_definition="الكلمة غير موجودة في القاموس",
+        word_vocalized=clean,
+        fusha_equivalent="",
+        definition="الكلمة غير موجودة في القاموس",
         confidence="not_found",
     )
 
@@ -221,10 +214,10 @@ def search(query: str, limit: int) -> dict[str, Any]:
     resp = (
         get_client().table(TABLE).select(_SELECT_COLS)
         .or_(
-            f"hadrami_word.ilike.{pattern},"
-            f"search_key.ilike.{pattern},"
-            f"arabic_fus7a.ilike.{pattern},"
-            f"full_definition.ilike.{pattern}"
+            f"word_vocalized.ilike.{pattern},"
+            f"word_clean.ilike.{pattern},"
+            f"fusha_equivalent.ilike.{pattern},"
+            f"definition.ilike.{pattern}"
         )
         .limit(limit * 3)
         .execute()
@@ -319,11 +312,11 @@ def _score_phrase_token_match(cand: str, entry: dict[str, Any]) -> int:
     cand = cand.strip()
     if len(cand) < 2:
         return 0
-    word = (entry.get("hadrami_word") or "").strip()
-    fus7a = (entry.get("arabic_fus7a") or "").strip()
-    definition = (entry.get("full_definition") or "").strip()
+    word = (entry.get("word_vocalized") or "").strip()
+    fusha = (entry.get("fusha_equivalent") or "").strip()
+    definition = (entry.get("definition") or "").strip()
 
-    if word == cand or fus7a == cand:
+    if word == cand or fusha == cand:
         return 100
     if cand in word and len(cand) >= 2:
         return 88
@@ -331,7 +324,7 @@ def _score_phrase_token_match(cand: str, entry: dict[str, Any]) -> int:
         if len(word) < _MIN_SUBWORD_LEN:
             return 0
         return 78
-    if len(cand) >= 4 and cand in fus7a:
+    if len(cand) >= 4 and cand in fusha:
         return 62
     if len(cand) >= 5 and cand in definition:
         return 32
@@ -339,7 +332,7 @@ def _score_phrase_token_match(cand: str, entry: dict[str, Any]) -> int:
 
 
 def search_phrase_lexicon(query: str, limit: int) -> dict[str, Any]:
-    """Lexicon hits for phrase translation — token-wise scoring."""
+    """Lexicon hits for phrase translation -- token-wise scoring."""
     candidates = _extract_search_candidates(query)
     all_entries: list[dict[str, Any]] = []
     seen_ids: set[int] = set()
@@ -376,8 +369,8 @@ def list_words(
     size: int,
     letter: Optional[str] = None,
     pos: Optional[str] = None,
-    category: Optional[str] = None,
-    archaic: Optional[bool] = None,
+    region: Optional[str] = None,
+    tag: Optional[str] = None,
 ) -> dict[str, Any]:
     start = (page - 1) * size
     end = start + size - 1
@@ -385,13 +378,13 @@ def list_words(
     def _build(c):
         q = c.table(TABLE).select(_SELECT_COLS, count="exact")
         if letter:
-            q = q.ilike("hadrami_word", f"{letter}%")
+            q = q.ilike("word_vocalized", f"{letter}%")
         if pos:
-            q = q.eq("part_of_speech", pos)
-        if category:
-            q = q.eq("thematic_category", category)
-        if archaic is not None:
-            q = q.eq("is_archaic", archaic)
+            q = q.eq("pos", pos)
+        if region:
+            q = q.eq("region", region)
+        if tag:
+            q = q.contains("tags", f'["{tag}"]')
         return q.range(start, end)
 
     resp = _execute_with_retry(_build)

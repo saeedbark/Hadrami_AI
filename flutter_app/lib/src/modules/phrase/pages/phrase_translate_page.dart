@@ -279,7 +279,7 @@ class PhraseTranslatePage extends HookConsumerWidget {
                           .map(
                             (e) => Chip(
                               label: Text(
-                                '${e.hadramiWord} → ${e.arabicFus7a}',
+                                '${e.wordVocalized} → ${e.fushaEquivalent ?? ''}',
                                 textDirection: TextDirection.rtl,
                               ),
                             ),

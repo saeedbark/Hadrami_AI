@@ -20,8 +20,8 @@ ExamplePair _$ExamplePairFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$ExamplePair {
-  String get hadrami => throw _privateConstructorUsedError;
-  String get fusha => throw _privateConstructorUsedError;
+  String get h => throw _privateConstructorUsedError;
+  String get f => throw _privateConstructorUsedError;
 
   /// Serializes this ExamplePair to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -39,7 +39,7 @@ abstract class $ExamplePairCopyWith<$Res> {
           ExamplePair value, $Res Function(ExamplePair) then) =
       _$ExamplePairCopyWithImpl<$Res, ExamplePair>;
   @useResult
-  $Res call({String hadrami, String fusha});
+  $Res call({String h, String f});
 }
 
 /// @nodoc
@@ -57,17 +57,17 @@ class _$ExamplePairCopyWithImpl<$Res, $Val extends ExamplePair>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? hadrami = null,
-    Object? fusha = null,
+    Object? h = null,
+    Object? f = null,
   }) {
     return _then(_value.copyWith(
-      hadrami: null == hadrami
-          ? _value.hadrami
-          : hadrami // ignore: cast_nullable_to_non_nullable
+      h: null == h
+          ? _value.h
+          : h // ignore: cast_nullable_to_non_nullable
               as String,
-      fusha: null == fusha
-          ? _value.fusha
-          : fusha // ignore: cast_nullable_to_non_nullable
+      f: null == f
+          ? _value.f
+          : f // ignore: cast_nullable_to_non_nullable
               as String,
     ) as $Val);
   }
@@ -81,7 +81,7 @@ abstract class _$$ExamplePairImplCopyWith<$Res>
       __$$ExamplePairImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String hadrami, String fusha});
+  $Res call({String h, String f});
 }
 
 /// @nodoc
@@ -97,17 +97,17 @@ class __$$ExamplePairImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? hadrami = null,
-    Object? fusha = null,
+    Object? h = null,
+    Object? f = null,
   }) {
     return _then(_$ExamplePairImpl(
-      hadrami: null == hadrami
-          ? _value.hadrami
-          : hadrami // ignore: cast_nullable_to_non_nullable
+      h: null == h
+          ? _value.h
+          : h // ignore: cast_nullable_to_non_nullable
               as String,
-      fusha: null == fusha
-          ? _value.fusha
-          : fusha // ignore: cast_nullable_to_non_nullable
+      f: null == f
+          ? _value.f
+          : f // ignore: cast_nullable_to_non_nullable
               as String,
     ));
   }
@@ -117,21 +117,21 @@ class __$$ExamplePairImplCopyWithImpl<$Res>
 
 @JsonSerializable(fieldRename: FieldRename.snake)
 class _$ExamplePairImpl implements _ExamplePair {
-  const _$ExamplePairImpl({this.hadrami = '', this.fusha = ''});
+  const _$ExamplePairImpl({this.h = '', this.f = ''});
 
   factory _$ExamplePairImpl.fromJson(Map<String, dynamic> json) =>
       _$$ExamplePairImplFromJson(json);
 
   @override
   @JsonKey()
-  final String hadrami;
+  final String h;
   @override
   @JsonKey()
-  final String fusha;
+  final String f;
 
   @override
   String toString() {
-    return 'ExamplePair(hadrami: $hadrami, fusha: $fusha)';
+    return 'ExamplePair(h: $h, f: $f)';
   }
 
   @override
@@ -139,13 +139,13 @@ class _$ExamplePairImpl implements _ExamplePair {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$ExamplePairImpl &&
-            (identical(other.hadrami, hadrami) || other.hadrami == hadrami) &&
-            (identical(other.fusha, fusha) || other.fusha == fusha));
+            (identical(other.h, h) || other.h == h) &&
+            (identical(other.f, f) || other.f == f));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, hadrami, fusha);
+  int get hashCode => Object.hash(runtimeType, h, f);
 
   /// Create a copy of ExamplePair
   /// with the given fields replaced by the non-null parameter values.
@@ -164,16 +164,16 @@ class _$ExamplePairImpl implements _ExamplePair {
 }
 
 abstract class _ExamplePair implements ExamplePair {
-  const factory _ExamplePair({final String hadrami, final String fusha}) =
+  const factory _ExamplePair({final String h, final String f}) =
       _$ExamplePairImpl;
 
   factory _ExamplePair.fromJson(Map<String, dynamic> json) =
       _$ExamplePairImpl.fromJson;
 
   @override
-  String get hadrami;
+  String get h;
   @override
-  String get fusha;
+  String get f;
 
   /// Create a copy of ExamplePair
   /// with the given fields replaced by the non-null parameter values.
@@ -190,19 +190,20 @@ WordEntry _$WordEntryFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$WordEntry {
   int get id => throw _privateConstructorUsedError;
-  String get hadramiWord => throw _privateConstructorUsedError;
-  String get arabicFus7a => throw _privateConstructorUsedError;
-  String get fullDefinition => throw _privateConstructorUsedError;
-  String? get fus7aShort => throw _privateConstructorUsedError;
-  String? get searchKey => throw _privateConstructorUsedError;
-  String? get partOfSpeech => throw _privateConstructorUsedError;
-  String? get thematicCategory => throw _privateConstructorUsedError;
-  bool get isArchaic => throw _privateConstructorUsedError;
-  List<String>? get pronunciationNotes => throw _privateConstructorUsedError;
-  List<String>? get proverbRecord => throw _privateConstructorUsedError;
-  String? get culturalNote => throw _privateConstructorUsedError;
-  List<String>? get aliases => throw _privateConstructorUsedError;
+  String get wordVocalized => throw _privateConstructorUsedError;
+  String? get wordClean => throw _privateConstructorUsedError;
+  String? get root => throw _privateConstructorUsedError;
+  String? get pos => throw _privateConstructorUsedError;
+  String? get fushaEquivalent => throw _privateConstructorUsedError;
+  String? get definition => throw _privateConstructorUsedError;
+  String get region => throw _privateConstructorUsedError;
+  List<String>? get synonyms => throw _privateConstructorUsedError;
+  List<String>? get phoneticVariants => throw _privateConstructorUsedError;
+  String? get note => throw _privateConstructorUsedError;
+  String? get source => throw _privateConstructorUsedError;
   List<ExamplePair>? get examples => throw _privateConstructorUsedError;
+  List<String>? get proverbs => throw _privateConstructorUsedError;
+  List<String>? get tags => throw _privateConstructorUsedError;
 
   /// Serializes this WordEntry to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -221,19 +222,20 @@ abstract class $WordEntryCopyWith<$Res> {
   @useResult
   $Res call(
       {int id,
-      String hadramiWord,
-      String arabicFus7a,
-      String fullDefinition,
-      String? fus7aShort,
-      String? searchKey,
-      String? partOfSpeech,
-      String? thematicCategory,
-      bool isArchaic,
-      List<String>? pronunciationNotes,
-      List<String>? proverbRecord,
-      String? culturalNote,
-      List<String>? aliases,
-      List<ExamplePair>? examples});
+      String wordVocalized,
+      String? wordClean,
+      String? root,
+      String? pos,
+      String? fushaEquivalent,
+      String? definition,
+      String region,
+      List<String>? synonyms,
+      List<String>? phoneticVariants,
+      String? note,
+      String? source,
+      List<ExamplePair>? examples,
+      List<String>? proverbs,
+      List<String>? tags});
 }
 
 /// @nodoc
@@ -252,77 +254,82 @@ class _$WordEntryCopyWithImpl<$Res, $Val extends WordEntry>
   @override
   $Res call({
     Object? id = null,
-    Object? hadramiWord = null,
-    Object? arabicFus7a = null,
-    Object? fullDefinition = null,
-    Object? fus7aShort = freezed,
-    Object? searchKey = freezed,
-    Object? partOfSpeech = freezed,
-    Object? thematicCategory = freezed,
-    Object? isArchaic = null,
-    Object? pronunciationNotes = freezed,
-    Object? proverbRecord = freezed,
-    Object? culturalNote = freezed,
-    Object? aliases = freezed,
+    Object? wordVocalized = null,
+    Object? wordClean = freezed,
+    Object? root = freezed,
+    Object? pos = freezed,
+    Object? fushaEquivalent = freezed,
+    Object? definition = freezed,
+    Object? region = null,
+    Object? synonyms = freezed,
+    Object? phoneticVariants = freezed,
+    Object? note = freezed,
+    Object? source = freezed,
     Object? examples = freezed,
+    Object? proverbs = freezed,
+    Object? tags = freezed,
   }) {
     return _then(_value.copyWith(
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as int,
-      hadramiWord: null == hadramiWord
-          ? _value.hadramiWord
-          : hadramiWord // ignore: cast_nullable_to_non_nullable
+      wordVocalized: null == wordVocalized
+          ? _value.wordVocalized
+          : wordVocalized // ignore: cast_nullable_to_non_nullable
               as String,
-      arabicFus7a: null == arabicFus7a
-          ? _value.arabicFus7a
-          : arabicFus7a // ignore: cast_nullable_to_non_nullable
+      wordClean: freezed == wordClean
+          ? _value.wordClean
+          : wordClean // ignore: cast_nullable_to_non_nullable
+              as String?,
+      root: freezed == root
+          ? _value.root
+          : root // ignore: cast_nullable_to_non_nullable
+              as String?,
+      pos: freezed == pos
+          ? _value.pos
+          : pos // ignore: cast_nullable_to_non_nullable
+              as String?,
+      fushaEquivalent: freezed == fushaEquivalent
+          ? _value.fushaEquivalent
+          : fushaEquivalent // ignore: cast_nullable_to_non_nullable
+              as String?,
+      definition: freezed == definition
+          ? _value.definition
+          : definition // ignore: cast_nullable_to_non_nullable
+              as String?,
+      region: null == region
+          ? _value.region
+          : region // ignore: cast_nullable_to_non_nullable
               as String,
-      fullDefinition: null == fullDefinition
-          ? _value.fullDefinition
-          : fullDefinition // ignore: cast_nullable_to_non_nullable
-              as String,
-      fus7aShort: freezed == fus7aShort
-          ? _value.fus7aShort
-          : fus7aShort // ignore: cast_nullable_to_non_nullable
-              as String?,
-      searchKey: freezed == searchKey
-          ? _value.searchKey
-          : searchKey // ignore: cast_nullable_to_non_nullable
-              as String?,
-      partOfSpeech: freezed == partOfSpeech
-          ? _value.partOfSpeech
-          : partOfSpeech // ignore: cast_nullable_to_non_nullable
-              as String?,
-      thematicCategory: freezed == thematicCategory
-          ? _value.thematicCategory
-          : thematicCategory // ignore: cast_nullable_to_non_nullable
-              as String?,
-      isArchaic: null == isArchaic
-          ? _value.isArchaic
-          : isArchaic // ignore: cast_nullable_to_non_nullable
-              as bool,
-      pronunciationNotes: freezed == pronunciationNotes
-          ? _value.pronunciationNotes
-          : pronunciationNotes // ignore: cast_nullable_to_non_nullable
+      synonyms: freezed == synonyms
+          ? _value.synonyms
+          : synonyms // ignore: cast_nullable_to_non_nullable
               as List<String>?,
-      proverbRecord: freezed == proverbRecord
-          ? _value.proverbRecord
-          : proverbRecord // ignore: cast_nullable_to_non_nullable
+      phoneticVariants: freezed == phoneticVariants
+          ? _value.phoneticVariants
+          : phoneticVariants // ignore: cast_nullable_to_non_nullable
               as List<String>?,
-      culturalNote: freezed == culturalNote
-          ? _value.culturalNote
-          : culturalNote // ignore: cast_nullable_to_non_nullable
+      note: freezed == note
+          ? _value.note
+          : note // ignore: cast_nullable_to_non_nullable
               as String?,
-      aliases: freezed == aliases
-          ? _value.aliases
-          : aliases // ignore: cast_nullable_to_non_nullable
-              as List<String>?,
+      source: freezed == source
+          ? _value.source
+          : source // ignore: cast_nullable_to_non_nullable
+              as String?,
       examples: freezed == examples
           ? _value.examples
           : examples // ignore: cast_nullable_to_non_nullable
               as List<ExamplePair>?,
+      proverbs: freezed == proverbs
+          ? _value.proverbs
+          : proverbs // ignore: cast_nullable_to_non_nullable
+              as List<String>?,
+      tags: freezed == tags
+          ? _value.tags
+          : tags // ignore: cast_nullable_to_non_nullable
+              as List<String>?,
     ) as $Val);
   }
 }
@@ -337,19 +344,20 @@ abstract class _$$WordEntryImplCopyWith<$Res>
   @useResult
   $Res call(
       {int id,
-      String hadramiWord,
-      String arabicFus7a,
-      String fullDefinition,
-      String? fus7aShort,
-      String? searchKey,
-      String? partOfSpeech,
-      String? thematicCategory,
-      bool isArchaic,
-      List<String>? pronunciationNotes,
-      List<String>? proverbRecord,
-      String? culturalNote,
-      List<String>? aliases,
-      List<ExamplePair>? examples});
+      String wordVocalized,
+      String? wordClean,
+      String? root,
+      String? pos,
+      String? fushaEquivalent,
+      String? definition,
+      String region,
+      List<String>? synonyms,
+      List<String>? phoneticVariants,
+      String? note,
+      String? source,
+      List<ExamplePair>? examples,
+      List<String>? proverbs,
+      List<String>? tags});
 }
 
 /// @nodoc
@@ -366,77 +374,82 @@ class __$$WordEntryImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? id = null,
-    Object? hadramiWord = null,
-    Object? arabicFus7a = null,
-    Object? fullDefinition = null,
-    Object? fus7aShort = freezed,
-    Object? searchKey = freezed,
-    Object? partOfSpeech = freezed,
-    Object? thematicCategory = freezed,
-    Object? isArchaic = null,
-    Object? pronunciationNotes = freezed,
-    Object? proverbRecord = freezed,
-    Object? culturalNote = freezed,
-    Object? aliases = freezed,
+    Object? wordVocalized = null,
+    Object? wordClean = freezed,
+    Object? root = freezed,
+    Object? pos = freezed,
+    Object? fushaEquivalent = freezed,
+    Object? definition = freezed,
+    Object? region = null,
+    Object? synonyms = freezed,
+    Object? phoneticVariants = freezed,
+    Object? note = freezed,
+    Object? source = freezed,
     Object? examples = freezed,
+    Object? proverbs = freezed,
+    Object? tags = freezed,
   }) {
     return _then(_$WordEntryImpl(
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
               as int,
-      hadramiWord: null == hadramiWord
-          ? _value.hadramiWord
-          : hadramiWord // ignore: cast_nullable_to_non_nullable
+      wordVocalized: null == wordVocalized
+          ? _value.wordVocalized
+          : wordVocalized // ignore: cast_nullable_to_non_nullable
               as String,
-      arabicFus7a: null == arabicFus7a
-          ? _value.arabicFus7a
-          : arabicFus7a // ignore: cast_nullable_to_non_nullable
+      wordClean: freezed == wordClean
+          ? _value.wordClean
+          : wordClean // ignore: cast_nullable_to_non_nullable
+              as String?,
+      root: freezed == root
+          ? _value.root
+          : root // ignore: cast_nullable_to_non_nullable
+              as String?,
+      pos: freezed == pos
+          ? _value.pos
+          : pos // ignore: cast_nullable_to_non_nullable
+              as String?,
+      fushaEquivalent: freezed == fushaEquivalent
+          ? _value.fushaEquivalent
+          : fushaEquivalent // ignore: cast_nullable_to_non_nullable
+              as String?,
+      definition: freezed == definition
+          ? _value.definition
+          : definition // ignore: cast_nullable_to_non_nullable
+              as String?,
+      region: null == region
+          ? _value.region
+          : region // ignore: cast_nullable_to_non_nullable
               as String,
-      fullDefinition: null == fullDefinition
-          ? _value.fullDefinition
-          : fullDefinition // ignore: cast_nullable_to_non_nullable
-              as String,
-      fus7aShort: freezed == fus7aShort
-          ? _value.fus7aShort
-          : fus7aShort // ignore: cast_nullable_to_non_nullable
-              as String?,
-      searchKey: freezed == searchKey
-          ? _value.searchKey
-          : searchKey // ignore: cast_nullable_to_non_nullable
-              as String?,
-      partOfSpeech: freezed == partOfSpeech
-          ? _value.partOfSpeech
-          : partOfSpeech // ignore: cast_nullable_to_non_nullable
-              as String?,
-      thematicCategory: freezed == thematicCategory
-          ? _value.thematicCategory
-          : thematicCategory // ignore: cast_nullable_to_non_nullable
-              as String?,
-      isArchaic: null == isArchaic
-          ? _value.isArchaic
-          : isArchaic // ignore: cast_nullable_to_non_nullable
-              as bool,
-      pronunciationNotes: freezed == pronunciationNotes
-          ? _value._pronunciationNotes
-          : pronunciationNotes // ignore: cast_nullable_to_non_nullable
+      synonyms: freezed == synonyms
+          ? _value._synonyms
+          : synonyms // ignore: cast_nullable_to_non_nullable
               as List<String>?,
-      proverbRecord: freezed == proverbRecord
-          ? _value._proverbRecord
-          : proverbRecord // ignore: cast_nullable_to_non_nullable
+      phoneticVariants: freezed == phoneticVariants
+          ? _value._phoneticVariants
+          : phoneticVariants // ignore: cast_nullable_to_non_nullable
               as List<String>?,
-      culturalNote: freezed == culturalNote
-          ? _value.culturalNote
-          : culturalNote // ignore: cast_nullable_to_non_nullable
+      note: freezed == note
+          ? _value.note
+          : note // ignore: cast_nullable_to_non_nullable
               as String?,
-      aliases: freezed == aliases
-          ? _value._aliases
-          : aliases // ignore: cast_nullable_to_non_nullable
-              as List<String>?,
+      source: freezed == source
+          ? _value.source
+          : source // ignore: cast_nullable_to_non_nullable
+              as String?,
       examples: freezed == examples
           ? _value._examples
           : examples // ignore: cast_nullable_to_non_nullable
               as List<ExamplePair>?,
+      proverbs: freezed == proverbs
+          ? _value._proverbs
+          : proverbs // ignore: cast_nullable_to_non_nullable
+              as List<String>?,
+      tags: freezed == tags
+          ? _value._tags
+          : tags // ignore: cast_nullable_to_non_nullable
+              as List<String>?,
     ));
   }
 }
@@ -447,23 +460,25 @@ class __$$WordEntryImplCopyWithImpl<$Res>
 class _$WordEntryImpl implements _WordEntry {
   const _$WordEntryImpl(
       {this.id = 0,
-      this.hadramiWord = '',
-      this.arabicFus7a = '',
-      this.fullDefinition = '',
-      this.fus7aShort,
-      this.searchKey,
-      this.partOfSpeech,
-      this.thematicCategory,
-      this.isArchaic = false,
-      final List<String>? pronunciationNotes,
-      final List<String>? proverbRecord,
-      this.culturalNote,
-      final List<String>? aliases,
-      final List<ExamplePair>? examples})
-      : _pronunciationNotes = pronunciationNotes,
-        _proverbRecord = proverbRecord,
-        _aliases = aliases,
-        _examples = examples;
+      this.wordVocalized = '',
+      this.wordClean,
+      this.root,
+      this.pos,
+      this.fushaEquivalent,
+      this.definition,
+      this.region = 'General',
+      final List<String>? synonyms,
+      final List<String>? phoneticVariants,
+      this.note,
+      this.source,
+      final List<ExamplePair>? examples,
+      final List<String>? proverbs,
+      final List<String>? tags})
+      : _synonyms = synonyms,
+        _phoneticVariants = phoneticVariants,
+        _examples = examples,
+        _proverbs = proverbs,
+        _tags = tags;
 
   factory _$WordEntryImpl.fromJson(Map<String, dynamic> json) =>
       _$$WordEntryImplFromJson(json);
@@ -473,57 +488,45 @@ class _$WordEntryImpl implements _WordEntry {
   final int id;
   @override
   @JsonKey()
-  final String hadramiWord;
+  final String wordVocalized;
+  @override
+  final String? wordClean;
+  @override
+  final String? root;
+  @override
+  final String? pos;
+  @override
+  final String? fushaEquivalent;
+  @override
+  final String? definition;
   @override
   @JsonKey()
-  final String arabicFus7a;
+  final String region;
+  final List<String>? _synonyms;
   @override
-  @JsonKey()
-  final String fullDefinition;
-  @override
-  final String? fus7aShort;
-  @override
-  final String? searchKey;
-  @override
-  final String? partOfSpeech;
-  @override
-  final String? thematicCategory;
-  @override
-  @JsonKey()
-  final bool isArchaic;
-  final List<String>? _pronunciationNotes;
-  @override
-  List<String>? get pronunciationNotes {
-    final value = _pronunciationNotes;
+  List<String>? get synonyms {
+    final value = _synonyms;
     if (value == null) return null;
-    if (_pronunciationNotes is EqualUnmodifiableListView)
-      return _pronunciationNotes;
+    if (_synonyms is EqualUnmodifiableListView) return _synonyms;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(value);
   }
 
-  final List<String>? _proverbRecord;
+  final List<String>? _phoneticVariants;
   @override
-  List<String>? get proverbRecord {
-    final value = _proverbRecord;
+  List<String>? get phoneticVariants {
+    final value = _phoneticVariants;
     if (value == null) return null;
-    if (_proverbRecord is EqualUnmodifiableListView) return _proverbRecord;
+    if (_phoneticVariants is EqualUnmodifiableListView)
+      return _phoneticVariants;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(value);
   }
 
   @override
-  final String? culturalNote;
-  final List<String>? _aliases;
+  final String? note;
   @override
-  List<String>? get aliases {
-    final value = _aliases;
-    if (value == null) return null;
-    if (_aliases is EqualUnmodifiableListView) return _aliases;
-    // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(value);
-  }
-
+  final String? source;
   final List<ExamplePair>? _examples;
   @override
   List<ExamplePair>? get examples {
@@ -534,9 +537,29 @@ class _$WordEntryImpl implements _WordEntry {
     return EqualUnmodifiableListView(value);
   }
 
+  final List<String>? _proverbs;
+  @override
+  List<String>? get proverbs {
+    final value = _proverbs;
+    if (value == null) return null;
+    if (_proverbs is EqualUnmodifiableListView) return _proverbs;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(value);
+  }
+
+  final List<String>? _tags;
+  @override
+  List<String>? get tags {
+    final value = _tags;
+    if (value == null) return null;
+    if (_tags is EqualUnmodifiableListView) return _tags;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(value);
+  }
+
   @override
   String toString() {
-    return 'WordEntry(id: $id, hadramiWord: $hadramiWord, arabicFus7a: $arabicFus7a, fullDefinition: $fullDefinition, fus7aShort: $fus7aShort, searchKey: $searchKey, partOfSpeech: $partOfSpeech, thematicCategory: $thematicCategory, isArchaic: $isArchaic, pronunciationNotes: $pronunciationNotes, proverbRecord: $proverbRecord, culturalNote: $culturalNote, aliases: $aliases, examples: $examples)';
+    return 'WordEntry(id: $id, wordVocalized: $wordVocalized, wordClean: $wordClean, root: $root, pos: $pos, fushaEquivalent: $fushaEquivalent, definition: $definition, region: $region, synonyms: $synonyms, phoneticVariants: $phoneticVariants, note: $note, source: $source, examples: $examples, proverbs: $proverbs, tags: $tags)';
   }
 
   @override
@@ -545,30 +568,25 @@ class _$WordEntryImpl implements _WordEntry {
         (other.runtimeType == runtimeType &&
             other is _$WordEntryImpl &&
             (identical(other.id, id) || other.id == id) &&
-            (identical(other.hadramiWord, hadramiWord) ||
-                other.hadramiWord == hadramiWord) &&
-            (identical(other.arabicFus7a, arabicFus7a) ||
-                other.arabicFus7a == arabicFus7a) &&
-            (identical(other.fullDefinition, fullDefinition) ||
-                other.fullDefinition == fullDefinition) &&
-            (identical(other.fus7aShort, fus7aShort) ||
-                other.fus7aShort == fus7aShort) &&
-            (identical(other.searchKey, searchKey) ||
-                other.searchKey == searchKey) &&
-            (identical(other.partOfSpeech, partOfSpeech) ||
-                other.partOfSpeech == partOfSpeech) &&
-            (identical(other.thematicCategory, thematicCategory) ||
-                other.thematicCategory == thematicCategory) &&
-            (identical(other.isArchaic, isArchaic) ||
-                other.isArchaic == isArchaic) &&
+            (identical(other.wordVocalized, wordVocalized) ||
+                other.wordVocalized == wordVocalized) &&
+            (identical(other.wordClean, wordClean) ||
+                other.wordClean == wordClean) &&
+            (identical(other.root, root) || other.root == root) &&
+            (identical(other.pos, pos) || other.pos == pos) &&
+            (identical(other.fushaEquivalent, fushaEquivalent) ||
+                other.fushaEquivalent == fushaEquivalent) &&
+            (identical(other.definition, definition) ||
+                other.definition == definition) &&
+            (identical(other.region, region) || other.region == region) &&
+            const DeepCollectionEquality().equals(other._synonyms, _synonyms) &&
             const DeepCollectionEquality()
-                .equals(other._pronunciationNotes, _pronunciationNotes) &&
-            const DeepCollectionEquality()
-                .equals(other._proverbRecord, _proverbRecord) &&
-            (identical(other.culturalNote, culturalNote) ||
-                other.culturalNote == culturalNote) &&
-            const DeepCollectionEquality().equals(other._aliases, _aliases) &&
-            const DeepCollectionEquality().equals(other._examples, _examples));
+                .equals(other._phoneticVariants, _phoneticVariants) &&
+            (identical(other.note, note) || other.note == note) &&
+            (identical(other.source, source) || other.source == source) &&
+            const DeepCollectionEquality().equals(other._examples, _examples) &&
+            const DeepCollectionEquality().equals(other._proverbs, _proverbs) &&
+            const DeepCollectionEquality().equals(other._tags, _tags));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
@@ -576,19 +594,20 @@ class _$WordEntryImpl implements _WordEntry {
   int get hashCode => Object.hash(
       runtimeType,
       id,
-      hadramiWord,
-      arabicFus7a,
-      fullDefinition,
-      fus7aShort,
-      searchKey,
-      partOfSpeech,
-      thematicCategory,
-      isArchaic,
-      const DeepCollectionEquality().hash(_pronunciationNotes),
-      const DeepCollectionEquality().hash(_proverbRecord),
-      culturalNote,
-      const DeepCollectionEquality().hash(_aliases),
-      const DeepCollectionEquality().hash(_examples));
+      wordVocalized,
+      wordClean,
+      root,
+      pos,
+      fushaEquivalent,
+      definition,
+      region,
+      const DeepCollectionEquality().hash(_synonyms),
+      const DeepCollectionEquality().hash(_phoneticVariants),
+      note,
+      source,
+      const DeepCollectionEquality().hash(_examples),
+      const DeepCollectionEquality().hash(_proverbs),
+      const DeepCollectionEquality().hash(_tags));
 
   /// Create a copy of WordEntry
   /// with the given fields replaced by the non-null parameter values.
@@ -609,19 +628,20 @@ class _$WordEntryImpl implements _WordEntry {
 abstract class _WordEntry implements WordEntry {
   const factory _WordEntry(
       {final int id,
-      final String hadramiWord,
-      final String arabicFus7a,
-      final String fullDefinition,
-      final String? fus7aShort,
-      final String? searchKey,
-      final String? partOfSpeech,
-      final String? thematicCategory,
-      final bool isArchaic,
-      final List<String>? pronunciationNotes,
-      final List<String>? proverbRecord,
-      final String? culturalNote,
-      final List<String>? aliases,
-      final List<ExamplePair>? examples}) = _$WordEntryImpl;
+      final String wordVocalized,
+      final String? wordClean,
+      final String? root,
+      final String? pos,
+      final String? fushaEquivalent,
+      final String? definition,
+      final String region,
+      final List<String>? synonyms,
+      final List<String>? phoneticVariants,
+      final String? note,
+      final String? source,
+      final List<ExamplePair>? examples,
+      final List<String>? proverbs,
+      final List<String>? tags}) = _$WordEntryImpl;
 
   factory _WordEntry.fromJson(Map<String, dynamic> json) =
       _$WordEntryImpl.fromJson;
@@ -629,31 +649,33 @@ abstract class _WordEntry implements WordEntry {
   @override
   int get id;
   @override
-  String get hadramiWord;
+  String get wordVocalized;
   @override
-  String get arabicFus7a;
+  String? get wordClean;
   @override
-  String get fullDefinition;
+  String? get root;
   @override
-  String? get fus7aShort;
+  String? get pos;
   @override
-  String? get searchKey;
+  String? get fushaEquivalent;
   @override
-  String? get partOfSpeech;
+  String? get definition;
   @override
-  String? get thematicCategory;
+  String get region;
   @override
-  bool get isArchaic;
+  List<String>? get synonyms;
   @override
-  List<String>? get pronunciationNotes;
+  List<String>? get phoneticVariants;
   @override
-  List<String>? get proverbRecord;
+  String? get note;
   @override
-  String? get culturalNote;
-  @override
-  List<String>? get aliases;
+  String? get source;
   @override
   List<ExamplePair>? get examples;
+  @override
+  List<String>? get proverbs;
+  @override
+  List<String>? get tags;
 
   /// Create a copy of WordEntry
   /// with the given fields replaced by the non-null parameter values.
@@ -670,9 +692,9 @@ TranslateResult _$TranslateResultFromJson(Map<String, dynamic> json) {
 /// @nodoc
 mixin _$TranslateResult {
   bool get found => throw _privateConstructorUsedError;
-  String get hadramiWord => throw _privateConstructorUsedError;
-  String get arabicFus7a => throw _privateConstructorUsedError;
-  String get fullDefinition => throw _privateConstructorUsedError;
+  String get wordVocalized => throw _privateConstructorUsedError;
+  String get fushaEquivalent => throw _privateConstructorUsedError;
+  String get definition => throw _privateConstructorUsedError;
   String get confidence => throw _privateConstructorUsedError;
 
   /// Serializes this TranslateResult to a JSON map.
@@ -693,9 +715,9 @@ abstract class $TranslateResultCopyWith<$Res> {
   @useResult
   $Res call(
       {bool found,
-      String hadramiWord,
-      String arabicFus7a,
-      String fullDefinition,
+      String wordVocalized,
+      String fushaEquivalent,
+      String definition,
       String confidence});
 }
 
@@ -715,9 +737,9 @@ class _$TranslateResultCopyWithImpl<$Res, $Val extends TranslateResult>
   @override
   $Res call({
     Object? found = null,
-    Object? hadramiWord = null,
-    Object? arabicFus7a = null,
-    Object? fullDefinition = null,
+    Object? wordVocalized = null,
+    Object? fushaEquivalent = null,
+    Object? definition = null,
     Object? confidence = null,
   }) {
     return _then(_value.copyWith(
@@ -725,17 +747,17 @@ class _$TranslateResultCopyWithImpl<$Res, $Val extends TranslateResult>
           ? _value.found
           : found // ignore: cast_nullable_to_non_nullable
               as bool,
-      hadramiWord: null == hadramiWord
-          ? _value.hadramiWord
-          : hadramiWord // ignore: cast_nullable_to_non_nullable
+      wordVocalized: null == wordVocalized
+          ? _value.wordVocalized
+          : wordVocalized // ignore: cast_nullable_to_non_nullable
               as String,
-      arabicFus7a: null == arabicFus7a
-          ? _value.arabicFus7a
-          : arabicFus7a // ignore: cast_nullable_to_non_nullable
+      fushaEquivalent: null == fushaEquivalent
+          ? _value.fushaEquivalent
+          : fushaEquivalent // ignore: cast_nullable_to_non_nullable
               as String,
-      fullDefinition: null == fullDefinition
-          ? _value.fullDefinition
-          : fullDefinition // ignore: cast_nullable_to_non_nullable
+      definition: null == definition
+          ? _value.definition
+          : definition // ignore: cast_nullable_to_non_nullable
               as String,
       confidence: null == confidence
           ? _value.confidence
@@ -755,9 +777,9 @@ abstract class _$$TranslateResultImplCopyWith<$Res>
   @useResult
   $Res call(
       {bool found,
-      String hadramiWord,
-      String arabicFus7a,
-      String fullDefinition,
+      String wordVocalized,
+      String fushaEquivalent,
+      String definition,
       String confidence});
 }
 
@@ -775,9 +797,9 @@ class __$$TranslateResultImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? found = null,
-    Object? hadramiWord = null,
-    Object? arabicFus7a = null,
-    Object? fullDefinition = null,
+    Object? wordVocalized = null,
+    Object? fushaEquivalent = null,
+    Object? definition = null,
     Object? confidence = null,
   }) {
     return _then(_$TranslateResultImpl(
@@ -785,17 +807,17 @@ class __$$TranslateResultImplCopyWithImpl<$Res>
           ? _value.found
           : found // ignore: cast_nullable_to_non_nullable
               as bool,
-      hadramiWord: null == hadramiWord
-          ? _value.hadramiWord
-          : hadramiWord // ignore: cast_nullable_to_non_nullable
+      wordVocalized: null == wordVocalized
+          ? _value.wordVocalized
+          : wordVocalized // ignore: cast_nullable_to_non_nullable
               as String,
-      arabicFus7a: null == arabicFus7a
-          ? _value.arabicFus7a
-          : arabicFus7a // ignore: cast_nullable_to_non_nullable
+      fushaEquivalent: null == fushaEquivalent
+          ? _value.fushaEquivalent
+          : fushaEquivalent // ignore: cast_nullable_to_non_nullable
               as String,
-      fullDefinition: null == fullDefinition
-          ? _value.fullDefinition
-          : fullDefinition // ignore: cast_nullable_to_non_nullable
+      definition: null == definition
+          ? _value.definition
+          : definition // ignore: cast_nullable_to_non_nullable
               as String,
       confidence: null == confidence
           ? _value.confidence
@@ -811,9 +833,9 @@ class __$$TranslateResultImplCopyWithImpl<$Res>
 class _$TranslateResultImpl implements _TranslateResult {
   const _$TranslateResultImpl(
       {this.found = false,
-      this.hadramiWord = '',
-      this.arabicFus7a = '',
-      this.fullDefinition = '',
+      this.wordVocalized = '',
+      this.fushaEquivalent = '',
+      this.definition = '',
       this.confidence = 'not_found'});
 
   factory _$TranslateResultImpl.fromJson(Map<String, dynamic> json) =>
@@ -824,20 +846,20 @@ class _$TranslateResultImpl implements _TranslateResult {
   final bool found;
   @override
   @JsonKey()
-  final String hadramiWord;
+  final String wordVocalized;
   @override
   @JsonKey()
-  final String arabicFus7a;
+  final String fushaEquivalent;
   @override
   @JsonKey()
-  final String fullDefinition;
+  final String definition;
   @override
   @JsonKey()
   final String confidence;
 
   @override
   String toString() {
-    return 'TranslateResult(found: $found, hadramiWord: $hadramiWord, arabicFus7a: $arabicFus7a, fullDefinition: $fullDefinition, confidence: $confidence)';
+    return 'TranslateResult(found: $found, wordVocalized: $wordVocalized, fushaEquivalent: $fushaEquivalent, definition: $definition, confidence: $confidence)';
   }
 
   @override
@@ -846,20 +868,20 @@ class _$TranslateResultImpl implements _TranslateResult {
         (other.runtimeType == runtimeType &&
             other is _$TranslateResultImpl &&
             (identical(other.found, found) || other.found == found) &&
-            (identical(other.hadramiWord, hadramiWord) ||
-                other.hadramiWord == hadramiWord) &&
-            (identical(other.arabicFus7a, arabicFus7a) ||
-                other.arabicFus7a == arabicFus7a) &&
-            (identical(other.fullDefinition, fullDefinition) ||
-                other.fullDefinition == fullDefinition) &&
+            (identical(other.wordVocalized, wordVocalized) ||
+                other.wordVocalized == wordVocalized) &&
+            (identical(other.fushaEquivalent, fushaEquivalent) ||
+                other.fushaEquivalent == fushaEquivalent) &&
+            (identical(other.definition, definition) ||
+                other.definition == definition) &&
             (identical(other.confidence, confidence) ||
                 other.confidence == confidence));
   }
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(
-      runtimeType, found, hadramiWord, arabicFus7a, fullDefinition, confidence);
+  int get hashCode => Object.hash(runtimeType, found, wordVocalized,
+      fushaEquivalent, definition, confidence);
 
   /// Create a copy of TranslateResult
   /// with the given fields replaced by the non-null parameter values.
@@ -881,9 +903,9 @@ class _$TranslateResultImpl implements _TranslateResult {
 abstract class _TranslateResult implements TranslateResult {
   const factory _TranslateResult(
       {final bool found,
-      final String hadramiWord,
-      final String arabicFus7a,
-      final String fullDefinition,
+      final String wordVocalized,
+      final String fushaEquivalent,
+      final String definition,
       final String confidence}) = _$TranslateResultImpl;
 
   factory _TranslateResult.fromJson(Map<String, dynamic> json) =
@@ -892,11 +914,11 @@ abstract class _TranslateResult implements TranslateResult {
   @override
   bool get found;
   @override
-  String get hadramiWord;
+  String get wordVocalized;
   @override
-  String get arabicFus7a;
+  String get fushaEquivalent;
   @override
-  String get fullDefinition;
+  String get definition;
   @override
   String get confidence;
 
@@ -1885,9 +1907,8 @@ mixin _$AppStats {
   int get translated => throw _privateConstructorUsedError;
   int get pending => throw _privateConstructorUsedError;
   double get completionPercent => throw _privateConstructorUsedError;
-  Map<String, int> get byPartOfSpeech => throw _privateConstructorUsedError;
-  Map<String, int> get byThematicCategory => throw _privateConstructorUsedError;
-  int get archaicWords => throw _privateConstructorUsedError;
+  Map<String, int> get byPos => throw _privateConstructorUsedError;
+  Map<String, int> get byTag => throw _privateConstructorUsedError;
   int get totalProverbs => throw _privateConstructorUsedError;
 
   /// Serializes this AppStats to a JSON map.
@@ -1910,9 +1931,8 @@ abstract class $AppStatsCopyWith<$Res> {
       int translated,
       int pending,
       double completionPercent,
-      Map<String, int> byPartOfSpeech,
-      Map<String, int> byThematicCategory,
-      int archaicWords,
+      Map<String, int> byPos,
+      Map<String, int> byTag,
       int totalProverbs});
 }
 
@@ -1935,9 +1955,8 @@ class _$AppStatsCopyWithImpl<$Res, $Val extends AppStats>
     Object? translated = null,
     Object? pending = null,
     Object? completionPercent = null,
-    Object? byPartOfSpeech = null,
-    Object? byThematicCategory = null,
-    Object? archaicWords = null,
+    Object? byPos = null,
+    Object? byTag = null,
     Object? totalProverbs = null,
   }) {
     return _then(_value.copyWith(
@@ -1957,18 +1976,14 @@ class _$AppStatsCopyWithImpl<$Res, $Val extends AppStats>
           ? _value.completionPercent
           : completionPercent // ignore: cast_nullable_to_non_nullable
               as double,
-      byPartOfSpeech: null == byPartOfSpeech
-          ? _value.byPartOfSpeech
-          : byPartOfSpeech // ignore: cast_nullable_to_non_nullable
+      byPos: null == byPos
+          ? _value.byPos
+          : byPos // ignore: cast_nullable_to_non_nullable
               as Map<String, int>,
-      byThematicCategory: null == byThematicCategory
-          ? _value.byThematicCategory
-          : byThematicCategory // ignore: cast_nullable_to_non_nullable
+      byTag: null == byTag
+          ? _value.byTag
+          : byTag // ignore: cast_nullable_to_non_nullable
               as Map<String, int>,
-      archaicWords: null == archaicWords
-          ? _value.archaicWords
-          : archaicWords // ignore: cast_nullable_to_non_nullable
-              as int,
       totalProverbs: null == totalProverbs
           ? _value.totalProverbs
           : totalProverbs // ignore: cast_nullable_to_non_nullable
@@ -1990,9 +2005,8 @@ abstract class _$$AppStatsImplCopyWith<$Res>
       int translated,
       int pending,
       double completionPercent,
-      Map<String, int> byPartOfSpeech,
-      Map<String, int> byThematicCategory,
-      int archaicWords,
+      Map<String, int> byPos,
+      Map<String, int> byTag,
       int totalProverbs});
 }
 
@@ -2013,9 +2027,8 @@ class __$$AppStatsImplCopyWithImpl<$Res>
     Object? translated = null,
     Object? pending = null,
     Object? completionPercent = null,
-    Object? byPartOfSpeech = null,
-    Object? byThematicCategory = null,
-    Object? archaicWords = null,
+    Object? byPos = null,
+    Object? byTag = null,
     Object? totalProverbs = null,
   }) {
     return _then(_$AppStatsImpl(
@@ -2035,18 +2048,14 @@ class __$$AppStatsImplCopyWithImpl<$Res>
           ? _value.completionPercent
           : completionPercent // ignore: cast_nullable_to_non_nullable
               as double,
-      byPartOfSpeech: null == byPartOfSpeech
-          ? _value._byPartOfSpeech
-          : byPartOfSpeech // ignore: cast_nullable_to_non_nullable
+      byPos: null == byPos
+          ? _value._byPos
+          : byPos // ignore: cast_nullable_to_non_nullable
               as Map<String, int>,
-      byThematicCategory: null == byThematicCategory
-          ? _value._byThematicCategory
-          : byThematicCategory // ignore: cast_nullable_to_non_nullable
+      byTag: null == byTag
+          ? _value._byTag
+          : byTag // ignore: cast_nullable_to_non_nullable
               as Map<String, int>,
-      archaicWords: null == archaicWords
-          ? _value.archaicWords
-          : archaicWords // ignore: cast_nullable_to_non_nullable
-              as int,
       totalProverbs: null == totalProverbs
           ? _value.totalProverbs
           : totalProverbs // ignore: cast_nullable_to_non_nullable
@@ -2064,12 +2073,11 @@ class _$AppStatsImpl implements _AppStats {
       this.translated = 0,
       this.pending = 0,
       this.completionPercent = 0.0,
-      final Map<String, int> byPartOfSpeech = const <String, int>{},
-      final Map<String, int> byThematicCategory = const <String, int>{},
-      this.archaicWords = 0,
+      final Map<String, int> byPos = const <String, int>{},
+      final Map<String, int> byTag = const <String, int>{},
       this.totalProverbs = 0})
-      : _byPartOfSpeech = byPartOfSpeech,
-        _byThematicCategory = byThematicCategory;
+      : _byPos = byPos,
+        _byTag = byTag;
 
   factory _$AppStatsImpl.fromJson(Map<String, dynamic> json) =>
       _$$AppStatsImplFromJson(json);
@@ -2086,35 +2094,31 @@ class _$AppStatsImpl implements _AppStats {
   @override
   @JsonKey()
   final double completionPercent;
-  final Map<String, int> _byPartOfSpeech;
+  final Map<String, int> _byPos;
   @override
   @JsonKey()
-  Map<String, int> get byPartOfSpeech {
-    if (_byPartOfSpeech is EqualUnmodifiableMapView) return _byPartOfSpeech;
+  Map<String, int> get byPos {
+    if (_byPos is EqualUnmodifiableMapView) return _byPos;
     // ignore: implicit_dynamic_type
-    return EqualUnmodifiableMapView(_byPartOfSpeech);
+    return EqualUnmodifiableMapView(_byPos);
   }
 
-  final Map<String, int> _byThematicCategory;
+  final Map<String, int> _byTag;
   @override
   @JsonKey()
-  Map<String, int> get byThematicCategory {
-    if (_byThematicCategory is EqualUnmodifiableMapView)
-      return _byThematicCategory;
+  Map<String, int> get byTag {
+    if (_byTag is EqualUnmodifiableMapView) return _byTag;
     // ignore: implicit_dynamic_type
-    return EqualUnmodifiableMapView(_byThematicCategory);
+    return EqualUnmodifiableMapView(_byTag);
   }
 
-  @override
-  @JsonKey()
-  final int archaicWords;
   @override
   @JsonKey()
   final int totalProverbs;
 
   @override
   String toString() {
-    return 'AppStats(totalWords: $totalWords, translated: $translated, pending: $pending, completionPercent: $completionPercent, byPartOfSpeech: $byPartOfSpeech, byThematicCategory: $byThematicCategory, archaicWords: $archaicWords, totalProverbs: $totalProverbs)';
+    return 'AppStats(totalWords: $totalWords, translated: $translated, pending: $pending, completionPercent: $completionPercent, byPos: $byPos, byTag: $byTag, totalProverbs: $totalProverbs)';
   }
 
   @override
@@ -2129,12 +2133,8 @@ class _$AppStatsImpl implements _AppStats {
             (identical(other.pending, pending) || other.pending == pending) &&
             (identical(other.completionPercent, completionPercent) ||
                 other.completionPercent == completionPercent) &&
-            const DeepCollectionEquality()
-                .equals(other._byPartOfSpeech, _byPartOfSpeech) &&
-            const DeepCollectionEquality()
-                .equals(other._byThematicCategory, _byThematicCategory) &&
-            (identical(other.archaicWords, archaicWords) ||
-                other.archaicWords == archaicWords) &&
+            const DeepCollectionEquality().equals(other._byPos, _byPos) &&
+            const DeepCollectionEquality().equals(other._byTag, _byTag) &&
             (identical(other.totalProverbs, totalProverbs) ||
                 other.totalProverbs == totalProverbs));
   }
@@ -2147,9 +2147,8 @@ class _$AppStatsImpl implements _AppStats {
       translated,
       pending,
       completionPercent,
-      const DeepCollectionEquality().hash(_byPartOfSpeech),
-      const DeepCollectionEquality().hash(_byThematicCategory),
-      archaicWords,
+      const DeepCollectionEquality().hash(_byPos),
+      const DeepCollectionEquality().hash(_byTag),
       totalProverbs);
 
   /// Create a copy of AppStats
@@ -2174,9 +2173,8 @@ abstract class _AppStats implements AppStats {
       final int translated,
       final int pending,
       final double completionPercent,
-      final Map<String, int> byPartOfSpeech,
-      final Map<String, int> byThematicCategory,
-      final int archaicWords,
+      final Map<String, int> byPos,
+      final Map<String, int> byTag,
       final int totalProverbs}) = _$AppStatsImpl;
 
   factory _AppStats.fromJson(Map<String, dynamic> json) =
@@ -2191,11 +2189,9 @@ abstract class _AppStats implements AppStats {
   @override
   double get completionPercent;
   @override
-  Map<String, int> get byPartOfSpeech;
+  Map<String, int> get byPos;
   @override
-  Map<String, int> get byThematicCategory;
-  @override
-  int get archaicWords;
+  Map<String, int> get byTag;
   @override
   int get totalProverbs;
 
@@ -2204,5 +2200,251 @@ abstract class _AppStats implements AppStats {
   @override
   @JsonKey(includeFromJson: false, includeToJson: false)
   _$$AppStatsImplCopyWith<_$AppStatsImpl> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+ChatResult _$ChatResultFromJson(Map<String, dynamic> json) {
+  return _ChatResult.fromJson(json);
+}
+
+/// @nodoc
+mixin _$ChatResult {
+  String get reply => throw _privateConstructorUsedError;
+  List<WordEntry> get context => throw _privateConstructorUsedError;
+  List<HadramiSpan> get hadramiSpans => throw _privateConstructorUsedError;
+  List<String> get highlightSurfaces => throw _privateConstructorUsedError;
+
+  /// Serializes this ChatResult to a JSON map.
+  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
+
+  /// Create a copy of ChatResult
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  $ChatResultCopyWith<ChatResult> get copyWith =>
+      throw _privateConstructorUsedError;
+}
+
+/// @nodoc
+abstract class $ChatResultCopyWith<$Res> {
+  factory $ChatResultCopyWith(
+          ChatResult value, $Res Function(ChatResult) then) =
+      _$ChatResultCopyWithImpl<$Res, ChatResult>;
+  @useResult
+  $Res call(
+      {String reply,
+      List<WordEntry> context,
+      List<HadramiSpan> hadramiSpans,
+      List<String> highlightSurfaces});
+}
+
+/// @nodoc
+class _$ChatResultCopyWithImpl<$Res, $Val extends ChatResult>
+    implements $ChatResultCopyWith<$Res> {
+  _$ChatResultCopyWithImpl(this._value, this._then);
+
+  // ignore: unused_field
+  final $Val _value;
+  // ignore: unused_field
+  final $Res Function($Val) _then;
+
+  /// Create a copy of ChatResult
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? reply = null,
+    Object? context = null,
+    Object? hadramiSpans = null,
+    Object? highlightSurfaces = null,
+  }) {
+    return _then(_value.copyWith(
+      reply: null == reply
+          ? _value.reply
+          : reply // ignore: cast_nullable_to_non_nullable
+              as String,
+      context: null == context
+          ? _value.context
+          : context // ignore: cast_nullable_to_non_nullable
+              as List<WordEntry>,
+      hadramiSpans: null == hadramiSpans
+          ? _value.hadramiSpans
+          : hadramiSpans // ignore: cast_nullable_to_non_nullable
+              as List<HadramiSpan>,
+      highlightSurfaces: null == highlightSurfaces
+          ? _value.highlightSurfaces
+          : highlightSurfaces // ignore: cast_nullable_to_non_nullable
+              as List<String>,
+    ) as $Val);
+  }
+}
+
+/// @nodoc
+abstract class _$$ChatResultImplCopyWith<$Res>
+    implements $ChatResultCopyWith<$Res> {
+  factory _$$ChatResultImplCopyWith(
+          _$ChatResultImpl value, $Res Function(_$ChatResultImpl) then) =
+      __$$ChatResultImplCopyWithImpl<$Res>;
+  @override
+  @useResult
+  $Res call(
+      {String reply,
+      List<WordEntry> context,
+      List<HadramiSpan> hadramiSpans,
+      List<String> highlightSurfaces});
+}
+
+/// @nodoc
+class __$$ChatResultImplCopyWithImpl<$Res>
+    extends _$ChatResultCopyWithImpl<$Res, _$ChatResultImpl>
+    implements _$$ChatResultImplCopyWith<$Res> {
+  __$$ChatResultImplCopyWithImpl(
+      _$ChatResultImpl _value, $Res Function(_$ChatResultImpl) _then)
+      : super(_value, _then);
+
+  /// Create a copy of ChatResult
+  /// with the given fields replaced by the non-null parameter values.
+  @pragma('vm:prefer-inline')
+  @override
+  $Res call({
+    Object? reply = null,
+    Object? context = null,
+    Object? hadramiSpans = null,
+    Object? highlightSurfaces = null,
+  }) {
+    return _then(_$ChatResultImpl(
+      reply: null == reply
+          ? _value.reply
+          : reply // ignore: cast_nullable_to_non_nullable
+              as String,
+      context: null == context
+          ? _value._context
+          : context // ignore: cast_nullable_to_non_nullable
+              as List<WordEntry>,
+      hadramiSpans: null == hadramiSpans
+          ? _value._hadramiSpans
+          : hadramiSpans // ignore: cast_nullable_to_non_nullable
+              as List<HadramiSpan>,
+      highlightSurfaces: null == highlightSurfaces
+          ? _value._highlightSurfaces
+          : highlightSurfaces // ignore: cast_nullable_to_non_nullable
+              as List<String>,
+    ));
+  }
+}
+
+/// @nodoc
+
+@JsonSerializable(fieldRename: FieldRename.snake)
+class _$ChatResultImpl implements _ChatResult {
+  const _$ChatResultImpl(
+      {this.reply = '',
+      final List<WordEntry> context = const <WordEntry>[],
+      final List<HadramiSpan> hadramiSpans = const <HadramiSpan>[],
+      final List<String> highlightSurfaces = const <String>[]})
+      : _context = context,
+        _hadramiSpans = hadramiSpans,
+        _highlightSurfaces = highlightSurfaces;
+
+  factory _$ChatResultImpl.fromJson(Map<String, dynamic> json) =>
+      _$$ChatResultImplFromJson(json);
+
+  @override
+  @JsonKey()
+  final String reply;
+  final List<WordEntry> _context;
+  @override
+  @JsonKey()
+  List<WordEntry> get context {
+    if (_context is EqualUnmodifiableListView) return _context;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_context);
+  }
+
+  final List<HadramiSpan> _hadramiSpans;
+  @override
+  @JsonKey()
+  List<HadramiSpan> get hadramiSpans {
+    if (_hadramiSpans is EqualUnmodifiableListView) return _hadramiSpans;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_hadramiSpans);
+  }
+
+  final List<String> _highlightSurfaces;
+  @override
+  @JsonKey()
+  List<String> get highlightSurfaces {
+    if (_highlightSurfaces is EqualUnmodifiableListView)
+      return _highlightSurfaces;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_highlightSurfaces);
+  }
+
+  @override
+  String toString() {
+    return 'ChatResult(reply: $reply, context: $context, hadramiSpans: $hadramiSpans, highlightSurfaces: $highlightSurfaces)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        (other.runtimeType == runtimeType &&
+            other is _$ChatResultImpl &&
+            (identical(other.reply, reply) || other.reply == reply) &&
+            const DeepCollectionEquality().equals(other._context, _context) &&
+            const DeepCollectionEquality()
+                .equals(other._hadramiSpans, _hadramiSpans) &&
+            const DeepCollectionEquality()
+                .equals(other._highlightSurfaces, _highlightSurfaces));
+  }
+
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  int get hashCode => Object.hash(
+      runtimeType,
+      reply,
+      const DeepCollectionEquality().hash(_context),
+      const DeepCollectionEquality().hash(_hadramiSpans),
+      const DeepCollectionEquality().hash(_highlightSurfaces));
+
+  /// Create a copy of ChatResult
+  /// with the given fields replaced by the non-null parameter values.
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  @override
+  @pragma('vm:prefer-inline')
+  _$$ChatResultImplCopyWith<_$ChatResultImpl> get copyWith =>
+      __$$ChatResultImplCopyWithImpl<_$ChatResultImpl>(this, _$identity);
+
+  @override
+  Map<String, dynamic> toJson() {
+    return _$$ChatResultImplToJson(
+      this,
+    );
+  }
+}
+
+abstract class _ChatResult implements ChatResult {
+  const factory _ChatResult(
+      {final String reply,
+      final List<WordEntry> context,
+      final List<HadramiSpan> hadramiSpans,
+      final List<String> highlightSurfaces}) = _$ChatResultImpl;
+
+  factory _ChatResult.fromJson(Map<String, dynamic> json) =
+      _$ChatResultImpl.fromJson;
+
+  @override
+  String get reply;
+  @override
+  List<WordEntry> get context;
+  @override
+  List<HadramiSpan> get hadramiSpans;
+  @override
+  List<String> get highlightSurfaces;
+
+  /// Create a copy of ChatResult
+  /// with the given fields replaced by the non-null parameter values.
+  @override
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  _$$ChatResultImplCopyWith<_$ChatResultImpl> get copyWith =>
       throw _privateConstructorUsedError;
 }

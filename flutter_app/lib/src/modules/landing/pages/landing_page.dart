@@ -19,6 +19,7 @@ const _destinations = [
   _NavItem(Icons.bookmark_outline_rounded, Icons.bookmark_rounded, 'المفضلة'),
   _NavItem(Icons.chat_bubble_outline_rounded, Icons.chat_bubble_rounded, 'اسأل'),
   _NavItem(Icons.translate_outlined, Icons.translate_rounded, 'عبارات'),
+  _NavItem(Icons.smart_toy_outlined, Icons.smart_toy_rounded, 'محادثة'),
 ];
 
 class LandingPage extends HookConsumerWidget {

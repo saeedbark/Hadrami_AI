@@ -18,7 +18,7 @@ class WordCard extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final colorScheme = Theme.of(context).colorScheme;
     final isFav = ref.watch(favoritesProvider.select(
-        (list) => list.any((e) => e.hadramiWord == entry.hadramiWord)));
+        (list) => list.any((e) => e.wordVocalized == entry.wordVocalized)));
 
     return Card(
       margin: const EdgeInsets.only(bottom: 8),
@@ -47,8 +47,8 @@ class WordCard extends ConsumerWidget {
                 ),
                 alignment: Alignment.center,
                 child: Text(
-                  entry.hadramiWord.isNotEmpty
-                      ? entry.hadramiWord.characters.first
+                  entry.wordVocalized.isNotEmpty
+                      ? entry.wordVocalized.characters.first
                       : '؟',
                   style: TextStyle(
                     fontSize: 16,
@@ -64,54 +64,44 @@ class WordCard extends ConsumerWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Row(
-                      children: [
-                        Flexible(
-                          child: Text(
-                            entry.hadramiWord,
-                            style: const TextStyle(
-                                fontSize: 16, fontWeight: FontWeight.bold),
-                          ),
-                        ),
-                        if (entry.isArchaic) ...[
-                          const SizedBox(width: 6),
-                          Icon(Icons.history_rounded,
-                              size: 14, color: colorScheme.error),
-                        ],
-                      ],
+                    Text(
+                      entry.wordVocalized,
+                      style: const TextStyle(
+                          fontSize: 16, fontWeight: FontWeight.bold),
                     ),
-                    if (entry.arabicFus7a.isNotEmpty) ...[
+                    if (entry.fushaEquivalent != null &&
+                        entry.fushaEquivalent!.isNotEmpty) ...[
                       const SizedBox(height: 2),
                       Text(
-                        entry.arabicFus7a,
+                        entry.fushaEquivalent!,
                         style: TextStyle(
                             fontSize: 13, color: colorScheme.primary),
                       ),
                     ],
-                    if (entry.partOfSpeech != null &&
-                        entry.partOfSpeech!.isNotEmpty) ...[
+                    if (entry.pos != null && entry.pos!.isNotEmpty) ...[
                       const SizedBox(height: 4),
                       Row(
                         children: [
                           _MiniTag(
-                            label: entry.partOfSpeech!,
-                            color: _posColor(entry.partOfSpeech!),
+                            label: entry.pos!,
+                            color: _posColor(entry.pos!),
                           ),
-                          if (entry.thematicCategory != null &&
-                              entry.thematicCategory!.isNotEmpty) ...[
+                          if (entry.tags != null &&
+                              entry.tags!.isNotEmpty) ...[
                             const SizedBox(width: 4),
                             _MiniTag(
-                              label: entry.thematicCategory!,
+                              label: entry.tags!.first,
                               color: colorScheme.secondary,
                             ),
                           ],
                         ],
                       ),
                     ],
-                    if (entry.fullDefinition.isNotEmpty) ...[
+                    if (entry.definition != null &&
+                        entry.definition!.isNotEmpty) ...[
                       const SizedBox(height: 4),
                       Text(
-                        entry.fullDefinition,
+                        entry.definition!,
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
                         style: TextStyle(
