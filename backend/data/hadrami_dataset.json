@@ -2,7 +2,7 @@
   "version": "1.1.0",
   "updated": "2026-04-04",
   "description": "Hadrami dialect dictionary - Arabic Fusha translations with examples",
-  "total": 1026,
+  "total": 1025,
   "entries": [
     {
       "id": 1,
@@ -3336,7 +3336,7 @@
       "search_key": "خرقه",
       "part_of_speech": "Verb",
       "thematic_category": "Daily Life",
-      "is_archaic": false
+      "is_archaic": false 
     },
     {
       "id": 252,
