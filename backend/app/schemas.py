@@ -37,15 +37,15 @@ class Entry(BaseModel):
     note: Optional[str] = None
     source: Optional[str] = None
     examples: Optional[list[ExamplePair]] = None
-    proverbs: Optional[list[str]] = None
+    proverbs: Optional[list[ExamplePair | str]] = None
     tags: Optional[list[str]] = None
 
-    @field_validator("synonyms", "phonetic_variants", "proverbs", "tags", mode="before")
+    @field_validator("synonyms", "phonetic_variants", "tags", mode="before")
     @classmethod
     def coerce_str_to_list(cls, v: Any) -> Any:
         return _parse_json_list(v)
 
-    @field_validator("examples", mode="before")
+    @field_validator("examples", "proverbs", mode="before")
     @classmethod
     def coerce_examples_str(cls, v: Any) -> Any:
         return _parse_json_list(v)
@@ -112,6 +112,9 @@ class AskResponse(BaseModel):
     question: str
     answer: str
     mode: str
+    #: Whether ``answer`` was produced by Gemini (``"model"``) or the offline
+    #: lexicon fallback (``"lexicon"``) when Gemini is unavailable or refused.
+    answer_source: str = "model"
     hadrami_spans: list[HadramiSpan] = Field(default_factory=list)
     highlight_surfaces: list[str] = Field(default_factory=list)
     context: list[Entry] = Field(default_factory=list)

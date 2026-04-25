@@ -1116,9 +1116,12 @@ mixin _$AskResult {
   String get question => throw _privateConstructorUsedError;
   String get answer => throw _privateConstructorUsedError;
   String get mode => throw _privateConstructorUsedError;
+
+  /// `model` = text from Gemini; `lexicon` = offline dictionary fallback.
+  String get answerSource => throw _privateConstructorUsedError;
   List<HadramiSpan> get hadramiSpans => throw _privateConstructorUsedError;
   List<String> get highlightSurfaces => throw _privateConstructorUsedError;
-  List<Map<String, dynamic>> get context => throw _privateConstructorUsedError;
+  List<WordEntry> get context => throw _privateConstructorUsedError;
 
   /// Serializes this AskResult to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -1139,9 +1142,10 @@ abstract class $AskResultCopyWith<$Res> {
       {String question,
       String answer,
       String mode,
+      String answerSource,
       List<HadramiSpan> hadramiSpans,
       List<String> highlightSurfaces,
-      List<Map<String, dynamic>> context});
+      List<WordEntry> context});
 }
 
 /// @nodoc
@@ -1162,6 +1166,7 @@ class _$AskResultCopyWithImpl<$Res, $Val extends AskResult>
     Object? question = null,
     Object? answer = null,
     Object? mode = null,
+    Object? answerSource = null,
     Object? hadramiSpans = null,
     Object? highlightSurfaces = null,
     Object? context = null,
@@ -1179,6 +1184,10 @@ class _$AskResultCopyWithImpl<$Res, $Val extends AskResult>
           ? _value.mode
           : mode // ignore: cast_nullable_to_non_nullable
               as String,
+      answerSource: null == answerSource
+          ? _value.answerSource
+          : answerSource // ignore: cast_nullable_to_non_nullable
+              as String,
       hadramiSpans: null == hadramiSpans
           ? _value.hadramiSpans
           : hadramiSpans // ignore: cast_nullable_to_non_nullable
@@ -1190,7 +1199,7 @@ class _$AskResultCopyWithImpl<$Res, $Val extends AskResult>
       context: null == context
           ? _value.context
           : context // ignore: cast_nullable_to_non_nullable
-              as List<Map<String, dynamic>>,
+              as List<WordEntry>,
     ) as $Val);
   }
 }
@@ -1207,9 +1216,10 @@ abstract class _$$AskResultImplCopyWith<$Res>
       {String question,
       String answer,
       String mode,
+      String answerSource,
       List<HadramiSpan> hadramiSpans,
       List<String> highlightSurfaces,
-      List<Map<String, dynamic>> context});
+      List<WordEntry> context});
 }
 
 /// @nodoc
@@ -1228,6 +1238,7 @@ class __$$AskResultImplCopyWithImpl<$Res>
     Object? question = null,
     Object? answer = null,
     Object? mode = null,
+    Object? answerSource = null,
     Object? hadramiSpans = null,
     Object? highlightSurfaces = null,
     Object? context = null,
@@ -1245,6 +1256,10 @@ class __$$AskResultImplCopyWithImpl<$Res>
           ? _value.mode
           : mode // ignore: cast_nullable_to_non_nullable
               as String,
+      answerSource: null == answerSource
+          ? _value.answerSource
+          : answerSource // ignore: cast_nullable_to_non_nullable
+              as String,
       hadramiSpans: null == hadramiSpans
           ? _value._hadramiSpans
           : hadramiSpans // ignore: cast_nullable_to_non_nullable
@@ -1256,7 +1271,7 @@ class __$$AskResultImplCopyWithImpl<$Res>
       context: null == context
           ? _value._context
           : context // ignore: cast_nullable_to_non_nullable
-              as List<Map<String, dynamic>>,
+              as List<WordEntry>,
     ));
   }
 }
@@ -1269,10 +1284,10 @@ class _$AskResultImpl implements _AskResult {
       {this.question = '',
       this.answer = '',
       this.mode = 'simple',
+      this.answerSource = 'model',
       final List<HadramiSpan> hadramiSpans = const <HadramiSpan>[],
       final List<String> highlightSurfaces = const <String>[],
-      final List<Map<String, dynamic>> context =
-          const <Map<String, dynamic>>[]})
+      final List<WordEntry> context = const <WordEntry>[]})
       : _hadramiSpans = hadramiSpans,
         _highlightSurfaces = highlightSurfaces,
         _context = context;
@@ -1289,6 +1304,11 @@ class _$AskResultImpl implements _AskResult {
   @override
   @JsonKey()
   final String mode;
+
+  /// `model` = text from Gemini; `lexicon` = offline dictionary fallback.
+  @override
+  @JsonKey()
+  final String answerSource;
   final List<HadramiSpan> _hadramiSpans;
   @override
   @JsonKey()
@@ -1308,10 +1328,10 @@ class _$AskResultImpl implements _AskResult {
     return EqualUnmodifiableListView(_highlightSurfaces);
   }
 
-  final List<Map<String, dynamic>> _context;
+  final List<WordEntry> _context;
   @override
   @JsonKey()
-  List<Map<String, dynamic>> get context {
+  List<WordEntry> get context {
     if (_context is EqualUnmodifiableListView) return _context;
     // ignore: implicit_dynamic_type
     return EqualUnmodifiableListView(_context);
@@ -1319,7 +1339,7 @@ class _$AskResultImpl implements _AskResult {
 
   @override
   String toString() {
-    return 'AskResult(question: $question, answer: $answer, mode: $mode, hadramiSpans: $hadramiSpans, highlightSurfaces: $highlightSurfaces, context: $context)';
+    return 'AskResult(question: $question, answer: $answer, mode: $mode, answerSource: $answerSource, hadramiSpans: $hadramiSpans, highlightSurfaces: $highlightSurfaces, context: $context)';
   }
 
   @override
@@ -1331,6 +1351,8 @@ class _$AskResultImpl implements _AskResult {
                 other.question == question) &&
             (identical(other.answer, answer) || other.answer == answer) &&
             (identical(other.mode, mode) || other.mode == mode) &&
+            (identical(other.answerSource, answerSource) ||
+                other.answerSource == answerSource) &&
             const DeepCollectionEquality()
                 .equals(other._hadramiSpans, _hadramiSpans) &&
             const DeepCollectionEquality()
@@ -1345,6 +1367,7 @@ class _$AskResultImpl implements _AskResult {
       question,
       answer,
       mode,
+      answerSource,
       const DeepCollectionEquality().hash(_hadramiSpans),
       const DeepCollectionEquality().hash(_highlightSurfaces),
       const DeepCollectionEquality().hash(_context));
@@ -1370,9 +1393,10 @@ abstract class _AskResult implements AskResult {
       {final String question,
       final String answer,
       final String mode,
+      final String answerSource,
       final List<HadramiSpan> hadramiSpans,
       final List<String> highlightSurfaces,
-      final List<Map<String, dynamic>> context}) = _$AskResultImpl;
+      final List<WordEntry> context}) = _$AskResultImpl;
 
   factory _AskResult.fromJson(Map<String, dynamic> json) =
       _$AskResultImpl.fromJson;
@@ -1383,12 +1407,16 @@ abstract class _AskResult implements AskResult {
   String get answer;
   @override
   String get mode;
+
+  /// `model` = text from Gemini; `lexicon` = offline dictionary fallback.
+  @override
+  String get answerSource;
   @override
   List<HadramiSpan> get hadramiSpans;
   @override
   List<String> get highlightSurfaces;
   @override
-  List<Map<String, dynamic>> get context;
+  List<WordEntry> get context;
 
   /// Create a copy of AskResult
   /// with the given fields replaced by the non-null parameter values.

@@ -1,4 +1,13 @@
-"""RAG-grounded phrase translation (MSA <-> Hadrami) via Gemini."""
+"""RAG-grounded phrase translation (MSA <-> Hadrami) via Gemini.
+
+Retrieval, prompting, and Gemini access all live in :mod:`app.rag.*` now;
+this module owns only the pieces that are specific to the phrase-translate
+endpoint:
+
+* chunked long-text handling with bounded parallelism,
+* strict JSON parsing of the model output,
+* span normalization + lexicon-grounded span filtering.
+"""
 
 from __future__ import annotations
 
@@ -7,35 +16,22 @@ import re
 from concurrent.futures import Future, ThreadPoolExecutor, as_completed
 from typing import Any
 
-from ..core.config import (
-    PHRASE_TRANSLATE_CHUNK_SIZE,
-    PHRASE_TRANSLATE_LONG_HINT_CHARS,
-    PHRASE_TRANSLATE_MAX_WORKERS,
+from ..core.config import PHRASE_TRANSLATE_CHUNK_SIZE, PHRASE_TRANSLATE_MAX_WORKERS
+from ..rag.config import MODE, gemini_api_key, rag_response_mode_tag
+from ..rag.generation import (
+    GEMINI_UNAVAILABLE_PREFIX,
+    gemini_generate,
+    is_gemini_unavailable,
 )
-from ..rag_engine import (
-    MODE,
-    _gemini_api_key,
-    _gemini_generate,
-    _preview,
-    _rag_log,
-    retrieve_phrase_context,
-)
-from ..schemas import Entry
+from ..rag.logging_utils import preview, rag_log
+from ..rag.prompts import phrase_prompt
+from ..rag.retrieval import retrieve_phrase_context
+from ..rag.serialization import entries_to_response
 
 
-def _context_block(entries: list[dict], *, definition_cap: int) -> str:
-    lines = []
-    for e in entries:
-        lines.append(
-            f"- حضرمي: {e.get('word_vocalized', '')} | فصحى: {e.get('fusha_equivalent', '')} | "
-            f"شرح: {(e.get('definition') or '')[:definition_cap]}"
-        )
-    return (
-        "\n".join(lines)
-        if lines
-        else "(لا توجد مطابقات قاموسية واضحة — ترجم النص بأسلوب حضرمي طبيعي كما في المحادثة الحرة.)"
-    )
-
+# ---------------------------------------------------------------------------
+# Span cleanup & lexicon filtering
+# ---------------------------------------------------------------------------
 
 def _normalize_span_token(s: str) -> str:
     t = (s or "").strip()
@@ -47,6 +43,13 @@ def _normalize_span_token(s: str) -> str:
 
 
 def _allowed_surfaces_from_entries(merged: list[dict], direction: str) -> set[str]:
+    """Surfaces the model is *allowed* to highlight, by direction.
+
+    For ``ar_to_hadrami`` we only trust the Hadrami headword; for
+    ``hadrami_to_ar`` we only trust the MSA gloss. Synonyms and examples
+    are intentionally excluded from the *highlight* filter (they're already
+    used for prompt grounding) to keep spans crisp.
+    """
     raw: set[str] = set()
     for e in merged:
         if direction == "ar_to_hadrami":
@@ -87,59 +90,9 @@ def _filter_spans_to_lexicon(
     return kept
 
 
-def _phrase_prompt(text: str, direction: str, entries: list[dict]) -> str:
-    n = len(text)
-    def_cap = 70 if n > PHRASE_TRANSLATE_LONG_HINT_CHARS else 120
-    ctx = _context_block(entries, definition_cap=def_cap)
-    long_note = ""
-    if n > PHRASE_TRANSLATE_LONG_HINT_CHARS:
-        long_note = (
-            "\n\nالنص طويل: أنجز ترجمة كاملة بنفس ترتيب الجمل والفقرات دون تلخيص أو حذف أجزاء. "
-            "لا تختصر الفقرة إلى جملة واحدة. في hadrami_spans أدرج على الأكثر 12 إدخالاً، "
-            "وأدرج فقط أشكالاً تطابق كلمات حضرمية (أو معادلاتها الفصحى حسب الاتجاه) من قائمة القاموس أعلاه — "
-            "لا تُبرز حروف جر أو كلمات عامة (مثل: على، في، من، إلى، مع، القهوة، الناس) إن لم تكن وردت كمدخل قاموس صريح."
-        )
-    if direction == "ar_to_hadrami":
-        task = (
-            "ترجم النص من العربية الفصحى إلى اللهجة الحضرمية اليمنية بأسلوب طبيعي. "
-            "استخدم مداخل القاموس أعلاه عندما تنطبق؛ لا تخترع كلمات حضرمية بعيدة عن المعنى."
-        )
-        span_hint = (
-            "في hadrami_spans ضع فقط مقاطع من translated_text تساوي بالضبط كلمات حضرمية وردت في قائمة القاموس أعلاه "
-            "(بعد إزالة علامات الترقيم الطرفية فقط إن لزم)."
-        )
-    else:
-        task = (
-            "ترجم النص من اللهجة الحضرمية إلى العربية الفصحى بأسلوب طبيعي. "
-            "استخدم مداخل القاموس أعلاه عندما تنطبق."
-        )
-        span_hint = (
-            "في hadrami_spans ضع فقط مقاطع من translated_text تساوي بالضبط معادلات فصحى وردت في قائمة القاموس أعلاه "
-            "(عمود الفصحى)، وليست كلمات عامة لم تُذكر في القاموس."
-        )
-
-    return f"""أنت مترجم متخصص في اللهجة الحضرمية اليمنية.
-
-مراجع من القاموس (استخدمها فقط عندما تكون **منطقية ومرتبطة بالنص**):
-{ctx}
-
-إذا بدت المداخل غير ذات صلة أو عشوائية، **تجاهلها تماماً** وترجم بأسلوب حضرمي سليم كما تفعل مع نص حر، دون فرض كلمات من القاموس في غير موضعها.
-
-المهمة: {task}
-{span_hint}
-{long_note}
-
-النص الأصلي:
-{text}
-
-أعد الإجابة كـ JSON صالح فقط بدون شرح أو markdown، بالشكل التالي:
-{{"translated_text":"...","hadrami_spans":[{{"start":0,"end":3,"surface":"..."}}]}}
-
-قواعد:
-- start و end: موضعا الأحرف في translated_text (عدّ الأحرف كوحدات يونيكود كما في لغة بايثون len والقطع).
-- surface يجب أن يساوي translated_text[start:end].
-- إن لم يكن هناك شيء للتمييز، استخدم مصفوفة فارغة لـ hadrami_spans."""
-
+# ---------------------------------------------------------------------------
+# JSON + span parsing
+# ---------------------------------------------------------------------------
 
 def _parse_json_payload(raw: str) -> dict[str, Any]:
     t = (raw or "").strip()
@@ -189,40 +142,18 @@ def _normalize_spans(translated_text: str, spans: Any) -> list[dict[str, Any]]:
     return out
 
 
-def _entries_to_response(entries: list[dict]) -> list[Entry]:
-    from ..schemas import ExamplePair
-
-    out: list[Entry] = []
-    for e in entries:
-        examples = None
-        raw_ex = e.get("examples")
-        if isinstance(raw_ex, list):
-            examples = [
-                ExamplePair(
-                    h=str(x.get("h", "")),
-                    f=str(x.get("f", "")),
-                )
-                for x in raw_ex
-                if isinstance(x, dict)
-            ]
-        out.append(
-            Entry(
-                id=int(e.get("id", 0)),
-                word_vocalized=str(e.get("word_vocalized", "")),
-                word_clean=e.get("word_clean"),
-                root=e.get("root"),
-                pos=e.get("pos"),
-                fusha_equivalent=str(e.get("fusha_equivalent", "")),
-                definition=str(e.get("definition", "")),
-                region=e.get("region", "General"),
-                synonyms=e.get("synonyms"),
-                examples=examples,
-            )
-        )
-    return out
-
+# ---------------------------------------------------------------------------
+# Chunking for long inputs
+# ---------------------------------------------------------------------------
 
 def _split_into_chunks(text: str, max_chunk: int) -> list[str]:
+    """Paragraph-then-sentence split that respects ``max_chunk``.
+
+    We split on blank-line paragraphs first, then on sentence terminators
+    (``.``, ``!``, ``?``, ``،``, ``؟``) only if a single paragraph still
+    overflows. The goal is to keep each chunk under the model's comfortable
+    context size while never breaking a sentence mid-word.
+    """
     if len(text) <= max_chunk:
         return [text]
 
@@ -251,32 +182,43 @@ def _split_into_chunks(text: str, max_chunk: int) -> list[str]:
     return chunks if chunks else [text]
 
 
+# ---------------------------------------------------------------------------
+# Per-chunk translation
+# ---------------------------------------------------------------------------
+
 def _translate_single_chunk(
     text: str, direction: str, merged: list[dict], api_key: str
 ) -> tuple[str, list[dict[str, Any]]]:
-    prompt = _phrase_prompt(text, direction, merged)
-    raw = _gemini_generate(prompt, api_key)
-    if raw.startswith("Gemini not available:"):
+    prompt = phrase_prompt(text, direction, merged)
+    raw = gemini_generate(prompt, api_key)
+    if is_gemini_unavailable(raw):
         return raw, []
     data = _parse_json_payload(raw)
     translated = (data.get("translated_text") if isinstance(data, dict) else None) or raw.strip()
-    spans = _normalize_spans(translated, data.get("hadrami_spans") if isinstance(data, dict) else None)
+    spans = _normalize_spans(
+        translated,
+        data.get("hadrami_spans") if isinstance(data, dict) else None,
+    )
     spans = _filter_spans_to_lexicon(translated, spans, merged, direction)
     return translated, spans
 
 
+# ---------------------------------------------------------------------------
+# Public entrypoint
+# ---------------------------------------------------------------------------
+
 def translate_phrase(text: str, direction: str) -> dict[str, Any]:
     stripped = (text or "").strip()
     merged, ctx_for_api = retrieve_phrase_context(stripped)
-    context_models = _entries_to_response(ctx_for_api)
-    api_key = _gemini_api_key()
+    context_models = entries_to_response(ctx_for_api)
+    api_key = gemini_api_key()
 
     chunks = _split_into_chunks(stripped, PHRASE_TRANSLATE_CHUNK_SIZE)
 
     if len(chunks) == 1:
         translated, spans = _translate_single_chunk(stripped, direction, merged, api_key)
-        if translated.startswith("Gemini not available:"):
-            _rag_log(f"translate-phrase Gemini fail -> {_preview(translated)}")
+        if is_gemini_unavailable(translated):
+            rag_log(f"translate-phrase Gemini fail -> {preview(translated)}")
             return {
                 "input_text": stripped,
                 "direction": direction,
@@ -288,46 +230,14 @@ def translate_phrase(text: str, direction: str) -> dict[str, Any]:
             }
     else:
         workers = min(PHRASE_TRANSLATE_MAX_WORKERS, len(chunks))
-        _rag_log(
+        rag_log(
             f"translate-phrase chunked: {len(chunks)} chunks for {len(stripped)} chars "
             f"(workers={workers})"
         )
+        ordered = _translate_chunks_parallel(chunks, direction, merged, api_key, workers)
 
-        def _merge_ordered(
-            ordered: list[tuple[str, list[dict[str, Any]]]],
-        ) -> tuple[str, list[dict[str, Any]]]:
-            all_translated: list[str] = []
-            all_spans: list[dict[str, Any]] = []
-            offset = 0
-            for t, s in ordered:
-                if t.startswith("Gemini not available:"):
-                    return t, []
-                for sp in s:
-                    sp["start"] += offset
-                    sp["end"] += offset
-                all_translated.append(t)
-                all_spans.extend(s)
-                offset += len(t) + 1
-            return "\n".join(all_translated), all_spans
-
-        if workers <= 1:
-            ordered = [_translate_single_chunk(c, direction, merged, api_key) for c in chunks]
-        else:
-            future_to_idx: dict[Future, int] = {}
-            with ThreadPoolExecutor(max_workers=workers) as ex:
-                for i, chunk in enumerate(chunks):
-                    fut = ex.submit(_translate_single_chunk, chunk, direction, merged, api_key)
-                    future_to_idx[fut] = i
-                indexed: list[tuple[int, str, list[dict[str, Any]]]] = []
-                for fut in as_completed(future_to_idx):
-                    idx = future_to_idx[fut]
-                    t, s = fut.result()
-                    indexed.append((idx, t, s))
-                indexed.sort(key=lambda x: x[0])
-                ordered = [(t, s) for _, t, s in indexed]
-
-        translated, spans = _merge_ordered(ordered)
-        if translated.startswith("Gemini not available:"):
+        translated, spans = _merge_chunk_results(ordered)
+        if is_gemini_unavailable(translated):
             return {
                 "input_text": stripped,
                 "direction": direction,
@@ -338,10 +248,10 @@ def translate_phrase(text: str, direction: str) -> dict[str, Any]:
                 "context": context_models,
             }
 
-    mode_tag = "local_gemini" if MODE == "local" else "gemini"
-    _rag_log(
+    mode_tag = rag_response_mode_tag()
+    rag_log(
         f"translate-phrase dir={direction!r} mode={mode_tag} "
-        f"chars={len(translated)} spans={len(spans)} preview={_preview(translated)}"
+        f"chars={len(translated)} spans={len(spans)} preview={preview(translated)}"
     )
 
     return {
@@ -353,3 +263,49 @@ def translate_phrase(text: str, direction: str) -> dict[str, Any]:
         "rag_mode": MODE,
         "context": context_models,
     }
+
+
+# ---------------------------------------------------------------------------
+# Parallel chunk translation helpers
+# ---------------------------------------------------------------------------
+
+def _translate_chunks_parallel(
+    chunks: list[str],
+    direction: str,
+    merged: list[dict],
+    api_key: str,
+    workers: int,
+) -> list[tuple[str, list[dict[str, Any]]]]:
+    if workers <= 1:
+        return [_translate_single_chunk(c, direction, merged, api_key) for c in chunks]
+
+    future_to_idx: dict[Future, int] = {}
+    with ThreadPoolExecutor(max_workers=workers) as ex:
+        for i, chunk in enumerate(chunks):
+            fut = ex.submit(_translate_single_chunk, chunk, direction, merged, api_key)
+            future_to_idx[fut] = i
+        indexed: list[tuple[int, str, list[dict[str, Any]]]] = []
+        for fut in as_completed(future_to_idx):
+            idx = future_to_idx[fut]
+            t, s = fut.result()
+            indexed.append((idx, t, s))
+    indexed.sort(key=lambda x: x[0])
+    return [(t, s) for _, t, s in indexed]
+
+
+def _merge_chunk_results(
+    ordered: list[tuple[str, list[dict[str, Any]]]],
+) -> tuple[str, list[dict[str, Any]]]:
+    all_translated: list[str] = []
+    all_spans: list[dict[str, Any]] = []
+    offset = 0
+    for t, s in ordered:
+        if t.startswith(GEMINI_UNAVAILABLE_PREFIX):
+            return t, []
+        for sp in s:
+            sp["start"] += offset
+            sp["end"] += offset
+        all_translated.append(t)
+        all_spans.extend(s)
+        offset += len(t) + 1
+    return "\n".join(all_translated), all_spans

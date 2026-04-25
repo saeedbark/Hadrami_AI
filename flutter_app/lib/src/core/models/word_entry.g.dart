@@ -104,6 +104,7 @@ _$AskResultImpl _$$AskResultImplFromJson(Map<String, dynamic> json) =>
       question: json['question'] as String? ?? '',
       answer: json['answer'] as String? ?? '',
       mode: json['mode'] as String? ?? 'simple',
+      answerSource: json['answer_source'] as String? ?? 'model',
       hadramiSpans: (json['hadrami_spans'] as List<dynamic>?)
               ?.map((e) => HadramiSpan.fromJson(e as Map<String, dynamic>))
               .toList() ??
@@ -113,9 +114,9 @@ _$AskResultImpl _$$AskResultImplFromJson(Map<String, dynamic> json) =>
               .toList() ??
           const <String>[],
       context: (json['context'] as List<dynamic>?)
-              ?.map((e) => e as Map<String, dynamic>)
+              ?.map((e) => WordEntry.fromJson(e as Map<String, dynamic>))
               .toList() ??
-          const <Map<String, dynamic>>[],
+          const <WordEntry>[],
     );
 
 Map<String, dynamic> _$$AskResultImplToJson(_$AskResultImpl instance) =>
@@ -123,6 +124,7 @@ Map<String, dynamic> _$$AskResultImplToJson(_$AskResultImpl instance) =>
       'question': instance.question,
       'answer': instance.answer,
       'mode': instance.mode,
+      'answer_source': instance.answerSource,
       'hadrami_spans': instance.hadramiSpans,
       'highlight_surfaces': instance.highlightSurfaces,
       'context': instance.context,
