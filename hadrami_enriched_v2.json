@@ -40,8 +40,7 @@
     "tags": [
       "Nature",
       "Insects"
-    ],
-    "is_augmented": true
+    ]
   },
   {
     "id": 2,
@@ -88,8 +87,7 @@
     "tags": [
       "Behavior",
       "Wisdom"
-    ],
-    "is_augmented": true
+    ]
   },
   {
     "id": 3,
@@ -132,8 +130,7 @@
     "tags": [
       "Biology",
       "Medical"
-    ],
-    "is_augmented": true
+    ]
   },
   {
     "id": 4,
@@ -178,8 +175,7 @@
     "tags": [
       "Social Customs",
       "Family"
-    ],
-    "is_augmented": true
+    ]
   },
   {
     "id": 5,
@@ -222,8 +218,7 @@
     "tags": [
       "Emotions",
       "Expressions"
-    ],
-    "is_augmented": true
+    ]
   },
   {
     "id": 6,
@@ -265,8 +260,7 @@
     "proverbs": [],
     "tags": [
       "Daily Life"
-    ],
-    "is_augmented": true
+    ]
   },
   {
     "id": 7,
@@ -308,8 +302,7 @@
     "proverbs": [],
     "tags": [
       "Daily Life"
-    ],
-    "is_augmented": true
+    ]
   },
   {
     "id": 8,
@@ -350,8 +343,7 @@
     "tags": [
       "Daily Life",
       "Behavior"
-    ],
-    "is_augmented": true
+    ]
   },
   {
     "id": 9,
@@ -396,8 +388,7 @@
     "tags": [
       "Biology",
       "Emotions"
-    ],
-    "is_augmented": true
+    ]
   },
   {
     "id": 10,
@@ -437,8 +428,7 @@
     "proverbs": [],
     "tags": [
       "Medical"
-    ],
-    "is_augmented": true
+    ]
   },
   {
     "id": 11,
@@ -481,8 +471,7 @@
     "tags": [
       "Daily Life",
       "Home"
-    ],
-    "is_augmented": true
+    ]
   },
   {
     "id": 12,
@@ -526,8 +515,7 @@
     "tags": [
       "Religious",
       "Daily Life"
-    ],
-    "is_augmented": true
+    ]
   },
   {
     "id": 13,
@@ -570,8 +558,7 @@
     "proverbs": [],
     "tags": [
       "Daily Life"
-    ],
-    "is_augmented": true
+    ]
   },
   {
     "id": 14,
@@ -614,8 +601,7 @@
     "tags": [
       "Social Customs",
       "Behavior"
-    ],
-    "is_augmented": true
+    ]
   },
   {
     "id": 15,
@@ -658,8 +644,7 @@
     "tags": [
       "Nature",
       "Weather"
-    ],
-    "is_augmented": true
+    ]
   },
   {
     "id": 16,
@@ -700,8 +685,7 @@
     "tags": [
       "Nature",
       "Agriculture"
-    ],
-    "is_augmented": true
+    ]
   },
   {
     "id": 17,
@@ -744,8 +728,7 @@
     "tags": [
       "Tools",
       "Crafts"
-    ],
-    "is_augmented": true
+    ]
   },
   {
     "id": 18,
@@ -788,8 +771,7 @@
     "tags": [
       "Daily Life",
       "Expressions"
-    ],
-    "is_augmented": true
+    ]
   },
   {
     "id": 19,
@@ -833,8 +815,7 @@
       "Nature",
       "Agriculture",
       "Home"
-    ],
-    "is_augmented": true
+    ]
   },
   {
     "id": 20,
@@ -875,8 +856,7 @@
     "tags": [
       "Nature",
       "Agriculture"
-    ],
-    "is_augmented": true
+    ]
   },
   {
     "id": 21,
@@ -924,8 +904,7 @@
     "tags": [
       "Tools",
       "History"
-    ],
-    "is_augmented": true
+    ]
   },
   {
     "id": 22,
@@ -968,8 +947,7 @@
     "tags": [
       "Medical",
       "Daily Life"
-    ],
-    "is_augmented": true
+    ]
   },
   {
     "id": 23,
@@ -1011,8 +989,7 @@
     "proverbs": [],
     "tags": [
       "Daily Life"
-    ],
-    "is_augmented": true
+    ]
   },
   {
     "id": 24,
@@ -1057,8 +1034,7 @@
     "tags": [
       "Behavior",
       "Emotions"
-    ],
-    "is_augmented": true
+    ]
   },
   {
     "id": 25,
@@ -1104,8 +1080,7 @@
     "tags": [
       "Daily Life",
       "Expressions"
-    ],
-    "is_augmented": true
+    ]
   },
   {
     "id": 26,
@@ -1149,8 +1124,7 @@
     "tags": [
       "Clothing",
       "Daily Life"
-    ],
-    "is_augmented": true
+    ]
   },
   {
     "id": 27,
@@ -1194,8 +1168,7 @@
     "tags": [
       "Food",
       "Daily Life"
-    ],
-    "is_augmented": true
+    ]
   },
   {
     "id": 28,
@@ -1240,8 +1213,7 @@
     "tags": [
       "Behavior",
       "Expressions"
-    ],
-    "is_augmented": true
+    ]
   },
   {
     "id": 29,
@@ -1286,8 +1258,7 @@
     "tags": [
       "Social Customs",
       "People"
-    ],
-    "is_augmented": true
+    ]
   },
   {
     "id": 30,
@@ -1330,8 +1301,7 @@
     "tags": [
       "Insects",
       "Nature"
-    ],
-    "is_augmented": true
+    ]
   },
   {
     "id": 31,
@@ -1375,8 +1345,7 @@
     "tags": [
       "Children",
       "Food & Drink"
-    ],
-    "is_augmented": true
+    ]
   },
   {
     "id": 32,
@@ -1424,8 +1393,7 @@
     "tags": [
       "Emotions",
       "Expressions"
-    ],
-    "is_augmented": true
+    ]
   },
   {
     "id": 33,
@@ -1472,8 +1440,7 @@
       "Nature",
       "Construction",
       "History"
-    ],
-    "is_augmented": true
+    ]
   },
   {
     "id": 34,
@@ -1517,8 +1484,7 @@
     "tags": [
       "Daily Life",
       "Expressions"
-    ],
-    "is_augmented": true
+    ]
   },
   {
     "id": 35,
@@ -1562,8 +1528,7 @@
     "tags": [
       "Agriculture",
       "Nature"
-    ],
-    "is_augmented": true
+    ]
   },
   {
     "id": 36,
@@ -1610,8 +1575,7 @@
     "tags": [
       "Behavior",
       "Insults"
-    ],
-    "is_augmented": true
+    ]
   },
   {
     "id": 37,
@@ -1655,8 +1619,7 @@
       "Measurements",
       "History",
       "Daily Life"
-    ],
-    "is_augmented": true
+    ]
   },
   {
     "id": 38,
@@ -1702,8 +1665,7 @@
     "tags": [
       "Daily Life",
       "Expressions"
-    ],
-    "is_augmented": true
+    ]
   },
   {
     "id": 39,
@@ -1744,8 +1706,7 @@
     "tags": [
       "Money",
       "History"
-    ],
-    "is_augmented": true
+    ]
   },
   {
     "id": 40,
@@ -1788,8 +1749,7 @@
     "tags": [
       "Games",
       "Entertainment"
-    ],
-    "is_augmented": true
+    ]
   },
   {
     "id": 41,
@@ -1836,8 +1796,7 @@
     "tags": [
       "Daily Life",
       "Actions"
-    ],
-    "is_augmented": true
+    ]
   },
   {
     "id": 42,
@@ -1882,8 +1841,7 @@
       "Colors",
       "Nature",
       "Animals"
-    ],
-    "is_augmented": true
+    ]
   },
   {
     "id": 43,
@@ -1926,8 +1884,7 @@
     "tags": [
       "Clothing",
       "Daily Life"
-    ],
-    "is_augmented": true
+    ]
   },
   {
     "id": 44,
@@ -1972,8 +1929,7 @@
       "Nature",
       "Animals",
       "Expressions"
-    ],
-    "is_augmented": true
+    ]
   },
   {
     "id": 45,
@@ -2017,8 +1973,7 @@
     "tags": [
       "Daily Life",
       "Expressions"
-    ],
-    "is_augmented": true
+    ]
   },
   {
     "id": 46,
@@ -2063,8 +2018,7 @@
       "Agriculture",
       "Animals",
       "Nature"
-    ],
-    "is_augmented": true
+    ]
   },
   {
     "id": 47,
@@ -2107,8 +2061,7 @@
     "tags": [
       "Daily Life",
       "Social Customs"
-    ],
-    "is_augmented": true
+    ]
   },
   {
     "id": 48,
@@ -2152,8 +2105,7 @@
     "tags": [
       "Daily Life",
       "Expressions"
-    ],
-    "is_augmented": true
+    ]
   },
   {
     "id": 49,
@@ -2199,8 +2151,7 @@
     "tags": [
       "Daily Life",
       "Emotions"
-    ],
-    "is_augmented": true
+    ]
   },
   {
     "id": 50,
@@ -2246,8 +2197,7 @@
     "tags": [
       "Social Customs",
       "Religious"
-    ],
-    "is_augmented": true
+    ]
   },
   {
     "id": 51,
@@ -2291,8 +2241,7 @@
     "tags": [
       "Daily Life",
       "Expressions"
-    ],
-    "is_augmented": true
+    ]
   },
   {
     "id": 52,
@@ -2336,8 +2285,7 @@
     "tags": [
       "Food",
       "Daily Life"
-    ],
-    "is_augmented": true
+    ]
   },
   {
     "id": 53,
@@ -2381,8 +2329,7 @@
     "tags": [
       "Daily Life",
       "Crafts"
-    ],
-    "is_augmented": true
+    ]
   },
   {
     "id": 54,
@@ -2428,8 +2375,7 @@
     "tags": [
       "Daily Life",
       "Trade"
-    ],
-    "is_augmented": true
+    ]
   },
   {
     "id": 55,
@@ -2473,8 +2419,7 @@
     "tags": [
       "Nature",
       "Insects"
-    ],
-    "is_augmented": true
+    ]
   },
   {
     "id": 56,
@@ -2518,8 +2463,7 @@
     "tags": [
       "Daily Life",
       "Smoking"
-    ],
-    "is_augmented": true
+    ]
   },
   {
     "id": 57,
@@ -2563,8 +2507,7 @@
     "tags": [
       "History",
       "Tools"
-    ],
-    "is_augmented": true
+    ]
   },
   {
     "id": 58,
@@ -2608,8 +2551,7 @@
     "tags": [
       "Medical",
       "Children"
-    ],
-    "is_augmented": true
+    ]
   },
   {
     "id": 59,
@@ -2654,8 +2596,7 @@
     "tags": [
       "Nature",
       "Daily Life"
-    ],
-    "is_augmented": true
+    ]
   },
   {
     "id": 60,
@@ -2699,8 +2640,7 @@
       "Food",
       "Daily Life",
       "Honey"
-    ],
-    "is_augmented": true
+    ]
   },
   {
     "id": 61,
@@ -2745,8 +2685,7 @@
       "Grammar",
       "Social Customs",
       "Future"
-    ],
-    "is_augmented": true
+    ]
   },
   {
     "id": 62,
@@ -2795,8 +2734,7 @@
       "Trade",
       "Behavior",
       "Quality"
-    ],
-    "is_augmented": true
+    ]
   },
   {
     "id": 63,
@@ -2841,8 +2779,7 @@
       "Nature",
       "Agriculture",
       "Permission"
-    ],
-    "is_augmented": true
+    ]
   },
   {
     "id": 64,
@@ -2886,8 +2823,7 @@
       "Daily Life",
       "Measures",
       "Length"
-    ],
-    "is_augmented": true
+    ]
   },
   {
     "id": 65,
@@ -2932,8 +2868,7 @@
       "Daily Life",
       "Clothing",
       "Pants"
-    ],
-    "is_augmented": true
+    ]
   },
   {
     "id": 66,
@@ -2978,8 +2913,7 @@
       "Daily Life",
       "Behavior",
       "Talking"
-    ],
-    "is_augmented": true
+    ]
   },
   {
     "id": 67,
@@ -3023,8 +2957,7 @@
     "tags": [
       "Daily Life",
       "Clothing"
-    ],
-    "is_augmented": true
+    ]
   },
   {
     "id": 68,
@@ -3069,8 +3002,7 @@
       "Daily Life",
       "Games",
       "Cards"
-    ],
-    "is_augmented": true
+    ]
   },
   {
     "id": 69,
@@ -3114,8 +3046,7 @@
       "Daily Life",
       "Home",
       "Door"
-    ],
-    "is_augmented": true
+    ]
   },
   {
     "id": 70,
@@ -3158,8 +3089,7 @@
     "proverbs": [],
     "tags": [
       "Daily Life"
-    ],
-    "is_augmented": true
+    ]
   },
   {
     "id": 71,
@@ -3204,8 +3134,7 @@
       "Daily Life",
       "Social Customs",
       "Alone"
-    ],
-    "is_augmented": true
+    ]
   },
   {
     "id": 72,
@@ -3250,8 +3179,7 @@
       "Daily Life",
       "Home",
       "Column"
-    ],
-    "is_augmented": true
+    ]
   },
   {
     "id": 73,
@@ -3296,8 +3224,7 @@
       "Daily Life",
       "Tools",
       "Light"
-    ],
-    "is_augmented": true
+    ]
   },
   {
     "id": 74,
@@ -3341,8 +3268,7 @@
     "tags": [
       "Social Customs",
       "Clothing"
-    ],
-    "is_augmented": true
+    ]
   },
   {
     "id": 75,
@@ -3384,8 +3310,7 @@
       "Measurements",
       "Agriculture",
       "Food"
-    ],
-    "is_augmented": true
+    ]
   },
   {
     "id": 76,
@@ -3429,8 +3354,7 @@
     "tags": [
       "Daily Life",
       "Money"
-    ],
-    "is_augmented": true
+    ]
   },
   {
     "id": 77,
@@ -3474,8 +3398,7 @@
       "Daily Life",
       "Kitchenware",
       "Food"
-    ],
-    "is_augmented": true
+    ]
   },
   {
     "id": 78,
@@ -3517,8 +3440,7 @@
       "History",
       "Architecture",
       "Landmarks"
-    ],
-    "is_augmented": true
+    ]
   },
   {
     "id": 79,
@@ -3559,8 +3481,7 @@
     "tags": [
       "Measurements",
       "Construction"
-    ],
-    "is_augmented": true
+    ]
   },
   {
     "id": 80,
@@ -3604,8 +3525,7 @@
       "Architecture",
       "History",
       "Defense"
-    ],
-    "is_augmented": true
+    ]
   },
   {
     "id": 81,
@@ -3649,8 +3569,7 @@
       "Clothing",
       "Social Customs",
       "Daily Life"
-    ],
-    "is_augmented": true
+    ]
   },
   {
     "id": 82,
@@ -3696,8 +3615,7 @@
       "Daily Life",
       "Food",
       "Breakfast"
-    ],
-    "is_augmented": true
+    ]
   },
   {
     "id": 83,
@@ -3742,8 +3660,7 @@
       "Daily Life",
       "Social Customs",
       "Smoking"
-    ],
-    "is_augmented": true
+    ]
   },
   {
     "id": 84,
@@ -3788,8 +3705,7 @@
       "Nature",
       "Weather",
       "Rain"
-    ],
-    "is_augmented": true
+    ]
   },
   {
     "id": 85,
@@ -3836,8 +3752,7 @@
       "Nature",
       "Animals",
       "Birds"
-    ],
-    "is_augmented": true
+    ]
   },
   {
     "id": 86,
@@ -3882,8 +3797,7 @@
       "Tools",
       "Daily Life",
       "Mechanics"
-    ],
-    "is_augmented": true
+    ]
   },
   {
     "id": 87,
@@ -3927,8 +3841,7 @@
       "Agriculture",
       "Food",
       "Fruits"
-    ],
-    "is_augmented": true
+    ]
   },
   {
     "id": 88,
@@ -3975,8 +3888,7 @@
       "Architecture",
       "Daily Life",
       "Bungalow"
-    ],
-    "is_augmented": true
+    ]
   },
   {
     "id": 89,
@@ -4021,8 +3933,7 @@
       "Food",
       "Nature",
       "Green Leafy Vegetables"
-    ],
-    "is_augmented": true
+    ]
   },
   {
     "id": 90,
@@ -4067,8 +3978,7 @@
       "Agriculture",
       "Construction",
       "Water Management"
-    ],
-    "is_augmented": true
+    ]
   },
   {
     "id": 91,
@@ -4112,8 +4022,7 @@
       "Water",
       "Daily Life",
       "Bathroom"
-    ],
-    "is_augmented": true
+    ]
   },
   {
     "id": 92,
@@ -4156,8 +4065,7 @@
       "History",
       "Water",
       "Cooling"
-    ],
-    "is_augmented": true
+    ]
   },
   {
     "id": 93,
@@ -4202,8 +4110,7 @@
       "Behavior",
       "Adjectives",
       "Bad"
-    ],
-    "is_augmented": true
+    ]
   },
   {
     "id": 94,
@@ -4247,8 +4154,7 @@
       "Daily Life",
       "Economy",
       "Market"
-    ],
-    "is_augmented": true
+    ]
   },
   {
     "id": 95,
@@ -4292,8 +4198,7 @@
       "Clothing",
       "Daily Life",
       "Clothing"
-    ],
-    "is_augmented": true
+    ]
   },
   {
     "id": 96,
@@ -4337,8 +4242,7 @@
     "tags": [
       "Kitchenware",
       "Daily Life"
-    ],
-    "is_augmented": true
+    ]
   },
   {
     "id": 97,
@@ -4382,8 +4286,7 @@
       "People",
       "Family",
       "Child"
-    ],
-    "is_augmented": true
+    ]
   },
   {
     "id": 98,
@@ -4428,8 +4331,7 @@
       "Nature",
       "Daily Life",
       "Land"
-    ],
-    "is_augmented": true
+    ]
   },
   {
     "id": 99,
@@ -4475,8 +4377,7 @@
       "Daily Life",
       "Social Customs",
       "Greetings"
-    ],
-    "is_augmented": true
+    ]
   },
   {
     "id": 100,
@@ -4518,8 +4419,7 @@
       "Architecture",
       "Safety",
       "History"
-    ],
-    "is_augmented": true
+    ]
   },
   {
     "id": 101,
@@ -4559,8 +4459,7 @@
       "Daily Life",
       "Clothing",
       "Earrings"
-    ],
-    "is_augmented": true
+    ]
   },
   {
     "id": 102,
@@ -4599,8 +4498,7 @@
       "Daily Life",
       "Economics",
       "Electricity"
-    ],
-    "is_augmented": true
+    ]
   },
   {
     "id": 103,
@@ -4637,8 +4535,7 @@
       "Nature",
       "Birds",
       "Birds"
-    ],
-    "is_augmented": true
+    ]
   },
   {
     "id": 104,
@@ -4680,8 +4577,7 @@
       "Daily Life",
       "Verbs",
       "Distance"
-    ],
-    "is_augmented": true
+    ]
   },
   {
     "id": 105,
@@ -4724,8 +4620,7 @@
       "Daily Life",
       "Verbs",
       "Want"
-    ],
-    "is_augmented": true
+    ]
   },
   {
     "id": 106,
@@ -4762,8 +4657,7 @@
       "History",
       "Economics",
       "Money"
-    ],
-    "is_augmented": true
+    ]
   },
   {
     "id": 107,
@@ -4805,8 +4699,7 @@
       "Daily Life",
       "Verbs",
       "Go"
-    ],
-    "is_augmented": true
+    ]
   },
   {
     "id": 108,
@@ -4846,8 +4739,7 @@
       "Daily Life",
       "Directions",
       "Outside"
-    ],
-    "is_augmented": true
+    ]
   },
   {
     "id": 109,
@@ -4886,8 +4778,7 @@
       "Daily Life",
       "Actions",
       "Hit"
-    ],
-    "is_augmented": true
+    ]
   },
   {
     "id": 110,
@@ -4927,8 +4818,7 @@
       "Education",
       "Daily Life",
       "Study"
-    ],
-    "is_augmented": true
+    ]
   },
   {
     "id": 111,
@@ -4972,8 +4862,7 @@
     ],
     "tags": [
       "Agriculture"
-    ],
-    "is_augmented": true
+    ]
   },
   {
     "id": 112,
@@ -5017,8 +4906,7 @@
       "Agriculture",
       "Daily Life",
       "Oil"
-    ],
-    "is_augmented": true
+    ]
   },
   {
     "id": 113,
@@ -5060,8 +4948,7 @@
       "Daily Life",
       "Verbs",
       "Go"
-    ],
-    "is_augmented": true
+    ]
   },
   {
     "id": 114,
@@ -5106,8 +4993,7 @@
       "Daily Life",
       "Actions",
       "Hide"
-    ],
-    "is_augmented": true
+    ]
   },
   {
     "id": 115,
@@ -5154,8 +5040,7 @@
       "Daily Life",
       "Values",
       "Relax"
-    ],
-    "is_augmented": true
+    ]
   },
   {
     "id": 116,
@@ -5203,8 +5088,7 @@
       "Literature",
       "Verbs",
       "Fight"
-    ],
-    "is_augmented": true
+    ]
   },
   {
     "id": 117,
@@ -5249,8 +5133,7 @@
     "tags": [
       "Daily Life",
       "Emotions"
-    ],
-    "is_augmented": true
+    ]
   },
   {
     "id": 118,
@@ -5291,8 +5174,7 @@
     "tags": [
       "Daily Life",
       "Mark"
-    ],
-    "is_augmented": true
+    ]
   },
   {
     "id": 119,
@@ -5337,8 +5219,7 @@
       "Daily Life",
       "Verbs",
       "Literature"
-    ],
-    "is_augmented": true
+    ]
   },
   {
     "id": 120,
@@ -5384,8 +5265,7 @@
       "Daily Life",
       "Health",
       "Pain"
-    ],
-    "is_augmented": true
+    ]
   },
   {
     "id": 121,
@@ -5432,8 +5312,7 @@
       "Daily Life",
       "Verbs",
       "Good"
-    ],
-    "is_augmented": true
+    ]
   },
   {
     "id": 122,
@@ -5477,8 +5356,7 @@
       "Daily Life",
       "Daily Phrases",
       "Good"
-    ],
-    "is_augmented": true
+    ]
   },
   {
     "id": 123,
@@ -5520,8 +5398,7 @@
       "Nature",
       "Animals",
       "Horse"
-    ],
-    "is_augmented": true
+    ]
   },
   {
     "id": 124,
@@ -5564,8 +5441,7 @@
     "tags": [
       "Daily Life",
       "Hide"
-    ],
-    "is_augmented": true
+    ]
   },
   {
     "id": 125,
@@ -5614,8 +5490,7 @@
       "Bedouin",
       "Verbs",
       "Go"
-    ],
-    "is_augmented": true
+    ]
   },
   {
     "id": 126,
@@ -5660,8 +5535,7 @@
     "tags": [
       "Daily Life",
       "Verbs"
-    ],
-    "is_augmented": true
+    ]
   },
   {
     "id": 127,
@@ -5709,8 +5583,7 @@
       "Literature",
       "Daily Life",
       "Verbs"
-    ],
-    "is_augmented": true
+    ]
   },
   {
     "id": 128,
@@ -5754,8 +5627,7 @@
       "Agriculture",
       "Wheat",
       "Ground"
-    ],
-    "is_augmented": true
+    ]
   },
   {
     "id": 129,
@@ -5797,8 +5669,7 @@
       "Daily Life",
       "Architecture",
       "Window"
-    ],
-    "is_augmented": true
+    ]
   },
   {
     "id": 130,
@@ -5842,8 +5713,7 @@
       "Daily Life",
       "Actions",
       "Shout"
-    ],
-    "is_augmented": true
+    ]
   },
   {
     "id": 131,
@@ -5887,8 +5757,7 @@
       "Daily Life",
       "Transportation",
       "Car"
-    ],
-    "is_augmented": true
+    ]
   },
   {
     "id": 132,
@@ -5932,8 +5801,7 @@
     "tags": [
       "Daily Life",
       "Verbs"
-    ],
-    "is_augmented": true
+    ]
   },
   {
     "id": 133,
@@ -5977,8 +5845,7 @@
       "Daily Life",
       "Tools",
       "Plate"
-    ],
-    "is_augmented": true
+    ]
   },
   {
     "id": 134,
@@ -6020,8 +5887,7 @@
       "Daily Life",
       "Economics",
       "Gold"
-    ],
-    "is_augmented": true
+    ]
   },
   {
     "id": 135,
@@ -6063,8 +5929,7 @@
       "Nature",
       "Weather",
       "Water"
-    ],
-    "is_augmented": true
+    ]
   },
   {
     "id": 136,
@@ -6109,8 +5974,7 @@
     "tags": [
       "Daily Life",
       "Actions"
-    ],
-    "is_augmented": true
+    ]
   },
   {
     "id": 137,
@@ -6151,8 +6015,7 @@
     "tags": [
       "Agriculture",
       "Farming"
-    ],
-    "is_augmented": true
+    ]
   },
   {
     "id": 138,
@@ -6196,8 +6059,7 @@
       "Daily Life",
       "Time",
       "Now"
-    ],
-    "is_augmented": true
+    ]
   },
   {
     "id": 139,
@@ -6241,8 +6103,7 @@
       "Daily Life",
       "Expressions",
       "Relax"
-    ],
-    "is_augmented": true
+    ]
   },
   {
     "id": 140,
@@ -6286,8 +6147,7 @@
       "History",
       "Tools",
       "Gas"
-    ],
-    "is_augmented": true
+    ]
   },
   {
     "id": 141,
@@ -6328,8 +6188,7 @@
     "tags": [
       "Agriculture",
       "Palm Trees"
-    ],
-    "is_augmented": true
+    ]
   },
   {
     "id": 142,
@@ -6371,8 +6230,7 @@
       "Food",
       "Agriculture",
       "Date"
-    ],
-    "is_augmented": true
+    ]
   },
   {
     "id": 143,
@@ -6416,8 +6274,7 @@
       "Architecture",
       "Construction",
       "Wall"
-    ],
-    "is_augmented": true
+    ]
   },
   {
     "id": 144,
@@ -6460,8 +6317,7 @@
     "tags": [
       "Daily Life",
       "Spit"
-    ],
-    "is_augmented": true
+    ]
   },
   {
     "id": 145,
@@ -6505,8 +6361,7 @@
       "Kitchen",
       "Daily Life",
       "Traditional Tools"
-    ],
-    "is_augmented": true
+    ]
   },
   {
     "id": 146,
@@ -6551,8 +6406,7 @@
       "Furniture",
       "Daily Life",
       "Shelf"
-    ],
-    "is_augmented": true
+    ]
   },
   {
     "id": 147,
@@ -6596,8 +6450,7 @@
       "Architecture",
       "Furniture",
       "Wall"
-    ],
-    "is_augmented": true
+    ]
   },
   {
     "id": 148,
@@ -6641,8 +6494,7 @@
       "Kitchen",
       "Tools",
       "Pan"
-    ],
-    "is_augmented": true
+    ]
   },
   {
     "id": 149,
@@ -6686,8 +6538,7 @@
     "tags": [
       "Daily Life",
       "Decor"
-    ],
-    "is_augmented": true
+    ]
   },
   {
     "id": 150,
@@ -6728,8 +6579,7 @@
     "tags": [
       "Nature",
       "Animals"
-    ],
-    "is_augmented": true
+    ]
   },
   {
     "id": 151,
@@ -6774,8 +6624,7 @@
       "Daily Life",
       "Sea Food",
       "Tuna"
-    ],
-    "is_augmented": true
+    ]
   },
   {
     "id": 152,
@@ -6817,8 +6666,7 @@
       "Agriculture",
       "Water Systems",
       "Water"
-    ],
-    "is_augmented": true
+    ]
   },
   {
     "id": 153,
@@ -6863,8 +6711,7 @@
     "tags": [
       "Daily Life",
       "Social"
-    ],
-    "is_augmented": true
+    ]
   },
   {
     "id": 154,
@@ -6907,8 +6754,7 @@
     "tags": [
       "Daily Life",
       "Human Body"
-    ],
-    "is_augmented": true
+    ]
   },
   {
     "id": 155,
@@ -6954,8 +6800,7 @@
     "tags": [
       "Nature",
       "Daily Life"
-    ],
-    "is_augmented": true
+    ]
   },
   {
     "id": 156,
@@ -6996,8 +6841,7 @@
     "tags": [
       "Agriculture",
       "Economics"
-    ],
-    "is_augmented": true
+    ]
   },
   {
     "id": 157,
@@ -7043,8 +6887,7 @@
     "tags": [
       "Traditional Tools",
       "Daily Life"
-    ],
-    "is_augmented": true
+    ]
   },
   {
     "id": 158,
@@ -7088,8 +6931,7 @@
       "Clothing",
       "Daily Life",
       "Fleece"
-    ],
-    "is_augmented": true
+    ]
   },
   {
     "id": 159,
@@ -7135,8 +6977,7 @@
       "Agriculture",
       "Religion",
       "Construction"
-    ],
-    "is_augmented": true
+    ]
   },
   {
     "id": 160,
@@ -7183,8 +7024,7 @@
       "Tools",
       "Gas",
       "Light"
-    ],
-    "is_augmented": true
+    ]
   },
   {
     "id": 161,
@@ -7225,8 +7065,7 @@
     "tags": [
       "Nature",
       "Plants"
-    ],
-    "is_augmented": true
+    ]
   },
   {
     "id": 162,
@@ -7269,8 +7108,7 @@
     "tags": [
       "Tools",
       "Construction"
-    ],
-    "is_augmented": true
+    ]
   },
   {
     "id": 163,
@@ -7311,8 +7149,7 @@
     "tags": [
       "Agriculture",
       "Tools"
-    ],
-    "is_augmented": true
+    ]
   },
   {
     "id": 164,
@@ -7355,8 +7192,7 @@
     "tags": [
       "Agriculture",
       "Water Systems"
-    ],
-    "is_augmented": true
+    ]
   },
   {
     "id": 165,
@@ -7399,8 +7235,7 @@
     "tags": [
       "Food",
       "Agriculture"
-    ],
-    "is_augmented": true
+    ]
   },
   {
     "id": 166,
@@ -7447,8 +7282,7 @@
       "Daily Life",
       "Social",
       "Child"
-    ],
-    "is_augmented": true
+    ]
   },
   {
     "id": 167,
@@ -7489,8 +7323,7 @@
     "tags": [
       "Nature",
       "Insects"
-    ],
-    "is_augmented": true
+    ]
   },
   {
     "id": 168,
@@ -7536,8 +7369,7 @@
     "tags": [
       "Agriculture",
       "Fields"
-    ],
-    "is_augmented": true
+    ]
   },
   {
     "id": 169,
@@ -7580,8 +7412,7 @@
     "tags": [
       "Food",
       "Daily Life"
-    ],
-    "is_augmented": true
+    ]
   },
   {
     "id": 170,
@@ -7623,8 +7454,7 @@
       "Nature",
       "Agriculture",
       "Soil"
-    ],
-    "is_augmented": true
+    ]
   },
   {
     "id": 171,
@@ -7673,8 +7503,7 @@
       "Tools",
       "Sword",
       "Sheath"
-    ],
-    "is_augmented": true
+    ]
   },
   {
     "id": 172,
@@ -7721,8 +7550,7 @@
       "Agriculture",
       "Daily Life",
       "Bag"
-    ],
-    "is_augmented": true
+    ]
   },
   {
     "id": 173,
@@ -7767,8 +7595,7 @@
       "Daily Life",
       "Actions",
       "Put"
-    ],
-    "is_augmented": true
+    ]
   },
   {
     "id": 174,
@@ -7815,8 +7642,7 @@
       "Daily Life",
       "Actions",
       "Find"
-    ],
-    "is_augmented": true
+    ]
   },
   {
     "id": 175,
@@ -7860,8 +7686,7 @@
       "Nature",
       "Weather",
       "Storm"
-    ],
-    "is_augmented": true
+    ]
   },
   {
     "id": 176,
@@ -7905,8 +7730,7 @@
       "Daily Life",
       "Food",
       "Bread"
-    ],
-    "is_augmented": true
+    ]
   },
   {
     "id": 177,
@@ -7950,8 +7774,7 @@
       "Tools",
       "Construction",
       "Nature"
-    ],
-    "is_augmented": true
+    ]
   },
   {
     "id": 178,
@@ -7997,8 +7820,7 @@
       "Emotions",
       "Social Customs",
       "Angry"
-    ],
-    "is_augmented": true
+    ]
   },
   {
     "id": 179,
@@ -8043,8 +7865,7 @@
       "Agriculture",
       "Nature",
       "Farming"
-    ],
-    "is_augmented": true
+    ]
   },
   {
     "id": 180,
@@ -8089,8 +7910,7 @@
       "Daily Life",
       "Verbs",
       "Find"
-    ],
-    "is_augmented": true
+    ]
   },
   {
     "id": 181,
@@ -8135,8 +7955,7 @@
       "Description",
       "Daily Life",
       "Strong"
-    ],
-    "is_augmented": true
+    ]
   },
   {
     "id": 182,
@@ -8181,8 +8000,7 @@
       "Social Customs",
       "Expressions",
       "Welcome"
-    ],
-    "is_augmented": true
+    ]
   },
   {
     "id": 183,
@@ -8227,8 +8045,7 @@
       "Human",
       "Social Customs",
       "Old Man"
-    ],
-    "is_augmented": true
+    ]
   },
   {
     "id": 184,
@@ -8273,8 +8090,7 @@
       "Sounds",
       "Daily Life",
       "Sound"
-    ],
-    "is_augmented": true
+    ]
   },
   {
     "id": 185,
@@ -8318,8 +8134,7 @@
       "Body Parts",
       "Daily Life",
       "Hand"
-    ],
-    "is_augmented": true
+    ]
   },
   {
     "id": 186,
@@ -8364,8 +8179,7 @@
       "Food",
       "Daily Life",
       "Bread"
-    ],
-    "is_augmented": true
+    ]
   },
   {
     "id": 187,
@@ -8410,8 +8224,7 @@
       "Daily Life",
       "Expressions",
       "One"
-    ],
-    "is_augmented": true
+    ]
   },
   {
     "id": 188,
@@ -8457,8 +8270,7 @@
       "Construction",
       "Tools",
       "Wood"
-    ],
-    "is_augmented": true
+    ]
   },
   {
     "id": 189,
@@ -8502,8 +8314,7 @@
       "Social Customs",
       "Marriage",
       "Wedding"
-    ],
-    "is_augmented": true
+    ]
   },
   {
     "id": 190,
@@ -8547,8 +8358,7 @@
       "Nature",
       "Geographic",
       "East"
-    ],
-    "is_augmented": true
+    ]
   },
   {
     "id": 191,
@@ -8593,8 +8403,7 @@
       "Clothing",
       "Women",
       "Belt"
-    ],
-    "is_augmented": true
+    ]
   },
   {
     "id": 192,
@@ -8638,8 +8447,7 @@
       "Nature",
       "Daily Life",
       "Spider"
-    ],
-    "is_augmented": true
+    ]
   },
   {
     "id": 193,
@@ -8683,8 +8491,7 @@
     "tags": [
       "Emotions",
       "Angry"
-    ],
-    "is_augmented": true
+    ]
   },
   {
     "id": 194,
@@ -8729,8 +8536,7 @@
       "Daily Life",
       "Nature",
       "Rot"
-    ],
-    "is_augmented": true
+    ]
   },
   {
     "id": 195,
@@ -8774,8 +8580,7 @@
       "Nature",
       "Water",
       "Rain"
-    ],
-    "is_augmented": true
+    ]
   },
   {
     "id": 196,
@@ -8819,8 +8624,7 @@
       "Nature",
       "Insects",
       "Cockroach"
-    ],
-    "is_augmented": true
+    ]
   },
   {
     "id": 197,
@@ -8865,8 +8669,7 @@
       "Social Customs",
       "Behavior",
       "Sit"
-    ],
-    "is_augmented": true
+    ]
   },
   {
     "id": 198,
@@ -8910,8 +8713,7 @@
       "Nature",
       "Insects",
       "Green Bug"
-    ],
-    "is_augmented": true
+    ]
   },
   {
     "id": 199,
@@ -8955,8 +8757,7 @@
       "Nature",
       "Food",
       "Melon"
-    ],
-    "is_augmented": true
+    ]
   },
   {
     "id": 200,
@@ -9001,8 +8802,7 @@
       "Human",
       "Description",
       "Thin Person"
-    ],
-    "is_augmented": true
+    ]
   },
   {
     "id": 201,
@@ -9046,8 +8846,7 @@
       "Daily Life",
       "Clothing",
       "Women"
-    ],
-    "is_augmented": true
+    ]
   },
   {
     "id": 202,
@@ -9092,8 +8891,7 @@
       "Food",
       "Agriculture",
       "Red Date"
-    ],
-    "is_augmented": true
+    ]
   },
   {
     "id": 203,
@@ -9136,8 +8934,7 @@
       "Food",
       "Agriculture",
       "Date"
-    ],
-    "is_augmented": true
+    ]
   },
   {
     "id": 204,
@@ -9182,8 +8979,7 @@
       "Home",
       "Architecture",
       "Door"
-    ],
-    "is_augmented": true
+    ]
   },
   {
     "id": 205,
@@ -9228,8 +9024,7 @@
       "Agriculture",
       "Daily Life",
       "Bath"
-    ],
-    "is_augmented": true
+    ]
   },
   {
     "id": 206,
@@ -9270,8 +9065,7 @@
     "tags": [
       "Agriculture",
       "Plants"
-    ],
-    "is_augmented": true
+    ]
   },
   {
     "id": 207,
@@ -9315,8 +9109,7 @@
       "Family",
       "Daily Life",
       "Grandmother"
-    ],
-    "is_augmented": true
+    ]
   },
   {
     "id": 208,
@@ -9362,8 +9155,7 @@
       "Daily Life",
       "Food",
       "Indian Date"
-    ],
-    "is_augmented": true
+    ]
   },
   {
     "id": 209,
@@ -9407,8 +9199,7 @@
       "Agriculture",
       "Plants",
       "Palm Tree"
-    ],
-    "is_augmented": true
+    ]
   },
   {
     "id": 210,
@@ -9452,8 +9243,7 @@
       "Social Customs",
       "Marriage",
       "Wedding"
-    ],
-    "is_augmented": true
+    ]
   },
   {
     "id": 211,
