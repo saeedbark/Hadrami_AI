@@ -19,7 +19,12 @@ from __future__ import annotations
 
 from typing import Any
 
-from .config import MODE, gemini_api_key, rag_response_mode_tag
+from .config import (
+    MODE,
+    RAG_CONFIDENCE_GATE,
+    gemini_api_key,
+    rag_response_mode_tag,
+)
 from .generation import chat_generation_config, gemini_generate, is_gemini_unavailable
 from .logging_utils import preview, rag_log
 from .prompts import (
@@ -35,6 +40,7 @@ from .retrieval import (
     retrieve_rag_context,
 )
 from .serialization import finalize_ask_payload
+from .system_prompt import HADRAMI_SYSTEM_PROMPT, Intent, intent_for
 from .text_utils import first_example
 
 
@@ -57,6 +63,48 @@ _INSUFFICIENT_CONTEXT_MSG = (
 # speculative MSA gloss — returning one would be a silent hallucination.
 # 100 = exact word-level hit; 70 ≈ strong partial match.
 _MIN_FALLBACK_SCORE = 70
+
+
+def _suggest_word_block(question: str) -> str:
+    """The exact unknown-word block the spec requires.
+
+    The leading marker is the canonical refusal text the system prompt also
+    instructs the model to emit; we inline it here for fallback paths and as
+    the deterministic answer when retrieval is empty / weak.
+    """
+    word = (question or "").strip() or "—"
+    return (
+        "هذه الكلمة غير موجودة في القاموس الحالي. يمكنك اقتراح إضافتها.\n\n"
+        "---\n"
+        "⚠️ كلمات غير موجودة في القاموس:\n"
+        f"- \"{word}\" — لم يتم العثور عليها في القاموس الحالي.\n"
+        "هل تريد اقتراح إضافتها؟ سيتم مراجعتها من قِبل المختصين قبل إضافتها رسمياً.\n"
+        "---"
+    )
+
+
+def _top_similarity(entries: list[dict]) -> float:
+    """Return the highest ``similarity`` score among vector hits, or 0.0."""
+    best = 0.0
+    for e in entries:
+        sim = e.get("similarity")
+        if isinstance(sim, (int, float)) and sim > best:
+            best = float(sim)
+    return best
+
+
+def _is_confidently_grounded(entries: list[dict], top_keyword_score: int) -> bool:
+    """Decide whether retrieval is strong enough to ground a real answer.
+
+    Confident if either:
+      * keyword scoring produced a strong hit (>= _MIN_FALLBACK_SCORE), OR
+      * the best vector similarity meets the confidence gate.
+    """
+    if not entries:
+        return False
+    if top_keyword_score >= _MIN_FALLBACK_SCORE:
+        return True
+    return _top_similarity(entries) >= RAG_CONFIDENCE_GATE
 
 
 def _lexicon_fallback_answer(entries: list[dict], top_score: int) -> str:
@@ -174,28 +222,102 @@ def get_rag_answer(question: str) -> dict[str, Any]:
     return finalize_ask_payload(answer, tag, ctx_for_api, answer_source="model")
 
 
-def get_chat_answer(message: str, history: list[dict[str, str]]) -> dict[str, Any]:
-    """Multi-turn chat with retrieval-grounded replies."""
-    q = (message or "").strip()
-    merged, ctx_for_api = retrieve_rag_context(q)
-    kw_payload = expanded_keyword_context(q, top_k=8)
-    top_score = int(kw_payload.get("top_score") or 0)
-    prompt = chat_prompt(q, history, merged)
-
-    answer = gemini_generate(prompt, gemini_api_key(), chat_generation_config())
-
-    if is_gemini_unavailable(answer):
-        rag_log(f"Chat Gemini failed -> grounded fallback top_score={top_score}")
-        answer = _chat_fallback_reply(merged, top_score=top_score)
-
+def _chat_payload(
+    reply: str,
+    ctx_for_api: list[dict],
+    *,
+    intent: Intent,
+    suggest_word: bool,
+    answer_source: str,
+) -> dict[str, Any]:
+    from .serialization import entries_to_response
     from .text_utils import collect_highlight_surfaces, find_hadrami_spans
 
-    highlight_surfaces = collect_highlight_surfaces(merged)
-    from .serialization import entries_to_response
-
+    highlight_surfaces = collect_highlight_surfaces(ctx_for_api)
     return {
-        "reply": answer,
+        "reply": reply,
+        "intent": intent,
         "context": entries_to_response(ctx_for_api),
-        "hadrami_spans": find_hadrami_spans(answer, highlight_surfaces),
+        "hadrami_spans": find_hadrami_spans(reply, highlight_surfaces),
         "highlight_surfaces": highlight_surfaces,
+        "suggest_word": suggest_word,
+        "answer_source": answer_source,
     }
+
+
+def get_chat_answer(message: str, history: list[dict[str, str]]) -> dict[str, Any]:
+    """Unified Hadrami chat dispatcher.
+
+    Auto-classifies the user message and routes through the right
+    retrieval + prompt builder. ``/ask`` (Q&A) and ``/translate-phrase``
+    behaviour are merged into this entrypoint behind a single Gemini call
+    that always carries the canonical Hadrami system prompt.
+
+    Intents:
+      * ``translate`` — phrase-lexicon retrieval + translation prompt
+      * ``word`` / ``define`` / ``semantic`` / ``qa`` — RAG retrieval +
+        chat prompt body
+    """
+    q = (message or "").strip()
+    intent: Intent = intent_for(q)
+
+    if intent == "translate":
+        merged, ctx_for_api = retrieve_phrase_context(q)
+        top_score = phrase_top_score(q)
+        body = translation_prompt(q, merged)
+    else:
+        merged, ctx_for_api = retrieve_rag_context(q)
+        kw_payload = expanded_keyword_context(q, top_k=8)
+        top_score = int(kw_payload.get("top_score") or 0)
+        body = chat_prompt(q, history, merged)
+
+    confident = _is_confidently_grounded(merged, top_score)
+
+    # Short-circuit when the user is clearly asking about a specific word that
+    # is not in the lexicon — emit the spec's suggest-word block deterministically
+    # rather than spend a Gemini call to refuse.
+    if not confident and intent in ("word", "define", "translate"):
+        rag_log(
+            f"chat suggest-word short-circuit intent={intent} top_score={top_score} "
+            f"hits={len(merged)}"
+        )
+        reply = _suggest_word_block(q)
+        return _chat_payload(
+            reply,
+            ctx_for_api,
+            intent=intent,
+            suggest_word=True,
+            answer_source="lexicon",
+        )
+
+    answer = gemini_generate(
+        body,
+        gemini_api_key(),
+        chat_generation_config(),
+        system_instruction=HADRAMI_SYSTEM_PROMPT,
+    )
+
+    if is_gemini_unavailable(answer):
+        rag_log(
+            f"Chat Gemini failed -> grounded fallback intent={intent} top_score={top_score}"
+        )
+        answer = _chat_fallback_reply(merged, top_score=top_score)
+        return _chat_payload(
+            answer,
+            ctx_for_api,
+            intent=intent,
+            suggest_word=not confident,
+            answer_source="lexicon",
+        )
+
+    rag_log(
+        f"🤖✅ /chat: reply from Gemini | intent={intent} | chars={len(answer)} | "
+        f"preview: {preview(answer)}"
+    )
+    return _chat_payload(
+        answer,
+        ctx_for_api,
+        intent=intent,
+        suggest_word=False,
+        answer_source="model",
+    )

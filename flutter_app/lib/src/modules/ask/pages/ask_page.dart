@@ -9,6 +9,7 @@ import 'package:hadrami_nlp/src/core/utils/hadrami_lexicon_spans.dart';
 import 'package:hadrami_nlp/src/modules/ask/forms/ask_form.dart';
 import 'package:hadrami_nlp/src/modules/ask/providers/ask_provider.dart';
 import 'package:hadrami_nlp/src/widgets/app_scaffold.dart';
+import 'package:hadrami_nlp/src/widgets/content_shell.dart';
 import 'package:hadrami_nlp/src/widgets/hadrami_highlighted_text.dart';
 
 Widget _askAnswerBody(
@@ -85,7 +86,9 @@ class AskPage extends ConsumerWidget {
 
     return AppScaffold(
       appBar: const AppAppBar(title: Text('اسأل عن اللهجة')),
-      body: AskFormModelFormBuilder(
+      body: ContentShell(
+        maxWidth: 880,
+        child: AskFormModelFormBuilder(
         model: const AskFormModel(),
         builder: (context, formModel, _) {
           void dismissInput() {
@@ -220,6 +223,7 @@ class AskPage extends ConsumerWidget {
             ],
           );
         },
+      ),
       ),
     );
   }

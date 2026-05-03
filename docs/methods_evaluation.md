@@ -98,7 +98,7 @@ from test clients are dropped — see `backend/app/main.py`
 
 ### 2.2 Embeddings
 
-- Model: Gemini `text-embedding-004` (768-dim, task
+- Model: Gemini `gemini-embedding-001` (768-dim, task
   `RETRIEVAL_DOCUMENT` for entries, `RETRIEVAL_QUERY` for queries).
 - Embedding payload: concatenation of `word_vocalized`, `synonyms`,
   `fusha_equivalent`, `definition`, `note`, and the first 3 example
@@ -132,7 +132,7 @@ the system.
 
 ### 3.2 Semantic search (`/semantic-search`)
 
-1. Query → `text-embedding-004` (768-dim, `RETRIEVAL_QUERY` task).
+1. Query → `gemini-embedding-001` (768-dim, `RETRIEVAL_QUERY` task).
 2. `match_entries(query_embedding, match_threshold, match_count)` SQL
    function returns top-k entries by cosine similarity above the
    threshold (default 0.25, client-overridable).

@@ -35,12 +35,17 @@ def gemini_generate(
     prompt: str,
     api_key: str,
     generation_config: Any | None = None,
+    system_instruction: str | None = None,
 ) -> str:
     """Generate text with the primary model, falling back through a model list.
 
     Returns either the generated text, or ``"Gemini not available: <reason>"``
     which callers detect via :func:`is_gemini_unavailable` to switch to the
     deterministic lexicon-grounded fallback.
+
+    ``system_instruction`` is passed to ``GenerativeModel`` as Gemini's native
+    system prompt; ``None`` preserves the legacy "everything in one user
+    string" call shape.
     """
     if not api_key:
         rag_log("Gemini: no API key (GEMINI_API_KEY empty)")
@@ -61,10 +66,14 @@ def gemini_generate(
         if generation_config is not None:
             gen_kwargs["generation_config"] = generation_config
 
+        model_kwargs: dict[str, Any] = {}
+        if system_instruction:
+            model_kwargs["system_instruction"] = system_instruction
+
         failures: list[tuple[str, Exception]] = []
         for mname in order:
             try:
-                model = genai.GenerativeModel(mname)
+                model = genai.GenerativeModel(mname, **model_kwargs)
                 response = model.generate_content(prompt, **gen_kwargs)
                 text = (response.text or "").strip()
                 if mname != GEMINI_MODEL:

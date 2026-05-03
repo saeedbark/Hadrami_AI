@@ -8,6 +8,8 @@ import 'package:hadrami_nlp/src/core/models/word_entry.dart';
 import 'package:hadrami_nlp/src/core/providers/theme_provider.dart';
 import 'package:hadrami_nlp/src/modules/dictionary/widgets/word_card.dart';
 import 'package:hadrami_nlp/src/modules/home/providers/home_provider.dart';
+import 'package:hadrami_nlp/src/widgets/animated_appear.dart';
+import 'package:hadrami_nlp/src/widgets/content_shell.dart';
 import 'package:hadrami_nlp/src/widgets/loading_widget.dart';
 
 /// Fixed Hadrami phrases for the home teaser (no API).
@@ -126,7 +128,9 @@ class HomePage extends ConsumerWidget {
       body: CustomScrollView(
         slivers: [
           SliverToBoxAdapter(
-            child: Container(
+            child: AnimatedContainer(
+              duration: const Duration(milliseconds: 320),
+              curve: Curves.easeOut,
               width: double.infinity,
               padding: const EdgeInsets.fromLTRB(20, 12, 20, 28),
               decoration: BoxDecoration(
@@ -164,12 +168,24 @@ class HomePage extends ConsumerWidget {
                         Row(
                           children: [
                             IconButton(
-                              icon: Icon(
-                                ref.watch(appThemeModeProvider) ==
-                                        ThemeMode.dark
-                                    ? Icons.light_mode_rounded
-                                    : Icons.dark_mode_rounded,
-                                color: onHero.withValues(alpha: 0.85),
+                              icon: AnimatedSwitcher(
+                                duration: const Duration(milliseconds: 300),
+                                transitionBuilder: (child, animation) =>
+                                    RotationTransition(
+                                  turns: Tween<double>(begin: 0.6, end: 1.0)
+                                      .animate(animation),
+                                  child: FadeTransition(
+                                      opacity: animation, child: child),
+                                ),
+                                child: Icon(
+                                  ref.watch(appThemeModeProvider) ==
+                                          ThemeMode.dark
+                                      ? Icons.light_mode_rounded
+                                      : Icons.dark_mode_rounded,
+                                  key: ValueKey(
+                                      ref.watch(appThemeModeProvider)),
+                                  color: onHero.withValues(alpha: 0.85),
+                                ),
                               ),
                               onPressed: () => ref
                                   .read(appThemeModeProvider.notifier)
@@ -222,10 +238,15 @@ class HomePage extends ConsumerWidget {
               ),
             ),
           ),
-          SliverPadding(
-            padding: const EdgeInsets.fromLTRB(16, 20, 16, 32),
-            sliver: SliverList(
-              delegate: SliverChildListDelegate([
+          SliverToBoxAdapter(
+            child: ContentShell(
+              maxWidth: 880,
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(16, 20, 16, 32),
+                child: StaggeredAppear(
+                  stagger: const Duration(milliseconds: 80),
+                  itemDuration: const Duration(milliseconds: 360),
+                  children: [
                 statsAsync.when(
                   data: (stats) => _HomeSectionCard(
                     title: 'إحصائيات المعجم',
@@ -233,10 +254,10 @@ class HomePage extends ConsumerWidget {
                         'عدد المدخلات في القاموس، والكلمات ذات الترجمة، ونسبة الاكتمال',
                     child: _StatsRow(stats: stats),
                   ),
-                  loading: () => _HomeSectionCard(
+                  loading: () => const _HomeSectionCard(
                     title: 'إحصائيات المعجم',
                     subtitle: 'جاري تحميل أرقام القاموس…',
-                    child: const Padding(
+                    child: Padding(
                       padding: EdgeInsets.symmetric(vertical: 24),
                       child: LoadingWidget(),
                     ),
@@ -283,7 +304,7 @@ class HomePage extends ConsumerWidget {
                 sectionsAsync.when(
                   data: (sections) {
                     if (sections.isEmpty) {
-                      return _HomeSectionCard(
+                      return const _HomeSectionCard(
                         title: 'أقسام القاموس',
                         subtitle:
                             'تصفّح حسب أول حرف من الكلمة — يظهر عدد الكلمات في كل قسم',
@@ -310,11 +331,11 @@ class HomePage extends ConsumerWidget {
                       ),
                     );
                   },
-                  loading: () => _HomeSectionCard(
+                  loading: () => const _HomeSectionCard(
                     title: 'أقسام القاموس',
                     subtitle:
                         'تصفّح حسب أول حرف من الكلمة — يظهر عدد الكلمات في كل قسم',
-                    child: const Padding(
+                    child: Padding(
                       padding: EdgeInsets.symmetric(vertical: 24),
                       child: LoadingWidget(),
                     ),
@@ -338,7 +359,9 @@ class HomePage extends ConsumerWidget {
                   loading: () => const SizedBox.shrink(),
                   error: (_, __) => const SizedBox.shrink(),
                 ),
-              ]),
+                  ],
+                ),
+              ),
             ),
           ),
         ],

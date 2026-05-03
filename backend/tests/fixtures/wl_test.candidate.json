@@ -1,0 +1,812 @@
+{
+  "name": "WL-test (candidate)",
+  "description": "Auto-sampled in-lexicon headwords stratified by POS. Reviewer must: (1) confirm the query is the form a user would actually type (strip diacritics if needed), (2) decide whether to keep or replace with a more idiomatic surface form. After review, drop the _review_note field, renumber, and merge into wl_test.json. 100 OUT-of-lexicon items (real Hadrami words deliberately NOT in the corpus) still need to come from native speakers — see _todo.",
+  "version": "0.2-candidate",
+  "stratified_by": "pos",
+  "items": [
+    {
+      "id": "wl_seed_001",
+      "query": "الطبيله",
+      "gold_entry_id": 558,
+      "in_lexicon": true,
+      "pos": "Noun",
+      "_review_note": "verify the surface form is what a user would type"
+    },
+    {
+      "id": "wl_seed_002",
+      "query": "اثم",
+      "gold_entry_id": 9,
+      "in_lexicon": true,
+      "pos": "Noun",
+      "_review_note": "verify the surface form is what a user would type"
+    },
+    {
+      "id": "wl_seed_003",
+      "query": "الننه",
+      "gold_entry_id": 967,
+      "in_lexicon": true,
+      "pos": "Noun",
+      "_review_note": "verify the surface form is what a user would type"
+    },
+    {
+      "id": "wl_seed_004",
+      "query": "قطب",
+      "gold_entry_id": 726,
+      "in_lexicon": true,
+      "pos": "Noun",
+      "_review_note": "verify the surface form is what a user would type"
+    },
+    {
+      "id": "wl_seed_005",
+      "query": "ذلق",
+      "gold_entry_id": 335,
+      "in_lexicon": true,
+      "pos": "Noun",
+      "_review_note": "verify the surface form is what a user would type"
+    },
+    {
+      "id": "wl_seed_006",
+      "query": "حيدر عباد",
+      "gold_entry_id": 231,
+      "in_lexicon": true,
+      "pos": "Noun",
+      "_review_note": "verify the surface form is what a user would type"
+    },
+    {
+      "id": "wl_seed_007",
+      "query": "الكمه",
+      "gold_entry_id": 773,
+      "in_lexicon": true,
+      "pos": "Noun",
+      "_review_note": "verify the surface form is what a user would type"
+    },
+    {
+      "id": "wl_seed_008",
+      "query": "عروق النخلة",
+      "gold_entry_id": 608,
+      "in_lexicon": true,
+      "pos": "Noun",
+      "_review_note": "verify the surface form is what a user would type"
+    },
+    {
+      "id": "wl_seed_009",
+      "query": "الصمار",
+      "gold_entry_id": 508,
+      "in_lexicon": true,
+      "pos": "Noun",
+      "_review_note": "verify the surface form is what a user would type"
+    },
+    {
+      "id": "wl_seed_010",
+      "query": "الماهي",
+      "gold_entry_id": 867,
+      "in_lexicon": true,
+      "pos": "Noun",
+      "_review_note": "verify the surface form is what a user would type"
+    },
+    {
+      "id": "wl_seed_011",
+      "query": "كسعه",
+      "gold_entry_id": 768,
+      "in_lexicon": true,
+      "pos": "Noun",
+      "_review_note": "verify the surface form is what a user would type"
+    },
+    {
+      "id": "wl_seed_012",
+      "query": "الحوش",
+      "gold_entry_id": 233,
+      "in_lexicon": true,
+      "pos": "Noun",
+      "_review_note": "verify the surface form is what a user would type"
+    },
+    {
+      "id": "wl_seed_013",
+      "query": "السلح",
+      "gold_entry_id": 424,
+      "in_lexicon": true,
+      "pos": "Noun",
+      "_review_note": "verify the surface form is what a user would type"
+    },
+    {
+      "id": "wl_seed_014",
+      "query": "الجذفرة",
+      "gold_entry_id": 170,
+      "in_lexicon": true,
+      "pos": "Noun",
+      "_review_note": "verify the surface form is what a user would type"
+    },
+    {
+      "id": "wl_seed_015",
+      "query": "اواق",
+      "gold_entry_id": 39,
+      "in_lexicon": true,
+      "pos": "Noun",
+      "_review_note": "verify the surface form is what a user would type"
+    },
+    {
+      "id": "wl_seed_016",
+      "query": "الطار",
+      "gold_entry_id": 566,
+      "in_lexicon": true,
+      "pos": "Noun",
+      "_review_note": "verify the surface form is what a user would type"
+    },
+    {
+      "id": "wl_seed_017",
+      "query": "شنه",
+      "gold_entry_id": 496,
+      "in_lexicon": true,
+      "pos": "Noun",
+      "_review_note": "verify the surface form is what a user would type"
+    },
+    {
+      "id": "wl_seed_018",
+      "query": "ام سبعة وسبعين",
+      "gold_entry_id": 30,
+      "in_lexicon": true,
+      "pos": "Noun",
+      "_review_note": "verify the surface form is what a user would type"
+    },
+    {
+      "id": "wl_seed_019",
+      "query": "اوقيه",
+      "gold_entry_id": 37,
+      "in_lexicon": true,
+      "pos": "Noun",
+      "_review_note": "verify the surface form is what a user would type"
+    },
+    {
+      "id": "wl_seed_020",
+      "query": "مفحط فحيط",
+      "gold_entry_id": 884,
+      "in_lexicon": true,
+      "pos": "Noun",
+      "_review_note": "verify the surface form is what a user would type"
+    },
+    {
+      "id": "wl_seed_021",
+      "query": "القوقرة",
+      "gold_entry_id": 698,
+      "in_lexicon": true,
+      "pos": "Noun",
+      "_review_note": "verify the surface form is what a user would type"
+    },
+    {
+      "id": "wl_seed_022",
+      "query": "العكر",
+      "gold_entry_id": 624,
+      "in_lexicon": true,
+      "pos": "Noun",
+      "_review_note": "verify the surface form is what a user would type"
+    },
+    {
+      "id": "wl_seed_023",
+      "query": "القاذوف",
+      "gold_entry_id": 728,
+      "in_lexicon": true,
+      "pos": "Noun",
+      "_review_note": "verify the surface form is what a user would type"
+    },
+    {
+      "id": "wl_seed_024",
+      "query": "مكيال",
+      "gold_entry_id": 865,
+      "in_lexicon": true,
+      "pos": "Noun",
+      "_review_note": "verify the surface form is what a user would type"
+    },
+    {
+      "id": "wl_seed_025",
+      "query": "السفيفة",
+      "gold_entry_id": 457,
+      "in_lexicon": true,
+      "pos": "Noun",
+      "_review_note": "verify the surface form is what a user would type"
+    },
+    {
+      "id": "wl_seed_026",
+      "query": "بدعيدع",
+      "gold_entry_id": 103,
+      "in_lexicon": true,
+      "pos": "Noun",
+      "_review_note": "verify the surface form is what a user would type"
+    },
+    {
+      "id": "wl_seed_027",
+      "query": "الدان الحضرمي",
+      "gold_entry_id": 329,
+      "in_lexicon": true,
+      "pos": "Noun",
+      "_review_note": "verify the surface form is what a user would type"
+    },
+    {
+      "id": "wl_seed_028",
+      "query": "بغية",
+      "gold_entry_id": 60,
+      "in_lexicon": true,
+      "pos": "Noun",
+      "_review_note": "verify the surface form is what a user would type"
+    },
+    {
+      "id": "wl_seed_029",
+      "query": "الندوة",
+      "gold_entry_id": 951,
+      "in_lexicon": true,
+      "pos": "Noun",
+      "_review_note": "verify the surface form is what a user would type"
+    },
+    {
+      "id": "wl_seed_030",
+      "query": "القرقرة",
+      "gold_entry_id": 730,
+      "in_lexicon": true,
+      "pos": "Noun",
+      "_review_note": "verify the surface form is what a user would type"
+    },
+    {
+      "id": "wl_seed_031",
+      "query": "البوني",
+      "gold_entry_id": 69,
+      "in_lexicon": true,
+      "pos": "Noun",
+      "_review_note": "verify the surface form is what a user would type"
+    },
+    {
+      "id": "wl_seed_032",
+      "query": "محقب",
+      "gold_entry_id": 840,
+      "in_lexicon": true,
+      "pos": "Noun",
+      "_review_note": "verify the surface form is what a user would type"
+    },
+    {
+      "id": "wl_seed_033",
+      "query": "تباتيك",
+      "gold_entry_id": 149,
+      "in_lexicon": true,
+      "pos": "Noun",
+      "_review_note": "verify the surface form is what a user would type"
+    },
+    {
+      "id": "wl_seed_034",
+      "query": "الشخر",
+      "gold_entry_id": 479,
+      "in_lexicon": true,
+      "pos": "Noun",
+      "_review_note": "verify the surface form is what a user would type"
+    },
+    {
+      "id": "wl_seed_035",
+      "query": "الصالي",
+      "gold_entry_id": 533,
+      "in_lexicon": true,
+      "pos": "Noun",
+      "_review_note": "verify the surface form is what a user would type"
+    },
+    {
+      "id": "wl_seed_036",
+      "query": "العطفة",
+      "gold_entry_id": 611,
+      "in_lexicon": true,
+      "pos": "Noun",
+      "_review_note": "verify the surface form is what a user would type"
+    },
+    {
+      "id": "wl_seed_037",
+      "query": "السناوة",
+      "gold_entry_id": 434,
+      "in_lexicon": true,
+      "pos": "Noun",
+      "_review_note": "verify the surface form is what a user would type"
+    },
+    {
+      "id": "wl_seed_038",
+      "query": "الطارش",
+      "gold_entry_id": 551,
+      "in_lexicon": true,
+      "pos": "Noun",
+      "_review_note": "verify the surface form is what a user would type"
+    },
+    {
+      "id": "wl_seed_039",
+      "query": "منشله",
+      "gold_entry_id": 871,
+      "in_lexicon": true,
+      "pos": "Noun",
+      "_review_note": "verify the surface form is what a user would type"
+    },
+    {
+      "id": "wl_seed_040",
+      "query": "شبر",
+      "gold_entry_id": 473,
+      "in_lexicon": true,
+      "pos": "Noun",
+      "_review_note": "verify the surface form is what a user would type"
+    },
+    {
+      "id": "wl_seed_041",
+      "query": "تركمه",
+      "gold_entry_id": 118,
+      "in_lexicon": true,
+      "pos": "Noun",
+      "_review_note": "verify the surface form is what a user would type"
+    },
+    {
+      "id": "wl_seed_042",
+      "query": "صاع",
+      "gold_entry_id": 509,
+      "in_lexicon": true,
+      "pos": "Noun",
+      "_review_note": "verify the surface form is what a user would type"
+    },
+    {
+      "id": "wl_seed_043",
+      "query": "الخرق",
+      "gold_entry_id": 288,
+      "in_lexicon": true,
+      "pos": "Noun",
+      "_review_note": "verify the surface form is what a user would type"
+    },
+    {
+      "id": "wl_seed_044",
+      "query": "ملحفة",
+      "gold_entry_id": 883,
+      "in_lexicon": true,
+      "pos": "Noun",
+      "_review_note": "verify the surface form is what a user would type"
+    },
+    {
+      "id": "wl_seed_045",
+      "query": "الدوبي",
+      "gold_entry_id": 312,
+      "in_lexicon": true,
+      "pos": "Noun",
+      "_review_note": "verify the surface form is what a user would type"
+    },
+    {
+      "id": "wl_seed_046",
+      "query": "الضمير",
+      "gold_entry_id": 542,
+      "in_lexicon": true,
+      "pos": "Noun",
+      "_review_note": "verify the surface form is what a user would type"
+    },
+    {
+      "id": "wl_seed_047",
+      "query": "الطحس",
+      "gold_entry_id": 554,
+      "in_lexicon": true,
+      "pos": "Noun",
+      "_review_note": "verify the surface form is what a user would type"
+    },
+    {
+      "id": "wl_seed_048",
+      "query": "السوم",
+      "gold_entry_id": 417,
+      "in_lexicon": true,
+      "pos": "Noun",
+      "_review_note": "verify the surface form is what a user would type"
+    },
+    {
+      "id": "wl_seed_049",
+      "query": "الدخش",
+      "gold_entry_id": 318,
+      "in_lexicon": true,
+      "pos": "Noun",
+      "_review_note": "verify the surface form is what a user would type"
+    },
+    {
+      "id": "wl_seed_050",
+      "query": "القبوع",
+      "gold_entry_id": 692,
+      "in_lexicon": true,
+      "pos": "Noun",
+      "_review_note": "verify the surface form is what a user would type"
+    },
+    {
+      "id": "wl_seed_051",
+      "query": "الطهارة",
+      "gold_entry_id": 544,
+      "in_lexicon": true,
+      "pos": "Noun",
+      "_review_note": "verify the surface form is what a user would type"
+    },
+    {
+      "id": "wl_seed_052",
+      "query": "البكرة",
+      "gold_entry_id": 72,
+      "in_lexicon": true,
+      "pos": "Noun",
+      "_review_note": "verify the surface form is what a user would type"
+    },
+    {
+      "id": "wl_seed_053",
+      "query": "بطاح",
+      "gold_entry_id": 59,
+      "in_lexicon": true,
+      "pos": "Noun",
+      "_review_note": "verify the surface form is what a user would type"
+    },
+    {
+      "id": "wl_seed_054",
+      "query": "القميص",
+      "gold_entry_id": 705,
+      "in_lexicon": true,
+      "pos": "Noun",
+      "_review_note": "verify the surface form is what a user would type"
+    },
+    {
+      "id": "wl_seed_055",
+      "query": "سفطة",
+      "gold_entry_id": 432,
+      "in_lexicon": true,
+      "pos": "Noun",
+      "_review_note": "verify the surface form is what a user would type"
+    },
+    {
+      "id": "wl_seed_056",
+      "query": "القلب",
+      "gold_entry_id": 725,
+      "in_lexicon": true,
+      "pos": "Noun",
+      "_review_note": "verify the surface form is what a user would type"
+    },
+    {
+      "id": "wl_seed_057",
+      "query": "بركة",
+      "gold_entry_id": 91,
+      "in_lexicon": true,
+      "pos": "Noun",
+      "_review_note": "verify the surface form is what a user would type"
+    },
+    {
+      "id": "wl_seed_058",
+      "query": "المقود",
+      "gold_entry_id": 905,
+      "in_lexicon": true,
+      "pos": "Noun",
+      "_review_note": "verify the surface form is what a user would type"
+    },
+    {
+      "id": "wl_seed_059",
+      "query": "الخرش",
+      "gold_entry_id": 291,
+      "in_lexicon": true,
+      "pos": "Noun",
+      "_review_note": "verify the surface form is what a user would type"
+    },
+    {
+      "id": "wl_seed_060",
+      "query": "الصليق",
+      "gold_entry_id": 501,
+      "in_lexicon": true,
+      "pos": "Noun",
+      "_review_note": "verify the surface form is what a user would type"
+    },
+    {
+      "id": "wl_seed_061",
+      "query": "الحنا",
+      "gold_entry_id": 230,
+      "in_lexicon": true,
+      "pos": "Noun",
+      "_review_note": "verify the surface form is what a user would type"
+    },
+    {
+      "id": "wl_seed_062",
+      "query": "مسواك",
+      "gold_entry_id": 862,
+      "in_lexicon": true,
+      "pos": "Noun",
+      "_review_note": "verify the surface form is what a user would type"
+    },
+    {
+      "id": "wl_seed_063",
+      "query": "خزوه",
+      "gold_entry_id": 278,
+      "in_lexicon": true,
+      "pos": "Noun",
+      "_review_note": "verify the surface form is what a user would type"
+    },
+    {
+      "id": "wl_seed_064",
+      "query": "صك",
+      "gold_entry_id": 521,
+      "in_lexicon": true,
+      "pos": "Noun",
+      "_review_note": "verify the surface form is what a user would type"
+    },
+    {
+      "id": "wl_seed_065",
+      "query": "با فتيله",
+      "gold_entry_id": 73,
+      "in_lexicon": true,
+      "pos": "Noun",
+      "_review_note": "verify the surface form is what a user would type"
+    },
+    {
+      "id": "wl_seed_066",
+      "query": "المسخن",
+      "gold_entry_id": 452,
+      "in_lexicon": true,
+      "pos": "Noun",
+      "_review_note": "verify the surface form is what a user would type"
+    },
+    {
+      "id": "wl_seed_067",
+      "query": "الالفي",
+      "gold_entry_id": 796,
+      "in_lexicon": true,
+      "pos": "Noun",
+      "_review_note": "verify the surface form is what a user would type"
+    },
+    {
+      "id": "wl_seed_068",
+      "query": "منسف",
+      "gold_entry_id": 873,
+      "in_lexicon": true,
+      "pos": "Noun",
+      "_review_note": "verify the surface form is what a user would type"
+    },
+    {
+      "id": "wl_seed_069",
+      "query": "القصيرة",
+      "gold_entry_id": 686,
+      "in_lexicon": true,
+      "pos": "Noun",
+      "_review_note": "verify the surface form is what a user would type"
+    },
+    {
+      "id": "wl_seed_070",
+      "query": "المخرم",
+      "gold_entry_id": 844,
+      "in_lexicon": true,
+      "pos": "Noun",
+      "_review_note": "verify the surface form is what a user would type"
+    },
+    {
+      "id": "wl_seed_071",
+      "query": "الصيم",
+      "gold_entry_id": 518,
+      "in_lexicon": true,
+      "pos": "Noun",
+      "_review_note": "verify the surface form is what a user would type"
+    },
+    {
+      "id": "wl_seed_072",
+      "query": "البلاليط",
+      "gold_entry_id": 92,
+      "in_lexicon": true,
+      "pos": "Noun",
+      "_review_note": "verify the surface form is what a user would type"
+    },
+    {
+      "id": "wl_seed_073",
+      "query": "الصلول",
+      "gold_entry_id": 499,
+      "in_lexicon": true,
+      "pos": "Noun",
+      "_review_note": "verify the surface form is what a user would type"
+    },
+    {
+      "id": "wl_seed_074",
+      "query": "منتره",
+      "gold_entry_id": 836,
+      "in_lexicon": true,
+      "pos": "Noun",
+      "_review_note": "verify the surface form is what a user would type"
+    },
+    {
+      "id": "wl_seed_075",
+      "query": "النيلة",
+      "gold_entry_id": 963,
+      "in_lexicon": true,
+      "pos": "Noun",
+      "_review_note": "verify the surface form is what a user would type"
+    },
+    {
+      "id": "wl_seed_076",
+      "query": "خفرج",
+      "gold_entry_id": 303,
+      "in_lexicon": true,
+      "pos": "Noun",
+      "_review_note": "verify the surface form is what a user would type"
+    },
+    {
+      "id": "wl_seed_077",
+      "query": "العكضة",
+      "gold_entry_id": 574,
+      "in_lexicon": true,
+      "pos": "Noun",
+      "_review_note": "verify the surface form is what a user would type"
+    },
+    {
+      "id": "wl_seed_078",
+      "query": "الخبرة",
+      "gold_entry_id": 298,
+      "in_lexicon": true,
+      "pos": "Noun",
+      "_review_note": "verify the surface form is what a user would type"
+    },
+    {
+      "id": "wl_seed_079",
+      "query": "رشاش",
+      "gold_entry_id": 383,
+      "in_lexicon": true,
+      "pos": "Noun",
+      "_review_note": "verify the surface form is what a user would type"
+    },
+    {
+      "id": "wl_seed_080",
+      "query": "الغشب",
+      "gold_entry_id": 637,
+      "in_lexicon": true,
+      "pos": "Noun",
+      "_review_note": "verify the surface form is what a user would type"
+    },
+    {
+      "id": "wl_seed_081",
+      "query": "نذقه",
+      "gold_entry_id": 945,
+      "in_lexicon": true,
+      "pos": "Noun",
+      "_review_note": "verify the surface form is what a user would type"
+    },
+    {
+      "id": "wl_seed_082",
+      "query": "شب",
+      "gold_entry_id": 492,
+      "in_lexicon": true,
+      "pos": "Verb",
+      "_review_note": "verify the surface form is what a user would type"
+    },
+    {
+      "id": "wl_seed_083",
+      "query": "خرت الدار",
+      "gold_entry_id": 272,
+      "in_lexicon": true,
+      "pos": "Verb",
+      "_review_note": "verify the surface form is what a user would type"
+    },
+    {
+      "id": "wl_seed_084",
+      "query": "طقع",
+      "gold_entry_id": 567,
+      "in_lexicon": true,
+      "pos": "Verb",
+      "_review_note": "verify the surface form is what a user would type"
+    },
+    {
+      "id": "wl_seed_085",
+      "query": "فكه",
+      "gold_entry_id": 669,
+      "in_lexicon": true,
+      "pos": "Verb",
+      "_review_note": "verify the surface form is what a user would type"
+    },
+    {
+      "id": "wl_seed_086",
+      "query": "التجليد",
+      "gold_entry_id": 143,
+      "in_lexicon": true,
+      "pos": "Verb",
+      "_review_note": "verify the surface form is what a user would type"
+    },
+    {
+      "id": "wl_seed_087",
+      "query": "يئذن",
+      "gold_entry_id": 50,
+      "in_lexicon": true,
+      "pos": "Verb",
+      "_review_note": "verify the surface form is what a user would type"
+    },
+    {
+      "id": "wl_seed_088",
+      "query": "العفر",
+      "gold_entry_id": 601,
+      "in_lexicon": true,
+      "pos": "Verb",
+      "_review_note": "verify the surface form is what a user would type"
+    },
+    {
+      "id": "wl_seed_089",
+      "query": "تعين",
+      "gold_entry_id": 121,
+      "in_lexicon": true,
+      "pos": "Verb",
+      "_review_note": "verify the surface form is what a user would type"
+    },
+    {
+      "id": "wl_seed_090",
+      "query": "صكه",
+      "gold_entry_id": 519,
+      "in_lexicon": true,
+      "pos": "Adjective",
+      "_review_note": "verify the surface form is what a user would type"
+    },
+    {
+      "id": "wl_seed_091",
+      "query": "طنب",
+      "gold_entry_id": 560,
+      "in_lexicon": true,
+      "pos": "Adjective",
+      "_review_note": "verify the surface form is what a user would type"
+    },
+    {
+      "id": "wl_seed_092",
+      "query": "الصقع",
+      "gold_entry_id": 510,
+      "in_lexicon": true,
+      "pos": "Adjective",
+      "_review_note": "verify the surface form is what a user would type"
+    },
+    {
+      "id": "wl_seed_093",
+      "query": "مغروم",
+      "gold_entry_id": 885,
+      "in_lexicon": true,
+      "pos": "Adjective",
+      "_review_note": "verify the surface form is what a user would type"
+    },
+    {
+      "id": "wl_seed_094",
+      "query": "كماك",
+      "gold_entry_id": 732,
+      "in_lexicon": true,
+      "pos": "Expression",
+      "_review_note": "verify the surface form is what a user would type"
+    },
+    {
+      "id": "wl_seed_095",
+      "query": "ابدا",
+      "gold_entry_id": 6,
+      "in_lexicon": true,
+      "pos": "Expression",
+      "_review_note": "verify the surface form is what a user would type"
+    },
+    {
+      "id": "wl_seed_096",
+      "query": "اثره",
+      "gold_entry_id": 7,
+      "in_lexicon": true,
+      "pos": "Expression",
+      "_review_note": "verify the surface form is what a user would type"
+    },
+    {
+      "id": "wl_seed_097",
+      "query": "بلي",
+      "gold_entry_id": 48,
+      "in_lexicon": true,
+      "pos": "Expression",
+      "_review_note": "verify the surface form is what a user would type"
+    },
+    {
+      "id": "wl_seed_098",
+      "query": "توك",
+      "gold_entry_id": 139,
+      "in_lexicon": true,
+      "pos": "Expression",
+      "_review_note": "verify the surface form is what a user would type"
+    },
+    {
+      "id": "wl_seed_099",
+      "query": "ذلا",
+      "gold_entry_id": 360,
+      "in_lexicon": true,
+      "pos": "Particle",
+      "_review_note": "verify the surface form is what a user would type"
+    },
+    {
+      "id": "wl_seed_100",
+      "query": "برع",
+      "gold_entry_id": 108,
+      "in_lexicon": true,
+      "pos": "Adverb",
+      "_review_note": "verify the surface form is what a user would type"
+    }
+  ],
+  "_todo": [
+    "Add 100 out-of-lexicon items (real Hadrami words not yet curated).",
+    "Have a second native speaker spot-check 10%."
+  ]
+}

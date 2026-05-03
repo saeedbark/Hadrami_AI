@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hadrami_nlp/src/modules/chat/providers/chat_provider.dart';
 import 'package:hadrami_nlp/src/modules/chat/widgets/chat_bubble.dart';
 import 'package:hadrami_nlp/src/modules/chat/widgets/chat_input.dart';
+import 'package:hadrami_nlp/src/widgets/animated_appear.dart';
+import 'package:hadrami_nlp/src/widgets/content_shell.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class ChatPage extends HookConsumerWidget {
   const ChatPage({super.key});
@@ -12,16 +14,16 @@ class ChatPage extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final chatState = ref.watch(chatProvider);
     final scrollController = useScrollController();
+    final scheme = Theme.of(context).colorScheme;
 
     void scrollToBottom() {
       WidgetsBinding.instance.addPostFrameCallback((_) {
-        if (scrollController.hasClients) {
-          scrollController.animateTo(
-            scrollController.position.maxScrollExtent,
-            duration: const Duration(milliseconds: 300),
-            curve: Curves.easeOut,
-          );
-        }
+        if (!scrollController.hasClients) return;
+        scrollController.animateTo(
+          scrollController.position.maxScrollExtent,
+          duration: const Duration(milliseconds: 320),
+          curve: Curves.easeOutCubic,
+        );
       });
     }
 
@@ -31,14 +33,16 @@ class ChatPage extends HookConsumerWidget {
       }
     });
 
-    final colorScheme = Theme.of(context).colorScheme;
+    final messages = chatState.messages;
+    final showTyping = chatState.isLoading;
+    final itemCount = messages.length + (showTyping ? 1 : 0);
 
     return Scaffold(
       appBar: AppBar(
         title: const Text('المحادثة الذكية'),
         centerTitle: true,
         actions: [
-          if (chatState.messages.isNotEmpty)
+          if (messages.isNotEmpty)
             IconButton(
               icon: const Icon(Icons.delete_outline_rounded),
               tooltip: 'مسح المحادثة',
@@ -46,37 +50,38 @@ class ChatPage extends HookConsumerWidget {
             ),
         ],
       ),
-      body: Column(
-        children: [
-          Expanded(
-            child: chatState.messages.isEmpty
-                ? _EmptyChat(colorScheme: colorScheme)
-                : ListView.builder(
-                    controller: scrollController,
-                    padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
-                    itemCount: chatState.messages.length +
-                        (chatState.isLoading ? 1 : 0),
-                    itemBuilder: (_, index) {
-                      if (index == chatState.messages.length) {
-                        return _TypingIndicator(colorScheme: colorScheme);
-                      }
-                      return ChatBubble(message: chatState.messages[index]);
-                    },
-                  ),
-          ),
-          ChatInput(
-            enabled: !chatState.isLoading,
-            onSend: (text) {
-              ref.read(chatProvider.notifier).sendMessage(text);
-            },
-          ),
-        ],
+      body: ContentShell(
+        maxWidth: 880,
+        child: Column(
+          children: [
+            Expanded(
+              child: messages.isEmpty
+                  ? _EmptyChat(scheme: scheme)
+                  : ListView.builder(
+                      controller: scrollController,
+                      padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
+                      itemCount: itemCount,
+                      itemBuilder: (_, index) {
+                        if (showTyping && index == messages.length) {
+                          return _TypingIndicator(scheme: scheme);
+                        }
+                        return ChatBubble(message: messages[index]);
+                      },
+                    ),
+            ),
+            ChatInput(
+              enabled: !chatState.isLoading,
+              onSend: (text) =>
+                  ref.read(chatProvider.notifier).sendMessage(text),
+            ),
+          ],
+        ),
       ),
     );
   }
 
   void _confirmClear(BuildContext context, WidgetRef ref) {
-    showDialog(
+    showDialog<void>(
       context: context,
       builder: (ctx) => AlertDialog(
         title: const Text('مسح المحادثة'),
@@ -100,71 +105,73 @@ class ChatPage extends HookConsumerWidget {
 }
 
 class _EmptyChat extends StatelessWidget {
-  const _EmptyChat({required this.colorScheme});
-  final ColorScheme colorScheme;
+  const _EmptyChat({required this.scheme});
+  final ColorScheme scheme;
 
   @override
   Widget build(BuildContext context) {
+    final textTheme = Theme.of(context).textTheme;
     return Center(
-      child: Padding(
-        padding: const EdgeInsets.all(32),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Container(
-              width: 80,
-              height: 80,
-              decoration: BoxDecoration(
-                color: colorScheme.primaryContainer,
-                borderRadius: BorderRadius.circular(20),
-              ),
-              child: Icon(
-                Icons.smart_toy_rounded,
-                size: 40,
-                color: colorScheme.onPrimaryContainer,
-              ),
-            ),
-            const SizedBox(height: 20),
-            Text(
-              'مرحباً! أنا مساعدك في اللهجة الحضرمية',
-              textAlign: TextAlign.center,
-              textDirection: TextDirection.rtl,
-              style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    fontWeight: FontWeight.w600,
-                    color: colorScheme.onSurface,
+      child: AnimatedAppear(
+        slideOffset: const Offset(0, 0.04),
+        child: Padding(
+          padding: const EdgeInsets.all(32),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              TweenAnimationBuilder<double>(
+                tween: Tween(begin: 0.85, end: 1.0),
+                duration: const Duration(milliseconds: 600),
+                curve: Curves.elasticOut,
+                builder: (_, scale, child) =>
+                    Transform.scale(scale: scale, child: child),
+                child: Container(
+                  width: 80,
+                  height: 80,
+                  decoration: BoxDecoration(
+                    color: scheme.primaryContainer,
+                    borderRadius: BorderRadius.circular(20),
                   ),
-            ),
-            const SizedBox(height: 8),
-            Text(
-              'اسألني عن أي كلمة أو عبارة حضرمية، أو اطلب ترجمة جملة',
-              textAlign: TextAlign.center,
-              textDirection: TextDirection.rtl,
-              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                    color: colorScheme.onSurfaceVariant,
-                    height: 1.5,
+                  child: Icon(
+                    Icons.smart_toy_rounded,
+                    size: 40,
+                    color: scheme.onPrimaryContainer,
                   ),
-            ),
-            const SizedBox(height: 24),
-            Wrap(
-              spacing: 8,
-              runSpacing: 8,
-              alignment: WrapAlignment.center,
-              children: [
-                _SuggestionChip(
-                  label: 'ما معنى كلمة ويش؟',
-                  colorScheme: colorScheme,
                 ),
-                _SuggestionChip(
-                  label: 'ترجم: كيف حالك؟',
-                  colorScheme: colorScheme,
+              ),
+              const SizedBox(height: 20),
+              Text(
+                'مرحباً! أنا مساعدك في اللهجة الحضرمية',
+                textAlign: TextAlign.center,
+                textDirection: TextDirection.rtl,
+                style: textTheme.titleMedium?.copyWith(
+                  fontWeight: FontWeight.w600,
+                  color: scheme.onSurface,
                 ),
-                _SuggestionChip(
-                  label: 'أمثال حضرمية شهيرة',
-                  colorScheme: colorScheme,
+              ),
+              const SizedBox(height: 8),
+              Text(
+                'اسألني عن أي كلمة أو عبارة حضرمية، أو اطلب ترجمة جملة',
+                textAlign: TextAlign.center,
+                textDirection: TextDirection.rtl,
+                style: textTheme.bodyMedium?.copyWith(
+                  color: scheme.onSurfaceVariant,
+                  height: 1.5,
                 ),
-              ],
-            ),
-          ],
+              ),
+              const SizedBox(height: 24),
+              const Wrap(
+                spacing: 8,
+                runSpacing: 8,
+                alignment: WrapAlignment.center,
+                children: [
+                  _SuggestionChip(label: 'ما معنى كلمة ويش؟'),
+                  _SuggestionChip(label: 'ترجم: كيف حالك؟'),
+                  _SuggestionChip(label: 'أمثال حضرمية شهيرة'),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -172,30 +179,45 @@ class _EmptyChat extends StatelessWidget {
 }
 
 class _SuggestionChip extends ConsumerWidget {
-  const _SuggestionChip({required this.label, required this.colorScheme});
+  const _SuggestionChip({required this.label});
   final String label;
-  final ColorScheme colorScheme;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final scheme = Theme.of(context).colorScheme;
     return ActionChip(
       label: Text(
         label,
         textDirection: TextDirection.rtl,
-        style: TextStyle(fontSize: 12, color: colorScheme.primary),
+        style: TextStyle(fontSize: 12, color: scheme.primary),
       ),
-      backgroundColor: colorScheme.primaryContainer.withValues(alpha: 0.4),
-      side: BorderSide(color: colorScheme.primary.withValues(alpha: 0.2)),
-      onPressed: () {
-        ref.read(chatProvider.notifier).sendMessage(label);
-      },
+      backgroundColor: scheme.primaryContainer.withValues(alpha: 0.4),
+      side: BorderSide(color: scheme.primary.withValues(alpha: 0.2)),
+      onPressed: () => ref.read(chatProvider.notifier).sendMessage(label),
     );
   }
 }
 
-class _TypingIndicator extends StatelessWidget {
-  const _TypingIndicator({required this.colorScheme});
-  final ColorScheme colorScheme;
+class _TypingIndicator extends StatefulWidget {
+  const _TypingIndicator({required this.scheme});
+  final ColorScheme scheme;
+
+  @override
+  State<_TypingIndicator> createState() => _TypingIndicatorState();
+}
+
+class _TypingIndicatorState extends State<_TypingIndicator>
+    with SingleTickerProviderStateMixin {
+  late final AnimationController _controller = AnimationController(
+    vsync: this,
+    duration: const Duration(milliseconds: 900),
+  )..repeat();
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -205,7 +227,7 @@ class _TypingIndicator extends StatelessWidget {
         margin: const EdgeInsets.only(top: 4, bottom: 4, right: 48),
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
         decoration: BoxDecoration(
-          color: colorScheme.surfaceContainerHigh,
+          color: widget.scheme.surfaceContainerHigh,
           borderRadius: const BorderRadius.only(
             topLeft: Radius.circular(18),
             topRight: Radius.circular(18),
@@ -216,22 +238,30 @@ class _TypingIndicator extends StatelessWidget {
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            SizedBox(
-              width: 16,
-              height: 16,
-              child: CircularProgressIndicator(
-                strokeWidth: 2,
-                color: colorScheme.primary,
+            for (var i = 0; i < 3; i++)
+              Padding(
+                padding: EdgeInsets.only(right: i == 2 ? 0 : 4),
+                child: AnimatedBuilder(
+                  animation: _controller,
+                  builder: (_, __) {
+                    final phase = (_controller.value + i / 3) % 1.0;
+                    final opacity = 0.3 + 0.7 * (1 - (phase - 0.5).abs() * 2).clamp(0.0, 1.0);
+                    return Container(
+                      width: 6,
+                      height: 6,
+                      decoration: BoxDecoration(
+                        color: widget.scheme.primary.withValues(alpha: opacity),
+                        shape: BoxShape.circle,
+                      ),
+                    );
+                  },
+                ),
               ),
-            ),
-            const SizedBox(width: 8),
+            const SizedBox(width: 10),
             Text(
               'جاري الكتابة...',
               textDirection: TextDirection.rtl,
-              style: TextStyle(
-                fontSize: 13,
-                color: colorScheme.outline,
-              ),
+              style: TextStyle(fontSize: 13, color: widget.scheme.outline),
             ),
           ],
         ),

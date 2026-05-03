@@ -57,6 +57,7 @@ def finalize_ask_payload(
     entries: list[dict],
     *,
     answer_source: str = "model",
+    suggest_word: bool = False,
 ) -> dict[str, Any]:
     """Shape the dict that ``/ask`` and ``/chat`` serialize back to the client."""
     highlight_surfaces = collect_highlight_surfaces(entries)
@@ -67,4 +68,5 @@ def finalize_ask_payload(
         "context": entries_to_response(entries),
         "highlight_surfaces": highlight_surfaces,
         "hadrami_spans": find_hadrami_spans(answer, highlight_surfaces),
+        "suggest_word": suggest_word,
     }

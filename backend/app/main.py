@@ -242,13 +242,23 @@ def ask_post(body: AskRequest):
 
 @app.post("/chat", response_model=ChatResponse)
 def chat(body: ChatRequest):
-    """Conversational chat with RAG context and message history."""
+    """Unified Hadrami LLM endpoint.
+
+    Auto-classifies the message into one of ``word`` / ``translate`` /
+    ``define`` / ``semantic`` / ``qa`` and routes through the matching
+    retrieval + prompt path. Replaces direct calls to ``/ask`` and
+    ``/translate-phrase`` for clients that want a single conversational
+    surface.
+    """
     from .rag.pipeline import get_chat_answer
 
     history = [{"role": m.role.value, "content": m.content} for m in body.history]
     result = get_chat_answer(body.message, history)
     return ChatResponse(
         reply=result["reply"],
+        intent=result.get("intent", "qa"),
+        suggest_word=result.get("suggest_word", False),
+        answer_source=result.get("answer_source", "model"),
         context=result.get("context", []),
         hadrami_spans=result.get("hadrami_spans", []),
         highlight_surfaces=result.get("highlight_surfaces", []),

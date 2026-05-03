@@ -1,0 +1,57 @@
+[
+  {
+    "id": 5,
+    "word": "أُبّب",
+    "fusha": "تعبير عن التأكد الشديد أو الاندهاش",
+    "stored_pos": "Expression",
+    "llm": {
+      "pos": "Expression",
+      "confidence": "high",
+      "reason": "لفظة سماعية للتأكيد أو الاستغراب"
+    }
+  },
+  {
+    "id": 6,
+    "word": "أَبَداً",
+    "fusha": "للنفي القاطع",
+    "stored_pos": "Expression",
+    "llm": {
+      "pos": "Adverb",
+      "confidence": "high",
+      "reason": "ظرف يفيد النفي القاطع"
+    }
+  },
+  {
+    "id": 7,
+    "word": "أَثَرَه",
+    "fusha": "تبيّن أو اتضح أن..",
+    "stored_pos": "Expression",
+    "llm": {
+      "pos": "Expression",
+      "confidence": "high",
+      "reason": "تعبير اصطلاحي ذو معنى مركب"
+    }
+  },
+  {
+    "id": 18,
+    "word": "إِيبَلَّه",
+    "fusha": "إي والله (قسم للايجاب)",
+    "stored_pos": "Expression",
+    "llm": {
+      "pos": "Expression",
+      "confidence": "high",
+      "reason": "صيغة قسم وتأكيد ثابتة مكونة من أكثر من كلمة."
+    }
+  },
+  {
+    "id": 25,
+    "word": "أَيْوَا",
+    "fusha": "نعم / للإيجاب",
+    "stored_pos": "Expression",
+    "llm": {
+      "pos": "Adverb",
+      "confidence": "high",
+      "reason": "لفظة للإيجاب والموافقة"
+    }
+  }
+]

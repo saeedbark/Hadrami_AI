@@ -62,6 +62,7 @@ app/
 │   ├── prompts.py               ← ask / chat / translate / phrase prompts (grounded)
 │   ├── serialization.py         ← DB-row → Entry + response shaping
 │   ├── text_utils.py            ← Arabic normalization + span detection
+│   ├── system_prompt.py         ← HADRAMI_SYSTEM_PROMPT + intent_for() classifier
 │   ├── logging_utils.py         ← RAG_DEBUG logging + previews
 │   └── pipeline.py              ← get_rag_answer / get_chat_answer / get_translation_answer
 ├── core/
@@ -71,9 +72,13 @@ app/
 └── services/
     ├── __init__.py
     ├── dictionary_service.py           ← Keyword search, translate, feedback, pagination
-    ├── embedding_service.py            ← Gemini text-embedding-004 wrapper
+    ├── embedding_service.py            ← Gemini gemini-embedding-001 wrapper (768-dim)
+    ├── embedding_doc.py                ← Canonical embedding-doc text builder (versioned, v2)
     └── phrase_translation_service.py   ← Chunked phrase translation with grounding
 ```
+
+The `migrations/` folder (v2 schema delta — `searchable_text`, `semantic_intent`,
+`transliteration` columns + GIN tsvector index) is also under `backend/`.
 
 ### Key design decisions
 
@@ -146,16 +151,25 @@ Direction values: `ar_to_hadrami`, `hadrami_to_ar`.
 python -m pytest tests/ -v
 ```
 
-`tests/test_api.py` contains **26 smoke tests** that exercise every
-endpoint end-to-end. Tests that need Supabase are automatically skipped
-when `SUPABASE_URL` / `SUPABASE_SERVICE_KEY` are missing; tests that need
-Gemini are skipped when `GEMINI_API_KEY` is missing.
+**42 tests passing**, split across two files:
+
+- `tests/test_api.py` — **26 live E2E tests**. Exercise every endpoint
+  end-to-end against Supabase + Gemini. Auto-skip when the corresponding
+  env var is missing.
+- `tests/test_chat_unified.py` — **16 hermetic tests**. All Supabase + Gemini
+  calls are stubbed; verify the unified `/chat` dispatcher's intent
+  classifier and the routing into word / translate / define / semantic / qa
+  paths. Run anywhere, no credentials required.
 
 Notable tests:
 
-- `test_ask_with_irrelevant_question_refuses_or_admits` — guards against
-  the single largest hallucination path in the audit: returning the MSA
-  gloss of a loosely-matched entry for an out-of-domain question.
+- `test_intent_classifier` (parametrised, 12 cases) — covers the spec's
+  TYPE 1–5 examples plus code-switched and paragraph-shaped input.
+- `test_chat_unknown_word_short_circuits_to_suggest` — verifies the
+  confidence-gate refusal contract.
+- `test_ask_with_irrelevant_question_refuses_or_admits` — guards the
+  single largest hallucination path: returning the MSA gloss of a
+  loosely-matched entry for an out-of-domain question.
 - `test_translate_phrase_*_returns_shape` — validates the grounded
   phrase-translation response shape in both directions.
 - `test_submit_basic_feedback_persists` — round-trips feedback through
@@ -167,9 +181,19 @@ Notable tests:
 
 | Script | Purpose |
 |--------|---------|
-| `scripts/validate_dataset.py` | Validate `hadrami_dataset.json` against the `Entry` schema (required fields, types, allowed POS). Downgrades non-canonical POS / unknown fields to warnings. |
+| `scripts/validate_dataset.py` | Validate `hadrami_dataset.json` against the `Entry` schema (required fields, types, allowed POS). |
 | `scripts/audit_dataset.py` | Descriptive statistics: field coverage, POS distribution, top regions / tags / roots, length distributions. |
 | `../scripts/sync_to_supabase.py` | Canonical ETL: JSON → optional CSV → Supabase upsert → (optional) Gemini embedding backfill. |
+| `../scripts/clean_lexicon.py` / `clean_tags_region.py` | POS slash-spacing + region/tag lowercase normalisation (already applied to live DB). |
+| `../scripts/null_empty_strings.py` | Convert empty strings to NULL in `note` / `root` fields. |
+| `../scripts/validate_pos.py` / `apply_pos_corrections.py` | LLM-based POS validator + auto-collapse of compound POS rows. |
+| `../scripts/generate_enrichment.py` | Fill `semantic_intent` + `transliteration` columns via Gemini (incremental writes). |
+| `../scripts/backfill_searchable_text.py` | Re-run canonical embedding-doc text into the `searchable_text` column. Idempotent on `searchable_text_version`. |
+| `../scripts/gemini_rotator.py` | Round-robin across `GEMINI_API_KEY` / `GEMINI_API_KEY1..N` to spread free-tier quota. |
+| `../scripts/finalize_pipeline.sh` | Apply POS corrections + audit + Kaggle/HF re-export in sequence. |
+| `../scripts/eval/build_test_set_seeds.py` | Generate `*.candidate.json` test-set seeds for reviewer audit. |
+| `../scripts/eval/run_{intent,lookup,translation,hallucination,gate_sweep}_eval.py` | Per-experiment evaluation runners (E1–E5; see `docs/research_paper_plan.md`). |
+| `../scripts/export/{to_kaggle,to_huggingface}.py` | Release bundle builders. Read-only Supabase pull. |
 
 Run from the `backend/` directory with the venv interpreter:
 
@@ -177,6 +201,7 @@ Run from the `backend/` directory with the venv interpreter:
 python scripts/validate_dataset.py
 python scripts/audit_dataset.py
 python ../scripts/sync_to_supabase.py --help
+python ../scripts/eval/run_intent_eval.py
 ```
 
 ---
