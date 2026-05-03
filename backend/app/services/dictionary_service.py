@@ -6,12 +6,10 @@ client-side on the (small) result sets returned by the DB.
 
 from __future__ import annotations
 
-import json
 import random
 import re
 from typing import Any, Optional
 
-from ..core.config import FEEDBACK_FILE
 from ..core.data_store import (
     TABLE,
     _SELECT_COLS,
@@ -20,6 +18,8 @@ from ..core.data_store import (
     fetch_all,
     fetch_by_id,
     get_client,
+    insert_feedback,
+    list_feedback,
     rpc_match_entries,
     rpc_search_entries_expanded,
 )
@@ -249,8 +249,37 @@ def semantic_search(
 # ---------------------------------------------------------------------------
 
 _AR_QUESTION_FRAG = re.compile(
-    r"ما\s*معنى|مامعنى|ما\s*هو\s*معنى|وش\s*يعني|يعني\s*ايش|ايش\s*يعني|معنى\s*كلمة|^كلمة\s*",
+    r"ماذا\s*يعني|ما\s*يعني|ما\s*معنى|مامعنى|ما\s*هو\s*معنى|وش\s*يعني|"
+    r"يعني\s*ايش|ايش\s*يعني|معنى\s*كلمة|^كلمة\s*",
     re.IGNORECASE,
+)
+
+# Tokens we never use as *standalone* search terms (Fusha/MSA question words).
+_AR_QUERY_NOISE: frozenset[str] = frozenset(
+    {
+        "ماذا",
+        "ما",
+        "معنى",
+        "يعني",
+        "ايش",
+        "هو",
+        "هي",
+        "هذا",
+        "هذه",
+        "ذلك",
+        "كيف",
+        "لماذا",
+        "ليه",
+        "ليش",
+        "هل",
+        "قد",
+        "من",
+        "على",
+        "في",
+        "وش",
+        "و",
+        "؟",
+    }
 )
 
 
@@ -259,14 +288,25 @@ def _extract_search_candidates(raw: str) -> list[str]:
     if not q:
         return []
     stripped = _AR_QUESTION_FRAG.sub(" ", q)
+    # "الريم والزفر" → easier tokenization after normalizing " و " between words
+    stripped = stripped.replace(" و", " ")
     parts = re.split(r"[\s،,.;:!؟?]+", stripped)
     out: list[str] = []
     for p in parts:
         t = p.strip()
-        if len(t) >= 2:
-            out.append(t)
-        if t.startswith("ال") and len(t) > 3:
-            out.append(t[2:])
+        if not t or len(t) < 2 or t in _AR_QUERY_NOISE:
+            pass
+        else:
+            if t not in out:
+                out.append(t)
+            if t.startswith("و") and len(t) > 2:
+                rest = t[1:].lstrip()
+                if rest and len(rest) >= 2 and rest not in _AR_QUERY_NOISE and rest not in out:
+                    out.append(rest)  # والزقر → الزقر
+            if t.startswith("ال") and len(t) > 3:
+                bare = t[2:].strip()
+                if len(bare) >= 2 and bare not in out:
+                    out.append(bare)  # الريم → ريم (helps loose match)
     if q not in out:
         out.insert(0, q)
     seen: set[str] = set()
@@ -278,31 +318,82 @@ def _extract_search_candidates(raw: str) -> list[str]:
     return uniq
 
 
+def focus_query_for_embedding(raw: str) -> str:
+    """Short query text for vector search: strip question noise, keep headwords."""
+    cands = [
+        c
+        for c in _extract_search_candidates(raw)
+        if c
+        and len(c) >= 2
+        and c not in _AR_QUERY_NOISE
+        and c.strip() != (raw or "").strip()
+    ]
+    if cands:
+        return " ".join(cands[:6])
+    return (raw or "").strip()
+
+
 def search_expanded(query: str, limit: int) -> dict[str, Any]:
-    """Merge keyword search across the full question and extracted tokens."""
+    """Merge keyword / RPC search on the full question and on each headword.
+
+    The previous implementation returned on the *first* RPC response even when
+    the score was weak, so the per-token pass never ran. That produced irrelevant
+    hits (e.g. from «ماذا») instead of the intended words (e.g. الريم, الزفر).
+    """
+    q = (query or "").strip()
+    if not q:
+        return {"total": 0, "results": [], "top_score": 0}
+
+    by_id: dict[int, dict[str, Any]] = {}
+    top_score = 0
+    inner = max(limit, 16)
+
+    def _merge_rows(rows: list[dict[str, Any]] | None) -> None:
+        nonlocal top_score
+        for r in rows or []:
+            eid = r.get("id")
+            if eid is None:
+                continue
+            s = int(r.get("match_score") or 0)
+            top_score = max(top_score, s)
+            prev = by_id.get(eid)
+            if prev is None or s > int(prev.get("match_score") or 0):
+                by_id[eid] = r
+
     try:
-        rows = rpc_search_entries_expanded(query, match_count=limit)
-        if rows:
-            top_score = max(int(r.get("match_score") or 0) for r in rows)
-            return {"total": len(rows), "results": rows[:limit], "top_score": top_score}
+        full_hits = rpc_search_entries_expanded(q, match_count=max(limit * 4, 32))
+        if full_hits:
+            _merge_rows(list(full_hits))
     except Exception:
         pass
 
-    seen_ids: set[int] = set()
-    merged: list[dict[str, Any]] = []
-    top_score = 0
-    inner = max(limit, 12)
-    for cand in _extract_search_candidates(query):
-        payload = search(cand, limit=inner)
-        top_score = max(top_score, int(payload.get("top_score") or 0))
-        for entry in payload["results"]:
-            eid = entry["id"]
-            if eid not in seen_ids:
-                seen_ids.add(eid)
-                merged.append(entry)
-            if len(merged) >= limit:
-                return {"total": len(merged), "results": merged, "top_score": top_score}
-    return {"total": len(merged), "results": merged, "top_score": top_score}
+    seen_cand: set[str] = set()
+    cands: list[str] = [q]
+    for c in _extract_search_candidates(q):
+        if c and c not in seen_cand:
+            seen_cand.add(c)
+            cands.append(c)
+
+    for cand in cands:
+        if len(cand) < 2:
+            continue
+        try:
+            payload = search(cand, limit=inner)
+        except Exception:
+            continue
+        for entry in payload.get("results", []):
+            _merge_rows([entry])
+
+    merged = list(by_id.values())
+    merged.sort(key=lambda e: -int(e.get("match_score") or 0))
+    if merged:
+        top_score = int(merged[0].get("match_score") or 0)
+
+    return {
+        "total": len(merged),
+        "results": merged[:limit],
+        "top_score": top_score,
+    }
 
 
 _MIN_SUBWORD_LEN = 3
@@ -391,25 +482,42 @@ def list_words(
     return {"total": resp.count or 0, "results": resp.data or []}
 
 
-def _load_feedback() -> list[dict[str, Any]]:
-    if not FEEDBACK_FILE.exists():
-        return []
-    try:
-        with open(FEEDBACK_FILE, encoding="utf-8") as file:
-            data = json.load(file)
-        if isinstance(data, list):
-            return data
-    except (json.JSONDecodeError, OSError):
-        pass
-    return []
+_FEEDBACK_DB_KEYS = {
+    "word_id",
+    "word_vocalized",
+    "suggested_fusha",
+    "comment",
+    "feedback_type",
+    "spelling_variants",
+    "sentence_pair_hadrami",
+    "sentence_pair_fusha",
+    "consent",
+    "user_agent",
+    "client_ip",
+}
 
 
-def save_feedback(payload: dict[str, Any]) -> None:
-    feedbacks = _load_feedback()
-    feedbacks.append(payload)
-    FEEDBACK_FILE.parent.mkdir(parents=True, exist_ok=True)
-    with open(FEEDBACK_FILE, "w", encoding="utf-8") as file:
-        json.dump(feedbacks, file, ensure_ascii=False, indent=2)
+def save_feedback(payload: dict[str, Any]) -> dict[str, Any]:
+    """Persist a feedback submission to Supabase and return the inserted row."""
+    row: dict[str, Any] = {}
+    for key in _FEEDBACK_DB_KEYS:
+        if key in payload and payload[key] is not None:
+            row[key] = payload[key]
+    row.setdefault("feedback_type", "correction")
+    row.setdefault("consent", False)
+    return insert_feedback(row)
+
+
+def recent_feedback(
+    limit: int = 50,
+    offset: int = 0,
+    status: Optional[str] = None,
+    feedback_type: Optional[str] = None,
+) -> dict[str, Any]:
+    """Return recent feedback submissions (admin/debug use)."""
+    return list_feedback(
+        limit=limit, offset=offset, status=status, feedback_type=feedback_type
+    )
 
 
 def random_word() -> Optional[dict[str, Any]]:

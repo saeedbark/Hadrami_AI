@@ -13,7 +13,7 @@ import 'package:hadrami_nlp/src/widgets/hadrami_highlighted_text.dart';
 
 Widget _askAnswerBody(
   String answer,
-  List<Map<String, dynamic>> context,
+  List<WordEntry> context,
   List<HadramiSpan> askResultSpans,
   bool isError,
   ColorScheme colorScheme,
@@ -39,10 +39,12 @@ Widget _askAnswerBody(
       style: baseStyle,
     );
   }
-  final spans =
-      askResultSpans.isNotEmpty
-          ? askResultSpans
-          : hadramiSpansFromLexiconContext(answer, context);
+  final spans = askResultSpans.isNotEmpty
+      ? askResultSpans
+      : hadramiSpansFromLexiconContext(
+          answer,
+          context.map((e) => e.toJson()).toList(growable: false),
+        );
   if (spans.isEmpty) {
     if (kIsWeb) {
       return Text(
@@ -205,7 +207,9 @@ class AskPage extends ConsumerWidget {
                   Padding(
                     padding: const EdgeInsets.only(top: 8),
                     child: Text(
-                      'المصدر: ${askState.result!.mode}',
+                      askState.result!.answerSource == 'lexicon'
+                          ? 'المصدر: القاموس الاحتياطي (لم تُنطَق إجابة من نموذج التوليد). وضع الخادم: ${askState.result!.mode}'
+                          : 'المصدر: نص من نموذج التوليد. وضع الخادم: ${askState.result!.mode}',
                       style: Theme.of(context)
                           .textTheme
                           .labelSmall

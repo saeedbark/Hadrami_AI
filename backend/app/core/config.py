@@ -16,7 +16,6 @@ APP_DESCRIPTION = "API for Hadrami Arabic dialect translation and search"
 
 DATA_DIR = BASE_DIR / "data"
 DATA_FILE = DATA_DIR / "hadrami_dataset.json"
-FEEDBACK_FILE = DATA_DIR / "feedback.json"
 EVAL_PAIRS_FILE = DATA_DIR / "eval_pairs.json"
 
 DEFAULT_PAGE_SIZE = 20

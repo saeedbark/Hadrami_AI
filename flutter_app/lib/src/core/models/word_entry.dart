@@ -74,10 +74,11 @@ class AskResult with _$AskResult {
     @Default('') String question,
     @Default('') String answer,
     @Default('simple') String mode,
+    /// `model` = text from Gemini; `lexicon` = offline dictionary fallback.
+    @Default('model') String answerSource,
     @Default(<HadramiSpan>[]) List<HadramiSpan> hadramiSpans,
     @Default(<String>[]) List<String> highlightSurfaces,
-    @Default(<Map<String, dynamic>>[])
-    List<Map<String, dynamic>> context,
+    @Default(<WordEntry>[]) List<WordEntry> context,
   }) = _AskResult;
 
   factory AskResult.fromJson(Map<String, dynamic> json) =>

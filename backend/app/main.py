@@ -6,7 +6,7 @@ from dotenv import load_dotenv
 # backend/.env (same directory as app package parent), not dependent on shell cwd
 load_dotenv(Path(__file__).resolve().parent.parent / ".env")
 
-from fastapi import FastAPI, HTTPException, Query
+from fastapi import FastAPI, HTTPException, Query, Request
 from fastapi.middleware.cors import CORSMiddleware
 from typing import Optional
 
@@ -153,7 +153,7 @@ def list_words(
 
 
 @app.post("/feedback")
-def submit_feedback(fb: FeedbackRequest):
+def submit_feedback(fb: FeedbackRequest, request: Request):
     payload: dict = {
         "word_id": fb.word_id,
         "word_vocalized": fb.word_vocalized,
@@ -168,8 +168,28 @@ def submit_feedback(fb: FeedbackRequest):
         payload["sentence_pair_hadrami"] = fb.sentence_pair_hadrami
     if fb.sentence_pair_fusha:
         payload["sentence_pair_fusha"] = fb.sentence_pair_fusha
-    dictionary_service.save_feedback(payload)
-    return {"status": "success", "message": "شكراً على مساهمتك!"}
+    user_agent = request.headers.get("user-agent")
+    if user_agent:
+        payload["user_agent"] = user_agent[:512]
+    if request.client and request.client.host:
+        host = request.client.host
+        import ipaddress
+
+        try:
+            ipaddress.ip_address(host)
+        except ValueError:
+            pass
+        else:
+            payload["client_ip"] = host
+    try:
+        row = dictionary_service.save_feedback(payload)
+    except Exception as exc:
+        raise HTTPException(status_code=503, detail=f"feedback_store_unavailable: {exc}")
+    return {
+        "status": "success",
+        "message": "شكراً على مساهمتك!",
+        "id": row.get("id") if isinstance(row, dict) else None,
+    }
 
 
 @app.get("/random")
@@ -181,19 +201,21 @@ def random_word():
 
 
 def _run_ask(q: str) -> AskResponse:
-    from .rag_engine import _preview, _rag_log, get_rag_answer
+    from .rag.logging_utils import preview, rag_log
+    from .rag.pipeline import get_rag_answer
 
     result = get_rag_answer(q)
     ctx_snip = [
         f"{e.word_vocalized}->{e.fusha_equivalent}" for e in result["context"][:3]
     ]
-    _rag_log(
-        f"/ask q={q!r} -> mode={result['mode']!r} | context={ctx_snip} | answer={_preview(result['answer'])}"
+    rag_log(
+        f"/ask q={q!r} -> mode={result['mode']!r} | context={ctx_snip} | answer={preview(result['answer'])}"
     )
     return AskResponse(
         question=q,
         answer=result["answer"],
         mode=result["mode"],
+        answer_source=result.get("answer_source", "model"),
         hadrami_spans=result.get("hadrami_spans", []),
         highlight_surfaces=result.get("highlight_surfaces", []),
         context=result["context"],
@@ -221,7 +243,7 @@ def ask_post(body: AskRequest):
 @app.post("/chat", response_model=ChatResponse)
 def chat(body: ChatRequest):
     """Conversational chat with RAG context and message history."""
-    from .rag_engine import get_chat_answer
+    from .rag.pipeline import get_chat_answer
 
     history = [{"role": m.role.value, "content": m.content} for m in body.history]
     result = get_chat_answer(body.message, history)
