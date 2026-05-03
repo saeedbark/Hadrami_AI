@@ -20,10 +20,10 @@ class SelectedPos extends _$SelectedPos {
 }
 
 @Riverpod(keepAlive: true)
-class SelectedCategory extends _$SelectedCategory {
+class SelectedTag extends _$SelectedTag {
   @override
   String? build() => null;
-  void setCategory(String? value) => state = value;
+  void setTag(String? value) => state = value;
 }
 
 @riverpod
@@ -40,10 +40,10 @@ class WordList extends _$WordList {
     _reachedMax = false;
     final letter = ref.watch(selectedLetterProvider);
     final pos = ref.watch(selectedPosProvider);
-    final category = ref.watch(selectedCategoryProvider);
+    final tag = ref.watch(selectedTagProvider);
     final result = await ref
         .read(apiServiceProvider)
-        .listWords(page: 1, letter: letter, pos: pos, category: category);
+        .listWords(page: 1, letter: letter, pos: pos, tag: tag);
     _total = result.total;
     _reachedMax = result.results.length >= _total;
     return result.results;
@@ -57,7 +57,7 @@ class WordList extends _$WordList {
 
     final letter = ref.read(selectedLetterProvider);
     final pos = ref.read(selectedPosProvider);
-    final category = ref.read(selectedCategoryProvider);
+    final tag = ref.read(selectedTagProvider);
     final result = await ref
         .read(apiServiceProvider)
         .listWords(
@@ -65,7 +65,7 @@ class WordList extends _$WordList {
           size: ApiConfig.defaultPageSize,
           letter: letter,
           pos: pos,
-          category: category,
+          tag: tag,
         );
 
     _total = result.total;

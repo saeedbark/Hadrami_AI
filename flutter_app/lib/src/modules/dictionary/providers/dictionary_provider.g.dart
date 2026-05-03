@@ -36,23 +36,21 @@ final selectedPosProvider = NotifierProvider<SelectedPos, String?>.internal(
 );
 
 typedef _$SelectedPos = Notifier<String?>;
-String _$selectedCategoryHash() => r'72d7f8d2d326e469263856b407180753aeeca1ee';
+String _$selectedTagHash() => r'6bf84e16782e9f0060c5b211f48f15ebffff9317';
 
-/// See also [SelectedCategory].
-@ProviderFor(SelectedCategory)
-final selectedCategoryProvider =
-    NotifierProvider<SelectedCategory, String?>.internal(
-  SelectedCategory.new,
-  name: r'selectedCategoryProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$selectedCategoryHash,
+/// See also [SelectedTag].
+@ProviderFor(SelectedTag)
+final selectedTagProvider = NotifierProvider<SelectedTag, String?>.internal(
+  SelectedTag.new,
+  name: r'selectedTagProvider',
+  debugGetCreateSourceHash:
+      const bool.fromEnvironment('dart.vm.product') ? null : _$selectedTagHash,
   dependencies: null,
   allTransitiveDependencies: null,
 );
 
-typedef _$SelectedCategory = Notifier<String?>;
-String _$wordListHash() => r'4fc40d80e4680ff911dd5f4a8677417723111c37';
+typedef _$SelectedTag = Notifier<String?>;
+String _$wordListHash() => r'345c6e495802643ab8b214c0128fa5bfeb351b50';
 
 /// See also [WordList].
 @ProviderFor(WordList)

@@ -1,7 +1,7 @@
 """Supabase-backed data store for the Hadrami NLP dictionary.
 
-Replaces the previous JSON-file approach.  All read operations go through
-the singleton ``get_client()`` helper which returns a ``supabase.Client``.
+All read operations go through the singleton ``get_client()`` helper
+which returns a ``supabase.Client``.
 """
 
 from __future__ import annotations
@@ -14,9 +14,8 @@ from supabase import Client, create_client
 from .config import SUPABASE_SERVICE_KEY, SUPABASE_URL
 
 TABLE = "entries"
+FEEDBACK_TABLE = "feedback"
 
-# Per-thread client avoids HTTP/2 stream-multiplexing conflicts when FastAPI
-# runs sync endpoints concurrently in a thread pool.
 _thread_local = threading.local()
 
 
@@ -37,12 +36,10 @@ def _reset_client() -> Client:
     return get_client()
 
 
-# ---- thin query helpers used across the service layer ----
-
 _SELECT_COLS = (
-    "id, hadrami_word, search_key, arabic_fus7a, full_definition, "
-    "cultural_note, part_of_speech, thematic_category, is_archaic, "
-    "proverb_record, examples, aliases"
+    "id, word_vocalized, word_clean, root, pos, fusha_equivalent, "
+    "definition, region, synonyms, phonetic_variants, note, source, "
+    "examples, proverbs, tags, tags_ar"
 )
 
 
@@ -61,7 +58,7 @@ def _execute_with_retry(build_query_fn):
 
 
 def fetch_all(columns: str = _SELECT_COLS) -> list[dict[str, Any]]:
-    """Return every entry (no embedding column — too large for bulk reads)."""
+    """Return every entry (no embedding column -- too large for bulk reads)."""
     rows: list[dict[str, Any]] = []
     page_size = 1000
     offset = 0
@@ -98,7 +95,7 @@ def text_search(
     limit: int = 20,
 ) -> list[dict[str, Any]]:
     """Case-insensitive ``ilike`` search across one or more text columns."""
-    cols = columns or ["hadrami_word", "search_key", "arabic_fus7a", "full_definition"]
+    cols = columns or ["word_vocalized", "word_clean", "fusha_equivalent", "definition"]
     pattern = f"%{query}%"
     or_filter = ",".join(f"{c}.ilike.{pattern}" for c in cols)
     resp = _execute_with_retry(
@@ -124,6 +121,34 @@ def rpc_match_entries(
         )
     )
     return resp.data or []
+
+
+def insert_feedback(payload: dict[str, Any]) -> dict[str, Any]:
+    """Persist a feedback submission. Returns the inserted row."""
+    resp = _execute_with_retry(
+        lambda c, p=payload: c.table(FEEDBACK_TABLE).insert(p)
+    )
+    rows = resp.data or []
+    return rows[0] if rows else {}
+
+
+def list_feedback(
+    limit: int = 50,
+    offset: int = 0,
+    status: str | None = None,
+    feedback_type: str | None = None,
+) -> dict[str, Any]:
+    """List feedback rows newest-first, with optional status/type filters."""
+    def build(c, start=offset, end=offset + limit - 1):
+        q = c.table(FEEDBACK_TABLE).select("*", count="exact")
+        if status:
+            q = q.eq("status", status)
+        if feedback_type:
+            q = q.eq("feedback_type", feedback_type)
+        return q.order("created_at", desc=True).range(start, end)
+
+    resp = _execute_with_retry(build)
+    return {"total": resp.count or 0, "results": resp.data or []}
 
 
 def rpc_search_entries_expanded(query_text: str, match_count: int = 8) -> list[dict[str, Any]]:

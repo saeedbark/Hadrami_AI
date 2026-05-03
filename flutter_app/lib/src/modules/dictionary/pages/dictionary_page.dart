@@ -212,18 +212,21 @@ class _PosAndCategoryFilter extends StatelessWidget {
   final WidgetRef ref;
 
   static const _posOptions = ['Noun', 'Verb', 'Adjective', 'Expression'];
-  static const _categoryOptions = [
-    'Daily Life',
-    'Agriculture',
-    'Social Customs',
-    'Emotions',
+  static const _tagOptions = [
     'Nature',
+    'Behavior',
+    'Wisdom',
+    'Insects',
+    'Food',
+    'Social',
+    'Emotions',
+    'Daily Life',
   ];
 
   @override
   Widget build(BuildContext context) {
     final selectedPos = ref.watch(selectedPosProvider);
-    final selectedCategory = ref.watch(selectedCategoryProvider);
+    final selectedTag = ref.watch(selectedTagProvider);
 
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
@@ -240,12 +243,12 @@ class _PosAndCategoryFilter extends StatelessWidget {
           const SizedBox(width: 6),
           _buildDropdown(
             context,
-            value: selectedCategory,
+            value: selectedTag,
             hint: 'التصنيف',
             icon: Icons.category_rounded,
-            items: _categoryOptions,
+            items: _tagOptions,
             onChanged: (v) =>
-                ref.read(selectedCategoryProvider.notifier).setCategory(v),
+                ref.read(selectedTagProvider.notifier).setTag(v),
           ),
         ],
       ),

@@ -1,7 +1,16 @@
 import 'package:hadrami_nlp/src/core/models/word_entry.dart';
 
-/// Finds occurrences of lexicon Hadrami surfaces from [context] inside [text].
-/// Indices are Unicode code units consistent with [HadramiHighlightedText] (rune-based).
+/// Collects highlight-able Hadrami surface forms from a list of dictionary
+/// entries (as returned by `/ask`, `/chat`, `/translate-phrase`).
+///
+/// The production schema exposes:
+///   * `word_vocalized`   — canonical headword with diacritics
+///   * `word_clean`       — stripped form used for case-insensitive matching
+///   * `synonyms`         — dialectal synonyms (list\<String>)
+///   * `phonetic_variants`— orthographic/phonetic variants (list\<String>)
+///
+/// Any shorter-than-2-rune string is dropped to avoid highlighting single
+/// letters (ا, و, ف…) that collide with MSA function words.
 List<HadramiSpan> hadramiSpansFromLexiconContext(
   String text,
   List<Map<String, dynamic>> context,
@@ -10,14 +19,21 @@ List<HadramiSpan> hadramiSpansFromLexiconContext(
 
   final surfaces = <String>{};
   for (final row in context) {
-    final w = (row['hadrami_word'] as String?)?.trim();
-    if (w != null && w.isNotEmpty) surfaces.add(w);
-    final searchKey = (row['search_key'] as String?)?.trim();
-    if (searchKey != null && searchKey.isNotEmpty) surfaces.add(searchKey);
-    final aliases = row['aliases'];
-    if (aliases is List<dynamic>) {
-      for (final a in aliases) {
-        if (a is String && a.trim().isNotEmpty) surfaces.add(a.trim());
+    void tryAdd(dynamic raw) {
+      if (raw is String) {
+        final s = raw.trim();
+        if (s.isNotEmpty) surfaces.add(s);
+      }
+    }
+
+    tryAdd(row['word_vocalized']);
+    tryAdd(row['word_clean']);
+    for (final listKey in const ['synonyms', 'phonetic_variants']) {
+      final v = row[listKey];
+      if (v is List) {
+        for (final item in v) {
+          tryAdd(item);
+        }
       }
     }
   }
