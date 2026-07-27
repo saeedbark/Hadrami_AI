@@ -13,5 +13,8 @@ fi
 flutter config --no-analytics >/dev/null
 flutter precache --web
 flutter pub get
+# freezed / json_serializable / riverpod_generator / reactive_forms_generator
+# output is gitignored — must regenerate before compiling.
+dart run build_runner build --delete-conflicting-outputs
 # Set API_BASE_URL in the Vercel project Environment Variables (Production).
 flutter build web --release --dart-define=API_BASE_URL="${API_BASE_URL:-http://localhost:8000}"
