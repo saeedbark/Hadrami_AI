@@ -86,6 +86,11 @@ try:
 except ImportError:
     pass
 
+from app.services.embedding_doc import (  # noqa: E402  -- after sys.path setup
+    EMBEDDING_DOC_VERSION,
+    embedding_text_for_entry as _embedding_text_for_entry,
+)
+
 
 SUPABASE_URL = os.getenv("SUPABASE_URL", "").strip()
 SUPABASE_SERVICE_KEY = os.getenv("SUPABASE_SERVICE_KEY", "").strip()
@@ -349,32 +354,6 @@ def _embed_text(text: str) -> Optional[list[float]]:
     return None
 
 
-def _embedding_text_for_entry(entry: dict[str, Any]) -> str:
-    """Single Arabic-first document string (no English labels, no tags)."""
-    parts: list[str] = []
-    wv = (entry.get("word_vocalized") or "").strip()
-    wc = (entry.get("word_clean") or "").strip()
-    if wv:
-        parts.append(f"الكلمة: {wv} ({wc})" if wc else f"الكلمة: {wv}")
-    r = (entry.get("root") or "").strip()
-    if r:
-        parts.append(f"الجذر: {r}")
-    d = (entry.get("definition") or "").strip()
-    if d:
-        parts.append(f"المعنى: {d}")
-    syns = [str(s).strip() for s in _as_list(entry.get("synonyms")) if s]
-    if syns:
-        parts.append("المرادفات: " + "، ".join(syns))
-    for ex in _as_list(entry.get("examples"))[:1]:
-        if isinstance(ex, dict):
-            h = (ex.get("h") or "").strip()
-            if h:
-                parts.append(f"مثال: {h}")
-                break
-    note = (entry.get("note") or "").strip()
-    if note:
-        parts.append(f"ملاحظة: {note}")
-    return "\n".join(parts) if parts else wv
 
 
 def _embedding_status_counts(

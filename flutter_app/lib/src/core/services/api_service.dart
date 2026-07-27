@@ -260,7 +260,7 @@ class ApiService {
         reply: 'انتهت مهلة الانتظار. جرّب مرة أخرى.',
       );
     } catch (_) {
-      return ChatResult(
+      return const ChatResult(
         reply:
             'تعذّر الاتصال بالخادم. تأكد من تشغيل الـ backend على ${ApiConfig.baseUrl}',
       );

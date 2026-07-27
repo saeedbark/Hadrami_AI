@@ -1,0 +1,20 @@
+{
+  "title": "Hadrami Arabic Dialect Dictionary",
+  "id": "REPLACE_USERNAME/hadrami-arabic-dialect-dictionary",
+  "licenses": [
+    {
+      "name": "CC-BY-SA-4.0"
+    }
+  ],
+  "keywords": [
+    "arabic",
+    "dialect",
+    "lexicon",
+    "low-resource",
+    "yemen",
+    "hadrami",
+    "nlp"
+  ],
+  "subtitle": "1000 verified Hadrami headwords with MSA glosses, definitions, and examples",
+  "description": "Curated Hadrami Arabic dialect lexicon with Modern Standard Arabic equivalents, definitions, examples, proverbs, and tags. See README.md for the full schema and citation."
+}

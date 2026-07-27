@@ -67,26 +67,28 @@ lib/
     │   ├── routing/
     │   │   └── router.dart            ← go_router with StatefulShellRoute
     │   ├── theme/
-    │   │   └── theme.dart             ← Material 3 light/dark themes
+    │   │   └── theme.dart             ← M3 light/dark themes (warm Yemeni palette: terracotta + saffron + cream — see docs/flutter_ui_changes.md)
     │   └── utils/
     │       └── hadrami_lexicon_spans.dart  ← Highlighted span utilities
     │
     ├── widgets/               ← Shared UI components
-    │   ├── app_card.dart              ← Styled card wrapper
-    │   ├── app_scaffold.dart          ← Common page scaffold
-    │   ├── loading_widget.dart        ← Loading indicator
+    │   ├── app_scaffold.dart          ← Common page scaffold + AppAppBar
+    │   ├── content_shell.dart         ← Responsive max-width wrapper (no-op on mobile, clamps on web/desktop)
+    │   ├── animated_appear.dart       ← AnimatedAppear + StaggeredAppear (one-shot fade + slide)
+    │   ├── loading_widget.dart        ← Themed spinner + animated SkeletonLine placeholder
     │   ├── error_widget.dart          ← Error display
     │   ├── empty_state.dart           ← Empty state placeholder
     │   └── hadrami_highlighted_text.dart  ← Highlighted span text
     │
     └── modules/               ← Feature modules
-        ├── landing/           ← Bottom nav / rail shell
-        ├── home/              ← Translate + stats + word of the day
+        ├── landing/           ← Bottom nav (mobile) / rail (desktop) shell
+        ├── home/              ← Hero gradient + stats + sections + word of the day
         ├── search/            ← Live debounced search
         ├── dictionary/        ← Full word list + letter filter
         ├── favorites/         ← Locally saved words
-        ├── ask/               ← AI Q&A
-        ├── phrase/            ← Phrase translation with spans
+        ├── ask/               ← AI Q&A (`/ask`)
+        ├── phrase/            ← Phrase translation with spans (`/translate-phrase`)
+        ├── chat/              ← Unified conversational dispatcher (`/chat`)
         └── settings/          ← Connection test, theme, about
 ```
 
@@ -131,13 +133,14 @@ All models are defined in `core/models/word_entry.dart`:
 
 | # | Screen | Route | Description |
 |---|--------|-------|-------------|
-| 1 | Home | `/` | Translate box, stats cards, random word |
+| 1 | Home | `/` | Hero gradient, stats cards, sections, random word, staggered entry animations |
 | 2 | Search | `/search` | Debounced search with result count |
 | 3 | Dictionary | `/dictionary` | Paginated list + Arabic letter filter chips |
 | 4 | Favorites | `/favorites` | Locally saved words (shared_preferences) |
 | 5 | Ask | `/ask` | AI Q&A with copy button and source mode |
 | 6 | Phrases | `/phrase-translate` | Bidirectional phrase translation |
-| 7 | Settings | `/settings` | Backend test, theme selector, version info |
+| 7 | Chat | `/chat` | Unified conversational dispatcher (5 intents, refusal contract) |
+| 8 | Settings | `/settings` | Backend test, theme selector (light / dark / system), version info |
 
 ---
 

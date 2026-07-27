@@ -35,7 +35,13 @@ def looks_like_translation_request(question: str) -> bool:
 # ---------------------------------------------------------------------------
 
 def ask_context_block(entries: list[dict], definition_max_chars: int = 160) -> str:
-    """Verbose context block used by ``/ask`` and ``/chat`` prompts."""
+    """Verbose context block used by ``/ask`` and ``/chat`` prompts.
+
+    The block is wrapped with ``[CONTEXT START]`` / ``[CONTEXT END]`` markers
+    that the unified system prompt looks for. When ``entries`` is empty the
+    markers still render so the model knows retrieval ran but produced
+    nothing.
+    """
     blocks: list[str] = []
     cap = max(80, definition_max_chars)
     for entry in entries[:5]:
@@ -44,8 +50,11 @@ def ask_context_block(entries: list[dict], definition_max_chars: int = 160) -> s
         definition = str(entry.get("definition") or "").strip()
         synonyms = synonyms_from_entry(entry)[:4]
         ex_h, ex_f = first_example(entry)
+        eid = entry.get("id")
 
         lines = [f"- الكلمة الحضرمية: {head or 'غير متوفر'}"]
+        if eid is not None:
+            lines.append(f"  id: {eid}")
         if synonyms:
             lines.append(f"  المرادفات: {', '.join(synonyms)}")
         if fusha:
@@ -56,11 +65,16 @@ def ask_context_block(entries: list[dict], definition_max_chars: int = 160) -> s
             lines.append(f"  مثال قاموسي: {ex_h}")
             lines.append(f"  معنى المثال: {ex_f}")
         blocks.append("\n".join(lines))
-    return "\n\n".join(blocks)
+    body = "\n\n".join(blocks) if blocks else "(لا توجد مطابقات قاموسية)"
+    return f"[CONTEXT START]\n{body}\n[CONTEXT END]"
 
 
 def phrase_context_block(entries: list[dict], *, definition_cap: int) -> str:
-    """Compact one-entry-per-line block used by the phrase translator."""
+    """Compact one-entry-per-line block used by the phrase translator.
+
+    Wrapped in ``[CONTEXT START]`` / ``[CONTEXT END]`` markers to match the
+    unified system prompt's retrieval contract.
+    """
     lines: list[str] = []
     for e in entries:
         syns = e.get("synonyms") or []
@@ -73,11 +87,8 @@ def phrase_context_block(entries: list[dict], *, definition_cap: int) -> str:
             f"- حضرمي: {e.get('word_vocalized', '')} | فصحى: {e.get('fusha_equivalent', '')}"
             f"{syn_txt} | شرح: {(e.get('definition') or '')[:definition_cap]}"
         )
-    return (
-        "\n".join(lines)
-        if lines
-        else "(لم يُسترجَع أي مدخل قاموسي لهذا النص.)"
-    )
+    body = "\n".join(lines) if lines else "(لم يُسترجَع أي مدخل قاموسي لهذا النص.)"
+    return f"[CONTEXT START]\n{body}\n[CONTEXT END]"
 
 
 # ---------------------------------------------------------------------------
@@ -156,9 +167,9 @@ def _few_shot_pairs_from_entry(entry: dict[str, Any]) -> list[tuple[str, str]]:
 def translation_prompt(question: str, context_entries: list[dict]) -> str:
     """Hadrami→MSA translation prompt: demand grounding in retrieved lexicon only."""
     blocks: list[str] = []
-    for e in context_entries[:8]:
+    for e in context_entries[:12]:
         for had, fusha in _few_shot_pairs_from_entry(e):
-            if len(blocks) >= 10:
+            if len(blocks) >= 16:
                 break
             had_clean = had.replace("\n", " ").strip()
             fusha_clean = fusha.replace("\n", " ").strip()
@@ -167,7 +178,7 @@ def translation_prompt(question: str, context_entries: list[dict]) -> str:
             blocks.append(
                 f"- Hadrami Example: {had_clean}\n  - Fusha Translation: {fusha_clean}"
             )
-        if len(blocks) >= 10:
+        if len(blocks) >= 16:
             break
 
     if blocks:
@@ -208,6 +219,12 @@ def chat_prompt(
     history: list[dict[str, str]],
     context_entries: list[dict],
 ) -> str:
+    """User-message body for ``/chat``.
+
+    System-level rules are in :mod:`.system_prompt`. This builder only
+    supplies the retrieved context, recent conversation history, and the
+    current user message.
+    """
     context = ask_context_block(context_entries, definition_max_chars=320)
     history_block = ""
     if history:
@@ -219,40 +236,14 @@ def chat_prompt(
             turns.append(f"{label}: {content}")
         history_block = "\n".join(turns)
 
-    if not context_entries:
-        grounding_rules = (
-            "لم يُسترجَع من القاموس أي مدخل يدعم إجابةً موثوقة. "
-            "يجب أن يقتصر ردك على: (أ) الاعتراف بعدم وجود مرجع قاموسي مناسب، "
-            "(ب) اقتراح إعادة صياغة أو كلمات مفتاحية أخرى قد تساعد. "
-            "ممنوع منعاً باتاً اختراع معنى أو ترجمة من معرفتك العامة."
-        )
-    else:
-        grounding_rules = (
-            "التزم حصراً بالمراجع القاموسية أدناه. "
-            "كل ترجمة أو معنى حضرمي تذكره يجب أن يكون مستمداً من هذه المراجع فقط "
-            "(الكلمة الحضرمية، المرادفات، المقابل الفصيح، الشرح، الأمثلة). "
-            "لا تستخدم معرفتك العامة لملء الفجوات. "
-            "إن كانت المراجع لا تغطي السؤال كاملاً، فاذكر الجزء المغطى فقط ثم صرّح بأن "
-            "الباقي غير موثّق قاموسياً."
-        )
+    history_section = (
+        f"\nسجل المحادثة (للسياق؛ ركّز على آخر سؤال):\n{history_block}\n"
+        if history_block
+        else ""
+    )
 
-    return f"""أنت مساعد بحثي متخصص في اللهجة الحضرمية اليمنية. تجيب بأسلوب واضح ومختصر.
-
-{grounding_rules}
-
-عند شرح معنى كلمة أو عبارة حضرمية وردت في المراجع، استخدم هذا التنسيق:
-- **الكلمة/العبارة:** الشكل الحضرمي من المراجع.
-- **المعنى بالفصحى:** من حقل «المقابل الفصيح» حرفياً.
-- **الشرح:** ملخص من «الشرح القاموسي» دون إضافة.
-- **مثال:** فقط إن ورد في المراجع (h و f)؛ وإلا اكتب «لا يوجد مثال في المراجع».
-
-عند طلب ترجمة جملة، فسّر فقط الكلمات التي تغطيها المراجع، واترك ما لا تغطيه دون ترجمة مع ملاحظة: «خارج تغطية القاموس الحالية».
-
-مراجع من القاموس:
-{context if context else "(لا توجد مطابقات قاموسية)"}
-
-{"سجل المحادثة السابقة (للسياق فقط؛ ركّز على آخر سؤال):" + chr(10) + history_block if history_block else ""}
-
+    return f"""{context}
+{history_section}
 المستخدم: {user_message}
 
 المساعد:"""

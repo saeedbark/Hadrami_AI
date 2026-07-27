@@ -37,6 +37,7 @@ hadrami_project/
 │   │   │   ├── prompts.py           ← All grounded prompts (ask, chat, translate)
 │   │   │   ├── serialization.py     ← DB-row → Pydantic Entry + response shaping
 │   │   │   ├── text_utils.py        ← Arabic normalization + span detection
+│   │   │   ├── system_prompt.py     ← HADRAMI_SYSTEM_PROMPT + intent_for() classifier
 │   │   │   ├── logging_utils.py     ← RAG_DEBUG logging
 │   │   │   └── pipeline.py          ← Public entrypoints (get_rag_answer etc.)
 │   │   ├── core/
@@ -44,7 +45,8 @@ hadrami_project/
 │   │   │   └── data_store.py        ← Supabase client + PostgREST / RPC helpers
 │   │   └── services/
 │   │       ├── dictionary_service.py        ← Search, translate, pagination, feedback
-│   │       ├── embedding_service.py         ← Gemini text-embedding-004 wrapper
+│   │       ├── embedding_service.py         ← Gemini gemini-embedding-001 wrapper (768-dim)
+│   │       ├── embedding_doc.py             ← Canonical embedding-doc text (versioned, v2)
 │   │       └── phrase_translation_service.py ← Chunked phrase translation
 │   ├── data/
 │   │   ├── hadrami_dataset.json     ← Main lexicon (source of truth; see schema below)
@@ -52,7 +54,8 @@ hadrami_project/
 │   ├── scripts/
 │   │   ├── validate_dataset.py      ← Schema + required-field validation
 │   │   └── audit_dataset.py         ← Coverage / POS / length statistics
-│   ├── tests/test_api.py            ← pytest suite (26 tests, live Supabase)
+│   ├── tests/                       ← 42 tests passing (test_api.py: 26 live E2E; test_chat_unified.py: 16 hermetic)
+│   ├── migrations/                  ← v2 schema delta (searchable_text, semantic_intent, transliteration)
 │   ├── requirements.txt
 │   ├── pyproject.toml               ← Package metadata + Vercel entry point
 │   ├── run.ps1                      ← Windows: install deps + start server
@@ -70,11 +73,28 @@ hadrami_project/
 │   └── pubspec.yaml
 │
 ├── scripts/
-│   └── sync_to_supabase.py          ← JSON → (CSV) → Supabase + embeddings
+│   ├── sync_to_supabase.py          ← JSON → (CSV) → Supabase + embeddings
+│   ├── clean_lexicon.py / clean_tags_region.py / null_empty_strings.py
+│   │                                  ← One-shot cleanup passes (already applied to live DB)
+│   ├── validate_pos.py / apply_pos_corrections.py
+│   │                                  ← LLM-based POS validator + auto-collapse
+│   ├── generate_enrichment.py        ← Fill semantic_intent + transliteration via Gemini
+│   ├── backfill_searchable_text.py   ← Re-run canonical embedding-doc text into DB
+│   ├── gemini_rotator.py             ← Round-robin across multiple GEMINI_API_KEY env vars
+│   ├── finalize_pipeline.sh          ← Apply POS + audit + Kaggle/HF re-export
+│   ├── eval/                         ← Per-experiment runners (E1–E5) + test-set seed builder
+│   └── export/                       ← Release bundle builders (Kaggle + HuggingFace)
 │
 ├── docs/
-│   └── methods_evaluation.md        ← Architecture + evaluation protocol
+│   ├── README.md                    ← This file (top-level overview)
+│   ├── methods_evaluation.md        ← Architecture + evaluation protocol
+│   ├── research_paper_plan.md       ← Paper outline, experiments, timeline
+│   ├── hadrami_rag_paper.html       ← Paper draft (real numbers + TBD provenance)
+│   ├── search.md                    ← Search/retrieval component (How / When / Where / Why)
+│   ├── chat_unified_changes.md      ← Backend `/chat` dispatcher refactor changelog
+│   └── flutter_ui_changes.md        ← Frontend UI / animations / responsive changelog
 │
+├── results/                         ← Eval outputs (corpus_stats.json, intent_eval.json, …)
 └── ROADMAP.md                       ← Future improvements
 ```
 
@@ -255,13 +275,14 @@ The full audit that motivated these changes is in
 | Backend | FastAPI, Pydantic v2, Uvicorn |
 | Database | Supabase (PostgreSQL + pgvector) |
 | AI / RAG | Google Gemini (`gemini-2.5-flash` default, with fallbacks) |
-| Embeddings | Gemini `text-embedding-004` (768-dim) |
-| Frontend | Flutter 3.x, Riverpod, go_router |
+| Embeddings | Gemini `gemini-embedding-001` (768-dim) |
+| Frontend | Flutter 3.x, Riverpod, hooks, go_router (`StatefulShellRoute.indexedStack`) |
 | Forms | reactive_forms (+ codegen) |
 | Models | freezed + json_serializable |
-| Theme | Material 3, responsive layout |
-| Testing | pytest (backend), flutter_test (frontend) |
-| Deployment | Vercel (backend), multi-platform (frontend) |
+| Theme | Material 3, light + dark, responsive (mobile / tablet / desktop), warm Yemeni palette (terracotta + saffron + cream) |
+| Animations | Native Flutter primitives only — `AnimatedAppear` + `StaggeredAppear` shared widgets, `AnimatedSwitcher` on theme toggle, `TweenAnimationBuilder` elastic on empty-state, no extra packages |
+| Testing | pytest (backend, **42 passing**), flutter_test (frontend), `flutter analyze` clean (15 pre-existing infra issues, 0 errors) |
+| Deployment | Vercel (backend), multi-platform Flutter (Android / iOS / Web / Windows / macOS / Linux) |
 
 ---
 

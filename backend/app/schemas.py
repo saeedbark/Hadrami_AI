@@ -156,6 +156,15 @@ class ChatRequest(BaseModel):
 
 class ChatResponse(BaseModel):
     reply: str
+    #: Auto-classified intent: ``word`` / ``translate`` / ``define`` /
+    #: ``semantic`` / ``qa``. Lets the Flutter client pick a render layout.
+    intent: str = "qa"
+    #: True when retrieval did not produce a confident lexicon match — the
+    #: client can prompt the user to submit the word via the suggest flow.
+    suggest_word: bool = False
+    #: ``"model"`` when Gemini answered, ``"lexicon"`` for deterministic
+    #: fallback or the suggest-word short-circuit.
+    answer_source: str = "model"
     context: list[Entry] = Field(default_factory=list)
     hadrami_spans: list[HadramiSpan] = Field(default_factory=list)
     highlight_surfaces: list[str] = Field(default_factory=list)

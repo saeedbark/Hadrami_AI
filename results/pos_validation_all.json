@@ -1,0 +1,1872 @@
+[
+  {
+    "id": 1,
+    "word": "أُمّ حُبَيْل",
+    "fusha": "العنكبوت",
+    "stored_pos": "Noun",
+    "llm": {
+      "pos": "Noun",
+      "confidence": "high",
+      "reason": "اسم يطلق على حشرة"
+    }
+  },
+  {
+    "id": 2,
+    "word": "إبِطْ",
+    "fusha": "التباطؤ والتريث",
+    "stored_pos": "Noun",
+    "llm": {
+      "pos": "Noun",
+      "confidence": "high",
+      "reason": "مصدر الفعل (تباطأ)"
+    }
+  },
+  {
+    "id": 3,
+    "word": "الأَمَات",
+    "fusha": "المشيمة",
+    "stored_pos": "Noun",
+    "llm": {
+      "pos": "Noun",
+      "confidence": "high",
+      "reason": "الكلمة اسم يدل على شيء"
+    }
+  },
+  {
+    "id": 4,
+    "word": "أَبُوي",
+    "fusha": "الأب أو الوالد",
+    "stored_pos": "Noun",
+    "llm": {
+      "pos": "Noun",
+      "confidence": "high",
+      "reason": "اسم يدل على الأب"
+    }
+  },
+  {
+    "id": 5,
+    "word": "أُبّب",
+    "fusha": "تعبير عن التأكد الشديد أو الاندهاش",
+    "stored_pos": "Expression",
+    "llm": {
+      "pos": "Expression",
+      "confidence": "high",
+      "reason": "تعبير عن التأكد الشديد أو الاندهاش"
+    }
+  },
+  {
+    "id": 6,
+    "word": "أَبَداً",
+    "fusha": "للنفي القاطع",
+    "stored_pos": "Expression",
+    "llm": {
+      "pos": "Adverb",
+      "confidence": "high",
+      "reason": "ظرف زمان للنفي القاطع"
+    }
+  },
+  {
+    "id": 7,
+    "word": "أَثَرَه",
+    "fusha": "تبيّن أو اتضح أن..",
+    "stored_pos": "Expression",
+    "llm": {
+      "pos": "Expression",
+      "confidence": "high",
+      "reason": "تعبير اصطلاحي ثابت"
+    }
+  },
+  {
+    "id": 8,
+    "word": "أَثَّر",
+    "fusha": "ترك أثراً أو نتيجة",
+    "stored_pos": "Verb",
+    "llm": {
+      "pos": "Verb",
+      "confidence": "high",
+      "reason": "فعل مضارع"
+    }
+  },
+  {
+    "id": 9,
+    "word": "إِثّم",
+    "fusha": "الفم",
+    "stored_pos": "Noun",
+    "llm": {
+      "pos": "Noun",
+      "confidence": "high",
+      "reason": "لفظ يطلق على فم الإنسان"
+    }
+  },
+  {
+    "id": 10,
+    "word": "أَرْبِيِه",
+    "fusha": "التهاب غدي في الفخذ",
+    "stored_pos": "Noun",
+    "llm": {
+      "pos": "Noun",
+      "confidence": "high",
+      "reason": "يصف حالة مرضية"
+    }
+  },
+  {
+    "id": 11,
+    "word": "أَثَّث",
+    "fusha": "فرش البيت وجهزه",
+    "stored_pos": "Verb",
+    "llm": {
+      "pos": "Verb",
+      "confidence": "high",
+      "reason": "مصدر يدل على فعل"
+    }
+  },
+  {
+    "id": 12,
+    "word": "إِثْم",
+    "fusha": "ذنب أو سيئة",
+    "stored_pos": "Noun",
+    "llm": {
+      "pos": "Noun",
+      "confidence": "high",
+      "reason": "بمعنى الذنب أو الجزاء السيئ"
+    }
+  },
+  {
+    "id": 13,
+    "word": "الأَوَادِم",
+    "fusha": "البشر أو الناس",
+    "stored_pos": "Noun",
+    "llm": {
+      "pos": "Noun",
+      "confidence": "high",
+      "reason": "كلمة تدل على جمع اسم 'آدمي'"
+    }
+  },
+  {
+    "id": 14,
+    "word": "إِسْتَادَى",
+    "fusha": "اشتكى أو تضرر",
+    "stored_pos": "Verb",
+    "llm": {
+      "pos": "Verb",
+      "confidence": "high",
+      "reason": "الفعل الماضي"
+    }
+  },
+  {
+    "id": 15,
+    "word": "انْقَاص البَرْد",
+    "fusha": "حبات البَرَد",
+    "stored_pos": "Noun",
+    "llm": {
+      "pos": "Noun",
+      "confidence": "high",
+      "reason": "جمع لكلمة 'نَاْقِصَة' بمعنى حبة برد"
+    }
+  },
+  {
+    "id": 16,
+    "word": "إِثْل",
+    "fusha": "شجر الأثل",
+    "stored_pos": "Noun",
+    "llm": {
+      "pos": "Noun",
+      "confidence": "high",
+      "reason": "كلمة تدل على نوع من الشجر"
+    }
+  },
+  {
+    "id": 17,
+    "word": "الأَزْمِيل",
+    "fusha": "الإزميل",
+    "stored_pos": "Noun",
+    "llm": {
+      "pos": "Noun",
+      "confidence": "high",
+      "reason": "اسم أداة"
+    }
+  },
+  {
+    "id": 18,
+    "word": "إِيبَلَّه",
+    "fusha": "إي والله (قسم للايجاب)",
+    "stored_pos": "Expression",
+    "llm": {
+      "pos": "Expression",
+      "confidence": "high",
+      "reason": "صيغة قسم تستخدم للتأكيد"
+    }
+  },
+  {
+    "id": 19,
+    "word": "الأَقْصَام",
+    "fusha": "جريد النخل",
+    "stored_pos": "Noun",
+    "llm": {
+      "pos": "Noun",
+      "confidence": "high",
+      "reason": "اسم يدل على شيء مجفف"
+    }
+  },
+  {
+    "id": 20,
+    "word": "اللِّيف",
+    "fusha": "ليف النخل",
+    "stored_pos": "Noun",
+    "llm": {
+      "pos": "Noun",
+      "confidence": "high",
+      "reason": "اسم يدل على الألياف"
+    }
+  },
+  {
+    "id": 21,
+    "word": "أَقْلِيد",
+    "fusha": "مفتاح خشبي تقليدي",
+    "stored_pos": "Noun",
+    "llm": {
+      "pos": "Noun",
+      "confidence": "high",
+      "reason": "اسم لشيء مادي"
+    }
+  },
+  {
+    "id": 22,
+    "word": "إِبْرَه",
+    "fusha": "الحقنة الطبية",
+    "stored_pos": "Noun",
+    "llm": {
+      "pos": "Noun",
+      "confidence": "high",
+      "reason": "اسم بمعنى الحقنة الطبية"
+    }
+  },
+  {
+    "id": 23,
+    "word": "اشِر",
+    "fusha": "أشر أو علّم",
+    "stored_pos": "Verb",
+    "llm": {
+      "pos": "Verb",
+      "confidence": "high",
+      "reason": "الفعل يدل على الحدث"
+    }
+  },
+  {
+    "id": 40,
+    "word": "الأَيْك",
+    "fusha": "رقم 1 في الدومينو",
+    "stored_pos": "Noun",
+    "llm": {
+      "pos": "Noun",
+      "confidence": "high",
+      "reason": "مصطلح يطلق على الرقم"
+    }
+  },
+  {
+    "id": 43,
+    "word": "أَطْلَس",
+    "fusha": "قماش الحرير/الأطلس",
+    "stored_pos": "Noun",
+    "llm": {
+      "pos": "Noun",
+      "confidence": "high",
+      "reason": "الكلمة تشير إلى نوع من القماش، وهو اسم جامد."
+    }
+  },
+  {
+    "id": 44,
+    "word": "اش",
+    "fusha": "كش / للطرد",
+    "stored_pos": "Expression",
+    "llm": {
+      "pos": "Particle",
+      "confidence": "high",
+      "reason": "الكلمة لفظة زجر قصيرة تستخدم لطرد الحيوانات والحشرات."
+    }
+  },
+  {
+    "id": 45,
+    "word": "إِيش",
+    "fusha": "ماذا / ما",
+    "stored_pos": "Expression",
+    "llm": {
+      "pos": "Interrogative",
+      "confidence": "high",
+      "reason": "لفظة استفهام"
+    }
+  },
+  {
+    "id": 46,
+    "word": "بَعْرَه",
+    "fusha": "روث الماشية",
+    "stored_pos": "Noun",
+    "llm": {
+      "pos": "Noun",
+      "confidence": "high",
+      "reason": "الكلمة تدل على اسم جامد (روث وفضلات) ولها صيغة اسم مفرد مؤنث وجمع (بَعَر)."
+    }
+  },
+  {
+    "id": 47,
+    "word": "بَرِّك",
+    "fusha": "بارِك / قُل مبروك",
+    "stored_pos": "Verb",
+    "llm": {
+      "pos": "Verb",
+      "confidence": "high",
+      "reason": "فعل أمر"
+    }
+  },
+  {
+    "id": 60,
+    "word": "بُغْيَة",
+    "fusha": "عسل السدر الفاخر",
+    "stored_pos": "Noun",
+    "llm": {
+      "pos": "Noun",
+      "confidence": "high",
+      "reason": "اسم يدل على شيء"
+    }
+  },
+  {
+    "id": 24,
+    "word": "أَكْشَف",
+    "fusha": "سيئ الطباع أو عنيد",
+    "stored_pos": "Adjective",
+    "llm": {
+      "pos": "Adjective",
+      "confidence": "high",
+      "reason": "وصف للشخص"
+    }
+  },
+  {
+    "id": 25,
+    "word": "أَيْوَا",
+    "fusha": "نعم / للإيجاب",
+    "stored_pos": "Expression",
+    "llm": {
+      "pos": "Expression",
+      "confidence": "high",
+      "reason": "لفظة تقال للإيجاب والموافقة"
+    }
+  },
+  {
+    "id": 26,
+    "word": "إِبْزِم",
+    "fusha": "إبزيم",
+    "stored_pos": "Noun",
+    "llm": {
+      "pos": "Noun",
+      "confidence": "high",
+      "reason": "قطعتان معدنيتان تتشابكان لربط الحزام"
+    }
+  },
+  {
+    "id": 27,
+    "word": "أُبّـل",
+    "fusha": "كعك صغير حلو",
+    "stored_pos": "Noun",
+    "llm": {
+      "pos": "Noun",
+      "confidence": "high",
+      "reason": "اسم نوع من المعجنات"
+    }
+  },
+  {
+    "id": 28,
+    "word": "إِبْلِيس",
+    "fusha": "شخص ماكر أو ذكي جداً",
+    "stored_pos": "Expression",
+    "llm": {
+      "pos": "Noun",
+      "confidence": "high",
+      "reason": "تستخدم كاسم للدلالة على صفة"
+    }
+  },
+  {
+    "id": 29,
+    "word": "أَبُو / بُو",
+    "fusha": "أبا (للكنية)",
+    "stored_pos": "Noun",
+    "llm": {
+      "pos": "Noun",
+      "confidence": "high",
+      "reason": "للشخص بالكنية"
+    }
+  },
+  {
+    "id": 30,
+    "word": "أُمّ سَبْعَة وَسَبْعِين",
+    "fusha": "أم أربعة وأربعين (حشرة)",
+    "stored_pos": "Noun",
+    "llm": {
+      "pos": "Expression",
+      "confidence": "high",
+      "reason": "تعبير اصطلاحي مركب"
+    }
+  },
+  {
+    "id": 31,
+    "word": "أَمْبُوه",
+    "fusha": "الماء (للأطفال)",
+    "stored_pos": "Noun",
+    "llm": {
+      "pos": "Noun",
+      "confidence": "high",
+      "reason": "اسم يعنى الماء"
+    }
+  },
+  {
+    "id": 32,
+    "word": "أَحّ",
+    "fusha": "آه (للتأوه أو الإعجاب)",
+    "stored_pos": "Expression",
+    "llm": {
+      "pos": "Particle",
+      "confidence": "high",
+      "reason": "لفظ يدل على الانفعال"
+    }
+  },
+  {
+    "id": 33,
+    "word": "الآجر",
+    "fusha": "الطوب الأحمر المحروق",
+    "stored_pos": "Noun",
+    "llm": {
+      "pos": "Noun",
+      "confidence": "high",
+      "reason": "الكلمة اسم وتشير إلى مادة بناء"
+    }
+  },
+  {
+    "id": 34,
+    "word": "إِكِّس عَلَيْه",
+    "fusha": "تجاهله تماماً / ألغِه",
+    "stored_pos": "Expression",
+    "llm": {
+      "pos": "Expression",
+      "confidence": "high",
+      "reason": "تعبير اصطلاحي مركب"
+    }
+  },
+  {
+    "id": 35,
+    "word": "الأَوْد",
+    "fusha": "حصة الري",
+    "stored_pos": "Noun",
+    "llm": {
+      "pos": "Noun",
+      "confidence": "high",
+      "reason": "اسم يدل على فترة زمنية"
+    }
+  },
+  {
+    "id": 36,
+    "word": "الأَسْتَه",
+    "fusha": "الأبله / قليل الفهم",
+    "stored_pos": "Adjective",
+    "llm": {
+      "pos": "Adjective",
+      "confidence": "high",
+      "reason": "صفة تطلق على الشخص"
+    }
+  },
+  {
+    "id": 37,
+    "word": "أُوقِيّه",
+    "fusha": "الأوقية (وحدة وزن)",
+    "stored_pos": "Noun",
+    "llm": {
+      "pos": "Noun",
+      "confidence": "high",
+      "reason": "كلمة تدل على وحدة قياس وزن"
+    }
+  },
+  {
+    "id": 38,
+    "word": "أُص / أُصَّه",
+    "fusha": "اسكت / اصمت",
+    "stored_pos": "Expression",
+    "llm": {
+      "pos": "Particle",
+      "confidence": "high",
+      "reason": "كلمة لطلب السكوت"
+    }
+  },
+  {
+    "id": 39,
+    "word": "أَوَاق",
+    "fusha": "عملة قديمة",
+    "stored_pos": "Noun",
+    "llm": {
+      "pos": "Noun",
+      "confidence": "high",
+      "reason": "اسم لعملة نقدية"
+    }
+  },
+  {
+    "id": 41,
+    "word": "إِدْحَق / دَحَق",
+    "fusha": "امشِ / ادعس",
+    "stored_pos": "Verb",
+    "llm": {
+      "pos": "Verb",
+      "confidence": "high",
+      "reason": "الفعل في صيغة الأمر"
+    }
+  },
+  {
+    "id": 42,
+    "word": "أَرْقَش",
+    "fusha": "مُبرقش / ملون ببني وأبيض",
+    "stored_pos": "Adjective",
+    "llm": {
+      "pos": "Adjective",
+      "confidence": "high",
+      "reason": "اسم صفة يدل على لون"
+    }
+  },
+  {
+    "id": 48,
+    "word": "بِلِّي",
+    "fusha": "بالذي",
+    "stored_pos": "Expression",
+    "llm": {
+      "pos": "Particle",
+      "confidence": "high",
+      "reason": "كلمة مدمجة تعني (بالذي)"
+    }
+  },
+  {
+    "id": 49,
+    "word": "بَخْت",
+    "fusha": "النصيب / الحظ",
+    "stored_pos": "Noun",
+    "llm": {
+      "pos": "Noun",
+      "confidence": "high",
+      "reason": "مصدر يدل على الحظ"
+    }
+  },
+  {
+    "id": 50,
+    "word": "يِئَذِّن",
+    "fusha": "يؤذن / ينادي للصلاة",
+    "stored_pos": "Verb",
+    "llm": {
+      "pos": "Verb",
+      "confidence": "high",
+      "reason": "فعل مضارع يدل على حدث"
+    }
+  },
+  {
+    "id": 51,
+    "word": "بواه",
+    "fusha": "بماذا / لأي شيء",
+    "stored_pos": "Expression",
+    "llm": {
+      "pos": "Interrogative",
+      "confidence": "high",
+      "reason": "أداة استفهام تستفسر عن الوسيلة أو السبب"
+    }
+  },
+  {
+    "id": 52,
+    "word": "البَغْزِيز",
+    "fusha": "سمك مملح محفوظ",
+    "stored_pos": "Noun",
+    "llm": {
+      "pos": "Noun",
+      "confidence": "high",
+      "reason": "الكلمة معرفة بـ 'ال' وتدل على اسم لشيء (نوع من السمك)."
+    }
+  },
+  {
+    "id": 53,
+    "word": "بنزر",
+    "fusha": "لفة الغزل الكاملة",
+    "stored_pos": "Noun",
+    "llm": {
+      "pos": "Noun",
+      "confidence": "high",
+      "reason": "الكلمة تشير إلى اسم حزمة أو لفة خيوط الغزل، وهي اسم جامد."
+    }
+  },
+  {
+    "id": 54,
+    "word": "بَلَاش",
+    "fusha": "مجاناً",
+    "stored_pos": "Noun",
+    "llm": {
+      "pos": "Adverb",
+      "confidence": "high",
+      "reason": "تعمل بمعنى 'بدون مقابل'"
+    }
+  },
+  {
+    "id": 55,
+    "word": "با محقب",
+    "fusha": "العنكبوت",
+    "stored_pos": "Noun",
+    "llm": {
+      "pos": "Noun",
+      "confidence": "high",
+      "reason": "أحد الأسماء المحلية"
+    }
+  },
+  {
+    "id": 56,
+    "word": "بزبز",
+    "fusha": "قصبة النارجيلة",
+    "stored_pos": "Noun",
+    "llm": {
+      "pos": "Noun",
+      "confidence": "high",
+      "reason": "اسم لشيء مادي"
+    }
+  },
+  {
+    "id": 57,
+    "word": "بُوفَتِيلَة",
+    "fusha": "بندقية قديمة",
+    "stored_pos": "Noun",
+    "llm": {
+      "pos": "Noun",
+      "confidence": "high",
+      "reason": "اسم سلاح ناري"
+    }
+  },
+  {
+    "id": 58,
+    "word": "بَاقِرِنْقَاح",
+    "fusha": "مرض النكاف",
+    "stored_pos": "Noun",
+    "llm": {
+      "pos": "Noun",
+      "confidence": "high",
+      "reason": "الكلمة تشير إلى اسم مرض."
+    }
+  },
+  {
+    "id": 59,
+    "word": "بطاح",
+    "fusha": "الرمل / الكثيب",
+    "stored_pos": "Noun",
+    "llm": {
+      "pos": "Noun",
+      "confidence": "high",
+      "reason": "يطلق على الرمل الناعم أو الكثبان الرملية المنبسطة."
+    }
+  },
+  {
+    "id": 61,
+    "word": "بَا",
+    "fusha": "سوف (حرف استقبال)",
+    "stored_pos": "Particle",
+    "llm": {
+      "pos": "Particle",
+      "confidence": "high",
+      "reason": "حرف يسبق الفعل المضارع للتسويف"
+    }
+  },
+  {
+    "id": 62,
+    "word": "باير",
+    "fusha": "رديء / كاسد",
+    "stored_pos": "Adjective",
+    "llm": {
+      "pos": "Adjective",
+      "confidence": "high",
+      "reason": "وصف للسلعة أو الشخص"
+    }
+  },
+  {
+    "id": 63,
+    "word": "بِيح",
+    "fusha": "رخصة الرعي",
+    "stored_pos": "Noun",
+    "llm": {
+      "pos": "Noun",
+      "confidence": "high",
+      "reason": "يدل على اسم"
+    }
+  },
+  {
+    "id": 64,
+    "word": "بَاع",
+    "fusha": "وحدة طول (108 سم تقريباً)",
+    "stored_pos": "Noun",
+    "llm": {
+      "pos": "Noun",
+      "confidence": "high",
+      "reason": "مقياس طول تقليدي"
+    }
+  },
+  {
+    "id": 65,
+    "word": "البَنْطَلُون",
+    "fusha": "السروال / البنطال",
+    "stored_pos": "Noun",
+    "llm": {
+      "pos": "Noun",
+      "confidence": "high",
+      "reason": "لفظ يدل على شيء مادي"
+    }
+  },
+  {
+    "id": 66,
+    "word": "بِزْبُوز",
+    "fusha": "صنبور الماء / ثرثار",
+    "stored_pos": "Noun",
+    "llm": {
+      "pos": "Noun",
+      "confidence": "high",
+      "reason": "اسم يدل على آلة وصفة"
+    }
+  },
+  {
+    "id": 67,
+    "word": "البُرْنُص",
+    "fusha": "غطاء للرأس والأكتاف",
+    "stored_pos": "Noun",
+    "llm": {
+      "pos": "Noun",
+      "confidence": "high",
+      "reason": "اسم دل على شيء مادي"
+    }
+  },
+  {
+    "id": 68,
+    "word": "بَاشْتَه",
+    "fusha": "ورقة اللعب (كوتشينة)",
+    "stored_pos": "Noun",
+    "llm": {
+      "pos": "Noun",
+      "confidence": "high",
+      "reason": "إحدى أوراق اللعب"
+    }
+  },
+  {
+    "id": 69,
+    "word": "البُونِي",
+    "fusha": "الباب الفاصل",
+    "stored_pos": "Noun",
+    "llm": {
+      "pos": "Noun",
+      "confidence": "high",
+      "reason": "اسم يدل على شيء محدد"
+    }
+  },
+  {
+    "id": 70,
+    "word": "بِشِق",
+    "fusha": "في جانب / بجهة",
+    "stored_pos": "Noun",
+    "llm": {
+      "pos": "Preposition",
+      "confidence": "high",
+      "reason": "تدل على الظرفية المكانية"
+    }
+  },
+  {
+    "id": 71,
+    "word": "برز به",
+    "fusha": "اختلى به / انفرد به",
+    "stored_pos": "Verb",
+    "llm": {
+      "pos": "Verb Phrase",
+      "confidence": "high",
+      "reason": "فعل وفاعل ومفعول به"
+    }
+  },
+  {
+    "id": 72,
+    "word": "البَكْرَة",
+    "fusha": "سارية أو عمود حجري",
+    "stored_pos": "Noun",
+    "llm": {
+      "pos": "Noun",
+      "confidence": "high",
+      "reason": "اسم لدلالة على شيء مادي"
+    }
+  },
+  {
+    "id": 73,
+    "word": "بَا فَتِيلَة",
+    "fusha": "فانوس كيروسين صغير",
+    "stored_pos": "Noun",
+    "llm": {
+      "pos": "Noun",
+      "confidence": "high",
+      "reason": "الكلمة تدل على اسم لشيء مادي (مصباح صغير)."
+    }
+  },
+  {
+    "id": 74,
+    "word": "البُنُص",
+    "fusha": "خمار الصلاة / غطاء الرأس",
+    "stored_pos": "Noun",
+    "llm": {
+      "pos": "Noun",
+      "confidence": "high",
+      "reason": "يدل على قطعة قماش وهي اسم"
+    }
+  },
+  {
+    "id": 75,
+    "word": "بهار",
+    "fusha": "وحدة وزن كبرى",
+    "stored_pos": "Noun",
+    "llm": {
+      "pos": "Noun",
+      "confidence": "high",
+      "reason": "الكلمة تدل على وحدة قياس وزن، وهي اسم صريح (معيار)."
+    }
+  },
+  {
+    "id": 76,
+    "word": "بِقَش",
+    "fusha": "نقود / أموال",
+    "stored_pos": "Noun",
+    "llm": {
+      "pos": "Noun",
+      "confidence": "high",
+      "reason": "الكلمة تعني النقود والمال، وهي اسم يعبر عن شيء مادي."
+    }
+  },
+  {
+    "id": 77,
+    "word": "البُرْمَة",
+    "fusha": "قدر فخاري / حجري",
+    "stored_pos": "Noun",
+    "llm": {
+      "pos": "Noun",
+      "confidence": "high",
+      "reason": "الكلمة معرفة بـ 'ال' وتنتهي بالتاء المربوطة وتدل على اسم لشيء (إناء)."
+    }
+  },
+  {
+    "id": 78,
+    "word": "البَاغ",
+    "fusha": "قصر / متنزه سلطاني",
+    "stored_pos": "Noun",
+    "llm": {
+      "pos": "Noun",
+      "confidence": "high",
+      "reason": "الكلمة معرفة بأل التعريف وتدل على اسم مكان (قصر/متنزه)."
+    }
+  },
+  {
+    "id": 79,
+    "word": "بُنّة",
+    "fusha": "عرض الإبهام (وحدة قياس)",
+    "stored_pos": "Noun",
+    "llm": {
+      "pos": "Noun",
+      "confidence": "high",
+      "reason": "وحدة قياس طولية"
+    }
+  },
+  {
+    "id": 80,
+    "word": "البَيْت",
+    "fusha": "مخزن الحصن",
+    "stored_pos": "Noun",
+    "llm": {
+      "pos": "Noun",
+      "confidence": "high",
+      "reason": "كلمة اسمية تتكون من ال التعريف واسم"
+    }
+  },
+  {
+    "id": 81,
+    "word": "بُرْقُع",
+    "fusha": "خمار / نقاب",
+    "stored_pos": "Noun",
+    "llm": {
+      "pos": "Noun",
+      "confidence": "high",
+      "reason": "الكلمة اسم لشيء مادي (غطاء للوجه) ولا تحمل صفات الأفعال أو الصفات أو الظروف."
+    }
+  },
+  {
+    "id": 82,
+    "word": "بَسْط",
+    "fusha": "وجبة الإفطار",
+    "stored_pos": "Noun",
+    "llm": {
+      "pos": "Noun",
+      "confidence": "high",
+      "reason": "الكلمة تدل على وجبة (إفطار) وهي اسم صريح."
+    }
+  },
+  {
+    "id": 83,
+    "word": "البُورِي",
+    "fusha": "رأس الشيشة / المدواخ",
+    "stored_pos": "Noun",
+    "llm": {
+      "pos": "Noun",
+      "confidence": "high",
+      "reason": "الكلمة معرفة بأل التعريف وتدل على اسم لشيء مادي (قطعة فخارية)."
+    }
+  },
+  {
+    "id": 84,
+    "word": "بَاصْوَاب",
+    "fusha": "رذاذ المطر",
+    "stored_pos": "Noun",
+    "llm": {
+      "pos": "Noun",
+      "confidence": "high",
+      "reason": "الكلمة تشير إلى نوع من المطر (رذاذ المطر)، وهو اسم لشيء أو ظاهرة."
+    }
+  },
+  {
+    "id": 85,
+    "word": "بَاصِيْقَع",
+    "fusha": "طائر اليمام الأخضر",
+    "stored_pos": "Noun",
+    "llm": {
+      "pos": "Noun",
+      "confidence": "high",
+      "reason": "الكلمة تدل على اسم طائر."
+    }
+  },
+  {
+    "id": 86,
+    "word": "بَانَه",
+    "fusha": "مفتاح الربط (مفك الصواميل)",
+    "stored_pos": "Noun",
+    "llm": {
+      "pos": "Noun",
+      "confidence": "high",
+      "reason": "الكلمة تدل على اسم أداة أو آلة (مفتاح الربط)."
+    }
+  },
+  {
+    "id": 87,
+    "word": "بسر",
+    "fusha": "البلح الملون",
+    "stored_pos": "Noun",
+    "llm": {
+      "pos": "Noun",
+      "confidence": "high",
+      "reason": "الكلمة تشير إلى ثمر النخل في مرحلة معينة من نضجه."
+    }
+  },
+  {
+    "id": 88,
+    "word": "بَنْقَلَة",
+    "fusha": "فيلا / استراحة ريفية",
+    "stored_pos": "Noun",
+    "llm": {
+      "pos": "Noun",
+      "confidence": "high",
+      "reason": "الكلمة تدل على بناء محدد وتنتهي بتاء مربوطة، وهي علامة اسمية."
+    }
+  },
+  {
+    "id": 89,
+    "word": "بَقْل",
+    "fusha": "جرجير / ورقيات خضراء",
+    "stored_pos": "Noun",
+    "llm": {
+      "pos": "Noun",
+      "confidence": "high",
+      "reason": "الكلمة تشير إلى نبات معين، وهي اسم لشيء."
+    }
+  },
+  {
+    "id": 90,
+    "word": "البَدّ",
+    "fusha": "مقسم مياه الري",
+    "stored_pos": "Noun",
+    "llm": {
+      "pos": "Noun",
+      "confidence": "high",
+      "reason": "الكلمة معرفة بـ 'ال' وتدل على اسم مادي ملموس (بناء)."
+    }
+  },
+  {
+    "id": 91,
+    "word": "بركة",
+    "fusha": "حوض ماء صغير",
+    "stored_pos": "Noun",
+    "llm": {
+      "pos": "Noun",
+      "confidence": "high",
+      "reason": "الكلمة اسم دل على وعاء لتجميع الماء"
+    }
+  },
+  {
+    "id": 92,
+    "word": "بَلَالِيْط",
+    "fusha": "معلاق القربة الخشبي",
+    "stored_pos": "Noun",
+    "llm": {
+      "pos": "Noun",
+      "confidence": "high",
+      "reason": "اسم جامد له معنى مادي"
+    }
+  },
+  {
+    "id": 93,
+    "word": "بَطَّال",
+    "fusha": "سيئ / بذيء / رديء",
+    "stored_pos": "Adjective",
+    "llm": {
+      "pos": "Adjective",
+      "confidence": "high",
+      "reason": "صفة تطلق على الشخص"
+    }
+  },
+  {
+    "id": 94,
+    "word": "بَازَار",
+    "fusha": "السوق / المتجر",
+    "stored_pos": "Noun",
+    "llm": {
+      "pos": "Noun",
+      "confidence": "high",
+      "reason": "اسم يدل على مكان"
+    }
+  },
+  {
+    "id": 95,
+    "word": "بَرْدَلُو",
+    "fusha": "قماش المخمل",
+    "stored_pos": "Noun",
+    "llm": {
+      "pos": "Noun",
+      "confidence": "high",
+      "reason": "اسم جامد يدل على شيء"
+    }
+  },
+  {
+    "id": 96,
+    "word": "بَابُور",
+    "fusha": "موقد بخاري / غلاية شاهي",
+    "stored_pos": "Noun",
+    "llm": {
+      "pos": "Noun",
+      "confidence": "high",
+      "reason": "اسم شيء مادي"
+    }
+  },
+  {
+    "id": 97,
+    "word": "بُنَيّة",
+    "fusha": "بنت / فتاة صغيرة",
+    "stored_pos": "Noun",
+    "llm": {
+      "pos": "Noun",
+      "confidence": "high",
+      "reason": "تصغير لكلمة 'بنت' وهو اسم"
+    }
+  },
+  {
+    "id": 98,
+    "word": "بُقْعَة",
+    "fusha": "قطعة أرض / مكان",
+    "stored_pos": "Noun",
+    "llm": {
+      "pos": "Noun",
+      "confidence": "high",
+      "reason": "كلمة تدل على مساحة من الأرض"
+    }
+  },
+  {
+    "id": 99,
+    "word": "بقعه",
+    "fusha": "الدنيا / الحال / الأوضاع",
+    "stored_pos": "Noun",
+    "llm": {
+      "pos": "Noun",
+      "confidence": "high",
+      "reason": "تستخدم بمعنى الدنيا والأحوال المعيشية"
+    }
+  },
+  {
+    "id": 100,
+    "word": "بُوَيْن",
+    "fusha": "باب أمني ضخم",
+    "stored_pos": "Noun",
+    "llm": {
+      "pos": "Noun",
+      "confidence": "high",
+      "reason": "كلمة تدل على شيء مادي"
+    }
+  },
+  {
+    "id": 101,
+    "word": "بزغ",
+    "fusha": "أقراط / حلي الأذن",
+    "stored_pos": "Noun",
+    "llm": {
+      "pos": "Noun",
+      "confidence": "high",
+      "reason": "اسم لشيء ملموس"
+    }
+  },
+  {
+    "id": 102,
+    "word": "بِيل",
+    "fusha": "فاتورة الماء او الكهرباء",
+    "stored_pos": "Noun",
+    "llm": {
+      "pos": "Noun",
+      "confidence": "high",
+      "reason": "كلمة تشير إلى شيء مادي (فاتورة)"
+    }
+  },
+  {
+    "id": 103,
+    "word": "بَدَعِيْدَع",
+    "fusha": "طائر البجع أو مالك الحزين",
+    "stored_pos": "Noun",
+    "llm": {
+      "pos": "Noun",
+      "confidence": "high",
+      "reason": "اسم حيوان"
+    }
+  },
+  {
+    "id": 104,
+    "word": "بعد",
+    "fusha": "أَبْعِد / نَحِّ",
+    "stored_pos": "Verb",
+    "llm": {
+      "pos": "Verb",
+      "confidence": "high",
+      "reason": "الكلمة فعل أمر صريح حسب التعريف."
+    }
+  },
+  {
+    "id": 105,
+    "word": "بَغَى",
+    "fusha": "أراد / رغب",
+    "stored_pos": "Verb",
+    "llm": {
+      "pos": "Verb",
+      "confidence": "high",
+      "reason": "تدل على الإرادة والتمني"
+    }
+  },
+  {
+    "id": 106,
+    "word": "بَيْسَة",
+    "fusha": "عملة نقدية قديمة",
+    "stored_pos": "Noun",
+    "llm": {
+      "pos": "Noun",
+      "confidence": "high",
+      "reason": "عملة نقدية قديمة"
+    }
+  },
+  {
+    "id": 107,
+    "word": "بَتّ",
+    "fusha": "ذهب / انصرف",
+    "stored_pos": "Verb",
+    "llm": {
+      "pos": "Verb",
+      "confidence": "high",
+      "reason": "فعل ماضٍ بمعنى ذهب"
+    }
+  },
+  {
+    "id": 108,
+    "word": "بَرَع",
+    "fusha": "خارجاً",
+    "stored_pos": "Adverb",
+    "llm": {
+      "pos": "Adverb",
+      "confidence": "high",
+      "reason": "ظرف مكان يدل على الخارج"
+    }
+  },
+  {
+    "id": 109,
+    "word": "تَقْبَع",
+    "fusha": "تضرب / تلطم",
+    "stored_pos": "Verb",
+    "llm": {
+      "pos": "Verb",
+      "confidence": "high",
+      "reason": "فعل يدل على الضرب"
+    }
+  },
+  {
+    "id": 110,
+    "word": "تَعْلُومَه",
+    "fusha": "درس / مادة تعليمية",
+    "stored_pos": "Noun",
+    "llm": {
+      "pos": "Noun",
+      "confidence": "high",
+      "reason": "تشير إلى عملية المذاكرة أو الدرس"
+    }
+  },
+  {
+    "id": 111,
+    "word": "تَخْلَع",
+    "fusha": "تزرع / تغرس",
+    "stored_pos": "Verb",
+    "llm": {
+      "pos": "Verb",
+      "confidence": "high",
+      "reason": "فعل مضارع"
+    }
+  },
+  {
+    "id": 112,
+    "word": "التَّخّ",
+    "fusha": "ثفل السمسم",
+    "stored_pos": "Noun",
+    "llm": {
+      "pos": "Noun",
+      "confidence": "high",
+      "reason": "اسم لما تبقى بعد العصر"
+    }
+  },
+  {
+    "id": 113,
+    "word": "تِبِتّ",
+    "fusha": "تذهب / تمضي",
+    "stored_pos": "Verb",
+    "llm": {
+      "pos": "Verb",
+      "confidence": "high",
+      "reason": "صيغة المضارع من الفعل"
+    }
+  },
+  {
+    "id": 114,
+    "word": "تخب",
+    "fusha": "استتر / اختبأ",
+    "stored_pos": "Verb",
+    "llm": {
+      "pos": "Verb",
+      "confidence": "high",
+      "reason": "كلمة فعلية بمعنى التواري"
+    }
+  },
+  {
+    "id": 115,
+    "word": "تَرَيَّض",
+    "fusha": "تمهّل / تأنَّ",
+    "stored_pos": "Verb",
+    "llm": {
+      "pos": "Verb",
+      "confidence": "high",
+      "reason": "فعل أمر"
+    }
+  },
+  {
+    "id": 116,
+    "word": "تَرَاشَخُوا",
+    "fusha": "تضاربوا / تنازعوا",
+    "stored_pos": "Verb",
+    "llm": {
+      "pos": "Verb",
+      "confidence": "high",
+      "reason": "فعل يعني التضارب أو الشجار"
+    }
+  },
+  {
+    "id": 117,
+    "word": "تِحَاذَر",
+    "fusha": "تخجل / تستحي",
+    "stored_pos": "Verb",
+    "llm": {
+      "pos": "Verb",
+      "confidence": "high",
+      "reason": "فعل مضارع"
+    }
+  },
+  {
+    "id": 118,
+    "word": "تَرْكَمَة",
+    "fusha": "علامة / أثر",
+    "stored_pos": "Noun",
+    "llm": {
+      "pos": "Noun",
+      "confidence": "high",
+      "reason": "اسم يدل على شيء"
+    }
+  },
+  {
+    "id": 119,
+    "word": "أَخْتِم",
+    "fusha": "تَسُدّ / تُغْلِق",
+    "stored_pos": "Verb",
+    "llm": {
+      "pos": "Verb",
+      "confidence": "high",
+      "reason": "فعل بمعنى السد أو الإغلاق"
+    }
+  },
+  {
+    "id": 120,
+    "word": "تَادِيَه",
+    "fusha": "تؤلمه / تؤذيه",
+    "stored_pos": "Verb",
+    "llm": {
+      "pos": "Verb",
+      "confidence": "high",
+      "reason": "فعل مضارع مستخدم لوصف الألم"
+    }
+  },
+  {
+    "id": 121,
+    "word": "تَعَيَّن",
+    "fusha": "انظر / شاهد",
+    "stored_pos": "Verb",
+    "llm": {
+      "pos": "Verb",
+      "confidence": "high",
+      "reason": "الكلمة فعل أمر صريح حسب التعريف والمقابل في العربية الفصحى."
+    }
+  },
+  {
+    "id": 122,
+    "word": "تَمَام",
+    "fusha": "حسناً / على ما يرام",
+    "stored_pos": "Expression",
+    "llm": {
+      "pos": "Adverb",
+      "confidence": "high",
+      "reason": "تُستخدم بمعنى 'حسناً' أو 'على ما يرام' للدلالة على الموافقة أو حالة جيدة، وهو ما يتوافق مع وظيفة الظرف (Adverb)."
+    }
+  },
+  {
+    "id": 123,
+    "word": "تَان",
+    "fusha": "أتان / أنثى الحمار",
+    "stored_pos": "Noun",
+    "llm": {
+      "pos": "Noun",
+      "confidence": "high",
+      "reason": "الكلمة تعني أنثى الحمار وهي اسم لحيوان."
+    }
+  },
+  {
+    "id": 124,
+    "word": "تَغَبَّى",
+    "fusha": "اختفى / توارى",
+    "stored_pos": "Verb",
+    "llm": {
+      "pos": "Verb",
+      "confidence": "high",
+      "reason": "الكلمة فعل ماضٍ في اللهجة الحضرمية تعني الاختفاء أو التواري."
+    }
+  },
+  {
+    "id": 125,
+    "word": "تبا",
+    "fusha": "تريد / ترغب",
+    "stored_pos": "Verb",
+    "llm": {
+      "pos": "Verb",
+      "confidence": "high",
+      "reason": "الكلمة فعل مضارع بمعنى 'تريد' كما هو مذكور في التعريف."
+    }
+  },
+  {
+    "id": 126,
+    "word": "تِغْلِب",
+    "fusha": "ترفض / ترفض الإذعان",
+    "stored_pos": "Verb",
+    "llm": {
+      "pos": "Verb",
+      "confidence": "high",
+      "reason": "الكلمة فعل مضارع كما يوضح التعريف والمقابل في الفصحى."
+    }
+  },
+  {
+    "id": 127,
+    "word": "تَفْسَح",
+    "fusha": "تتمادى / تتوسع (في السياق المذكور)",
+    "stored_pos": "Verb",
+    "llm": {
+      "pos": "Verb",
+      "confidence": "high",
+      "reason": "التعريف يذكر صراحة أنها فعل (فعل يأتي بمعنى...)، والمقابل في العربية الفصحى أفعال مضارعة (تتمادى، تتوسع)."
+    }
+  },
+  {
+    "id": 128,
+    "word": "التبل",
+    "fusha": "تِبْن",
+    "stored_pos": "Noun",
+    "llm": {
+      "pos": "Noun",
+      "confidence": "high",
+      "reason": "الكلمة معرفة بأل التعريف وتشير إلى اسم شيء (بقايا سيقان القمح)."
+    }
+  },
+  {
+    "id": 129,
+    "word": "تَيَاسِير",
+    "fusha": "مستوى النوافذ في البناء",
+    "stored_pos": "Noun",
+    "llm": {
+      "pos": "Noun",
+      "confidence": "high",
+      "reason": "الكلمة تشير إلى مصطلح معماري أو مرحلة في البناء، وهي أسماء مفاهيمية."
+    }
+  },
+  {
+    "id": 130,
+    "word": "تِعَاشِي",
+    "fusha": "توبخ / تصيح بحدة",
+    "stored_pos": "Verb",
+    "llm": {
+      "pos": "Verb",
+      "confidence": "high",
+      "reason": "التعريف يوضح أنها فعل، والمقابل في الفصحى فعل مضارع."
+    }
+  },
+  {
+    "id": 131,
+    "word": "تَايِر",
+    "fusha": "إطار السيارة",
+    "stored_pos": "Noun",
+    "llm": {
+      "pos": "Noun",
+      "confidence": "high",
+      "reason": "الكلمة تدل على اسم مادي (إطار السيارة)."
+    }
+  },
+  {
+    "id": 132,
+    "word": "تقي",
+    "fusha": "تفعل / تصنع",
+    "stored_pos": "Verb",
+    "llm": {
+      "pos": "Verb",
+      "confidence": "high",
+      "reason": "الكلمة فعل مضارع بمعنى 'تفعل/تصنع' كما يظهر من المعادل والمثال."
+    }
+  },
+  {
+    "id": 133,
+    "word": "تِفَال",
+    "fusha": "سفرة خوص",
+    "stored_pos": "Noun",
+    "llm": {
+      "pos": "Noun",
+      "confidence": "high",
+      "reason": "الكلمة تشير إلى اسم لشيء مادي وهو سفرة الطعام."
+    }
+  },
+  {
+    "id": 134,
+    "word": "تَوْلَة",
+    "fusha": "مثقال",
+    "stored_pos": "Noun",
+    "llm": {
+      "pos": "Noun",
+      "confidence": "high",
+      "reason": "الكلمة تعني وحدة وزن وهي اسم صريح، ومكافئها في العربية الفصحى (مثقال) هو اسم."
+    }
+  },
+  {
+    "id": 135,
+    "word": "تِصُول",
+    "fusha": "تمتلئ بالماء",
+    "stored_pos": "Verb",
+    "llm": {
+      "pos": "Verb",
+      "confidence": "high",
+      "reason": "الكلمة فعل مضارع بمعنى تمتلئ بالماء أو تجمع الماء."
+    }
+  },
+  {
+    "id": 136,
+    "word": "تِهَاد",
+    "fusha": "يتعاركون / يتضاربون",
+    "stored_pos": "Verb",
+    "llm": {
+      "pos": "Verb",
+      "confidence": "high",
+      "reason": "الكلمة فعل مضارع كما يوضح التعريف والمقابل في الفصحى."
+    }
+  },
+  {
+    "id": 137,
+    "word": "التِّبْدَاه",
+    "fusha": "تخفيف الزرع",
+    "stored_pos": "Noun",
+    "llm": {
+      "pos": "Noun",
+      "confidence": "high",
+      "reason": "الكلمة معرفة بـال وتدل على عملية زراعية (مصدر/اسم معنى) مثل مرادفها في الفصحى تخفيف الزرع."
+    }
+  },
+  {
+    "id": 138,
+    "word": "تَوْ",
+    "fusha": "الآن / للتو",
+    "stored_pos": "Adverb",
+    "llm": {
+      "pos": "Adverb",
+      "confidence": "high",
+      "reason": "التعريف يذكر صراحة أن الكلمة ظرف زمان."
+    }
+  },
+  {
+    "id": 139,
+    "word": "تَوْك",
+    "fusha": "على مَهلك / براحتك",
+    "stored_pos": "Expression",
+    "llm": {
+      "pos": "Adverb",
+      "confidence": "high",
+      "reason": "الكلمة مذكورة كمثال في تعريف الظرف، وتؤدي وظيفة ظرفية بمعنى 'على مهلك'."
+    }
+  },
+  {
+    "id": 140,
+    "word": "أَتْرِيك",
+    "fusha": "فانوس غاز",
+    "stored_pos": "Noun",
+    "llm": {
+      "pos": "Noun",
+      "confidence": "high",
+      "reason": "يدل على مصباح قديم"
+    }
+  },
+  {
+    "id": 141,
+    "word": "التَّصْرِيف",
+    "fusha": "تقليم عذوق النخل",
+    "stored_pos": "Noun",
+    "llm": {
+      "pos": "Noun",
+      "confidence": "high",
+      "reason": "المصدر يدل على اسم"
+    }
+  },
+  {
+    "id": 142,
+    "word": "تَمْر مَدْحَق",
+    "fusha": "عجينة التمر المهروسة",
+    "stored_pos": "Noun",
+    "llm": {
+      "pos": "Noun",
+      "confidence": "high",
+      "reason": "عجينة التمر هي اسم"
+    }
+  },
+  {
+    "id": 143,
+    "word": "التَّجْلِيد",
+    "fusha": "لياسة الجدران بالطين",
+    "stored_pos": "Verb",
+    "llm": {
+      "pos": "Noun",
+      "confidence": "high",
+      "reason": "الكلمة مصدر واسم معرف بأل، وتشير إلى عملية."
+    }
+  },
+  {
+    "id": 144,
+    "word": "تَفْلَة",
+    "fusha": "البصاق",
+    "stored_pos": "Noun",
+    "llm": {
+      "pos": "Noun",
+      "confidence": "high",
+      "reason": "الكلمة اسم مفرد مؤنث تدل على البصاق، وهي اسم في العربية الفصحى."
+    }
+  },
+  {
+    "id": 145,
+    "word": "التِّنَّار",
+    "fusha": "التنور / الفرن الطيني",
+    "stored_pos": "Noun",
+    "llm": {
+      "pos": "Noun",
+      "confidence": "high",
+      "reason": "الكلمة معرفة بـ (ال) وتدل على اسم لشيء مادي (فرن)."
+    }
+  },
+  {
+    "id": 146,
+    "word": "التَّكْيَة",
+    "fusha": "المخدة / الوسادة",
+    "stored_pos": "Noun",
+    "llm": {
+      "pos": "Noun",
+      "confidence": "high",
+      "reason": "الكلمة معرفة بأل وتنتهي بتاء مربوطة وتدل على اسم شيء (وسادة)."
+    }
+  },
+  {
+    "id": 147,
+    "word": "تِيحَة",
+    "fusha": "خزانة جدارية",
+    "stored_pos": "Noun",
+    "llm": {
+      "pos": "Noun",
+      "confidence": "high",
+      "reason": "اسم يدل على شيء مادي"
+    }
+  },
+  {
+    "id": 148,
+    "word": "التَّاوَة",
+    "fusha": "المقلاة",
+    "stored_pos": "Noun",
+    "llm": {
+      "pos": "Noun",
+      "confidence": "high",
+      "reason": "الكلمة معرفة بالألف واللام وتنتهي بتاء مربوطة وهي اسم لوعاء."
+    }
+  },
+  {
+    "id": 149,
+    "word": "تَبَاتِيك",
+    "fusha": "زينة / كماليات",
+    "stored_pos": "Noun",
+    "llm": {
+      "pos": "Noun",
+      "confidence": "high",
+      "reason": "الكلمة تعني 'كماليات' أو 'أشياء للزينة' وهي اسم لمجموعة من الأشياء."
+    }
+  },
+  {
+    "id": 150,
+    "word": "ثَعَل",
+    "fusha": "ثعلب",
+    "stored_pos": "Noun",
+    "llm": {
+      "pos": "Noun",
+      "confidence": "high",
+      "reason": "الكلمة تشير إلى اسم حيوان، وهو 'الثعلب'."
+    }
+  },
+  {
+    "id": 151,
+    "word": "ثَمَد",
+    "fusha": "سمك التونة",
+    "stored_pos": "Noun",
+    "llm": {
+      "pos": "Noun",
+      "confidence": "high",
+      "reason": "الكلمة تشير إلى نوع من الأسماك، وهو اسم لشيء ملموس."
+    }
+  },
+  {
+    "id": 152,
+    "word": "الثاره",
+    "fusha": "المساحة الفاصلة",
+    "stored_pos": "Noun",
+    "llm": {
+      "pos": "Noun",
+      "confidence": "high",
+      "reason": "يدل على مساحة أو مكان"
+    }
+  },
+  {
+    "id": 153,
+    "word": "الأَجْلَح",
+    "fusha": "المذنب المتوجس",
+    "stored_pos": "Adjective",
+    "llm": {
+      "pos": "Adjective",
+      "confidence": "high",
+      "reason": "الكلمة صفة مشبهة أو اسم فاعل بصيغة أفعل، وتصف حالة الشخص."
+    }
+  },
+  {
+    "id": 154,
+    "word": "الْجَعْبَة",
+    "fusha": "الإلية / أعلى الفخذ",
+    "stored_pos": "Noun",
+    "llm": {
+      "pos": "Noun",
+      "confidence": "high",
+      "reason": "الكلمة اسم تبدأ بـ 'ال' التعريف وتنتهي بالتاء المربوطة، وتشير إلى منطقة جسدية، ولها جمع."
+    }
+  },
+  {
+    "id": 155,
+    "word": "الْجَحِي",
+    "fusha": "الأرض",
+    "stored_pos": "Noun",
+    "llm": {
+      "pos": "Noun",
+      "confidence": "high",
+      "reason": "الكلمة معرفة بأل التعريف وتشير إلى اسم (الأرض/اليابسة)."
+    }
+  },
+  {
+    "id": 156,
+    "word": "الْجَلَب",
+    "fusha": "الماشية المعروضة للبيع",
+    "stored_pos": "Noun",
+    "llm": {
+      "pos": "Noun",
+      "confidence": "high",
+      "reason": "الكلمة تبدأ بأداة التعريف (الـ) وتدل على اسم ذات (الماشية)."
+    }
+  },
+  {
+    "id": 157,
+    "word": "الْجَحْلَة",
+    "fusha": "جرة فخارية كبيرة",
+    "stored_pos": "Noun",
+    "llm": {
+      "pos": "Noun",
+      "confidence": "high",
+      "reason": "الكلمة معرفة بأل ولها تاء مربوطة وتدل على اسم ذات (وعاء كبير)."
+    }
+  },
+  {
+    "id": 158,
+    "word": "الْجُبَّة",
+    "fusha": "معطف من الفرو أو الصوف",
+    "stored_pos": "Noun",
+    "llm": {
+      "pos": "Noun",
+      "confidence": "high",
+      "reason": "الكلمة معرفة بالألف واللام وتنتهي بتاء مربوطة (الْجُبَّة) وتشير إلى شيء مادي (معطف غليظ)."
+    }
+  },
+  {
+    "id": 159,
+    "word": "الجابيه",
+    "fusha": "حوض ماء كبير",
+    "stored_pos": "Noun",
+    "llm": {
+      "pos": "Noun",
+      "confidence": "high",
+      "reason": "الكلمة معرفة بالألف واللام وتدل على اسم ذات (حوض ماء كبير)."
+    }
+  },
+  {
+    "id": 160,
+    "word": "الْجَرْمَل",
+    "fusha": "فانوس كيروسين صغير",
+    "stored_pos": "Noun",
+    "llm": {
+      "pos": "Noun",
+      "confidence": "high",
+      "reason": "الكلمة معرفة بأل التعريف وتدل على اسم لشيء مادي (مصباح)."
+    }
+  },
+  {
+    "id": 161,
+    "word": "الْجَلِيْجَلَة",
+    "fusha": "نبات بري مخدر",
+    "stored_pos": "Noun",
+    "llm": {
+      "pos": "Noun",
+      "confidence": "high",
+      "reason": "الكلمة اسم لنوع من النباتات، تبدأ بأل التعريف وتنتهي بالتاء المربوطة."
+    }
+  },
+  {
+    "id": 162,
+    "word": "جِبِل الْمَرْبَش",
+    "fusha": "سلة خوص صغيرة",
+    "stored_pos": "Noun",
+    "llm": {
+      "pos": "Noun",
+      "confidence": "high",
+      "reason": "الكلمة تدل على اسم لشيء مادي وهو وعاء أو سلة."
+    }
+  },
+  {
+    "id": 163,
+    "word": "جِبِل الْمَدْمَن",
+    "fusha": "سلة خوص كبيرة",
+    "stored_pos": "Noun",
+    "llm": {
+      "pos": "Noun",
+      "confidence": "high",
+      "reason": "الكلمة تشير إلى سلة كبيرة وهي اسم لشيء ملموس."
+    }
+  },
+  {
+    "id": 164,
+    "word": "الْجَهْر",
+    "fusha": "تعميق البئر",
+    "stored_pos": "Verb",
+    "llm": {
+      "pos": "Noun",
+      "confidence": "high",
+      "reason": "الكلمة معرفة بـ (ال) وتدل على عملية (مصدر) كما في التعريف المرادف لـ (تعميق)."
+    }
+  },
+  {
+    "id": 165,
+    "word": "الْجُلْجُل",
+    "fusha": "السمسم",
+    "stored_pos": "Noun",
+    "llm": {
+      "pos": "Noun",
+      "confidence": "high",
+      "reason": "يدل على اسم شيء"
+    }
+  },
+  {
+    "id": 166,
+    "word": "جَوِيْد",
+    "fusha": "خلوق / مطيع",
+    "stored_pos": "Adjective",
+    "llm": {
+      "pos": "Adjective",
+      "confidence": "high",
+      "reason": "وصف للشخص الطيب"
+    }
+  },
+  {
+    "id": 167,
+    "word": "الجحمه",
+    "fusha": "حشرة سوداء كبيرة",
+    "stored_pos": "Noun",
+    "llm": {
+      "pos": "Noun",
+      "confidence": "high",
+      "reason": "الكلمة معرفة بـ 'ال' وتصف اسماً ملموساً (حشرة)."
+    }
+  },
+  {
+    "id": 168,
+    "word": "الجرب",
+    "fusha": "الحقول الزراعية",
+    "stored_pos": "Noun",
+    "llm": {
+      "pos": "Noun",
+      "confidence": "high",
+      "reason": "كلمة معرفة بأل وتدل على أماكن"
+    }
+  },
+  {
+    "id": 169,
+    "word": "الْجَهُوش",
+    "fusha": "قمح محمص",
+    "stored_pos": "Noun",
+    "llm": {
+      "pos": "Noun",
+      "confidence": "high",
+      "reason": "الكلمة اسم لمنتج غذائي وتبدأ بأل التعريف، مما يدل على أنها اسم."
+    }
+  },
+  {
+    "id": 170,
+    "word": "الجذفره",
+    "fusha": "الأرض البور",
+    "stored_pos": "Noun",
+    "llm": {
+      "pos": "Noun",
+      "confidence": "high",
+      "reason": "الكلمة معرفة بالألف واللام وتنتهي بتاء مربوطة، وتشير إلى اسم مكان (الأرض)."
+    }
+  }
+]

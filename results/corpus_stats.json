@@ -1,0 +1,117 @@
+{
+  "entries_total": 1000,
+  "with_fusha": 1000,
+  "with_examples": 996,
+  "with_proverbs": 86,
+  "with_tags": 1000,
+  "with_definition": 1000,
+  "embedding_dirty": 2,
+  "pos_top": [
+    [
+      "Noun",
+      807
+    ],
+    [
+      "Verb",
+      79
+    ],
+    [
+      "Expression",
+      46
+    ],
+    [
+      "Adjective",
+      42
+    ],
+    [
+      "Noun/Verb",
+      11
+    ],
+    [
+      "Adverb",
+      5
+    ],
+    [
+      "Preposition",
+      4
+    ],
+    [
+      "Particle",
+      2
+    ],
+    [
+      "Adjective/Verb",
+      2
+    ],
+    [
+      "Adjective/Noun",
+      1
+    ],
+    [
+      "Verb Phrase",
+      1
+    ]
+  ],
+  "region_top": [
+    [
+      "general",
+      967
+    ],
+    [
+      "coast",
+      11
+    ],
+    [
+      "rural",
+      6
+    ],
+    [
+      "badiyah",
+      3
+    ],
+    [
+      "wadi",
+      3
+    ],
+    [
+      "interior",
+      2
+    ],
+    [
+      "nature",
+      2
+    ],
+    [
+      "ghayl ba wazir",
+      1
+    ],
+    [
+      "general/rural",
+      1
+    ],
+    [
+      "coast/wadi",
+      1
+    ],
+    [
+      "bedouin/rural",
+      1
+    ],
+    [
+      "agriculture",
+      1
+    ],
+    [
+      "desert/badia",
+      1
+    ]
+  ],
+  "feedback_total": 10,
+  "feedback_types": {
+    "correction": 5,
+    "new_word": 5
+  },
+  "feedback_status": {
+    "open": 10
+  }
+}

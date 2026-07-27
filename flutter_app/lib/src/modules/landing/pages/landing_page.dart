@@ -104,11 +104,22 @@ class LandingPage extends HookConsumerWidget {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   IconButton(
-                    icon: Icon(
-                      ref.watch(appThemeModeProvider) == ThemeMode.dark
-                          ? Icons.light_mode_rounded
-                          : Icons.dark_mode_rounded,
-                      color: colorScheme.outline,
+                    icon: AnimatedSwitcher(
+                      duration: const Duration(milliseconds: 300),
+                      transitionBuilder: (child, animation) =>
+                          RotationTransition(
+                        turns: Tween<double>(begin: 0.6, end: 1.0)
+                            .animate(animation),
+                        child: FadeTransition(
+                            opacity: animation, child: child),
+                      ),
+                      child: Icon(
+                        ref.watch(appThemeModeProvider) == ThemeMode.dark
+                            ? Icons.light_mode_rounded
+                            : Icons.dark_mode_rounded,
+                        key: ValueKey(ref.watch(appThemeModeProvider)),
+                        color: colorScheme.outline,
+                      ),
                     ),
                     onPressed: () =>
                         ref.read(appThemeModeProvider.notifier).toggle(),

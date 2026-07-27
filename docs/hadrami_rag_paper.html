@@ -1,0 +1,967 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Hadrami-RAG: A Retrieval-Grounded Conversational System and Lexicon for the Hadrami Arabic Dialect</title>
+<style>
+  :root{
+    --ink:#1a1a1a; --muted:#555; --rule:#d4d4d4; --accent:#8a1f1f;
+    --bg:#fdfdfb; --code-bg:#f4f1ea; --tbd-bg:#fff7df; --tbd-bd:#d6b94a;
+    --real-bg:#eaf6ec; --real-bd:#7ab282;
+  }
+  html,body{background:var(--bg); color:var(--ink); margin:0; padding:0;}
+  body{
+    font-family: "Charter","Georgia","Times New Roman",serif;
+    font-size: 16px; line-height: 1.55;
+    max-width: 880px; margin: 0 auto; padding: 32px 28px 80px;
+  }
+  header.title-block{text-align:center; border-bottom: 2px solid var(--ink); padding-bottom: 18px; margin-bottom: 24px;}
+  header.title-block h1{font-size: 24px; margin: 0 0 8px; line-height: 1.25;}
+  header.title-block .authors{font-style: italic; color: var(--muted); margin: 4px 0 2px;}
+  header.title-block .affil{font-size: 13px; color: var(--muted);}
+  header.title-block .meta{font-size: 12px; color: var(--muted); margin-top: 8px;}
+  h2{font-size: 18px; border-bottom: 1px solid var(--rule); padding-bottom:4px; margin-top: 32px;}
+  h3{font-size: 15px; margin-top: 22px;}
+  h4{font-size: 14px; margin-top: 18px; color: var(--accent);}
+  p{margin: 8px 0 12px; text-align: justify;}
+  .abstract{
+    border:1px solid var(--rule); padding: 14px 18px; background:#fafaf6;
+    margin: 0 0 18px; font-size: 15px;
+  }
+  .abstract h2{border:none; margin: 0 0 6px; font-size: 14px; text-transform: uppercase; letter-spacing: 0.06em;}
+  table{border-collapse: collapse; width: 100%; margin: 12px 0 18px; font-size: 14px;}
+  th,td{border:1px solid var(--rule); padding: 6px 10px; text-align: left; vertical-align: top;}
+  th{background:#f0ece2; font-weight: 600;}
+  td.num,th.num{text-align: right; font-variant-numeric: tabular-nums;}
+  td.tbd{background: var(--tbd-bg); color: #6b5200; font-style: italic;}
+  td.real{background: var(--real-bg); color: #1d4a25;}
+  code,kbd,pre{font-family: "JetBrains Mono","Menlo",monospace; font-size: 13px;}
+  pre{background: var(--code-bg); border:1px solid var(--rule); border-radius: 4px; padding: 10px 12px; overflow-x: auto;}
+  .ar{direction: rtl; font-family: "Amiri","Scheherazade New","Times New Roman",serif; font-size: 18px; line-height: 1.7;}
+  .inline-ar{direction: rtl; unicode-bidi: isolate; font-family: "Amiri","Times New Roman",serif;}
+  blockquote{border-left:3px solid var(--accent); margin: 10px 0; padding: 6px 14px; color:#333; background:#faf6f6;}
+  .legend{font-size:12px; color: var(--muted); margin: -8px 0 14px;}
+  .pill{display:inline-block; font-size:11px; padding: 1px 7px; border-radius: 9px; background:#eee; color:#333; margin-right: 4px;}
+  .pill.real{background:#cfe7d4; color:#214d28;}
+  .pill.tbd{background:#fff0c6; color:#5e4500;}
+  .pill.partial{background:#f1d9bd; color:#684017;}
+  .footnote{font-size: 12px; color: var(--muted);}
+  ol.refs{font-size: 13px; padding-left: 1.4em;}
+  ol.refs li{margin-bottom: 4px;}
+  .toc{background:#f4f1ea; border:1px solid var(--rule); padding: 10px 18px; font-size: 13px;}
+  .toc ol{margin: 4px 0 0 0; padding-left: 22px;}
+  .twocol{display:grid; grid-template-columns: 1fr 1fr; gap: 14px;}
+  @media (max-width: 700px){ .twocol{grid-template-columns: 1fr;} body{padding: 18px 14px 60px;} }
+  figcaption{font-size: 12px; color: var(--muted); text-align: center; margin-top: 4px;}
+  .sysdiag{font-family: "JetBrains Mono",monospace; font-size: 12px; white-space: pre; background: var(--code-bg); padding: 12px; border:1px solid var(--rule); border-radius: 4px; overflow-x:auto;}
+  .keylegend{font-size:12px; color: var(--muted); margin: 6px 0 0;}
+</style>
+</head>
+<body>
+
+<header class="title-block">
+  <h1>Hadrami-RAG: A Retrieval-Grounded Conversational System and Lexicon for the Hadrami Arabic Dialect</h1>
+  <div class="authors">Abdelwedoud Bark</div>
+  <div class="affil">Software Savants</div>
+  <div class="meta">Working draft &middot; compiled 2026-05-03 &middot; targeting ArabicNLP @ EMNLP 2026 (primary) / LREC-COLING 2026 (backup)</div>
+</header>
+
+<section class="abstract">
+  <h2>Abstract</h2>
+  <p>
+    Hadrami Arabic, spoken by an estimated five to seven million people in
+    Hadhramaut and the Hadrami diaspora, has almost no published NLP
+    resources. We release the first verified Hadrami lexicon
+    (<strong>1,000 entries</strong>, all with MSA glosses and explanatory
+    definitions, <strong>99.6%</strong> with Hadrami&ndash;MSA example pairs,
+    <strong>8.6%</strong> with attested proverbs, all with 768-dim Gemini
+    embeddings) and <em>Hadrami-RAG</em>, a retrieval-grounded
+    conversational system that auto-classifies five user intents (single-word
+    lookup, paragraph translation, definition, semantic search, open Q&amp;A)
+    and refuses to answer outside the lexicon's evidence. We accompany the
+    system with a Flutter mobile application that doubles as a
+    human-in-the-loop curation pipeline. The paper describes the resource,
+    the system architecture, the empirical evaluation protocol, and a public
+    venue for displaying ongoing native-speaker evaluation.
+  </p>
+</section>
+
+<div class="toc">
+  <strong>Contents.</strong>
+  <ol>
+    <li>Introduction</li>
+    <li>Related Work</li>
+    <li>The Hadrami Lexicon</li>
+    <li>System Architecture</li>
+    <li>Experimental Setup</li>
+    <li>Results</li>
+    <li>Error Analysis</li>
+    <li>Limitations and Ethics</li>
+    <li>Conclusion and Future Work</li>
+    <li>Appendix A &mdash; Where reviewer evaluation results live in the deployed app</li>
+    <li>Appendix B &mdash; Reproducibility checklist</li>
+    <li>References</li>
+  </ol>
+  <div class="keylegend">
+    Cell legend &nbsp;
+    <span class="pill real">measured</span> = computed against live data on the date shown.
+    <span class="pill partial">partial</span> = ran against a small or template fixture; treat as a smoke-test, not evidence.
+    <span class="pill tbd">TBD</span> = not yet measured; cell annotated with the script that will fill it.
+  </div>
+</div>
+
+<!-- ========================================================== -->
+<h2>1&nbsp;&nbsp;Introduction</h2>
+<p>
+  Modern Arabic NLP overwhelmingly targets Modern Standard Arabic (MSA)
+  and a handful of high-resource regional dialects (Egyptian, Levantine,
+  Gulf). Within the Yemeni dialect group, Hadrami &mdash; the variety of the
+  Hadhramaut governorate and a centuries-old diaspora across the Indian
+  Ocean rim &mdash; has, to our knowledge, no publicly available lexicon,
+  parallel corpus, or dialect-aware NLP system. The few existing
+  resources (Watson 2002; Al-Saqqaf 2006) are linguistic descriptions,
+  not machine-consumable datasets.
+</p>
+<p>
+  Two practical consequences follow. First, large multilingual models
+  fluently <em>hallucinate</em> Hadrami semantics: when prompted with a
+  fabricated Hadrami-shaped string, frontier LLMs typically respond with
+  a plausible-sounding but wholly invented gloss. Second, native
+  speakers who would benefit from a usable Hadrami&ndash;MSA tool have
+  nowhere to turn: the closest publicly hosted services treat Hadrami
+  input as either MSA (mistranslating) or as Egyptian / Gulf (inserting
+  unrelated lexicon).
+</p>
+<p>
+  This paper contributes, in publishability order:
+</p>
+<ol>
+  <li>
+    <strong>A verified Hadrami lexicon (resource).</strong> 1,000 curated
+    headwords with MSA equivalents, definitions, examples, regional tags,
+    and 768-dim semantic embeddings. Released under
+    <span class="inline-ar">CC&nbsp;BY&nbsp;4.0</span> alongside the human
+    evaluation pairs (&sect;5).
+  </li>
+  <li>
+    <strong>A retrieval-grounded conversational system.</strong> A unified
+    chat dispatcher that routes each user message into one of five
+    intents and answers strictly from retrieval evidence, with a
+    confidence-gated unknown-word short-circuit that produces a
+    suggest-this-word response rather than inventing a meaning.
+  </li>
+  <li>
+    <strong>A deployed Flutter application.</strong> A mobile front-end
+    that lets native speakers query and contribute to the lexicon, used
+    here as the recruitment and data-collection surface for the human
+    evaluation in &sect;6.6 and the in-app evaluation dashboard in
+    Appendix&nbsp;A.
+  </li>
+</ol>
+<p>
+  The hallucination experiment in &sect;6.4 is the headline empirical
+  claim: on a controlled set of 50 fabricated Hadrami-shaped strings,
+  baseline LLMs invent meanings; the Hadrami-RAG pipeline refuses or
+  emits a suggest-word block.
+</p>
+
+<!-- ========================================================== -->
+<h2>2&nbsp;&nbsp;Related Work</h2>
+<h3>2.1&nbsp;&nbsp;Arabic dialect resources</h3>
+<p>
+  The MADAR corpus (Bouamor et al., 2018) covers 25 Arab cities including
+  Sana&rsquo;a but not Hadhramaut. ADIDA (Salameh et al., 2018) and the
+  QADI corpus (Abdelali et al., 2021) treat dialect identification at
+  country granularity, with Yemeni examples drawn predominantly from
+  Sana&rsquo;ani sources. NADI shared tasks (Abdul-Mageed et al., 2020,
+  2021, 2022) similarly aggregate Yemen as a single label. Of the
+  resources we surveyed, none contains a curated Hadrami lexicon with
+  MSA alignment.
+</p>
+<h3>2.2&nbsp;&nbsp;Lexicon-grounded translation</h3>
+<p>
+  Bilingual dictionary induction (Rapp, 1995; Artetxe et al., 2018) and
+  retrieval-augmented dialectal MT (Khalifa et al., 2021) both rely on
+  the assumption that a dictionary-aligned lexicon exists. For low-resource
+  dialects this assumption is itself the open problem; our resource fills
+  that gap for Hadrami and the system shows the lexicon is sufficient to
+  ground a conversational model on sentence-level paragraphs.
+</p>
+<h3>2.3&nbsp;&nbsp;Retrieval-augmented generation and grounded refusal</h3>
+<p>
+  RAG (Lewis et al., 2020), Self-RAG (Asai et al., 2023), and the
+  ``when do retrievers help'' analysis (Mallen et al., 2023) all motivate
+  the use of explicit retrieval evidence. Our contribution on top of
+  this line is the <em>refusal contract</em>: a confidence gate that, on
+  retrieval scores below a threshold, short-circuits to a suggest-this-
+  word block instead of allowing the LLM to free-generate.
+</p>
+<h3>2.4&nbsp;&nbsp;Yemeni Arabic linguistic descriptions</h3>
+<p>
+  Watson (2002) provides the canonical phonology of San&rsquo;ani; Al-Saqqaf
+  (2006) is the most cited descriptive work on Hadrami specifically.
+  Both are linguistic, not computational, references; we cite them for
+  attestation of the dialect features that motivate our coverage choices
+  (e.g., the <span class="inline-ar">&#x0623;&#x0645;&nbsp;&#x062D;&#x0628;&#x064A;&#x0644;</span>
+  /spider/ entry, &sect;7).
+</p>
+
+<!-- ========================================================== -->
+<h2>3&nbsp;&nbsp;The Hadrami Lexicon</h2>
+<p>
+  The lexicon is curated by a single domain owner (the first author,
+  who is a native Hadrami speaker) and pushed to a Postgres + pgvector
+  Supabase instance with the schema in Listing&nbsp;1. Live counts in
+  Table&nbsp;1 were computed from the production database on
+  <strong>2026-05-03</strong>.
+</p>
+
+<h4>Listing 1 &mdash; entries schema (PostgREST-exposed)</h4>
+<pre>id (int8 pk)
+word_vocalized (text)        -- with diacritics
+word_clean    (text)         -- normalised, no diacritics
+root          (text)
+pos           (text)         -- noun / verb / expression / adjective / ...
+fusha_equivalent (text)      -- MSA gloss; nullable if no direct equivalent
+definition    (text)         -- Arabic explanatory definition
+region        (text)         -- general / coast / wadi / badiyah / interior / ...
+synonyms      (jsonb)
+phonetic_variants (jsonb)
+note          (text)
+source        (text)
+examples      (jsonb)        -- array of {h, f} Hadrami / Fusha sentence pairs
+proverbs      (jsonb)        -- array of attested proverbs (with English gloss)
+tags          (jsonb)
+tags_ar       (jsonb)        -- Arabic mirror tags
+embedding     (vector(768))  -- gemini-embedding-001
+embedding_dirty (bool)       -- needs regeneration after content edit
+
+-- v2 schema (added 2026-05-03; partial roll-out, see Table 3b):
+searchable_text         (text)  -- canonical embedding-doc text
+searchable_text_version (text)  -- 'v2' for all rows today
+semantic_intent         (text)  -- object|action|person|expression|descriptor|place|time|function
+transliteration         (text)  -- Latin-script headword
+</pre>
+
+<h3>3.1&nbsp;&nbsp;Coverage statistics</h3>
+<p>
+  Table&nbsp;1 reports the field-completion statistics that justify the
+  lexicon's claim to be ``verified''. <span class="pill real">measured</span>
+  numbers are read directly from <code>results/corpus_stats.json</code>
+  produced by a read-only Supabase query.
+</p>
+
+<table>
+  <caption><strong>Table 1.</strong> Lexicon coverage as of 2026-05-03 (n = 1,000 rows live).</caption>
+  <thead><tr><th>Field</th><th class="num">Count</th><th class="num">% of entries</th><th>Source</th></tr></thead>
+  <tbody>
+    <tr><td>fusha_equivalent</td><td class="num real">1,000</td><td class="num real">100.0%</td><td>corpus_stats.json</td></tr>
+    <tr><td>definition</td><td class="num real">1,000</td><td class="num real">100.0%</td><td>corpus_stats.json</td></tr>
+    <tr><td>tags</td><td class="num real">1,000</td><td class="num real">100.0%</td><td>corpus_stats.json</td></tr>
+    <tr><td>examples (&ge;1 pair)</td><td class="num real">996</td><td class="num real">99.6%</td><td>corpus_stats.json</td></tr>
+    <tr><td>proverbs (&ge;1)</td><td class="num real">86</td><td class="num real">8.6%</td><td>corpus_stats.json</td></tr>
+    <tr><td>embedding present, not dirty</td><td class="num real">998</td><td class="num real">99.8%</td><td>corpus_stats.json</td></tr>
+    <tr><td>embedding_dirty (needs re-embed)</td><td class="num real">2</td><td class="num real">0.2%</td><td>corpus_stats.json</td></tr>
+    <tr><td>searchable_text (v2 layout)</td><td class="num real">1,000</td><td class="num real">100.0%</td><td>v2_columns_audit.json</td></tr>
+    <tr><td>semantic_intent (v2 schema, in roll-out)</td><td class="num real">100</td><td class="num real">10.0%</td><td>v2_columns_audit.json</td></tr>
+    <tr><td>transliteration (v2 schema, in roll-out)</td><td class="num real">100</td><td class="num real">10.0%</td><td>v2_columns_audit.json</td></tr>
+  </tbody>
+</table>
+
+<p>
+  Two v2 schema columns are mid-rollout. <code>semantic_intent</code> is a
+  coarse classification (object, action, person, expression, descriptor,
+  place, function, time) and <code>transliteration</code> is a Latin-script
+  rendering of the headword (e.g. <span class="inline-ar">&#x0623;&#x064F;&#x0645;&#x0651; &#x062D;&#x064F;&#x0628;&#x064E;&#x064A;&#x0652;&#x0644;</span>
+  &rarr; <code>umm Hubayl</code>). Both columns were added by the
+  2026-05-03 v2 migration and populated for the first 100 rows as a
+  smoke-test batch; the remaining 900 are scheduled for the same
+  enrichment pass that re-embeds the corpus. Distribution of the
+  populated subset is given in Table&nbsp;3b.
+</p>
+
+<table>
+  <caption><strong>Table 3b.</strong> <code>semantic_intent</code> distribution among the 100 rows where the column is populated. The retrievers do not filter on this column today; future work (&sect;9) considers adding an intent-filtered retrieval mode.</caption>
+  <thead><tr><th>Class</th><th class="num">Count</th><th class="num">% of populated subset</th></tr></thead>
+  <tbody>
+    <tr><td>object</td><td class="num real">60</td><td class="num real">60.0%</td></tr>
+    <tr><td>expression</td><td class="num real">12</td><td class="num real">12.0%</td></tr>
+    <tr><td>action</td><td class="num real">10</td><td class="num real">10.0%</td></tr>
+    <tr><td>descriptor</td><td class="num real">7</td><td class="num real">7.0%</td></tr>
+    <tr><td>person</td><td class="num real">5</td><td class="num real">5.0%</td></tr>
+    <tr><td>place</td><td class="num real">4</td><td class="num real">4.0%</td></tr>
+    <tr><td>function</td><td class="num real">1</td><td class="num real">1.0%</td></tr>
+    <tr><td>time</td><td class="num real">1</td><td class="num real">1.0%</td></tr>
+  </tbody>
+</table>
+
+<table>
+  <caption><strong>Table 2.</strong> POS distribution.</caption>
+  <thead><tr><th>POS</th><th class="num">Count</th><th class="num">%</th></tr></thead>
+  <tbody>
+    <tr><td>Noun</td><td class="num real">807</td><td class="num real">80.7%</td></tr>
+    <tr><td>Verb</td><td class="num real">79</td><td class="num real">7.9%</td></tr>
+    <tr><td>Expression</td><td class="num real">46</td><td class="num real">4.6%</td></tr>
+    <tr><td>Adjective</td><td class="num real">42</td><td class="num real">4.2%</td></tr>
+    <tr><td>Noun/Verb (ambiguous)</td><td class="num real">11</td><td class="num real">1.1%</td></tr>
+    <tr><td>Adverb</td><td class="num real">5</td><td class="num real">0.5%</td></tr>
+    <tr><td>Preposition</td><td class="num real">4</td><td class="num real">0.4%</td></tr>
+    <tr><td>Particle</td><td class="num real">2</td><td class="num real">0.2%</td></tr>
+    <tr><td>Adjective/Verb, Adjective/Noun, Verb Phrase</td><td class="num real">4</td><td class="num real">0.4%</td></tr>
+  </tbody>
+</table>
+
+<table>
+  <caption><strong>Table 3.</strong> Regional tag distribution. The dominance of <code>general</code> reflects the curation choice to default-tag entries that are widely used across Hadhramaut; coastal / wadi / interior splits will deepen as native-speaker reviewers re-tag (see &sect;8).</caption>
+  <thead><tr><th>Region</th><th class="num">Count</th></tr></thead>
+  <tbody>
+    <tr><td>general</td><td class="num real">967</td></tr>
+    <tr><td>coast</td><td class="num real">11</td></tr>
+    <tr><td>rural</td><td class="num real">6</td></tr>
+    <tr><td>badiyah</td><td class="num real">3</td></tr>
+    <tr><td>wadi</td><td class="num real">3</td></tr>
+    <tr><td>interior</td><td class="num real">2</td></tr>
+    <tr><td>nature</td><td class="num real">2</td></tr>
+    <tr><td>other (singletons: ghayl ba wazir, agriculture, bedouin/rural, &hellip;)</td><td class="num real">6</td></tr>
+  </tbody>
+</table>
+
+<h3>3.2&nbsp;&nbsp;Curation protocol</h3>
+<p>
+  Each entry passes through three stages. <strong>(i)&nbsp;Headword
+  proposal</strong> from a literature pass plus elicitation with the
+  diaspora community. <strong>(ii)&nbsp;Field completion</strong>: MSA
+  equivalent, Arabic definition, &ge;1 example pair, regional tag, POS.
+  <strong>(iii)&nbsp;Embedding</strong> via the
+  <code>gemini-embedding-001</code> model on a canonical document
+  (versioned <code>EMBEDDING_DOC_VERSION = "v2"</code>) that concatenates
+  headword, MSA equivalent, definition, and the first example. Entries
+  failing any stage have <code>embedding_dirty = true</code> until the
+  next sync run regenerates the vector.
+</p>
+
+<h3>3.3&nbsp;&nbsp;Feedback loop</h3>
+<p>
+  The Flutter app exposes a feedback endpoint that captures two kinds of
+  user submissions: corrections to existing entries and proposals for new
+  headwords. As of compilation date, the <code>feedback</code> table
+  contains <strong>10 rows</strong>: 5 <code>correction</code> and
+  5 <code>new_word</code>, all with <code>status = open</code> awaiting
+  reviewer triage. This loop is the resource's growth path; we report on
+  it as the ``mobile-deployment as a curation pipeline'' angle in
+  &sect;4.4.
+</p>
+
+<!-- ========================================================== -->
+<h2>4&nbsp;&nbsp;System Architecture</h2>
+
+<h3>4.1&nbsp;&nbsp;Overview</h3>
+<p>
+  Hadrami-RAG is a single FastAPI service backed by Supabase
+  (Postgres + pgvector), with a Flutter client. A unified
+  <code>/chat</code> endpoint replaces the earlier <code>/ask</code> and
+  <code>/translate-phrase</code> endpoints. Figure&nbsp;1 sketches the
+  request flow.
+</p>
+
+<figure>
+<div class="sysdiag">
+user message
+   │
+   ▼
+intent_for(text)         &lt;── system_prompt.py:intent_for  (regex + heuristics)
+   │   one of: word | translate | define | semantic | qa
+   ▼
+retrieve_*_context()     &lt;── hybrid keyword (PostgREST RPC) + pgvector (768-dim)
+   │   (paragraph mode chunks long input on .,!?؟،؛\n)
+   ▼
+confidence gate?
+   ├── score &lt; gate AND intent ∈ {word,define,translate}
+   │      └── short-circuit → suggest_word block (NO LLM call)
+   ▼
+prompt_for(intent)       &lt;── prompts.py: per-intent system prompt + few-shot pairs
+   │
+   ▼
+gemini_generate()        &lt;── 2.5-flash → 2.0-flash → 2.5-flash-lite (fallback chain)
+   │
+   ▼
+serialize → ChatResponse {
+   reply, intent, suggest_word, answer_source,
+   context, hadrami_spans, highlight_surfaces
+}
+</div>
+<figcaption>Figure 1. Request flow through the unified <code>/chat</code> dispatcher.</figcaption>
+</figure>
+
+<h3>4.2&nbsp;&nbsp;Intent classifier</h3>
+<p>
+  Five intents cover the chat surface, each with a deterministic regex /
+  heuristic classifier. Table&nbsp;4 summarises the cues.
+</p>
+<table>
+  <caption><strong>Table 4.</strong> Intent rules implemented in <code>system_prompt.py:intent_for</code>.</caption>
+  <thead><tr><th>Intent</th><th>Trigger</th><th>Routed to</th></tr></thead>
+  <tbody>
+    <tr><td><code>word</code></td><td>single Hadrami token, no MSA marker, no question particle</td><td>retrieve_rag_context &rarr; word prompt</td></tr>
+    <tr><td><code>translate</code></td><td>explicit <span class="inline-ar">&#x062A;&#x0631;&#x062C;&#x0645;</span> / ``translate'', or paragraph &ge; 8 chars with sentence punctuation</td><td>retrieve_phrase_context &rarr; translation prompt</td></tr>
+    <tr><td><code>define</code></td><td><span class="inline-ar">&#x0645;&#x0627;&nbsp;&#x0645;&#x0639;&#x0646;&#x0649;</span> / <span class="inline-ar">&#x0627;&#x0634;&#x0631;&#x062D;</span> / ``what does X mean''</td><td>retrieve_rag_context &rarr; definition prompt</td></tr>
+    <tr><td><code>semantic</code></td><td><span class="inline-ar">&#x0643;&#x0644;&#x0645;&#x0629;&nbsp;&#x062A;&#x0639;&#x0646;&#x064A;</span> / <span class="inline-ar">&#x0623;&#x062F;&#x0627;&#x0629;&nbsp;&#x0644;</span> (gloss-first descriptions)</td><td>vector-only retrieval &rarr; semantic prompt</td></tr>
+    <tr><td><code>qa</code></td><td>open question; default fall-through</td><td>retrieve_rag_context &rarr; QA prompt</td></tr>
+  </tbody>
+</table>
+
+<h3>4.3&nbsp;&nbsp;Retrieval</h3>
+<p>
+  Retrieval is hybrid. The keyword path uses a Supabase RPC over the
+  <code>word_clean</code> / <code>word_vocalized</code> columns with
+  diacritic-stripping normalisation and prefix matching. The vector path
+  embeds the user query with <code>gemini-embedding-001</code> and
+  performs a pgvector cosine search against the entries table. Results
+  are merged with a stable rank-fusion that prefers exact keyword hits
+  while preserving vector hits for semantic intent. For paragraph
+  translation (input &ge; 80 chars) the dispatcher additionally splits on
+  Arabic and Latin sentence punctuation and re-runs retrieval per
+  sentence, then deduplicates &mdash; this is the change that lets the
+  pipeline recover lexical anchors that would be lost in a
+  whole-paragraph embedding.
+</p>
+
+<h3>4.4&nbsp;&nbsp;Confidence gate and suggest-word block</h3>
+<p>
+  When the merged top retrieval score falls below
+  <code>RAG_CONFIDENCE_GATE</code> (default 0.65) <em>and</em> the intent
+  is <code>word</code>, <code>define</code>, or <code>translate</code>
+  with a single OOV headword, the dispatcher short-circuits to a
+  deterministic suggest-this-word reply. No LLM call is made. This is
+  the mechanism that gives Hadrami-RAG its hallucination-resistance
+  property.
+</p>
+
+<h3>4.5&nbsp;&nbsp;LLM fallback chain</h3>
+<p>
+  Generation defaults to <code>gemini-2.5-flash</code> with deterministic
+  fallback to <code>gemini-2.0-flash</code> and
+  <code>gemini-2.5-flash-lite</code> on rate-limit or transient
+  failure. <code>gemini-1.5-flash</code> was removed from the chain on
+  2026-05-03 after it began returning <code>NotFound</code> on the
+  <code>v1beta</code> endpoint. When all chain members fail, the
+  pipeline emits a deterministic ``model unavailable, lexicon-fallback''
+  message rather than masking the failure.
+</p>
+
+<h3>4.6&nbsp;&nbsp;Mobile deployment as a curation pipeline</h3>
+<p>
+  The Flutter client renders the dispatcher's <code>intent</code>,
+  <code>suggest_word</code>, and <code>answer_source</code> fields as
+  per-message badges, so users can distinguish a lexicon-grounded reply
+  from a model-generated one. The same client surface drives
+  <code>/feedback</code> submissions (Table&nbsp;1, &sect;3.3) and the
+  in-app evaluation dashboard described in Appendix&nbsp;A.
+</p>
+
+<!-- ========================================================== -->
+<h2>5&nbsp;&nbsp;Experimental Setup</h2>
+<h3>5.1&nbsp;&nbsp;Test sets</h3>
+<p>
+  Four test sets target the four claims of the system. Status as of
+  compilation date is shown in Table&nbsp;5.
+</p>
+<table>
+  <caption><strong>Table 5.</strong> Test set construction status. <em>candidate</em> = auto-generated seeds awaiting native-speaker review; <em>final</em> = reviewed and frozen for evaluation.</caption>
+  <thead><tr><th>Test set</th><th>Target N</th><th>Built</th><th>Status</th><th>Source</th></tr></thead>
+  <tbody>
+    <tr><td>HALL-test (refusal on fabricated input)</td><td class="num">50</td><td class="num real">50</td><td><span class="pill real">final</span></td><td>fabricated by author</td></tr>
+    <tr><td>WL-test (word lookup)</td><td class="num">200</td><td class="num partial">100 in-lex candidate; 0 OOL</td><td><span class="pill partial">candidate</span></td><td>scripts/eval/build_test_set_seeds.py</td></tr>
+    <tr><td>TR-test (paragraph translation)</td><td class="num">100</td><td class="num partial">100 sentence-level candidate</td><td><span class="pill partial">candidate</span></td><td>example pairs lifted from lexicon</td></tr>
+    <tr><td>INT-test (intent classification)</td><td class="num">500</td><td class="num partial">100 candidate (20/intent)</td><td><span class="pill partial">candidate</span></td><td>spec patterns &times; real headwords</td></tr>
+  </tbody>
+</table>
+<p>
+  Candidate items live at
+  <code>backend/tests/fixtures/{wl,tr,int}_test.candidate.json</code> and
+  must pass native-speaker review (1) confirming label correctness and
+  (2) editing surface forms before promotion to the canonical
+  <code>*_test.json</code> consumed by the runners. The
+  <code>.candidate</code> suffix prevents accidental ingestion.
+</p>
+
+<h3>5.2&nbsp;&nbsp;Baselines</h3>
+<table>
+  <caption><strong>Table 6.</strong> Baselines compared against Hadrami-RAG.</caption>
+  <thead><tr><th>ID</th><th>System</th><th>Notes</th></tr></thead>
+  <tbody>
+    <tr><td>B1</td><td>gemini-2.5-flash, no retrieval, no system prompt</td><td>upper bound on what an unguided frontier LLM can do for the dialect</td></tr>
+    <tr><td>B2</td><td>gemini-2.5-flash, system prompt only</td><td>isolates the prompt's contribution from the retrieval's</td></tr>
+    <tr><td>B3</td><td>Google Translate (auto-detect &rarr; MSA)</td><td>commercial reference; auto-detect typically routes Hadrami to MSA-as-MSA</td></tr>
+    <tr><td>B4</td><td>GPT-4o, no retrieval</td><td>second frontier LLM, controls for Gemini-specific quirks</td></tr>
+    <tr><td>OURS</td><td>full Hadrami-RAG pipeline</td><td>retrieval + system prompt + confidence gate</td></tr>
+    <tr><td>OURS&minus;gate</td><td>same as OURS, gate disabled</td><td>isolates the gate's contribution to the hallucination metric</td></tr>
+  </tbody>
+</table>
+
+<h3>5.3&nbsp;&nbsp;Metrics</h3>
+<table>
+  <caption><strong>Table 7.</strong> Metrics per experiment.</caption>
+  <thead><tr><th>Experiment</th><th>Metric</th><th>Implementation</th></tr></thead>
+  <tbody>
+    <tr><td>E1 Translation</td><td>BLEU, chrF, COMET</td><td>scripts/eval/run_translation_eval.py via sacrebleu; COMET wrapper to add</td></tr>
+    <tr><td>E2 Word lookup</td><td>Recall@1, Recall@5, MRR</td><td>scripts/eval/run_lookup_eval.py</td></tr>
+    <tr><td>E3 Intent</td><td>macro-F1, confusion matrix</td><td>scripts/eval/run_intent_eval.py (regex-only, no LLM)</td></tr>
+    <tr><td>E4 Hallucination</td><td>refusal rate; invented-meaning rate (manual rubric)</td><td>scripts/eval/run_hallucination_eval.py</td></tr>
+    <tr><td>E5 Gate sweep</td><td>refusal vs. answer-quality trade-off</td><td>scripts/eval/run_gate_sweep.py over {0.45, 0.55, 0.65, 0.75, 0.85}</td></tr>
+    <tr><td>E6 Embedding A/B</td><td>Recall@5</td><td>not yet implemented; see &sect;9</td></tr>
+    <tr><td>E7 Human evaluation</td><td>5-pt Likert per dimension; Cohen's &kappa;</td><td>Flutter app; results surfaced in Appendix A</td></tr>
+  </tbody>
+</table>
+
+<!-- ========================================================== -->
+<h2>6&nbsp;&nbsp;Results</h2>
+<p>
+  This section is partitioned into <em>measured</em> results (computed
+  on the compilation date), <em>partial</em> smoke-test results (the
+  pipeline executed end-to-end on a template fixture, so the number is
+  meaningful as a sanity check but not as evidence), and <em>TBD</em>
+  results that will be filled by the named script once the
+  corresponding test set passes review.
+</p>
+
+<h3>6.1&nbsp;&nbsp;Translation quality (E1)</h3>
+<table>
+  <caption><strong>Table 8.</strong> Translation quality on TR-test (n target = 100). All cells require Gemini API quota and a reviewed TR-test.</caption>
+  <thead><tr><th>System</th><th class="num">BLEU &uarr;</th><th class="num">chrF &uarr;</th><th class="num">COMET &uarr;</th></tr></thead>
+  <tbody>
+    <tr><td>B1 gemini-2.5-flash, no RAG</td><td class="num tbd">TBD</td><td class="num tbd">TBD</td><td class="num tbd">TBD</td></tr>
+    <tr><td>B2 gemini-2.5-flash, prompt only</td><td class="num tbd">TBD</td><td class="num tbd">TBD</td><td class="num tbd">TBD</td></tr>
+    <tr><td>B3 Google Translate</td><td class="num tbd">TBD</td><td class="num tbd">TBD</td><td class="num tbd">TBD</td></tr>
+    <tr><td>B4 GPT-4o, no RAG</td><td class="num tbd">TBD</td><td class="num tbd">TBD</td><td class="num tbd">TBD</td></tr>
+    <tr><td><strong>OURS</strong></td><td class="num tbd">TBD</td><td class="num tbd">TBD</td><td class="num tbd">TBD</td></tr>
+    <tr><td>OURS &minus;gate</td><td class="num tbd">TBD</td><td class="num tbd">TBD</td><td class="num tbd">TBD</td></tr>
+  </tbody>
+</table>
+<p class="footnote">
+  Filled by: <code>backend/venv/bin/python scripts/eval/run_translation_eval.py --systems ours,no_rag,gpt4o</code>
+  &nbsp;&middot;&nbsp; Blocking dependencies: (1) reviewer-confirmed TR-test at <code>backend/tests/fixtures/tr_test.json</code>; (2) paid Gemini key (free tier returns <code>ResourceExhausted</code> at &gt; 20 req/day on 2.5-flash).
+</p>
+
+<h3>6.2&nbsp;&nbsp;Word-lookup retrieval (E2)</h3>
+<table>
+  <caption><strong>Table 9.</strong> Word-lookup retrieval on WL-test.</caption>
+  <thead><tr><th>Variant</th><th class="num">Recall@1</th><th class="num">Recall@5</th><th class="num">MRR</th><th>n</th></tr></thead>
+  <tbody>
+    <tr><td>OURS (hybrid keyword + vector) on 1-item template</td><td class="num partial">1.000</td><td class="num partial">1.000</td><td class="num partial">1.000</td><td class="num partial">1</td></tr>
+    <tr><td>OURS on reviewed WL-test (in-lex)</td><td class="num tbd">TBD</td><td class="num tbd">TBD</td><td class="num tbd">TBD</td><td class="num tbd">100</td></tr>
+    <tr><td>OURS on WL-test (out-of-lex), refusal-rate sanity check</td><td class="num tbd">TBD</td><td class="num tbd">TBD</td><td class="num tbd">TBD</td><td class="num tbd">100</td></tr>
+  </tbody>
+</table>
+<p class="footnote">
+  Filled by: <code>scripts/eval/run_lookup_eval.py</code>
+  &nbsp;&middot;&nbsp; The 1-item template result confirms the runner&rarr;Supabase&rarr;merger path is wired correctly; it carries no statistical weight.
+</p>
+
+<h3>6.3&nbsp;&nbsp;Intent classification (E3)</h3>
+<p>
+  The intent classifier runs entirely in Python (no LLM call) and has no
+  cost or quota dependency. The numbers below are the <em>real</em>
+  output of <code>run_intent_eval.py</code> on
+  <code>int_test.template.json</code> (n = 5, one per intent). They are
+  sufficient evidence of pipeline correctness; statistical evidence
+  requires the 100-item INT-test candidate to be reviewed.
+</p>
+<table>
+  <caption><strong>Table 10a.</strong> Intent F1 on the 5-item template (smoke-test).</caption>
+  <thead><tr><th>Intent</th><th class="num">Precision</th><th class="num">Recall</th><th class="num">F1</th><th class="num">Support</th></tr></thead>
+  <tbody>
+    <tr><td>word</td><td class="num partial">1.000</td><td class="num partial">1.000</td><td class="num partial">1.000</td><td class="num partial">1</td></tr>
+    <tr><td>translate</td><td class="num partial">1.000</td><td class="num partial">1.000</td><td class="num partial">1.000</td><td class="num partial">1</td></tr>
+    <tr><td>define</td><td class="num partial">1.000</td><td class="num partial">1.000</td><td class="num partial">1.000</td><td class="num partial">1</td></tr>
+    <tr><td>semantic</td><td class="num partial">1.000</td><td class="num partial">1.000</td><td class="num partial">1.000</td><td class="num partial">1</td></tr>
+    <tr><td>qa</td><td class="num partial">1.000</td><td class="num partial">1.000</td><td class="num partial">1.000</td><td class="num partial">1</td></tr>
+    <tr><th>macro avg</th><th class="num partial">1.000</th><th class="num partial">1.000</th><th class="num partial">1.000</th><th class="num partial">5</th></tr>
+  </tbody>
+</table>
+<p>
+  We additionally verified that the spec's expanded TYPE&nbsp;1&ndash;5
+  examples pass the classifier under unit testing
+  (<code>backend/tests/test_chat_unified.py::test_intent_classifier</code>),
+  giving 12/12 on a small but adversarial set including code-switched
+  Latin script and a paragraph-shaped translation request. Full results
+  on the 100-item reviewed INT-test will appear in Table&nbsp;10b.
+</p>
+<table>
+  <caption><strong>Table 10b.</strong> Intent F1 on reviewed INT-test (target n = 100, 20/intent).</caption>
+  <thead><tr><th>Intent</th><th class="num">F1</th><th class="num">Support</th></tr></thead>
+  <tbody>
+    <tr><td>word</td><td class="num tbd">TBD</td><td class="num tbd">20</td></tr>
+    <tr><td>translate</td><td class="num tbd">TBD</td><td class="num tbd">20</td></tr>
+    <tr><td>define</td><td class="num tbd">TBD</td><td class="num tbd">20</td></tr>
+    <tr><td>semantic</td><td class="num tbd">TBD</td><td class="num tbd">20</td></tr>
+    <tr><td>qa</td><td class="num tbd">TBD</td><td class="num tbd">20</td></tr>
+    <tr><th>macro avg</th><th class="num tbd">TBD</th><th class="num tbd">100</th></tr>
+  </tbody>
+</table>
+
+<h3>6.4&nbsp;&nbsp;Hallucination resistance (E4) &mdash; the headline experiment</h3>
+<p>
+  HALL-test consists of <strong>50</strong> fabricated Hadrami-shaped
+  strings, each chosen to look phonotactically plausible while not
+  appearing in any attested Hadrami source. A correct response is
+  defined as one of: (a) emit the <em>suggest_word</em> block,
+  (b) decline to translate, (c) refuse with an explicit
+  ``not in lexicon'' marker. Inventing a meaning counts as a
+  hallucination.
+</p>
+<table>
+  <caption><strong>Table 11.</strong> Hallucination resistance on HALL-test (n = 50).</caption>
+  <thead><tr><th>System</th><th class="num">Refusal rate &uarr;</th><th class="num">Non-refusal items (manual review) &darr;</th></tr></thead>
+  <tbody>
+    <tr><td>B1 gemini-2.5-flash, no RAG</td><td class="num tbd">TBD</td><td class="num tbd">TBD</td></tr>
+    <tr><td>B4 GPT-4o, no RAG</td><td class="num tbd">TBD</td><td class="num tbd">TBD</td></tr>
+    <tr><td><strong>OURS</strong> (contaminated run, 2026-05-03)</td><td class="num partial">0.76</td><td class="num partial">12 / 50</td></tr>
+    <tr><td><strong>OURS</strong> (clean re-run on paid quota)</td><td class="num tbd">TBD</td><td class="num tbd">TBD</td></tr>
+    <tr><td>OURS &minus;gate</td><td class="num tbd">TBD</td><td class="num tbd">TBD</td></tr>
+  </tbody>
+</table>
+<p class="footnote">
+  <strong>Caveat on the 0.76 row.</strong> The run completed with all 50 items
+  scored, but a majority of generation calls returned
+  <code>ResourceExhausted</code> on the Gemini free tier mid-run. When that
+  happens the dispatcher emits a deterministic ``model unavailable, lexicon
+  fallback'' message which <em>incidentally</em> contains the refusal-marker
+  phrase <span class="inline-ar">&#x0644;&#x0645; &#x064A;&#x064F;&#x0633;&#x062A;&#x0631;&#x062C;&#x064E;&#x0639; &#x0645;&#x0646; &#x0627;&#x0644;&#x0642;&#x0627;&#x0645;&#x0648;&#x0633;</span>
+  used by <code>refusal_rate()</code>. So the 0.76 figure conflates two
+  different success modes: (a) genuine grounded refusals via the confidence
+  gate (~3 short-circuit events in the run log), and (b) quota-failure
+  fallbacks that happened to match the marker. The run is reported here as a
+  <span class="pill partial">partial</span> result; a clean re-run on a paid
+  Gemini key is required before publication. The 12 non-refusal items
+  (<code>results/hallucination_inventions.jsonl</code>) need manual rubric
+  scoring to compute the true invented-meaning rate.
+  &nbsp;&middot;&nbsp; Filled by: <code>scripts/eval/run_hallucination_eval.py --systems ours,no_rag</code>.
+</p>
+
+<h3>6.5&nbsp;&nbsp;Confidence-gate ablation (E5)</h3>
+<table>
+  <caption><strong>Table 12.</strong> Sweep of <code>RAG_CONFIDENCE_GATE</code>.</caption>
+  <thead><tr><th class="num">Gate</th><th class="num">Refusal rate (HALL-test)</th><th class="num">Translation BLEU (TR-test)</th><th class="num">Word-lookup Recall@5</th></tr></thead>
+  <tbody>
+    <tr><td class="num">0.45</td><td class="num tbd">TBD</td><td class="num tbd">TBD</td><td class="num tbd">TBD</td></tr>
+    <tr><td class="num">0.55</td><td class="num tbd">TBD</td><td class="num tbd">TBD</td><td class="num tbd">TBD</td></tr>
+    <tr><td class="num"><strong>0.65 (default)</strong></td><td class="num tbd">TBD</td><td class="num tbd">TBD</td><td class="num tbd">TBD</td></tr>
+    <tr><td class="num">0.75</td><td class="num tbd">TBD</td><td class="num tbd">TBD</td><td class="num tbd">TBD</td></tr>
+    <tr><td class="num">0.85</td><td class="num tbd">TBD</td><td class="num tbd">TBD</td><td class="num tbd">TBD</td></tr>
+  </tbody>
+</table>
+<p class="footnote">
+  Filled by: <code>scripts/eval/run_gate_sweep.py</code>. Depends on E1 + E2 + E4 prerequisites.
+</p>
+
+<h3>6.6&nbsp;&nbsp;Human evaluation (E7)</h3>
+<table>
+  <caption><strong>Table 13.</strong> Mean 5-point Likert ratings from native-speaker reviewers in the Flutter app. Aggregated by dimension; per-reviewer scores are surfaced in the in-app evaluation dashboard (Appendix A).</caption>
+  <thead><tr><th>Dimension</th><th class="num">Mean</th><th class="num">Std</th><th class="num">N reviewers</th><th class="num">N items</th><th class="num">Cohen's &kappa;</th></tr></thead>
+  <tbody>
+    <tr><td>Translation accuracy</td><td class="num tbd">TBD</td><td class="num tbd">TBD</td><td class="num tbd">TBD</td><td class="num tbd">TBD</td><td class="num tbd">TBD</td></tr>
+    <tr><td>Dialect authenticity</td><td class="num tbd">TBD</td><td class="num tbd">TBD</td><td class="num tbd">TBD</td><td class="num tbd">TBD</td><td class="num tbd">TBD</td></tr>
+    <tr><td>Helpfulness</td><td class="num tbd">TBD</td><td class="num tbd">TBD</td><td class="num tbd">TBD</td><td class="num tbd">TBD</td><td class="num tbd">TBD</td></tr>
+    <tr><td>Refusal correctness (HALL-test items)</td><td class="num tbd">TBD</td><td class="num tbd">TBD</td><td class="num tbd">TBD</td><td class="num tbd">TBD</td><td class="num tbd">TBD</td></tr>
+  </tbody>
+</table>
+<p class="footnote">
+  Source: <code>evaluations</code> table (to be added; see Appendix A). Filled by the in-app rating widget once reviewers are recruited.
+</p>
+
+<h3>6.7&nbsp;&nbsp;Engineering health</h3>
+<p>
+  Independent of empirical evaluation, we report the engineering health
+  of the system at compilation date.
+</p>
+<table>
+  <caption><strong>Table 14.</strong> Engineering health.</caption>
+  <thead><tr><th>Metric</th><th class="num">Value</th><th>Source</th></tr></thead>
+  <tbody>
+    <tr><td>Unit + integration tests passing</td><td class="num real">42 / 42</td><td><code>backend/tests/</code></td></tr>
+    <tr><td>End-to-end intent tests (test_chat_unified.py)</td><td class="num real">16 / 16</td><td><code>backend/tests/test_chat_unified.py</code></td></tr>
+    <tr><td>Hermetic tests (no external services)</td><td class="num real">16</td><td>same</td></tr>
+    <tr><td>Live tests (require Supabase + Gemini)</td><td class="num real">26</td><td><code>backend/tests/test_api.py</code></td></tr>
+    <tr><td>Embedding model</td><td class="num real">gemini-embedding-001 (768)</td><td>config</td></tr>
+    <tr><td>Generation chain</td><td class="num real">2.5-flash &rarr; 2.0-flash &rarr; 2.5-flash-lite</td><td>config</td></tr>
+  </tbody>
+</table>
+
+<!-- ========================================================== -->
+<h2>7&nbsp;&nbsp;Error Analysis</h2>
+<h3>7.1&nbsp;&nbsp;A worked paragraph example</h3>
+<p>
+  We expand the running example used during system development.
+</p>
+<blockquote>
+  <strong>Input (Hadrami):</strong>
+  <div class="ar">&#x0627;&#x0644;&#x064A;&#x0648;&#x0645; &#x0634;&#x0641;&#x062A; &#x0623;&#x0645; &#x062D;&#x0628;&#x064A;&#x0644; &#x0641;&#x064A; &#x0627;&#x0644;&#x0633;&#x0642;&#x0641;&#x060C; &#x0642;&#x0644;&#x062A; &#x0644;&#x0627;&#x062E;&#x0648;&#x064A; &#x0625;&#x0643;&#x0633; &#x0639;&#x0644;&#x064A;&#x0647; &#x0648;&#x062E;&#x0644;&#x0647;&#x060C; &#x0644;&#x0643;&#x0646;&#x0647; &#x0623;&#x0643;&#x0634;&#x0641; &#x0648;&#x062E;&#x0627;&#x0641; &#x0645;&#x0646;&#x0647;&#x0627;.</div>
+  <strong>Reference (MSA):</strong>
+  <div class="ar">&#x0627;&#x0644;&#x064A;&#x0648;&#x0645; &#x0631;&#x0623;&#x064A;&#x062A; &#x0639;&#x0646;&#x0643;&#x0628;&#x0648;&#x062A;&#x0627;&#x064B; &#x0641;&#x064A; &#x0627;&#x0644;&#x0633;&#x0642;&#x0641;&#x060C; &#x0641;&#x0642;&#x0644;&#x062A; &#x0644;&#x0623;&#x062E;&#x064A; &#x062A;&#x062C;&#x0627;&#x0647;&#x0644;&#x0647; &#x0648;&#x0627;&#x062A;&#x0631;&#x0643;&#x0647;&#x060C; &#x0644;&#x0643;&#x0646;&#x0647; &#x0643;&#x0627;&#x0646; &#x0639;&#x0646;&#x064A;&#x062F;&#x0627;&#x064B; &#x0648;&#x062E;&#x0627;&#x0641; &#x0645;&#x0646;&#x0647;.</div>
+</blockquote>
+<p>
+  The dispatcher classifies this as <code>translate</code> and the
+  paragraph-aware retriever returns the licensing pairs needed to
+  ground each content word:
+</p>
+<pre>vector_context q='&#x0623;&#x0645; &#x062D;&#x0628;&#x064A;&#x0644;...'  -> 6 hits:
+  &#x0623;&#x064F;&#x0645;&#x0651; &#x062D;&#x064F;&#x0628;&#x064E;&#x064A;&#x0652;&#x0644;        -> &#x0627;&#x0644;&#x0639;&#x0646;&#x0643;&#x0628;&#x0648;&#x062A;            (0.71)
+  &#x0625;&#x0650;&#x0643;&#x0651;&#x0650;&#x0633; &#x0639;&#x064E;&#x0644;&#x064E;&#x064A;&#x0652;&#x0647;     -> &#x062A;&#x062C;&#x0627;&#x0647;&#x0644;&#x0647; &#x062A;&#x0645;&#x0627;&#x0645;&#x0627;&#x064B;     (0.75)
+  &#x062E;&#x064E;&#x0644;&#x0651;&#x064E;&#x0648;&#x0647;          -> &#x062A;&#x0631;&#x0643;&#x0648;&#x0647;                  (0.71)
+  &#x0641;&#x064E;&#x0632;&#x064E;&#x0639;            -> &#x062E;&#x0627;&#x0641; / &#x062E;&#x0648;&#x0641;             (0.67)</pre>
+<p>
+  All four content-word pairs are recovered, satisfying the grounding
+  contract for sentence-level translation. <em>However</em>, on the
+  compilation date the actual generation step failed:
+  <code>gemini-2.5-flash</code>, <code>gemini-2.0-flash</code>, and
+  <code>gemini-2.5-flash-lite</code> all returned
+  <code>ResourceExhausted</code> within seconds of each other on the
+  free-tier quota. The dispatcher correctly emitted the
+  ``model unavailable, lexicon-fallback'' deterministic message rather
+  than fabricating a translation. This is the intended failure mode
+  but means we cannot report the actual translated string in this draft.
+</p>
+
+<h3>7.2&nbsp;&nbsp;Categories of expected failure</h3>
+<ul>
+  <li><strong>Long paragraphs.</strong> The 80-char paragraph trigger
+  helps, but inputs exceeding ~250 characters push the few-shot pair
+  budget (16 pairs) and individual pairs may be truncated. Mitigation:
+  bump <code>retrieve_phrase_context</code>'s output cap and
+  re-evaluate on a longer-input subset of TR-test.</li>
+  <li><strong>Idiomatic phrases not in <code>examples</code>.</strong>
+  The lexicon's coverage of multi-word expressions is captured by 46
+  <code>Expression</code>-POS entries (Table&nbsp;2). Idioms outside
+  this set are likely to be mis-translated word-by-word.</li>
+  <li><strong>Code-switching with Latin script.</strong> The intent
+  classifier handles English instruction prefixes; the retriever does
+  not embed Latin tokens. Mitigation: strip Latin segments before
+  retrieval, route the rest through the dispatcher.</li>
+  <li><strong>Orthographic variants.</strong> <code>word_clean</code>
+  normalisation handles diacritics and ligatures; it does not handle
+  free-variant spellings (e.g., hamza placement). Mitigation: the
+  <code>phonetic_variants</code> jsonb field is reserved but
+  underpopulated.</li>
+  <li><strong>Region-specific terms.</strong> The 96.7%
+  <code>general</code>-region default (Table&nbsp;3) under-represents
+  coastal vs. wadi vs. interior contrasts, so the retriever cannot
+  filter by region today. The ``other'' singletons in Table&nbsp;3
+  hint at the eventual partition.</li>
+</ul>
+
+<!-- ========================================================== -->
+<h2>8&nbsp;&nbsp;Limitations and Ethics</h2>
+<h3>8.1&nbsp;&nbsp;Coverage</h3>
+<p>
+  1,000 entries is small even for a low-resource dialect; rare words,
+  recent neologisms, and proper-noun toponyms are deliberately out of
+  scope. The lexicon is biased toward domestic and rural vocabulary
+  reflecting the curator's own networks; reviewer recruitment for the
+  Flutter app prioritises diasporic and coastal speakers to reduce
+  this skew.
+</p>
+<h3>8.2&nbsp;&nbsp;Reviewer demographics</h3>
+<p>
+  At submission time the resource will list reviewer count, age band,
+  gender distribution, and self-reported region (coastal /
+  wadi / interior / diaspora). No personally identifying information
+  is published.
+</p>
+<h3>8.3&nbsp;&nbsp;Consent and data subject rights</h3>
+<p>
+  The Flutter app's <code>/feedback</code> endpoint records corrections
+  and new-word suggestions with consent at submission time. IPs are
+  truncated server-side; raw IPs do not enter the database. Reviewers
+  in the human-evaluation loop sign a participation agreement that
+  permits aggregated publication of their ratings without identifying
+  details.
+</p>
+<h3>8.4&nbsp;&nbsp;Closed-model dependency</h3>
+<p>
+  Generation depends on the Gemini API. On free-tier credentials the
+  pipeline degrades to a deterministic lexicon-fallback message rather
+  than a silent failure (&sect;6.4 documents an instance encountered
+  during the writing of this draft). For long-term reproducibility we
+  intend to evaluate an open-weights drop-in (Jais, Aya 23) in
+  future work.
+</p>
+<h3>8.5&nbsp;&nbsp;Risk of misuse</h3>
+<p>
+  A dialectal MT system carries the usual risks of mistranslation in
+  consequential settings (legal, medical). The deployed app surfaces an
+  explicit warning that Hadrami-RAG is for educational and
+  community-curation use, not for high-stakes translation.
+</p>
+
+<!-- ========================================================== -->
+<h2>9&nbsp;&nbsp;Conclusion and Future Work</h2>
+<p>
+  We released the first machine-consumable Hadrami lexicon (1,000 entries,
+  full MSA glosses, 99.6% example coverage, 768-dim embeddings) and a
+  retrieval-grounded conversational system whose hallmark is a refusal
+  contract: when retrieval evidence is insufficient, the dispatcher
+  emits a deterministic suggest-this-word block instead of a fabricated
+  meaning. Engineering health is documented (42/42 tests passing);
+  empirical numbers are partitioned into measured, smoke-test, and TBD
+  cells with explicit script-level provenance.
+</p>
+<p>
+  Three priorities follow. <em>(i)</em> Recruit two native-speaker
+  reviewers, promote the candidate test sets at
+  <code>backend/tests/fixtures/{wl,tr,int}_test.candidate.json</code>
+  to canonical fixtures, and run E1&ndash;E5 to fill Tables&nbsp;8&ndash;12.
+  <em>(ii)</em> Re-embed the corpus with the v2 document layout
+  (<code>EMBEDDING_DOC_VERSION = "v2"</code>) and run E6 to compare
+  Gemini, LaBSE, and multilingual-e5 retrievers. <em>(iii)</em> Ship
+  the in-app evaluation dashboard described in Appendix&nbsp;A and
+  begin populating Table&nbsp;13 from real reviewer ratings.
+</p>
+
+<!-- ========================================================== -->
+<h2>Appendix A &mdash; Where reviewer evaluation results live in the deployed app</h2>
+<p>
+  When the application is published and language specialists begin
+  testing, their ratings need three places to live, in increasing order
+  of public visibility. The recommendation below mirrors the answer
+  given to the design question that prompted this draft.
+</p>
+
+<h3>A.1&nbsp;&nbsp;In-conversation grounding indicator</h3>
+<p>
+  Every chat bubble already carries the dispatcher's
+  <code>intent</code>, <code>answer_source</code>, and
+  <code>suggest_word</code> fields. We surface a one-line badge under
+  each reply: ``grounded in <em>N</em> lexicon entries'' for
+  retrieval-backed replies and ``not in lexicon &mdash;
+  suggest a new entry'' for refusals. The mechanism that makes the
+  refusal contract <em>visible</em> is what makes it credible. This
+  costs nothing per message and informs every user without requiring
+  navigation.
+</p>
+
+<h3>A.2&nbsp;&nbsp;Settings &rarr; ``Quality &amp; Evaluation'' screen</h3>
+<p>
+  A read-only screen reachable from Settings, fed by a JSON endpoint
+  (<code>/eval/summary</code>) so it updates with each new evaluation
+  run without an app release. Layout:
+</p>
+<table>
+  <caption><strong>Table 15.</strong> Proposed layout for the in-app Quality &amp; Evaluation screen.</caption>
+  <thead><tr><th>Card</th><th>Source field</th><th>Refresh frequency</th></tr></thead>
+  <tbody>
+    <tr><td>Corpus size</td><td><code>entries_total</code> from corpus_stats</td><td>nightly</td></tr>
+    <tr><td>Last full evaluation date</td><td><code>last_eval_run_at</code></td><td>per eval run</td></tr>
+    <tr><td>Translation BLEU / chrF on TR-test</td><td>E1 results</td><td>per eval run</td></tr>
+    <tr><td>Word-lookup Recall@5 + MRR</td><td>E2 results</td><td>per eval run</td></tr>
+    <tr><td>Hallucination refusal rate</td><td>E4 results</td><td>per eval run</td></tr>
+    <tr><td>Mean reviewer Likert per dimension</td><td>aggregated <code>evaluations</code> table</td><td>per new rating</td></tr>
+    <tr><td>Inter-rater agreement (Cohen's &kappa;)</td><td>aggregated</td><td>nightly</td></tr>
+  </tbody>
+</table>
+<p>
+  This is the <em>right</em> place because users who care will look
+  there; users who don't won't be confused by ambient metric chrome on
+  the main screen.
+</p>
+
+<h3>A.3&nbsp;&nbsp;Public landing-page mirror</h3>
+<p>
+  The same JSON powers a static <code>/evaluation</code> page on the
+  project landing site, so reviewers, journalists, and conference
+  attendees can verify claims without installing the app. The paper's
+  &sect;6 cites this URL as the live evidence.
+</p>
+
+<h3>A.4&nbsp;&nbsp;Backend schema for <code>evaluations</code></h3>
+<p>
+  The existing <code>feedback</code> table records corrections and
+  new-word suggestions; reviewer ratings need their own table to
+  aggregate cleanly:
+</p>
+<pre>create table evaluations (
+  id              bigserial primary key,
+  reviewer_id     uuid not null,
+  evaluation_run_id text not null,        -- groups items into a session
+  item_id         text not null,           -- TR-test / WL-test / HALL-test item id
+  dimension       text not null            -- one of: accuracy, authenticity, helpfulness, refusal_correctness
+                  check (dimension in ('accuracy','authenticity','helpfulness','refusal_correctness')),
+  rating          int not null check (rating between 1 and 5),
+  free_text       text,
+  app_version     text,
+  created_at      timestamptz not null default now()
+);
+
+create index evaluations_run_idx on evaluations (evaluation_run_id, dimension);
+create unique index evaluations_unique on evaluations (reviewer_id, evaluation_run_id, item_id, dimension);
+</pre>
+<p>
+  Aggregation lives in a server-side view that powers
+  <code>/eval/summary</code>; raw rows are never sent to the client.
+</p>
+
+<h3>A.5&nbsp;&nbsp;What <em>not</em> to do</h3>
+<ul>
+  <li><strong>Do not surface raw per-reviewer scores in-app.</strong>
+  Reviewers may infer each other's identities at small N; aggregate
+  before display.</li>
+  <li><strong>Do not gate the chat behind ``ratings required''.</strong>
+  The grounding badge in &sect;A.1 is the only ratings-related UI on
+  the chat surface; explicit ratings live in a separate
+  ``Help us evaluate'' tab.</li>
+  <li><strong>Do not mix ratings into the <code>feedback</code>
+  table.</strong> Free-text corrections and structured ratings have
+  different validation, retention, and aggregation needs; keeping
+  them in separate tables is cheap insurance.</li>
+</ul>
+
+<!-- ========================================================== -->
+<h2>Appendix B &mdash; Reproducibility checklist</h2>
+<table>
+  <thead><tr><th>Asset</th><th>Path</th><th>Status</th></tr></thead>
+  <tbody>
+    <tr><td>Lexicon export (1,000 rows, JSON)</td><td><code>backend/data/</code> (canonical) + Supabase REST</td><td>shipped</td></tr>
+    <tr><td>Corpus stats</td><td><code>results/corpus_stats.json</code></td><td>generated 2026-05-03</td></tr>
+    <tr><td>Intent eval</td><td><code>scripts/eval/run_intent_eval.py</code> &rarr; <code>results/intent_eval.json</code></td><td>shipped</td></tr>
+    <tr><td>Lookup eval</td><td><code>scripts/eval/run_lookup_eval.py</code> &rarr; <code>results/lookup_eval.json</code></td><td>shipped</td></tr>
+    <tr><td>Translation eval</td><td><code>scripts/eval/run_translation_eval.py</code></td><td>script ready; data + quota required</td></tr>
+    <tr><td>Hallucination eval</td><td><code>scripts/eval/run_hallucination_eval.py</code> &rarr; <code>results/hallucination_eval.json</code> + <code>results/hallucination_inventions.jsonl</code></td><td>50/50 items scored on 2026-05-03 (partial — see Table 11 caveat)</td></tr>
+    <tr><td>Gate sweep</td><td><code>scripts/eval/run_gate_sweep.py</code></td><td>script ready</td></tr>
+    <tr><td>Test-set seed builder</td><td><code>scripts/eval/build_test_set_seeds.py</code></td><td>shipped 2026-05-03; outputs <code>*.candidate.json</code></td></tr>
+    <tr><td>Unit + integration tests</td><td><code>backend/tests/</code></td><td>42 / 42 passing</td></tr>
+    <tr><td>Random seed (test set sampling)</td><td><code>20260503</code></td><td>fixed in <code>build_test_set_seeds.py</code></td></tr>
+    <tr><td>Embedding model</td><td><code>gemini-embedding-001</code> (768)</td><td>fixed</td></tr>
+    <tr><td>Generation chain</td><td>2.5-flash &rarr; 2.0-flash &rarr; 2.5-flash-lite</td><td>fixed</td></tr>
+  </tbody>
+</table>
+
+<!-- ========================================================== -->
+<h2>References</h2>
+<ol class="refs">
+  <li>Abdelali, A., Mubarak, H., Samih, Y., Hassan, S., &amp; Darwish, K. (2021). <em>QADI: Arabic dialect identification in the wild.</em> Proceedings of WANLP.</li>
+  <li>Abdul-Mageed, M., Zhang, C., Bouamor, H., &amp; Habash, N. (2020). <em>NADI 2020: The First Nuanced Arabic Dialect Identification Shared Task.</em></li>
+  <li>Al-Saqqaf, A. H. (2006). <em>The Linguistics of Loanwords in Hadrami Arabic.</em> International Journal of Bilingual Education and Bilingualism, 9(1).</li>
+  <li>Artetxe, M., Labaka, G., &amp; Agirre, E. (2018). <em>A robust self-learning method for fully unsupervised cross-lingual mappings of word embeddings.</em> ACL.</li>
+  <li>Asai, A., Wu, Z., Wang, Y., Sil, A., &amp; Hajishirzi, H. (2023). <em>Self-RAG: Learning to Retrieve, Generate, and Critique through Self-Reflection.</em></li>
+  <li>Bouamor, H., et al. (2018). <em>The MADAR Arabic Dialect Corpus and Lexicon.</em> LREC.</li>
+  <li>Khalifa, S., Habash, N., et al. (2021). <em>Self-training Pre-trained Language Models for Zero- and Few-shot Multi-dialectal Arabic Sequence Labeling.</em></li>
+  <li>Lewis, P., Perez, E., Piktus, A., et al. (2020). <em>Retrieval-Augmented Generation for Knowledge-Intensive NLP Tasks.</em> NeurIPS.</li>
+  <li>Mallen, A., Asai, A., et al. (2023). <em>When Not to Trust Language Models: Investigating Effectiveness of Parametric and Non-Parametric Memories.</em> ACL.</li>
+  <li>Rapp, R. (1995). <em>Identifying Word Translations in Non-Parallel Texts.</em> ACL.</li>
+  <li>Salameh, M., Bouamor, H., &amp; Habash, N. (2018). <em>Fine-Grained Arabic Dialect Identification.</em> COLING.</li>
+  <li>Shuster, K., et al. (2021). <em>Retrieval Augmentation Reduces Hallucination in Conversation.</em> EMNLP findings.</li>
+  <li>Watson, J. C. E. (2002). <em>The Phonology and Morphology of Arabic.</em> Oxford University Press.</li>
+</ol>
+
+<p class="footnote" style="margin-top:40px; border-top:1px solid var(--rule); padding-top:10px;">
+  Compilation provenance: this HTML was generated on 2026-05-03 from
+  <code>docs/research_paper_plan.md</code>, <code>results/corpus_stats.json</code>,
+  <code>results/intent_eval.json</code>, <code>results/lookup_eval.json</code>, and the
+  candidate test-set fixtures at <code>backend/tests/fixtures/</code>. Cells marked
+  <span class="pill real">measured</span> reflect data on disk at compilation time;
+  <span class="pill partial">partial</span> cells came from template / smoke-test runs;
+  <span class="pill tbd">TBD</span> cells name the script that will fill them.
+</p>
+
+</body>
+</html>

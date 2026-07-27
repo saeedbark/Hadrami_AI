@@ -1,0 +1,6302 @@
+[
+  {
+    "id": 101,
+    "update": {
+      "transliteration": "bzgh",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 102,
+    "update": {
+      "transliteration": "byl",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 103,
+    "update": {
+      "transliteration": "bd3yd3",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 104,
+    "update": {
+      "transliteration": "b3d",
+      "semantic_intent": "action"
+    }
+  },
+  {
+    "id": 105,
+    "update": {
+      "transliteration": "bgha",
+      "semantic_intent": "action"
+    }
+  },
+  {
+    "id": 106,
+    "update": {
+      "transliteration": "bysh",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 107,
+    "update": {
+      "transliteration": "bt",
+      "semantic_intent": "action"
+    }
+  },
+  {
+    "id": 108,
+    "update": {
+      "transliteration": "br3",
+      "semantic_intent": "descriptor"
+    }
+  },
+  {
+    "id": 109,
+    "update": {
+      "transliteration": "tqb3",
+      "semantic_intent": "action"
+    }
+  },
+  {
+    "id": 110,
+    "update": {
+      "transliteration": "t3lwmh",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 111,
+    "update": {
+      "transliteration": "tkhl3",
+      "semantic_intent": "action"
+    }
+  },
+  {
+    "id": 112,
+    "update": {
+      "transliteration": "altkh",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 113,
+    "update": {
+      "transliteration": "tbt",
+      "semantic_intent": "action"
+    }
+  },
+  {
+    "id": 114,
+    "update": {
+      "transliteration": "tkhb",
+      "semantic_intent": "action"
+    }
+  },
+  {
+    "id": 115,
+    "update": {
+      "transliteration": "tryD",
+      "semantic_intent": "action"
+    }
+  },
+  {
+    "id": 116,
+    "update": {
+      "transliteration": "trashkhwa",
+      "semantic_intent": "action"
+    }
+  },
+  {
+    "id": 117,
+    "update": {
+      "transliteration": "tHadhr",
+      "semantic_intent": "emotion"
+    }
+  },
+  {
+    "id": 118,
+    "update": {
+      "transliteration": "trkmh",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 119,
+    "update": {
+      "transliteration": "akhtm",
+      "semantic_intent": "action"
+    }
+  },
+  {
+    "id": 120,
+    "update": {
+      "transliteration": "tadyh",
+      "semantic_intent": "action"
+    }
+  },
+  {
+    "id": 121,
+    "update": {
+      "transliteration": "t3yn",
+      "semantic_intent": "action"
+    }
+  },
+  {
+    "id": 122,
+    "update": {
+      "transliteration": "tmam",
+      "semantic_intent": "expression"
+    }
+  },
+  {
+    "id": 123,
+    "update": {
+      "transliteration": "tan",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 124,
+    "update": {
+      "transliteration": "tghba",
+      "semantic_intent": "action"
+    }
+  },
+  {
+    "id": 125,
+    "update": {
+      "transliteration": "tba",
+      "semantic_intent": "action"
+    }
+  },
+  {
+    "id": 126,
+    "update": {
+      "transliteration": "tghlb",
+      "semantic_intent": "action"
+    }
+  },
+  {
+    "id": 127,
+    "update": {
+      "transliteration": "tfsH",
+      "semantic_intent": "action"
+    }
+  },
+  {
+    "id": 128,
+    "update": {
+      "transliteration": "altbl",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 129,
+    "update": {
+      "transliteration": "tyasyr",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 130,
+    "update": {
+      "transliteration": "t3ashy",
+      "semantic_intent": "action"
+    }
+  },
+  {
+    "id": 131,
+    "update": {
+      "transliteration": "tayr",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 132,
+    "update": {
+      "transliteration": "tqy",
+      "semantic_intent": "action"
+    }
+  },
+  {
+    "id": 133,
+    "update": {
+      "transliteration": "tfal",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 134,
+    "update": {
+      "transliteration": "twlh",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 135,
+    "update": {
+      "transliteration": "tSwl",
+      "semantic_intent": "time"
+    }
+  },
+  {
+    "id": 136,
+    "update": {
+      "transliteration": "thad",
+      "semantic_intent": "action"
+    }
+  },
+  {
+    "id": 137,
+    "update": {
+      "transliteration": "altbdah",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 138,
+    "update": {
+      "transliteration": "tw",
+      "semantic_intent": "time"
+    }
+  },
+  {
+    "id": 139,
+    "update": {
+      "transliteration": "twk",
+      "semantic_intent": "expression"
+    }
+  },
+  {
+    "id": 140,
+    "update": {
+      "transliteration": "atryk",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 141,
+    "update": {
+      "transliteration": "altSryf",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 142,
+    "update": {
+      "transliteration": "tmr mdHq",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 143,
+    "update": {
+      "transliteration": "altjlyd",
+      "semantic_intent": "action"
+    }
+  },
+  {
+    "id": 144,
+    "update": {
+      "transliteration": "tflh",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 145,
+    "update": {
+      "transliteration": "altnar",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 146,
+    "update": {
+      "transliteration": "altkyh",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 147,
+    "update": {
+      "transliteration": "tyHh",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 148,
+    "update": {
+      "transliteration": "altawh",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 149,
+    "update": {
+      "transliteration": "tbatyk",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 150,
+    "update": {
+      "transliteration": "th3l",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 151,
+    "update": {
+      "transliteration": "thmd",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 152,
+    "update": {
+      "transliteration": "altharh",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 153,
+    "update": {
+      "transliteration": "alajlH",
+      "semantic_intent": "descriptor"
+    }
+  },
+  {
+    "id": 154,
+    "update": {
+      "transliteration": "alj3bh",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 155,
+    "update": {
+      "transliteration": "aljHy",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 156,
+    "update": {
+      "transliteration": "aljlb",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 157,
+    "update": {
+      "transliteration": "aljHlh",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 158,
+    "update": {
+      "transliteration": "aljbh",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 159,
+    "update": {
+      "transliteration": "aljabyh",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 160,
+    "update": {
+      "transliteration": "aljrml",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 161,
+    "update": {
+      "transliteration": "aljlyjlh",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 162,
+    "update": {
+      "transliteration": "jbl almrbsh",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 163,
+    "update": {
+      "transliteration": "jbl almdmn",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 164,
+    "update": {
+      "transliteration": "aljhr",
+      "semantic_intent": "action"
+    }
+  },
+  {
+    "id": 165,
+    "update": {
+      "transliteration": "aljljl",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 166,
+    "update": {
+      "transliteration": "jwyd",
+      "semantic_intent": "descriptor"
+    }
+  },
+  {
+    "id": 167,
+    "update": {
+      "transliteration": "aljHmh",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 168,
+    "update": {
+      "transliteration": "aljrb",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 169,
+    "update": {
+      "transliteration": "aljhwsh",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 170,
+    "update": {
+      "transliteration": "aljdhfrh",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 171,
+    "update": {
+      "transliteration": "jfyr",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 172,
+    "update": {
+      "transliteration": "aljwnyh",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 173,
+    "update": {
+      "transliteration": "HT",
+      "semantic_intent": "action"
+    }
+  },
+  {
+    "id": 174,
+    "update": {
+      "transliteration": "lHq",
+      "semantic_intent": "action"
+    }
+  },
+  {
+    "id": 175,
+    "update": {
+      "transliteration": "Hysh",
+      "semantic_intent": "time"
+    }
+  },
+  {
+    "id": 176,
+    "update": {
+      "transliteration": "Htat",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 177,
+    "update": {
+      "transliteration": "Hmr",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 178,
+    "update": {
+      "transliteration": "Hnq",
+      "semantic_intent": "emotion"
+    }
+  },
+  {
+    "id": 179,
+    "update": {
+      "transliteration": "Hjl",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 180,
+    "update": {
+      "transliteration": "HSl",
+      "semantic_intent": "action"
+    }
+  },
+  {
+    "id": 181,
+    "update": {
+      "transliteration": "Hdhl",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 182,
+    "update": {
+      "transliteration": "Hyak",
+      "semantic_intent": "expression"
+    }
+  },
+  {
+    "id": 183,
+    "update": {
+      "transliteration": "alHadq",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 184,
+    "update": {
+      "transliteration": "Hnh",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 185,
+    "update": {
+      "transliteration": "Hfn",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 186,
+    "update": {
+      "transliteration": "Hrfwf",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 187,
+    "update": {
+      "transliteration": "Hd",
+      "semantic_intent": "expression"
+    }
+  },
+  {
+    "id": 188,
+    "update": {
+      "transliteration": "alHshk",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 189,
+    "update": {
+      "transliteration": "alHka'",
+      "semantic_intent": "person"
+    }
+  },
+  {
+    "id": 190,
+    "update": {
+      "transliteration": "Hdra",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 191,
+    "update": {
+      "transliteration": "alHzam",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 192,
+    "update": {
+      "transliteration": "alHwkh",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 193,
+    "update": {
+      "transliteration": "Hms",
+      "semantic_intent": "emotion"
+    }
+  },
+  {
+    "id": 194,
+    "update": {
+      "transliteration": "alHsf",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 195,
+    "update": {
+      "transliteration": "Hylh",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 196,
+    "update": {
+      "transliteration": "HSan alskn",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 197,
+    "update": {
+      "transliteration": "Hbwh",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 198,
+    "update": {
+      "transliteration": "alHndhwl",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 199,
+    "update": {
+      "transliteration": "Hb Hb",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 200,
+    "update": {
+      "transliteration": "HTyT",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 201,
+    "update": {
+      "transliteration": "alHjl",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 202,
+    "update": {
+      "transliteration": "alHmra'",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 203,
+    "update": {
+      "transliteration": "alHashdy",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 204,
+    "update": {
+      "transliteration": "alHjwh",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 205,
+    "update": {
+      "transliteration": "alHwD",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 206,
+    "update": {
+      "transliteration": "alHashdy",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 207,
+    "update": {
+      "transliteration": "Hbabh",
+      "semantic_intent": "person"
+    }
+  },
+  {
+    "id": 208,
+    "update": {
+      "transliteration": "alHwmr",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 209,
+    "update": {
+      "transliteration": "alHDar",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 210,
+    "update": {
+      "transliteration": "alHrawh",
+      "semantic_intent": "person"
+    }
+  },
+  {
+    "id": 211,
+    "update": {
+      "transliteration": "alHalwl",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 212,
+    "update": {
+      "transliteration": "alHrwy",
+      "semantic_intent": "person"
+    }
+  },
+  {
+    "id": 213,
+    "update": {
+      "transliteration": "alHzr",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 214,
+    "update": {
+      "transliteration": "alHdj",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 215,
+    "update": {
+      "transliteration": "alHjyr",
+      "semantic_intent": "person"
+    }
+  },
+  {
+    "id": 216,
+    "update": {
+      "transliteration": "Hajh fnanh",
+      "semantic_intent": "expression"
+    }
+  },
+  {
+    "id": 217,
+    "update": {
+      "transliteration": "alHbr",
+      "semantic_intent": "action"
+    }
+  },
+  {
+    "id": 218,
+    "update": {
+      "transliteration": "alHwat",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 219,
+    "update": {
+      "transliteration": "alHywan",
+      "semantic_intent": "person"
+    }
+  },
+  {
+    "id": 220,
+    "update": {
+      "transliteration": "alHqb",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 221,
+    "update": {
+      "transliteration": "alHty",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 222,
+    "update": {
+      "transliteration": "alHtykh",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 223,
+    "update": {
+      "transliteration": "alHrw",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 224,
+    "update": {
+      "transliteration": "alHbws",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 225,
+    "update": {
+      "transliteration": "Hnaq",
+      "semantic_intent": "emotion"
+    }
+  },
+  {
+    "id": 226,
+    "update": {
+      "transliteration": "alHSn",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 227,
+    "update": {
+      "transliteration": "alHshf",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 228,
+    "update": {
+      "transliteration": "alHbl",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 229,
+    "update": {
+      "transliteration": "alHrh",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 230,
+    "update": {
+      "transliteration": "alHna",
+      "semantic_intent": "person"
+    }
+  },
+  {
+    "id": 231,
+    "update": {
+      "transliteration": "Hydr 3bad",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 232,
+    "update": {
+      "transliteration": "alHqh",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 233,
+    "update": {
+      "transliteration": "alHwsh",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 234,
+    "update": {
+      "transliteration": "alHsHs",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 235,
+    "update": {
+      "transliteration": "alHnyshh",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 236,
+    "update": {
+      "transliteration": "alHshysh",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 237,
+    "update": {
+      "transliteration": "alHshk",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 238,
+    "update": {
+      "transliteration": "Hmh alsyl",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 239,
+    "update": {
+      "transliteration": "HTt aldar",
+      "semantic_intent": "action"
+    }
+  },
+  {
+    "id": 240,
+    "update": {
+      "transliteration": "alHydwan",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 241,
+    "update": {
+      "transliteration": "alHnkh",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 242,
+    "update": {
+      "transliteration": "HyT",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 243,
+    "update": {
+      "transliteration": "alHmh",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 244,
+    "update": {
+      "transliteration": "alHrthan",
+      "semantic_intent": "person"
+    }
+  },
+  {
+    "id": 245,
+    "update": {
+      "transliteration": "alHsh",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 246,
+    "update": {
+      "transliteration": "alHltyt",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 247,
+    "update": {
+      "transliteration": "alHybwr",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 248,
+    "update": {
+      "transliteration": "alHyq",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 249,
+    "update": {
+      "transliteration": "alHly",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 250,
+    "update": {
+      "transliteration": "alHrml",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 251,
+    "update": {
+      "transliteration": "alHSah",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 252,
+    "update": {
+      "transliteration": "alkhshm",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 253,
+    "update": {
+      "transliteration": "alkhbt",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 254,
+    "update": {
+      "transliteration": "alkhmyr",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 255,
+    "update": {
+      "transliteration": "alkhSar",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 256,
+    "update": {
+      "transliteration": "khl",
+      "semantic_intent": "action"
+    }
+  },
+  {
+    "id": 257,
+    "update": {
+      "transliteration": "khzb",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 258,
+    "update": {
+      "transliteration": "alkhn",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 259,
+    "update": {
+      "transliteration": "khm3",
+      "semantic_intent": "emotion"
+    }
+  },
+  {
+    "id": 260,
+    "update": {
+      "transliteration": "khrqh",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 261,
+    "update": {
+      "transliteration": "khlwh",
+      "semantic_intent": "action"
+    }
+  },
+  {
+    "id": 262,
+    "update": {
+      "transliteration": "khlyh",
+      "semantic_intent": "descriptor"
+    }
+  },
+  {
+    "id": 263,
+    "update": {
+      "transliteration": "alkhlfh",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 264,
+    "update": {
+      "transliteration": "alkhTrah",
+      "semantic_intent": "person"
+    }
+  },
+  {
+    "id": 265,
+    "update": {
+      "transliteration": "alkhrTan",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 266,
+    "update": {
+      "transliteration": "alkhrarh",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 267,
+    "update": {
+      "transliteration": "khzwq",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 268,
+    "update": {
+      "transliteration": "alkhwS",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 269,
+    "update": {
+      "transliteration": "khrbshh",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 270,
+    "update": {
+      "transliteration": "khmr",
+      "semantic_intent": "action"
+    }
+  },
+  {
+    "id": 271,
+    "update": {
+      "transliteration": "alkhzanh",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 272,
+    "update": {
+      "transliteration": "khrt aldar",
+      "semantic_intent": "time"
+    }
+  },
+  {
+    "id": 273,
+    "update": {
+      "transliteration": "alkhlb",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 274,
+    "update": {
+      "transliteration": "alkhrh",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 275,
+    "update": {
+      "transliteration": "khnm",
+      "semantic_intent": "action"
+    }
+  },
+  {
+    "id": 276,
+    "update": {
+      "transliteration": "alkhl3h",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 277,
+    "update": {
+      "transliteration": "alkhyl",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 278,
+    "update": {
+      "transliteration": "khzwh",
+      "semantic_intent": "emotion"
+    }
+  },
+  {
+    "id": 279,
+    "update": {
+      "transliteration": "khb",
+      "semantic_intent": "action"
+    }
+  },
+  {
+    "id": 280,
+    "update": {
+      "transliteration": "alkhmy",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 281,
+    "update": {
+      "transliteration": "khrntha",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 282,
+    "update": {
+      "transliteration": "alkhnh",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 283,
+    "update": {
+      "transliteration": "khj3",
+      "semantic_intent": "descriptor"
+    }
+  },
+  {
+    "id": 284,
+    "update": {
+      "transliteration": "khlS",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 285,
+    "update": {
+      "transliteration": "aldn",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 286,
+    "update": {
+      "transliteration": "aldashr",
+      "semantic_intent": "descriptor"
+    }
+  },
+  {
+    "id": 287,
+    "update": {
+      "transliteration": "khybh",
+      "semantic_intent": "emotion"
+    }
+  },
+  {
+    "id": 288,
+    "update": {
+      "transliteration": "alkhrq",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 289,
+    "update": {
+      "transliteration": "alkhTaf",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 290,
+    "update": {
+      "transliteration": "alkhwr",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 291,
+    "update": {
+      "transliteration": "alkhrsh",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 292,
+    "update": {
+      "transliteration": "alkhl3",
+      "semantic_intent": "action"
+    }
+  },
+  {
+    "id": 293,
+    "update": {
+      "transliteration": "alkhrabh",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 294,
+    "update": {
+      "transliteration": "alkhyb3an",
+      "semantic_intent": "person"
+    }
+  },
+  {
+    "id": 295,
+    "update": {
+      "transliteration": "alkhyl",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 296,
+    "update": {
+      "transliteration": "khmqh",
+      "semantic_intent": "descriptor"
+    }
+  },
+  {
+    "id": 297,
+    "update": {
+      "transliteration": "alkhrfh",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 298,
+    "update": {
+      "transliteration": "alkhbrh",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 299,
+    "update": {
+      "transliteration": "alkhTfh",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 300,
+    "update": {
+      "transliteration": "alkhtmh",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 301,
+    "update": {
+      "transliteration": "alkhTmh",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 302,
+    "update": {
+      "transliteration": "alkhTbah",
+      "semantic_intent": "person"
+    }
+  },
+  {
+    "id": 303,
+    "update": {
+      "transliteration": "khfrj",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 304,
+    "update": {
+      "transliteration": "aldsmal",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 305,
+    "update": {
+      "transliteration": "aldhmwrh",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 306,
+    "update": {
+      "transliteration": "aldfn",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 307,
+    "update": {
+      "transliteration": "aldym",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 308,
+    "update": {
+      "transliteration": "aldkh",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 309,
+    "update": {
+      "transliteration": "aldhlh",
+      "semantic_intent": "emotion"
+    }
+  },
+  {
+    "id": 310,
+    "update": {
+      "transliteration": "aldar",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 311,
+    "update": {
+      "transliteration": "aldkhlh",
+      "semantic_intent": "person"
+    }
+  },
+  {
+    "id": 312,
+    "update": {
+      "transliteration": "aldwby",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 313,
+    "update": {
+      "transliteration": "aldyd",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 314,
+    "update": {
+      "transliteration": "dwb",
+      "semantic_intent": "expression"
+    }
+  },
+  {
+    "id": 315,
+    "update": {
+      "transliteration": "dwyrh",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 316,
+    "update": {
+      "transliteration": "aldr3",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 317,
+    "update": {
+      "transliteration": "aldyrh",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 318,
+    "update": {
+      "transliteration": "aldkhsh",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 319,
+    "update": {
+      "transliteration": "aldqsh",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 320,
+    "update": {
+      "transliteration": "aldr3",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 321,
+    "update": {
+      "transliteration": "aldqaqh",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 322,
+    "update": {
+      "transliteration": "aldkm",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 323,
+    "update": {
+      "transliteration": "aldrjh  aldraj",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 324,
+    "update": {
+      "transliteration": "aldlw",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 325,
+    "update": {
+      "transliteration": "aldwr",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 326,
+    "update": {
+      "transliteration": "aldndnh",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 327,
+    "update": {
+      "transliteration": "aldb",
+      "semantic_intent": "descriptor"
+    }
+  },
+  {
+    "id": 328,
+    "update": {
+      "transliteration": "aldmymh alhnnh",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 329,
+    "update": {
+      "transliteration": "aldan alHDrmy",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 330,
+    "update": {
+      "transliteration": "aldldal",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 331,
+    "update": {
+      "transliteration": "aldjr",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 332,
+    "update": {
+      "transliteration": "dfrha",
+      "semantic_intent": "action"
+    }
+  },
+  {
+    "id": 333,
+    "update": {
+      "transliteration": "dHfha",
+      "semantic_intent": "action"
+    }
+  },
+  {
+    "id": 334,
+    "update": {
+      "transliteration": "aldwm",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 335,
+    "update": {
+      "transliteration": "dhlq",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 336,
+    "update": {
+      "transliteration": "aldhhynh",
+      "semantic_intent": "person"
+    }
+  },
+  {
+    "id": 337,
+    "update": {
+      "transliteration": "aldhyl wqdmh",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 338,
+    "update": {
+      "transliteration": "aldhra3",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 339,
+    "update": {
+      "transliteration": "aldhbab alaswdany",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 340,
+    "update": {
+      "transliteration": "aldhbr waldhbrh",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 341,
+    "update": {
+      "transliteration": "aldhry",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 342,
+    "update": {
+      "transliteration": "aldhalH",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 343,
+    "update": {
+      "transliteration": "aldhyb",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 344,
+    "update": {
+      "transliteration": "dhHyn",
+      "semantic_intent": "expression"
+    }
+  },
+  {
+    "id": 345,
+    "update": {
+      "transliteration": "dhla dhHyn",
+      "semantic_intent": "expression"
+    }
+  },
+  {
+    "id": 346,
+    "update": {
+      "transliteration": "dhrh",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 347,
+    "update": {
+      "transliteration": "aldhban",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 348,
+    "update": {
+      "transliteration": "alrshwH",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 349,
+    "update": {
+      "transliteration": "rqad",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 350,
+    "update": {
+      "transliteration": "alrDyH",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 351,
+    "update": {
+      "transliteration": "rkhlh",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 352,
+    "update": {
+      "transliteration": "alrfqh",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 353,
+    "update": {
+      "transliteration": "alr3h",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 354,
+    "update": {
+      "transliteration": "alrwk",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 355,
+    "update": {
+      "transliteration": "alra3h",
+      "semantic_intent": "expression"
+    }
+  },
+  {
+    "id": 356,
+    "update": {
+      "transliteration": "alrady",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 357,
+    "update": {
+      "transliteration": "dwyl",
+      "semantic_intent": "descriptor"
+    }
+  },
+  {
+    "id": 358,
+    "update": {
+      "transliteration": "dkhwn",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 359,
+    "update": {
+      "transliteration": "aldfwf",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 360,
+    "update": {
+      "transliteration": "dhla",
+      "semantic_intent": "function"
+    }
+  },
+  {
+    "id": 361,
+    "update": {
+      "transliteration": "rbwd",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 362,
+    "update": {
+      "transliteration": "rTl",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 363,
+    "update": {
+      "transliteration": "alrsh",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 364,
+    "update": {
+      "transliteration": "rql",
+      "semantic_intent": "action"
+    }
+  },
+  {
+    "id": 365,
+    "update": {
+      "transliteration": "ryD",
+      "semantic_intent": "descriptor"
+    }
+  },
+  {
+    "id": 366,
+    "update": {
+      "transliteration": "alrwakb",
+      "semantic_intent": "person"
+    }
+  },
+  {
+    "id": 367,
+    "update": {
+      "transliteration": "rday",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 368,
+    "update": {
+      "transliteration": "alrjlh",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 369,
+    "update": {
+      "transliteration": "alrdm",
+      "semantic_intent": "action"
+    }
+  },
+  {
+    "id": 370,
+    "update": {
+      "transliteration": "alrym",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 371,
+    "update": {
+      "transliteration": "alrmal",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 372,
+    "update": {
+      "transliteration": "alr3D",
+      "semantic_intent": "action"
+    }
+  },
+  {
+    "id": 373,
+    "update": {
+      "transliteration": "alrayh",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 374,
+    "update": {
+      "transliteration": "rwbh",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 375,
+    "update": {
+      "transliteration": "alrshkh",
+      "semantic_intent": "time"
+    }
+  },
+  {
+    "id": 376,
+    "update": {
+      "transliteration": "alrHmh",
+      "semantic_intent": "expression"
+    }
+  },
+  {
+    "id": 377,
+    "update": {
+      "transliteration": "alrDh",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 378,
+    "update": {
+      "transliteration": "alrbT",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 379,
+    "update": {
+      "transliteration": "rwty",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 380,
+    "update": {
+      "transliteration": "rashnh",
+      "semantic_intent": "descriptor"
+    }
+  },
+  {
+    "id": 381,
+    "update": {
+      "transliteration": "rshbh",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 382,
+    "update": {
+      "transliteration": "alrwsh",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 383,
+    "update": {
+      "transliteration": "rshash",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 384,
+    "update": {
+      "transliteration": "alshbth",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 385,
+    "update": {
+      "transliteration": "rf",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 386,
+    "update": {
+      "transliteration": "alrb",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 387,
+    "update": {
+      "transliteration": "alrzm",
+      "semantic_intent": "action"
+    }
+  },
+  {
+    "id": 388,
+    "update": {
+      "transliteration": "alrbaH",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 389,
+    "update": {
+      "transliteration": "alrsha'",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 390,
+    "update": {
+      "transliteration": "alzwn",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 391,
+    "update": {
+      "transliteration": "zam",
+      "semantic_intent": "time"
+    }
+  },
+  {
+    "id": 392,
+    "update": {
+      "transliteration": "zql",
+      "semantic_intent": "action"
+    }
+  },
+  {
+    "id": 393,
+    "update": {
+      "transliteration": "alzrybh",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 394,
+    "update": {
+      "transliteration": "alzyr",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 395,
+    "update": {
+      "transliteration": "alzafr",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 396,
+    "update": {
+      "transliteration": "alzfyn",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 397,
+    "update": {
+      "transliteration": "alzrb",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 398,
+    "update": {
+      "transliteration": "alzbr",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 399,
+    "update": {
+      "transliteration": "alzanh",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 400,
+    "update": {
+      "transliteration": "alzrbady",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 401,
+    "update": {
+      "transliteration": "alzwly",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 402,
+    "update": {
+      "transliteration": "zmbyl",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 403,
+    "update": {
+      "transliteration": "alzqr",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 404,
+    "update": {
+      "transliteration": "znb3 al3shr",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 405,
+    "update": {
+      "transliteration": "alznT",
+      "semantic_intent": "emotion"
+    }
+  },
+  {
+    "id": 406,
+    "update": {
+      "transliteration": "alzqrh",
+      "semantic_intent": "person"
+    }
+  },
+  {
+    "id": 407,
+    "update": {
+      "transliteration": "alzman",
+      "semantic_intent": "expression"
+    }
+  },
+  {
+    "id": 408,
+    "update": {
+      "transliteration": "alzw3",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 409,
+    "update": {
+      "transliteration": "alzbh",
+      "semantic_intent": "emotion"
+    }
+  },
+  {
+    "id": 410,
+    "update": {
+      "transliteration": "rkykh",
+      "semantic_intent": "descriptor"
+    }
+  },
+  {
+    "id": 411,
+    "update": {
+      "transliteration": "rSn",
+      "semantic_intent": "action"
+    }
+  },
+  {
+    "id": 412,
+    "update": {
+      "transliteration": "srT",
+      "semantic_intent": "action"
+    }
+  },
+  {
+    "id": 413,
+    "update": {
+      "transliteration": "alsbth",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 414,
+    "update": {
+      "transliteration": "srH",
+      "semantic_intent": "time"
+    }
+  },
+  {
+    "id": 415,
+    "update": {
+      "transliteration": "am swyd",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 416,
+    "update": {
+      "transliteration": "sbr",
+      "semantic_intent": "action"
+    }
+  },
+  {
+    "id": 417,
+    "update": {
+      "transliteration": "alswm",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 418,
+    "update": {
+      "transliteration": "sbar",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 419,
+    "update": {
+      "transliteration": "alsramy",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 420,
+    "update": {
+      "transliteration": "sbq",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 421,
+    "update": {
+      "transliteration": "sfyH",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 422,
+    "update": {
+      "transliteration": "sany",
+      "semantic_intent": "descriptor"
+    }
+  },
+  {
+    "id": 423,
+    "update": {
+      "transliteration": "alsas",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 424,
+    "update": {
+      "transliteration": "alslH",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 425,
+    "update": {
+      "transliteration": "alsba3yh",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 426,
+    "update": {
+      "transliteration": "alsdh",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 427,
+    "update": {
+      "transliteration": "alsrh",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 428,
+    "update": {
+      "transliteration": "alsyb",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 429,
+    "update": {
+      "transliteration": "sdwa",
+      "semantic_intent": "action"
+    }
+  },
+  {
+    "id": 430,
+    "update": {
+      "transliteration": "alsaqyh",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 431,
+    "update": {
+      "transliteration": "alsaf",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 432,
+    "update": {
+      "transliteration": "sfTh",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 433,
+    "update": {
+      "transliteration": "alsbyh",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 434,
+    "update": {
+      "transliteration": "alsnawh",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 435,
+    "update": {
+      "transliteration": "slymwd",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 436,
+    "update": {
+      "transliteration": "astw3dwa",
+      "semantic_intent": "person"
+    }
+  },
+  {
+    "id": 437,
+    "update": {
+      "transliteration": "saryh",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 438,
+    "update": {
+      "transliteration": "alsbkhh",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 439,
+    "update": {
+      "transliteration": "alasbal",
+      "semantic_intent": "time"
+    }
+  },
+  {
+    "id": 440,
+    "update": {
+      "transliteration": "srwal alhnqs",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 441,
+    "update": {
+      "transliteration": "alslh",
+      "semantic_intent": "person"
+    }
+  },
+  {
+    "id": 442,
+    "update": {
+      "transliteration": "sry3",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 443,
+    "update": {
+      "transliteration": "alstrh",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 444,
+    "update": {
+      "transliteration": "alsnkr",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 445,
+    "update": {
+      "transliteration": "alsHswH",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 446,
+    "update": {
+      "transliteration": "sth",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 447,
+    "update": {
+      "transliteration": "sql",
+      "semantic_intent": "person"
+    }
+  },
+  {
+    "id": 448,
+    "update": {
+      "transliteration": "alslb",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 449,
+    "update": {
+      "transliteration": "snqwf",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 450,
+    "update": {
+      "transliteration": "alsryh",
+      "semantic_intent": "person"
+    }
+  },
+  {
+    "id": 451,
+    "update": {
+      "transliteration": "sbwl",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 452,
+    "update": {
+      "transliteration": "almskhn",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 453,
+    "update": {
+      "transliteration": "alsqayh",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 454,
+    "update": {
+      "transliteration": "alsqyfh",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 455,
+    "update": {
+      "transliteration": "slb",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 456,
+    "update": {
+      "transliteration": "alsf",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 457,
+    "update": {
+      "transliteration": "alsfyfh",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 458,
+    "update": {
+      "transliteration": "alsalfh",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 459,
+    "update": {
+      "transliteration": "alsf",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 460,
+    "update": {
+      "transliteration": "alshmh",
+      "semantic_intent": "person"
+    }
+  },
+  {
+    "id": 461,
+    "update": {
+      "transliteration": "shlwa",
+      "semantic_intent": "action"
+    }
+  },
+  {
+    "id": 462,
+    "update": {
+      "transliteration": "alslyT",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 463,
+    "update": {
+      "transliteration": "shmlh",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 464,
+    "update": {
+      "transliteration": "shtar",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 465,
+    "update": {
+      "transliteration": "alshbak",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 466,
+    "update": {
+      "transliteration": "shT",
+      "semantic_intent": "action"
+    }
+  },
+  {
+    "id": 467,
+    "update": {
+      "transliteration": "alshmsh",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 468,
+    "update": {
+      "transliteration": "alshwl",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 469,
+    "update": {
+      "transliteration": "alshrby3h",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 470,
+    "update": {
+      "transliteration": "shqb",
+      "semantic_intent": "emotion"
+    }
+  },
+  {
+    "id": 471,
+    "update": {
+      "transliteration": "shnq",
+      "semantic_intent": "descriptor"
+    }
+  },
+  {
+    "id": 472,
+    "update": {
+      "transliteration": "shydhr",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 473,
+    "update": {
+      "transliteration": "shbr",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 474,
+    "update": {
+      "transliteration": "alshyth",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 475,
+    "update": {
+      "transliteration": "shTr",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 476,
+    "update": {
+      "transliteration": "alshkhT",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 477,
+    "update": {
+      "transliteration": "alshbrm",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 478,
+    "update": {
+      "transliteration": "alshrH",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 479,
+    "update": {
+      "transliteration": "alshkhr",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 480,
+    "update": {
+      "transliteration": "shwy",
+      "semantic_intent": "time"
+    }
+  },
+  {
+    "id": 481,
+    "update": {
+      "transliteration": "alshHrh",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 482,
+    "update": {
+      "transliteration": "alshal",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 483,
+    "update": {
+      "transliteration": "alshrashr",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 484,
+    "update": {
+      "transliteration": "alshlnq",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 485,
+    "update": {
+      "transliteration": "mnkhash",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 486,
+    "update": {
+      "transliteration": "almsh3bh",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 487,
+    "update": {
+      "transliteration": "alshlHh",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 488,
+    "update": {
+      "transliteration": "shzr",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 489,
+    "update": {
+      "transliteration": "alshwa",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 490,
+    "update": {
+      "transliteration": "alshmyz",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 491,
+    "update": {
+      "transliteration": "alshmrakh",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 492,
+    "update": {
+      "transliteration": "shb",
+      "semantic_intent": "action"
+    }
+  },
+  {
+    "id": 493,
+    "update": {
+      "transliteration": "shaf",
+      "semantic_intent": "action"
+    }
+  },
+  {
+    "id": 494,
+    "update": {
+      "transliteration": "sh3q",
+      "semantic_intent": "action"
+    }
+  },
+  {
+    "id": 495,
+    "update": {
+      "transliteration": "alSbaTh",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 496,
+    "update": {
+      "transliteration": "shnh",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 497,
+    "update": {
+      "transliteration": "alsharH",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 498,
+    "update": {
+      "transliteration": "alshqa",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 499,
+    "update": {
+      "transliteration": "alSlwl",
+      "semantic_intent": "emotion"
+    }
+  },
+  {
+    "id": 500,
+    "update": {
+      "transliteration": "alSmyl",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 501,
+    "update": {
+      "transliteration": "alSlyq",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 502,
+    "update": {
+      "transliteration": "alSnb3h",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 503,
+    "update": {
+      "transliteration": "alSbyan",
+      "semantic_intent": "person"
+    }
+  },
+  {
+    "id": 504,
+    "update": {
+      "transliteration": "Sny",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 505,
+    "update": {
+      "transliteration": "alSfafh",
+      "semantic_intent": "person"
+    }
+  },
+  {
+    "id": 506,
+    "update": {
+      "transliteration": "alSny",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 507,
+    "update": {
+      "transliteration": "alSwyr",
+      "semantic_intent": "descriptor"
+    }
+  },
+  {
+    "id": 508,
+    "update": {
+      "transliteration": "alSmar",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 509,
+    "update": {
+      "transliteration": "Sa3",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 510,
+    "update": {
+      "transliteration": "alSq3",
+      "semantic_intent": "descriptor"
+    }
+  },
+  {
+    "id": 511,
+    "update": {
+      "transliteration": "alSbHh",
+      "semantic_intent": "person"
+    }
+  },
+  {
+    "id": 512,
+    "update": {
+      "transliteration": "shnq",
+      "semantic_intent": "action"
+    }
+  },
+  {
+    "id": 513,
+    "update": {
+      "transliteration": "alSrabh",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 514,
+    "update": {
+      "transliteration": "Sbr alb'r",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 515,
+    "update": {
+      "transliteration": "alSarwn",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 516,
+    "update": {
+      "transliteration": "alSdyryh",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 517,
+    "update": {
+      "transliteration": "alSar  alSarh",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 518,
+    "update": {
+      "transliteration": "alSym",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 519,
+    "update": {
+      "transliteration": "Skh",
+      "semantic_intent": "descriptor"
+    }
+  },
+  {
+    "id": 520,
+    "update": {
+      "transliteration": "Sfaf",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 521,
+    "update": {
+      "transliteration": "Sk",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 522,
+    "update": {
+      "transliteration": "alSkhyryh",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 523,
+    "update": {
+      "transliteration": "alSmbrh",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 524,
+    "update": {
+      "transliteration": "Shdwd",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 525,
+    "update": {
+      "transliteration": "alskhr",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 526,
+    "update": {
+      "transliteration": "alSrk",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 527,
+    "update": {
+      "transliteration": "SfaT",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 528,
+    "update": {
+      "transliteration": "SmSwm",
+      "semantic_intent": "descriptor"
+    }
+  },
+  {
+    "id": 529,
+    "update": {
+      "transliteration": "alSr",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 530,
+    "update": {
+      "transliteration": "Sh",
+      "semantic_intent": "expression"
+    }
+  },
+  {
+    "id": 531,
+    "update": {
+      "transliteration": "alSyb",
+      "semantic_intent": "person"
+    }
+  },
+  {
+    "id": 532,
+    "update": {
+      "transliteration": "aSab3 zynb",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 533,
+    "update": {
+      "transliteration": "alSaly",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 534,
+    "update": {
+      "transliteration": "alDbrh",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 535,
+    "update": {
+      "transliteration": "Dwylh",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 536,
+    "update": {
+      "transliteration": "alDyqh",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 537,
+    "update": {
+      "transliteration": "alDyfh",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 538,
+    "update": {
+      "transliteration": "Dwa",
+      "semantic_intent": "action"
+    }
+  },
+  {
+    "id": 539,
+    "update": {
+      "transliteration": "alD3wn walDa3nat",
+      "semantic_intent": "person"
+    }
+  },
+  {
+    "id": 540,
+    "update": {
+      "transliteration": "alDdH",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 541,
+    "update": {
+      "transliteration": "alDHa",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 542,
+    "update": {
+      "transliteration": "alDmyr",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 543,
+    "update": {
+      "transliteration": "Dywn",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 544,
+    "update": {
+      "transliteration": "alTharh",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 545,
+    "update": {
+      "transliteration": "alT3m",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 546,
+    "update": {
+      "transliteration": "alTfl",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 547,
+    "update": {
+      "transliteration": "Tlab",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 548,
+    "update": {
+      "transliteration": "alTyrmh",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 549,
+    "update": {
+      "transliteration": "alTms",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 550,
+    "update": {
+      "transliteration": "alTrshh",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 551,
+    "update": {
+      "transliteration": "alTarsh",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 552,
+    "update": {
+      "transliteration": "alTs",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 553,
+    "update": {
+      "transliteration": "alTsh",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 554,
+    "update": {
+      "transliteration": "alTHs",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 555,
+    "update": {
+      "transliteration": "Tst alnHas",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 556,
+    "update": {
+      "transliteration": "alTrH",
+      "semantic_intent": "person"
+    }
+  },
+  {
+    "id": 557,
+    "update": {
+      "transliteration": "alTwHy",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 558,
+    "update": {
+      "transliteration": "alTbylh",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 559,
+    "update": {
+      "transliteration": "alTahb",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 560,
+    "update": {
+      "transliteration": "Tnb",
+      "semantic_intent": "descriptor"
+    }
+  },
+  {
+    "id": 561,
+    "update": {
+      "transliteration": "alTaqh",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 562,
+    "update": {
+      "transliteration": "alTl3",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 563,
+    "update": {
+      "transliteration": "alSwb",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 564,
+    "update": {
+      "transliteration": "alSbkhh",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 565,
+    "update": {
+      "transliteration": "alSrf",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 566,
+    "update": {
+      "transliteration": "alTar",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 567,
+    "update": {
+      "transliteration": "Tq3",
+      "semantic_intent": "emotion"
+    }
+  },
+  {
+    "id": 568,
+    "update": {
+      "transliteration": "alTbyn",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 569,
+    "update": {
+      "transliteration": "alZlh",
+      "semantic_intent": "person"
+    }
+  },
+  {
+    "id": 570,
+    "update": {
+      "transliteration": "alZfrh",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 571,
+    "update": {
+      "transliteration": "Zb3h",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 572,
+    "update": {
+      "transliteration": "ZrTh",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 573,
+    "update": {
+      "transliteration": "al3yf",
+      "semantic_intent": "descriptor"
+    }
+  },
+  {
+    "id": 574,
+    "update": {
+      "transliteration": "al3kDh",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 575,
+    "update": {
+      "transliteration": "3wr",
+      "semantic_intent": "action"
+    }
+  },
+  {
+    "id": 576,
+    "update": {
+      "transliteration": "3wad",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 577,
+    "update": {
+      "transliteration": "al3Sby",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 578,
+    "update": {
+      "transliteration": "al3jrh",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 579,
+    "update": {
+      "transliteration": "3rb",
+      "semantic_intent": "action"
+    }
+  },
+  {
+    "id": 580,
+    "update": {
+      "transliteration": "al3shrq",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 581,
+    "update": {
+      "transliteration": "al3fashh",
+      "semantic_intent": "emotion"
+    }
+  },
+  {
+    "id": 582,
+    "update": {
+      "transliteration": "al3dalh",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 583,
+    "update": {
+      "transliteration": "al3mary",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 584,
+    "update": {
+      "transliteration": "al3qbh",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 585,
+    "update": {
+      "transliteration": "3arD",
+      "semantic_intent": "time"
+    }
+  },
+  {
+    "id": 586,
+    "update": {
+      "transliteration": "3fashh",
+      "semantic_intent": "action"
+    }
+  },
+  {
+    "id": 587,
+    "update": {
+      "transliteration": "al3shr",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 588,
+    "update": {
+      "transliteration": "al3rws",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 589,
+    "update": {
+      "transliteration": "al3aml",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 590,
+    "update": {
+      "transliteration": "al3lb",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 591,
+    "update": {
+      "transliteration": "3lwa",
+      "semantic_intent": "place"
+    }
+  },
+  {
+    "id": 592,
+    "update": {
+      "transliteration": "al3s3sh",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 593,
+    "update": {
+      "transliteration": "al3mamh",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 594,
+    "update": {
+      "transliteration": "al3ydh",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 595,
+    "update": {
+      "transliteration": "al3krh",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 596,
+    "update": {
+      "transliteration": "al3shwh",
+      "semantic_intent": "person"
+    }
+  },
+  {
+    "id": 597,
+    "update": {
+      "transliteration": "al3fash",
+      "semantic_intent": "time"
+    }
+  },
+  {
+    "id": 598,
+    "update": {
+      "transliteration": "al3jm",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 599,
+    "update": {
+      "transliteration": "al3qd",
+      "semantic_intent": "person"
+    }
+  },
+  {
+    "id": 600,
+    "update": {
+      "transliteration": "3jrh",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 601,
+    "update": {
+      "transliteration": "al3fr",
+      "semantic_intent": "action"
+    }
+  },
+  {
+    "id": 602,
+    "update": {
+      "transliteration": "al3dy",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 603,
+    "update": {
+      "transliteration": "almthmr",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 604,
+    "update": {
+      "transliteration": "3nkr",
+      "semantic_intent": "action"
+    }
+  },
+  {
+    "id": 605,
+    "update": {
+      "transliteration": "al3rqdy",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 606,
+    "update": {
+      "transliteration": "al3lya'",
+      "semantic_intent": "time"
+    }
+  },
+  {
+    "id": 607,
+    "update": {
+      "transliteration": "al3waml",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 608,
+    "update": {
+      "transliteration": "3rwq alnkhlh",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 609,
+    "update": {
+      "transliteration": "3dh alshahy",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 610,
+    "update": {
+      "transliteration": "al3anh",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 611,
+    "update": {
+      "transliteration": "al3Tfh",
+      "semantic_intent": "place"
+    }
+  },
+  {
+    "id": 612,
+    "update": {
+      "transliteration": "al3Dad",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 613,
+    "update": {
+      "transliteration": "3fndsh",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 614,
+    "update": {
+      "transliteration": "3nfyTh",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 615,
+    "update": {
+      "transliteration": "al3tm",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 616,
+    "update": {
+      "transliteration": "al3yza",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 617,
+    "update": {
+      "transliteration": "al3qal",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 618,
+    "update": {
+      "transliteration": "al3Tby",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 619,
+    "update": {
+      "transliteration": "3ad",
+      "semantic_intent": "expression"
+    }
+  },
+  {
+    "id": 620,
+    "update": {
+      "transliteration": "al3wl",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 621,
+    "update": {
+      "transliteration": "al3jlh",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 622,
+    "update": {
+      "transliteration": "3adk",
+      "semantic_intent": "expression"
+    }
+  },
+  {
+    "id": 623,
+    "update": {
+      "transliteration": "al3walh",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 624,
+    "update": {
+      "transliteration": "al3kr",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 625,
+    "update": {
+      "transliteration": "3a",
+      "semantic_intent": "function"
+    }
+  },
+  {
+    "id": 626,
+    "update": {
+      "transliteration": "3adh",
+      "semantic_intent": "expression"
+    }
+  },
+  {
+    "id": 627,
+    "update": {
+      "transliteration": "ghwTl",
+      "semantic_intent": "time"
+    }
+  },
+  {
+    "id": 628,
+    "update": {
+      "transliteration": "alghdrh",
+      "semantic_intent": "time"
+    }
+  },
+  {
+    "id": 629,
+    "update": {
+      "transliteration": "ghbsh",
+      "semantic_intent": "time"
+    }
+  },
+  {
+    "id": 630,
+    "update": {
+      "transliteration": "alghbh",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 631,
+    "update": {
+      "transliteration": "alghyaD",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 632,
+    "update": {
+      "transliteration": "alghrysh",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 633,
+    "update": {
+      "transliteration": "alghlq",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 634,
+    "update": {
+      "transliteration": "alghlghlh",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 635,
+    "update": {
+      "transliteration": "alghlb",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 636,
+    "update": {
+      "transliteration": "alghrh",
+      "semantic_intent": "time"
+    }
+  },
+  {
+    "id": 637,
+    "update": {
+      "transliteration": "alghshb",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 638,
+    "update": {
+      "transliteration": "alghylh",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 639,
+    "update": {
+      "transliteration": "ghdhq",
+      "semantic_intent": "time"
+    }
+  },
+  {
+    "id": 640,
+    "update": {
+      "transliteration": "alghsh",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 641,
+    "update": {
+      "transliteration": "alghrb",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 642,
+    "update": {
+      "transliteration": "alghasy",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 643,
+    "update": {
+      "transliteration": "fsl",
+      "semantic_intent": "emotion"
+    }
+  },
+  {
+    "id": 644,
+    "update": {
+      "transliteration": "flt",
+      "semantic_intent": "action"
+    }
+  },
+  {
+    "id": 645,
+    "update": {
+      "transliteration": "fsw",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 646,
+    "update": {
+      "transliteration": "yfHq",
+      "semantic_intent": "action"
+    }
+  },
+  {
+    "id": 647,
+    "update": {
+      "transliteration": "frsh",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 648,
+    "update": {
+      "transliteration": "alfqr",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 649,
+    "update": {
+      "transliteration": "alfrkh",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 650,
+    "update": {
+      "transliteration": "alfth",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 651,
+    "update": {
+      "transliteration": "faDlh",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 652,
+    "update": {
+      "transliteration": "fraslh",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 653,
+    "update": {
+      "transliteration": "alfaqh",
+      "semantic_intent": "emotion"
+    }
+  },
+  {
+    "id": 654,
+    "update": {
+      "transliteration": "ftr",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 655,
+    "update": {
+      "transliteration": "alfzHmy",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 656,
+    "update": {
+      "transliteration": "alfrym",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 657,
+    "update": {
+      "transliteration": "alfqwz",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 658,
+    "update": {
+      "transliteration": "fnajyn",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 659,
+    "update": {
+      "transliteration": "alfkhsws",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 660,
+    "update": {
+      "transliteration": "alflynh",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 661,
+    "update": {
+      "transliteration": "alqHarh",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 662,
+    "update": {
+      "transliteration": "alfDH",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 663,
+    "update": {
+      "transliteration": "fz3",
+      "semantic_intent": "emotion"
+    }
+  },
+  {
+    "id": 664,
+    "update": {
+      "transliteration": "ftkh",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 665,
+    "update": {
+      "transliteration": "alfqsh",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 666,
+    "update": {
+      "transliteration": "frqz",
+      "semantic_intent": "action"
+    }
+  },
+  {
+    "id": 667,
+    "update": {
+      "transliteration": "fkhssh",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 668,
+    "update": {
+      "transliteration": "ftlh",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 669,
+    "update": {
+      "transliteration": "fkh",
+      "semantic_intent": "action"
+    }
+  },
+  {
+    "id": 670,
+    "update": {
+      "transliteration": "alfkhTh",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 671,
+    "update": {
+      "transliteration": "alqr",
+      "semantic_intent": "time"
+    }
+  },
+  {
+    "id": 672,
+    "update": {
+      "transliteration": "qtm",
+      "semantic_intent": "time"
+    }
+  },
+  {
+    "id": 673,
+    "update": {
+      "transliteration": "qtb",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 674,
+    "update": {
+      "transliteration": "qaq",
+      "semantic_intent": "expression"
+    }
+  },
+  {
+    "id": 675,
+    "update": {
+      "transliteration": "qbSh",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 676,
+    "update": {
+      "transliteration": "qmry",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 677,
+    "update": {
+      "transliteration": "qbh",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 678,
+    "update": {
+      "transliteration": "qhawl",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 679,
+    "update": {
+      "transliteration": "alqwarh",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 680,
+    "update": {
+      "transliteration": "qTbh",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 681,
+    "update": {
+      "transliteration": "qdamy",
+      "semantic_intent": "function"
+    }
+  },
+  {
+    "id": 682,
+    "update": {
+      "transliteration": "qrwH",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 683,
+    "update": {
+      "transliteration": "alqraf",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 684,
+    "update": {
+      "transliteration": "alqb3",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 685,
+    "update": {
+      "transliteration": "alqzazh",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 686,
+    "update": {
+      "transliteration": "alqSyrh",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 687,
+    "update": {
+      "transliteration": "qrq3h",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 688,
+    "update": {
+      "transliteration": "alqamzy",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 689,
+    "update": {
+      "transliteration": "q3t",
+      "semantic_intent": "action"
+    }
+  },
+  {
+    "id": 690,
+    "update": {
+      "transliteration": "alqshar",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 691,
+    "update": {
+      "transliteration": "alqasm",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 692,
+    "update": {
+      "transliteration": "alqbw3",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 693,
+    "update": {
+      "transliteration": "qfa",
+      "semantic_intent": "function"
+    }
+  },
+  {
+    "id": 694,
+    "update": {
+      "transliteration": "alqbaD",
+      "semantic_intent": "person"
+    }
+  },
+  {
+    "id": 695,
+    "update": {
+      "transliteration": "alqlbh",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 696,
+    "update": {
+      "transliteration": "alqs",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 697,
+    "update": {
+      "transliteration": "alqs",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 698,
+    "update": {
+      "transliteration": "alqwqrh",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 699,
+    "update": {
+      "transliteration": "alqnfan",
+      "semantic_intent": "time"
+    }
+  },
+  {
+    "id": 700,
+    "update": {
+      "transliteration": "qwz",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 701,
+    "update": {
+      "transliteration": "qflh",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 702,
+    "update": {
+      "transliteration": "qablh",
+      "semantic_intent": "time"
+    }
+  },
+  {
+    "id": 703,
+    "update": {
+      "transliteration": "qrbh",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 704,
+    "update": {
+      "transliteration": "alqlt",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 705,
+    "update": {
+      "transliteration": "alqmyS",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 706,
+    "update": {
+      "transliteration": "alqnaqn",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 707,
+    "update": {
+      "transliteration": "qa3",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 708,
+    "update": {
+      "transliteration": "alqbyl",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 709,
+    "update": {
+      "transliteration": "alqr3",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 710,
+    "update": {
+      "transliteration": "qsh3h",
+      "semantic_intent": "descriptor"
+    }
+  },
+  {
+    "id": 711,
+    "update": {
+      "transliteration": "alqDb",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 712,
+    "update": {
+      "transliteration": "alqmbr",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 713,
+    "update": {
+      "transliteration": "alqlamh",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 714,
+    "update": {
+      "transliteration": "qnS",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 715,
+    "update": {
+      "transliteration": "alqamh",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 716,
+    "update": {
+      "transliteration": "alqSb",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 717,
+    "update": {
+      "transliteration": "alqrshT",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 718,
+    "update": {
+      "transliteration": "alqdwm",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 719,
+    "update": {
+      "transliteration": "qrb3h",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 720,
+    "update": {
+      "transliteration": "alqrmh",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 721,
+    "update": {
+      "transliteration": "alqwam",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 722,
+    "update": {
+      "transliteration": "aldhbdhb",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 723,
+    "update": {
+      "transliteration": "alqdmh",
+      "semantic_intent": "time"
+    }
+  },
+  {
+    "id": 724,
+    "update": {
+      "transliteration": "alq3adh",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 725,
+    "update": {
+      "transliteration": "alqlb",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 726,
+    "update": {
+      "transliteration": "qTb",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 727,
+    "update": {
+      "transliteration": "alq3ar",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 728,
+    "update": {
+      "transliteration": "alqadhwf",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 729,
+    "update": {
+      "transliteration": "qarh",
+      "semantic_intent": "place"
+    }
+  },
+  {
+    "id": 730,
+    "update": {
+      "transliteration": "alqrqrh",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 731,
+    "update": {
+      "transliteration": "knk",
+      "semantic_intent": "expression"
+    }
+  },
+  {
+    "id": 732,
+    "update": {
+      "transliteration": "kmak  kmash",
+      "semantic_intent": "expression"
+    }
+  },
+  {
+    "id": 733,
+    "update": {
+      "transliteration": "alkys",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 734,
+    "update": {
+      "transliteration": "alkdm",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 735,
+    "update": {
+      "transliteration": "alkany",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 736,
+    "update": {
+      "transliteration": "alkaws",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 737,
+    "update": {
+      "transliteration": "alkbsh",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 738,
+    "update": {
+      "transliteration": "alkyr",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 739,
+    "update": {
+      "transliteration": "alkmbar",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 740,
+    "update": {
+      "transliteration": "alknshly",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 741,
+    "update": {
+      "transliteration": "km",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 742,
+    "update": {
+      "transliteration": "kra3",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 743,
+    "update": {
+      "transliteration": "kz",
+      "semantic_intent": "action"
+    }
+  },
+  {
+    "id": 744,
+    "update": {
+      "transliteration": "alkmr",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 745,
+    "update": {
+      "transliteration": "alkbt",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 746,
+    "update": {
+      "transliteration": "kzmh",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 747,
+    "update": {
+      "transliteration": "alkrzam",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 748,
+    "update": {
+      "transliteration": "krkrh",
+      "semantic_intent": "emotion"
+    }
+  },
+  {
+    "id": 749,
+    "update": {
+      "transliteration": "alkwrh",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 750,
+    "update": {
+      "transliteration": "kmyn",
+      "semantic_intent": "expression"
+    }
+  },
+  {
+    "id": 751,
+    "update": {
+      "transliteration": "alksrh",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 752,
+    "update": {
+      "transliteration": "alkrath",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 753,
+    "update": {
+      "transliteration": "alkwt",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 754,
+    "update": {
+      "transliteration": "kambh",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 755,
+    "update": {
+      "transliteration": "alk3shwsh",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 756,
+    "update": {
+      "transliteration": "alkwbrh",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 757,
+    "update": {
+      "transliteration": "krsw3",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 758,
+    "update": {
+      "transliteration": "alkwh",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 759,
+    "update": {
+      "transliteration": "alkfh",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 760,
+    "update": {
+      "transliteration": "alkf",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 761,
+    "update": {
+      "transliteration": "alkra",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 762,
+    "update": {
+      "transliteration": "alklan",
+      "semantic_intent": "person"
+    }
+  },
+  {
+    "id": 763,
+    "update": {
+      "transliteration": "alkarh",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 764,
+    "update": {
+      "transliteration": "kmbl",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 765,
+    "update": {
+      "transliteration": "klyn",
+      "semantic_intent": "expression"
+    }
+  },
+  {
+    "id": 766,
+    "update": {
+      "transliteration": "alk3lh",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 767,
+    "update": {
+      "transliteration": "alk3al",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 768,
+    "update": {
+      "transliteration": "ks3h",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 769,
+    "update": {
+      "transliteration": "kwr",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 770,
+    "update": {
+      "transliteration": "alkzabh",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 771,
+    "update": {
+      "transliteration": "alkwfyh",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 772,
+    "update": {
+      "transliteration": "k3wylh",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 773,
+    "update": {
+      "transliteration": "alkmh",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 774,
+    "update": {
+      "transliteration": "alkfah",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 775,
+    "update": {
+      "transliteration": "alkrth",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 776,
+    "update": {
+      "transliteration": "alkr3",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 777,
+    "update": {
+      "transliteration": "alklyt",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 778,
+    "update": {
+      "transliteration": "alkwt3",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 779,
+    "update": {
+      "transliteration": "krfan",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 780,
+    "update": {
+      "transliteration": "alkwz",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 781,
+    "update": {
+      "transliteration": "allSf",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 782,
+    "update": {
+      "transliteration": "alldwH",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 783,
+    "update": {
+      "transliteration": "la Hd",
+      "semantic_intent": "expression"
+    }
+  },
+  {
+    "id": 784,
+    "update": {
+      "transliteration": "lhj",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 785,
+    "update": {
+      "transliteration": "lqrH",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 786,
+    "update": {
+      "transliteration": "allyash",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 787,
+    "update": {
+      "transliteration": "allstrk",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 788,
+    "update": {
+      "transliteration": "lqyt",
+      "semantic_intent": "action"
+    }
+  },
+  {
+    "id": 789,
+    "update": {
+      "transliteration": "allanh",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 790,
+    "update": {
+      "transliteration": "lama",
+      "semantic_intent": "expression"
+    }
+  },
+  {
+    "id": 791,
+    "update": {
+      "transliteration": "lk3h",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 792,
+    "update": {
+      "transliteration": "lahy",
+      "semantic_intent": "descriptor"
+    }
+  },
+  {
+    "id": 793,
+    "update": {
+      "transliteration": "allylwn",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 794,
+    "update": {
+      "transliteration": "allasw",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 795,
+    "update": {
+      "transliteration": "allas",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 796,
+    "update": {
+      "transliteration": "alalfy",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 797,
+    "update": {
+      "transliteration": "lghyTy",
+      "semantic_intent": "time"
+    }
+  },
+  {
+    "id": 798,
+    "update": {
+      "transliteration": "lysh",
+      "semantic_intent": "expression"
+    }
+  },
+  {
+    "id": 799,
+    "update": {
+      "transliteration": "allban albdwy",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 800,
+    "update": {
+      "transliteration": "allban almyTy",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 801,
+    "update": {
+      "transliteration": "lman",
+      "semantic_intent": "expression"
+    }
+  },
+  {
+    "id": 802,
+    "update": {
+      "transliteration": "allqdhwf",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 803,
+    "update": {
+      "transliteration": "allyn",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 804,
+    "update": {
+      "transliteration": "allH",
+      "semantic_intent": "descriptor"
+    }
+  },
+  {
+    "id": 805,
+    "update": {
+      "transliteration": "ly",
+      "semantic_intent": "expression"
+    }
+  },
+  {
+    "id": 806,
+    "update": {
+      "transliteration": "mskh",
+      "semantic_intent": "action"
+    }
+  },
+  {
+    "id": 807,
+    "update": {
+      "transliteration": "mwla",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 808,
+    "update": {
+      "transliteration": "mstqyh",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 809,
+    "update": {
+      "transliteration": "alm3rS",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 810,
+    "update": {
+      "transliteration": "mdrkh",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 811,
+    "update": {
+      "transliteration": "ma Hd",
+      "semantic_intent": "expression"
+    }
+  },
+  {
+    "id": 812,
+    "update": {
+      "transliteration": "mdyh",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 813,
+    "update": {
+      "transliteration": "mHzm",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 814,
+    "update": {
+      "transliteration": "almSn3h",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 815,
+    "update": {
+      "transliteration": "mSw3",
+      "semantic_intent": "descriptor"
+    }
+  },
+  {
+    "id": 816,
+    "update": {
+      "transliteration": "mb3d dry",
+      "semantic_intent": "expression"
+    }
+  },
+  {
+    "id": 817,
+    "update": {
+      "transliteration": "mthnath",
+      "semantic_intent": "function"
+    }
+  },
+  {
+    "id": 818,
+    "update": {
+      "transliteration": "mghDaf",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 819,
+    "update": {
+      "transliteration": "mltlt",
+      "semantic_intent": "descriptor"
+    }
+  },
+  {
+    "id": 820,
+    "update": {
+      "transliteration": "almksr",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 821,
+    "update": {
+      "transliteration": "msh3wq",
+      "semantic_intent": "descriptor"
+    }
+  },
+  {
+    "id": 822,
+    "update": {
+      "transliteration": "mnHaz",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 823,
+    "update": {
+      "transliteration": "myd3",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 824,
+    "update": {
+      "transliteration": "mwfr",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 825,
+    "update": {
+      "transliteration": "mSkhn",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 826,
+    "update": {
+      "transliteration": "almdrwf",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 827,
+    "update": {
+      "transliteration": "almfysh",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 828,
+    "update": {
+      "transliteration": "alm3Swrh",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 829,
+    "update": {
+      "transliteration": "mt3rD",
+      "semantic_intent": "descriptor"
+    }
+  },
+  {
+    "id": 830,
+    "update": {
+      "transliteration": "alm3shrh",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 831,
+    "update": {
+      "transliteration": "almfryh",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 832,
+    "update": {
+      "transliteration": "almsbt",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 833,
+    "update": {
+      "transliteration": "mhll",
+      "semantic_intent": "descriptor"
+    }
+  },
+  {
+    "id": 834,
+    "update": {
+      "transliteration": "mbhwrh",
+      "semantic_intent": "descriptor"
+    }
+  },
+  {
+    "id": 835,
+    "update": {
+      "transliteration": "almdaHq",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 836,
+    "update": {
+      "transliteration": "mntrh",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 837,
+    "update": {
+      "transliteration": "mn",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 838,
+    "update": {
+      "transliteration": "mbaSr",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 839,
+    "update": {
+      "transliteration": "mrykwz",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 840,
+    "update": {
+      "transliteration": "mHqb",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 841,
+    "update": {
+      "transliteration": "mkhylh",
+      "semantic_intent": "time"
+    }
+  },
+  {
+    "id": 842,
+    "update": {
+      "transliteration": "almrdm",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 843,
+    "update": {
+      "transliteration": "m3zr",
+      "semantic_intent": "expression"
+    }
+  },
+  {
+    "id": 844,
+    "update": {
+      "transliteration": "almkhrm",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 845,
+    "update": {
+      "transliteration": "mshqaS",
+      "semantic_intent": "place"
+    }
+  },
+  {
+    "id": 846,
+    "update": {
+      "transliteration": "mDby",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 847,
+    "update": {
+      "transliteration": "mrzwm",
+      "semantic_intent": "descriptor"
+    }
+  },
+  {
+    "id": 848,
+    "update": {
+      "transliteration": "almjr",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 849,
+    "update": {
+      "transliteration": "mghTl",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 850,
+    "update": {
+      "transliteration": "mdfn",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 851,
+    "update": {
+      "transliteration": "mzaz",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 852,
+    "update": {
+      "transliteration": "mTraq",
+      "semantic_intent": "place"
+    }
+  },
+  {
+    "id": 853,
+    "update": {
+      "transliteration": "mj3wth",
+      "semantic_intent": "expression"
+    }
+  },
+  {
+    "id": 854,
+    "update": {
+      "transliteration": "almkhdwr",
+      "semantic_intent": "descriptor"
+    }
+  },
+  {
+    "id": 855,
+    "update": {
+      "transliteration": "almr3ad",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 856,
+    "update": {
+      "transliteration": "almyraf",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 857,
+    "update": {
+      "transliteration": "almTalyb",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 858,
+    "update": {
+      "transliteration": "almsyal",
+      "semantic_intent": "place"
+    }
+  },
+  {
+    "id": 859,
+    "update": {
+      "transliteration": "mwtr",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 860,
+    "update": {
+      "transliteration": "almzHah",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 861,
+    "update": {
+      "transliteration": "almnky",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 862,
+    "update": {
+      "transliteration": "mswak",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 863,
+    "update": {
+      "transliteration": "mSra",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 864,
+    "update": {
+      "transliteration": "ma3wn",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 865,
+    "update": {
+      "transliteration": "mkyal",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 866,
+    "update": {
+      "transliteration": "almd",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 867,
+    "update": {
+      "transliteration": "almahy",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 868,
+    "update": {
+      "transliteration": "almyl",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 869,
+    "update": {
+      "transliteration": "almdmwn",
+      "semantic_intent": "descriptor"
+    }
+  },
+  {
+    "id": 870,
+    "update": {
+      "transliteration": "almql3",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 871,
+    "update": {
+      "transliteration": "mnshlh",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 872,
+    "update": {
+      "transliteration": "mqTb",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 873,
+    "update": {
+      "transliteration": "mnsf",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 874,
+    "update": {
+      "transliteration": "almTyrh",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 875,
+    "update": {
+      "transliteration": "almdyny",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 876,
+    "update": {
+      "transliteration": "almryh",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 877,
+    "update": {
+      "transliteration": "almHwl",
+      "semantic_intent": "time"
+    }
+  },
+  {
+    "id": 878,
+    "update": {
+      "transliteration": "many",
+      "semantic_intent": "expression"
+    }
+  },
+  {
+    "id": 879,
+    "update": {
+      "transliteration": "almqrmh",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 880,
+    "update": {
+      "transliteration": "mn wyn",
+      "semantic_intent": "expression"
+    }
+  },
+  {
+    "id": 881,
+    "update": {
+      "transliteration": "almkrm",
+      "semantic_intent": "time"
+    }
+  },
+  {
+    "id": 882,
+    "update": {
+      "transliteration": "almTy",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 883,
+    "update": {
+      "transliteration": "almlHfh",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 884,
+    "update": {
+      "transliteration": "mfHT  fHyT",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 885,
+    "update": {
+      "transliteration": "mghrwm",
+      "semantic_intent": "descriptor"
+    }
+  },
+  {
+    "id": 886,
+    "update": {
+      "transliteration": "myzr",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 887,
+    "update": {
+      "transliteration": "almfryh",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 888,
+    "update": {
+      "transliteration": "almdkhnh",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 889,
+    "update": {
+      "transliteration": "mSh",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 890,
+    "update": {
+      "transliteration": "almsybly",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 891,
+    "update": {
+      "transliteration": "almdad",
+      "semantic_intent": "person"
+    }
+  },
+  {
+    "id": 892,
+    "update": {
+      "transliteration": "almqshrh",
+      "semantic_intent": "person"
+    }
+  },
+  {
+    "id": 893,
+    "update": {
+      "transliteration": "almshTh",
+      "semantic_intent": "person"
+    }
+  },
+  {
+    "id": 894,
+    "update": {
+      "transliteration": "msdrh alSghyr",
+      "semantic_intent": "person"
+    }
+  },
+  {
+    "id": 895,
+    "update": {
+      "transliteration": "almnashy",
+      "semantic_intent": "time"
+    }
+  },
+  {
+    "id": 896,
+    "update": {
+      "transliteration": "almzn",
+      "semantic_intent": "time"
+    }
+  },
+  {
+    "id": 897,
+    "update": {
+      "transliteration": "almkhdrh",
+      "semantic_intent": "person"
+    }
+  },
+  {
+    "id": 898,
+    "update": {
+      "transliteration": "almSb",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 899,
+    "update": {
+      "transliteration": "almsdrh",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 900,
+    "update": {
+      "transliteration": "almkHl",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 901,
+    "update": {
+      "transliteration": "almshkhS",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 902,
+    "update": {
+      "transliteration": "almqlfat",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 903,
+    "update": {
+      "transliteration": "almnZrh",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 904,
+    "update": {
+      "transliteration": "mjmr",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 905,
+    "update": {
+      "transliteration": "almqwd",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 906,
+    "update": {
+      "transliteration": "almslf",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 907,
+    "update": {
+      "transliteration": "myz",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 908,
+    "update": {
+      "transliteration": "almflq",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 909,
+    "update": {
+      "transliteration": "alm3dah",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 910,
+    "update": {
+      "transliteration": "almrfa3",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 911,
+    "update": {
+      "transliteration": "almrwas",
+      "semantic_intent": "time"
+    }
+  },
+  {
+    "id": 912,
+    "update": {
+      "transliteration": "almqarb",
+      "semantic_intent": "time"
+    }
+  },
+  {
+    "id": 913,
+    "update": {
+      "transliteration": "almad",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 914,
+    "update": {
+      "transliteration": "almDl3h",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 915,
+    "update": {
+      "transliteration": "mrwaH",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 916,
+    "update": {
+      "transliteration": "almHDrh",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 917,
+    "update": {
+      "transliteration": "almrbshh",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 918,
+    "update": {
+      "transliteration": "alm3rwDh",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 919,
+    "update": {
+      "transliteration": "almdrh",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 920,
+    "update": {
+      "transliteration": "almSna3",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 921,
+    "update": {
+      "transliteration": "almls",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 922,
+    "update": {
+      "transliteration": "mTwal",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 923,
+    "update": {
+      "transliteration": "almkhwal",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 924,
+    "update": {
+      "transliteration": "almHDh",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 925,
+    "update": {
+      "transliteration": "alm3lm",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 926,
+    "update": {
+      "transliteration": "almkhdm",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 927,
+    "update": {
+      "transliteration": "almzyab",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 928,
+    "update": {
+      "transliteration": "almqSd",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 929,
+    "update": {
+      "transliteration": "almshraf",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 930,
+    "update": {
+      "transliteration": "almq3d",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 931,
+    "update": {
+      "transliteration": "alm3tn",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 932,
+    "update": {
+      "transliteration": "almghlwl",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 933,
+    "update": {
+      "transliteration": "almTybkh",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 934,
+    "update": {
+      "transliteration": "mrhah",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 935,
+    "update": {
+      "transliteration": "almysmh",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 936,
+    "update": {
+      "transliteration": "almfqr",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 937,
+    "update": {
+      "transliteration": "mflTH",
+      "semantic_intent": "descriptor"
+    }
+  },
+  {
+    "id": 938,
+    "update": {
+      "transliteration": "almrwD",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 939,
+    "update": {
+      "transliteration": "almrkz",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 940,
+    "update": {
+      "transliteration": "mlqn aldan",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 941,
+    "update": {
+      "transliteration": "alnwaghyr",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 942,
+    "update": {
+      "transliteration": "nSh",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 943,
+    "update": {
+      "transliteration": "nqHh",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 944,
+    "update": {
+      "transliteration": "alnwrh",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 945,
+    "update": {
+      "transliteration": "ndhqh",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 946,
+    "update": {
+      "transliteration": "nqnqh",
+      "semantic_intent": "action"
+    }
+  },
+  {
+    "id": 947,
+    "update": {
+      "transliteration": "nkws",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 948,
+    "update": {
+      "transliteration": "nwsh",
+      "semantic_intent": "action"
+    }
+  },
+  {
+    "id": 949,
+    "update": {
+      "transliteration": "alnZf",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 950,
+    "update": {
+      "transliteration": "nyrh",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 951,
+    "update": {
+      "transliteration": "alndwh",
+      "semantic_intent": "time"
+    }
+  },
+  {
+    "id": 952,
+    "update": {
+      "transliteration": "alnwsh",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 953,
+    "update": {
+      "transliteration": "alnamws",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 954,
+    "update": {
+      "transliteration": "alnwkhdhh",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 955,
+    "update": {
+      "transliteration": "altnSwrh",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 956,
+    "update": {
+      "transliteration": "alnfZh",
+      "semantic_intent": "action"
+    }
+  },
+  {
+    "id": 957,
+    "update": {
+      "transliteration": "alnqlah",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 958,
+    "update": {
+      "transliteration": "alnqbh",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 959,
+    "update": {
+      "transliteration": "nHna",
+      "semantic_intent": "expression"
+    }
+  },
+  {
+    "id": 960,
+    "update": {
+      "transliteration": "nkhrh",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 961,
+    "update": {
+      "transliteration": "alnw'",
+      "semantic_intent": "time"
+    }
+  },
+  {
+    "id": 962,
+    "update": {
+      "transliteration": "alnshrh",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 963,
+    "update": {
+      "transliteration": "alnylh",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 964,
+    "update": {
+      "transliteration": "alnwb",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 965,
+    "update": {
+      "transliteration": "ny",
+      "semantic_intent": "descriptor"
+    }
+  },
+  {
+    "id": 966,
+    "update": {
+      "transliteration": "alnzwH  alnzwHh",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 967,
+    "update": {
+      "transliteration": "alnnh",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 968,
+    "update": {
+      "transliteration": "nkhshwsh",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 969,
+    "update": {
+      "transliteration": "alnSlh",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 970,
+    "update": {
+      "transliteration": "wysh",
+      "semantic_intent": "expression"
+    }
+  },
+  {
+    "id": 971,
+    "update": {
+      "transliteration": "wS",
+      "semantic_intent": "action"
+    }
+  },
+  {
+    "id": 972,
+    "update": {
+      "transliteration": "alwTa'",
+      "semantic_intent": "place"
+    }
+  },
+  {
+    "id": 973,
+    "update": {
+      "transliteration": "wkhr",
+      "semantic_intent": "action"
+    }
+  },
+  {
+    "id": 974,
+    "update": {
+      "transliteration": "alwdf",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 975,
+    "update": {
+      "transliteration": "wHl",
+      "semantic_intent": "emotion"
+    }
+  },
+  {
+    "id": 976,
+    "update": {
+      "transliteration": "alwDy3",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 977,
+    "update": {
+      "transliteration": "wah",
+      "semantic_intent": "expression"
+    }
+  },
+  {
+    "id": 978,
+    "update": {
+      "transliteration": "alwDr",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 979,
+    "update": {
+      "transliteration": "alwSr",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 980,
+    "update": {
+      "transliteration": "wrak",
+      "semantic_intent": "expression"
+    }
+  },
+  {
+    "id": 981,
+    "update": {
+      "transliteration": "alwqa'",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 982,
+    "update": {
+      "transliteration": "wghm",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 983,
+    "update": {
+      "transliteration": "alwD3h",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 984,
+    "update": {
+      "transliteration": "wl3ad",
+      "semantic_intent": "expression"
+    }
+  },
+  {
+    "id": 985,
+    "update": {
+      "transliteration": "wzrh",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 986,
+    "update": {
+      "transliteration": "w3yh",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 987,
+    "update": {
+      "transliteration": "wkd",
+      "semantic_intent": "action"
+    }
+  },
+  {
+    "id": 988,
+    "update": {
+      "transliteration": "wyah",
+      "semantic_intent": "expression"
+    }
+  },
+  {
+    "id": 989,
+    "update": {
+      "transliteration": "war",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 990,
+    "update": {
+      "transliteration": "wyshkm",
+      "semantic_intent": "expression"
+    }
+  },
+  {
+    "id": 991,
+    "update": {
+      "transliteration": "wn3m",
+      "semantic_intent": "expression"
+    }
+  },
+  {
+    "id": 992,
+    "update": {
+      "transliteration": "alwthn",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 993,
+    "update": {
+      "transliteration": "wq3",
+      "semantic_intent": "action"
+    }
+  },
+  {
+    "id": 994,
+    "update": {
+      "transliteration": "wlfh",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 995,
+    "update": {
+      "transliteration": "alhwsh",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 996,
+    "update": {
+      "transliteration": "alhyj",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 997,
+    "update": {
+      "transliteration": "alhrsh",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 998,
+    "update": {
+      "transliteration": "alhwkh",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 999,
+    "update": {
+      "transliteration": "alhndrab",
+      "semantic_intent": "object"
+    }
+  },
+  {
+    "id": 1000,
+    "update": {
+      "transliteration": "alhbysh",
+      "semantic_intent": "object"
+    }
+  }
+]

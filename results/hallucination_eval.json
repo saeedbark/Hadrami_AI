@@ -1,0 +1,8 @@
+{
+  "items": 50,
+  "systems": {
+    "ours": {
+      "refusal_rate": 0.76
+    }
+  }
+}

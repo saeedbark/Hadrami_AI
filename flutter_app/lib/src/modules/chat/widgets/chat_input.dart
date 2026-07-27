@@ -94,17 +94,24 @@ class _ChatInputState extends State<ChatInput> {
             ),
           ),
           const SizedBox(width: 8),
-          AnimatedContainer(
-            duration: const Duration(milliseconds: 200),
+          AnimatedScale(
+            scale: _hasText && widget.enabled ? 1.0 : 0.92,
+            duration: const Duration(milliseconds: 180),
+            curve: Curves.easeOut,
             child: IconButton.filled(
               onPressed: _hasText && widget.enabled ? _send : null,
-              icon: widget.enabled
-                  ? const Icon(Icons.send_rounded, size: 20)
-                  : const SizedBox(
-                      width: 20,
-                      height: 20,
-                      child: CircularProgressIndicator(strokeWidth: 2),
-                    ),
+              icon: AnimatedSwitcher(
+                duration: const Duration(milliseconds: 200),
+                child: widget.enabled
+                    ? const Icon(Icons.send_rounded,
+                        size: 20, key: ValueKey('send'))
+                    : const SizedBox(
+                        key: ValueKey('loading'),
+                        width: 20,
+                        height: 20,
+                        child: CircularProgressIndicator(strokeWidth: 2),
+                      ),
+              ),
               style: IconButton.styleFrom(
                 backgroundColor: _hasText && widget.enabled
                     ? colorScheme.primary
