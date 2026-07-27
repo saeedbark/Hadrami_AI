@@ -65,41 +65,48 @@ class DictionaryPage extends HookConsumerWidget {
         children: [
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-            child: Row(children: [
-              wordsAsync.when(
-                data: (_) {
-                  final total = ref.read(wordListProvider.notifier).total;
-                  return Container(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-                    decoration: BoxDecoration(
-                      color: colorScheme.primaryContainer,
-                      borderRadius: BorderRadius.circular(12),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(children: [
+                  wordsAsync.when(
+                    data: (_) {
+                      final total = ref.read(wordListProvider.notifier).total;
+                      return Container(
+                        padding:
+                            const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                        decoration: BoxDecoration(
+                          color: colorScheme.primaryContainer,
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: Text(
+                          '$total كلمة',
+                          style: TextStyle(
+                            color: colorScheme.onPrimaryContainer,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 12,
+                          ),
+                        ),
+                      );
+                    },
+                    loading: () => const SizedBox.shrink(),
+                    error: (_, __) => const SizedBox.shrink(),
+                  ),
+                  if (selectedLetter != null) ...[
+                    const SizedBox(width: 8),
+                    InputChip(
+                      label: Text('حرف $selectedLetter'),
+                      onDeleted: () =>
+                          ref.read(selectedLetterProvider.notifier).setLetter(null),
+                      deleteIcon: const Icon(Icons.close_rounded, size: 16),
+                      visualDensity: VisualDensity.compact,
                     ),
-                    child: Text(
-                      '$total كلمة',
-                      style: TextStyle(
-                        color: colorScheme.onPrimaryContainer,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 12,
-                      ),
-                    ),
-                  );
-                },
-                loading: () => const SizedBox.shrink(),
-                error: (_, __) => const SizedBox.shrink(),
-              ),
-              if (selectedLetter != null) ...[
-                const SizedBox(width: 8),
-                InputChip(
-                  label: Text('حرف $selectedLetter'),
-                  onDeleted: () =>
-                      ref.read(selectedLetterProvider.notifier).setLetter(null),
-                  deleteIcon: const Icon(Icons.close_rounded, size: 16),
-                  visualDensity: VisualDensity.compact,
-                ),
+                  ],
+                ]),
+                const SizedBox(height: 6),
+                _PosAndCategoryFilter(ref: ref),
               ],
-            ]),
+            ),
           ),
           Expanded(
             child: wordsAsync.when(
@@ -195,6 +202,111 @@ class _LetterFilter extends StatelessWidget {
             ),
           );
         },
+      ),
+    );
+  }
+}
+
+class _PosAndCategoryFilter extends StatelessWidget {
+  const _PosAndCategoryFilter({required this.ref});
+  final WidgetRef ref;
+
+  static const _posOptions = ['Noun', 'Verb', 'Adjective', 'Expression'];
+  static const _tagOptions = [
+    'Nature',
+    'Behavior',
+    'Wisdom',
+    'Insects',
+    'Food',
+    'Social',
+    'Emotions',
+    'Daily Life',
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    final selectedPos = ref.watch(selectedPosProvider);
+    final selectedTag = ref.watch(selectedTagProvider);
+
+    return SingleChildScrollView(
+      scrollDirection: Axis.horizontal,
+      child: Row(
+        children: [
+          _buildDropdown(
+            context,
+            value: selectedPos,
+            hint: 'نوع الكلمة',
+            icon: Icons.label_rounded,
+            items: _posOptions,
+            onChanged: (v) => ref.read(selectedPosProvider.notifier).setPos(v),
+          ),
+          const SizedBox(width: 6),
+          _buildDropdown(
+            context,
+            value: selectedTag,
+            hint: 'التصنيف',
+            icon: Icons.category_rounded,
+            items: _tagOptions,
+            onChanged: (v) =>
+                ref.read(selectedTagProvider.notifier).setTag(v),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildDropdown(
+    BuildContext context, {
+    required String? value,
+    required String hint,
+    required IconData icon,
+    required List<String> items,
+    required ValueChanged<String?> onChanged,
+  }) {
+    final colorScheme = Theme.of(context).colorScheme;
+    final isActive = value != null;
+
+    return Container(
+      height: 32,
+      padding: const EdgeInsets.symmetric(horizontal: 8),
+      decoration: BoxDecoration(
+        color: isActive
+            ? colorScheme.primaryContainer
+            : colorScheme.surfaceContainerHigh,
+        borderRadius: BorderRadius.circular(8),
+        border: Border.all(
+          color: isActive
+              ? colorScheme.primary.withValues(alpha: 0.4)
+              : colorScheme.outline.withValues(alpha: 0.2),
+        ),
+      ),
+      child: DropdownButtonHideUnderline(
+        child: DropdownButton<String>(
+          value: value,
+          hint: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(icon, size: 14, color: colorScheme.outline),
+              const SizedBox(width: 4),
+              Text(hint,
+                  style: TextStyle(fontSize: 11, color: colorScheme.outline)),
+            ],
+          ),
+          icon: isActive
+              ? InkWell(
+                  onTap: () => onChanged(null),
+                  child: Icon(Icons.close_rounded,
+                      size: 14, color: colorScheme.primary),
+                )
+              : Icon(Icons.arrow_drop_down_rounded,
+                  size: 18, color: colorScheme.outline),
+          isDense: true,
+          style: TextStyle(fontSize: 11, color: colorScheme.onSurface),
+          items: items
+              .map((item) => DropdownMenuItem(value: item, child: Text(item)))
+              .toList(),
+          onChanged: onChanged,
+        ),
       ),
     );
   }

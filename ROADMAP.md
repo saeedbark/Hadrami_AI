@@ -17,7 +17,6 @@ Items are grouped by area and roughly ordered by impact.
 
 ### Backend
 
-- [ ] **Migrate to a real database**: Replace the in-memory JSON store with SQLite or PostgreSQL for better query performance, concurrent writes, and full-text search.
 - [ ] **Add authentication**: Protect `/admin/*` endpoints and track feedback submitters. Consider simple API keys or OAuth.
 - [ ] **Rate limiting**: Add rate limits to Gemini-powered endpoints (`/ask`, `/translate-phrase`) to control API costs.
 - [ ] **Caching layer**: Cache Gemini responses for repeated queries to reduce latency and cost. Redis or in-memory LRU.
@@ -47,7 +46,6 @@ Items are grouped by area and roughly ordered by impact.
 
 ### Backend Improvements
 
-- [ ] **Vector search with embeddings**: Replace keyword-based RAG retrieval with proper embedding similarity (e.g., `sentence-transformers` + ChromaDB or FAISS).
 - [ ] **Evaluation pipeline**: Automated chrF/BLEU scoring against `eval_pairs.json` to track translation quality over time.
 - [ ] **API versioning**: Introduce `/v1/` prefix to allow backward-compatible API evolution.
 - [ ] **Batch translation endpoint**: Accept multiple words or phrases in a single request to reduce round trips.
@@ -77,6 +75,11 @@ Items are grouped by area and roughly ordered by impact.
 
 ## Completed
 
+- [x] Migrated from in-memory JSON store to Supabase (PostgreSQL + pgvector)
+- [x] Added pgvector-based semantic search (`/semantic-search` endpoint + `match_entries` RPC)
+- [x] Gemini text-embedding-004 integration for 768-dim entry embeddings
+- [x] Supabase sync script with embedding backfill (`scripts/sync_to_supabase.py`)
+- [x] Deep semantic structuring: POS classification, thematic categories, proverb extraction, archaic detection
 - [x] Dataset refactoring: fix truncated fus7a, merge duplicates, extract examples (v1.1.0)
 - [x] New schema fields: `fus7a_short`, `aliases`, `examples` (HA-6)
 - [x] Extended feedback types: correction, new_word, sentence_pair, spelling_variant (HA-5)
@@ -86,3 +89,5 @@ Items are grouped by area and roughly ordered by impact.
 - [x] UI polish: animations, dark mode persistence, responsive navigation
 - [x] Search debouncing for performance
 - [x] Backend API smoke tests (21 tests)
+- [x] Replaced deprecated `@app.on_event("startup")` with modern `lifespan` context manager
+- [x] Added `__init__.py` files to backend packages for proper module resolution

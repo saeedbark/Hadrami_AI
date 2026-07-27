@@ -1,0 +1,20 @@
+{
+  "name": "TR-test",
+  "description": "Hadrami paragraphs with gold MSA translations. Target N=100. Each item must be reviewed by 2 native speakers; disagreements resolved before merging. See research_paper_plan.md §7 for the construction protocol.",
+  "version": "0.1-template",
+  "license": "TBD — must be set before paper submission",
+  "items": [
+    {
+      "id": "tr_001",
+      "hadrami": "اليوم شفت أم حبيل في السقف، قلت لاخوي إكس عليه وخله، لكنه أكشف وخاف منها.",
+      "msa_gold": "اليوم رأيت عنكبوتاً في السقف، فقلت لأخي تجاهله واتركه، لكنه كان عنيداً وخاف منه.",
+      "annotators": ["TBD"],
+      "agreement": "TBD"
+    }
+  ],
+  "_todo": [
+    "Sample 100 paragraphs from authorized Hadrami sources (poetry, narratives, social-media-with-consent).",
+    "Have 2 native speakers translate each into MSA independently.",
+    "Resolve disagreements; record annotator IDs and IAA per item."
+  ]
+}

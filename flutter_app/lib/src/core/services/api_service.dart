@@ -36,6 +36,24 @@ class ApiService {
     return json.decode(utf8.decode(response.bodyBytes));
   }
 
+  Future<dynamic> _postJsonRaw(
+    String path,
+    Map<String, dynamic> body, {
+    Duration timeout = ApiConfig.defaultTimeout,
+  }) async {
+    final response = await _client
+        .post(
+          _buildUri(path),
+          headers: const {'Content-Type': 'application/json'},
+          body: json.encode(body),
+        )
+        .timeout(timeout);
+    if (response.statusCode != 200) {
+      throw Exception('Server error: ${response.statusCode}');
+    }
+    return json.decode(utf8.decode(response.bodyBytes));
+  }
+
   Future<bool> _postJson(
     String path,
     Map<String, dynamic> body, {
@@ -61,9 +79,9 @@ class ApiService {
     } catch (_) {
       return TranslateResult(
         found: false,
-        hadramiWord: query,
-        arabicFus7a: '',
-        fullDefinition: 'تعذّر الاتصال بالخادم. تأكد من تشغيل الـ backend.',
+        wordVocalized: query,
+        fushaEquivalent: '',
+        definition: 'تعذّر الاتصال بالخادم. تأكد من تشغيل الـ backend.',
         confidence: 'error',
       );
     }
@@ -85,12 +103,18 @@ class ApiService {
     int page = 1,
     int size = ApiConfig.defaultPageSize,
     String? letter,
+    String? pos,
+    String? region,
+    String? tag,
   }) async {
     try {
       final params = <String, String>{
         'page': '$page',
         'size': '$size',
         if (letter != null) 'letter': letter,
+        if (pos != null) 'pos': pos,
+        if (region != null) 'region': region,
+        if (tag != null) 'tag': tag,
       };
       final data = await _getJson('/words', queryParameters: params);
       return SearchResult.fromJson(data);
@@ -140,9 +164,6 @@ class ApiService {
     }
   }
 
-  /// Always returns a result; [AskResult.mode] == `error` when the request failed.
-  /// Phrase-level MSA ↔ Hadrami translation (RAG + Gemini). [direction] is
-  /// `ar_to_hadrami` or `hadrami_to_ar`.
   Future<PhraseTranslateResult> translatePhrase({
     required String text,
     required String direction,
@@ -188,11 +209,23 @@ class ApiService {
 
   Future<AskResult> ask(String question) async {
     try {
-      final data = await _getJson(
-        '/ask',
-        queryParameters: {'q': question},
-        timeout: ApiConfig.longTimeout,
-      );
+      final response = await _client
+          .post(
+            _buildUri('/ask'),
+            headers: const {'Content-Type': 'application/json'},
+            body: json.encode({'q': question}),
+          )
+          .timeout(ApiConfig.longTimeout);
+      if (response.statusCode != 200) {
+        return AskResult(
+          question: question,
+          answer:
+              'خطأ من الخادم (${response.statusCode}). جرّب تقصير السؤال أو تقسيمه.',
+          mode: 'error',
+        );
+      }
+      final data =
+          json.decode(utf8.decode(response.bodyBytes)) as Map<String, dynamic>;
       return AskResult.fromJson(data);
     } on TimeoutException {
       return AskResult(
@@ -211,9 +244,32 @@ class ApiService {
     }
   }
 
+  Future<ChatResult> sendChatMessage({
+    required String message,
+    required List<Map<String, String>> history,
+  }) async {
+    try {
+      final body = {
+        'message': message,
+        'history': history,
+      };
+      final data = await _postJsonRaw('/chat', body, timeout: ApiConfig.longTimeout);
+      return ChatResult.fromJson(data);
+    } on TimeoutException {
+      return const ChatResult(
+        reply: 'انتهت مهلة الانتظار. جرّب مرة أخرى.',
+      );
+    } catch (_) {
+      return const ChatResult(
+        reply:
+            'تعذّر الاتصال بالخادم. تأكد من تشغيل الـ backend على ${ApiConfig.baseUrl}',
+      );
+    }
+  }
+
   Future<bool> submitFeedback({
-    required String hadramiWord,
-    String suggestedFus7a = '',
+    required String wordVocalized,
+    String suggestedFusha = '',
     int wordId = 0,
     String? comment,
     String feedbackType = 'correction',
@@ -225,8 +281,8 @@ class ApiService {
     try {
       final body = <String, dynamic>{
         'word_id': wordId,
-        'hadrami_word': hadramiWord,
-        'suggested_fus7a': suggestedFus7a,
+        'word_vocalized': wordVocalized,
+        'suggested_fusha': suggestedFusha,
         'comment': comment,
         'feedback_type': feedbackType,
         'consent': consent,

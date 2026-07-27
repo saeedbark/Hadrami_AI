@@ -5,6 +5,7 @@ import 'package:hadrami_nlp/src/configs/api_config.dart';
 import 'package:hadrami_nlp/src/core/providers/theme_provider.dart';
 import 'package:hadrami_nlp/src/core/services/api_service.dart';
 import 'package:hadrami_nlp/src/widgets/app_scaffold.dart';
+import 'package:hadrami_nlp/src/widgets/content_shell.dart';
 
 class SettingsPage extends HookConsumerWidget {
   const SettingsPage({super.key});
@@ -39,9 +40,11 @@ class SettingsPage extends HookConsumerWidget {
 
     return AppScaffold(
       appBar: const AppAppBar(title: Text('الإعدادات')),
-      body: ListView(
-        padding: const EdgeInsets.all(16),
-        children: [
+      body: ContentShell(
+        maxWidth: 720,
+        child: ListView(
+          padding: const EdgeInsets.all(16),
+          children: [
           _SectionCard(
             icon: Icons.palette_rounded,
             title: 'المظهر',
@@ -115,10 +118,10 @@ class SettingsPage extends HookConsumerWidget {
           ),
           const SizedBox(height: 12),
 
-          _SectionCard(
+          const _SectionCard(
             icon: Icons.info_outline_rounded,
             title: 'عن المشروع',
-            child: const Column(
+            child: Column(
               children: [
                 _InfoRow('الإصدار', _appVersion),
                 _InfoRow('الكلمات', '1029+ كلمة حضرمية'),
@@ -163,7 +166,8 @@ class SettingsPage extends HookConsumerWidget {
             ),
           ),
           const SizedBox(height: 24),
-        ],
+          ],
+        ),
       ),
     );
   }

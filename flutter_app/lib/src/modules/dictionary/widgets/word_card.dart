@@ -18,7 +18,7 @@ class WordCard extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final colorScheme = Theme.of(context).colorScheme;
     final isFav = ref.watch(favoritesProvider.select(
-        (list) => list.any((e) => e.hadramiWord == entry.hadramiWord)));
+        (list) => list.any((e) => e.wordVocalized == entry.wordVocalized)));
 
     return Card(
       margin: const EdgeInsets.only(bottom: 8),
@@ -47,8 +47,8 @@ class WordCard extends ConsumerWidget {
                 ),
                 alignment: Alignment.center,
                 child: Text(
-                  entry.hadramiWord.isNotEmpty
-                      ? entry.hadramiWord.characters.first
+                  entry.wordVocalized.isNotEmpty
+                      ? entry.wordVocalized.characters.first
                       : '؟',
                   style: TextStyle(
                     fontSize: 16,
@@ -65,22 +65,43 @@ class WordCard extends ConsumerWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      entry.hadramiWord,
+                      entry.wordVocalized,
                       style: const TextStyle(
                           fontSize: 16, fontWeight: FontWeight.bold),
                     ),
-                    if (entry.arabicFus7a.isNotEmpty) ...[
+                    if (entry.fushaEquivalent != null &&
+                        entry.fushaEquivalent!.isNotEmpty) ...[
                       const SizedBox(height: 2),
                       Text(
-                        entry.arabicFus7a,
+                        entry.fushaEquivalent!,
                         style: TextStyle(
                             fontSize: 13, color: colorScheme.primary),
                       ),
                     ],
-                    if (entry.fullDefinition.isNotEmpty) ...[
+                    if (entry.pos != null && entry.pos!.isNotEmpty) ...[
+                      const SizedBox(height: 4),
+                      Row(
+                        children: [
+                          _MiniTag(
+                            label: entry.pos!,
+                            color: _posColor(entry.pos!),
+                          ),
+                          if (entry.tags != null &&
+                              entry.tags!.isNotEmpty) ...[
+                            const SizedBox(width: 4),
+                            _MiniTag(
+                              label: entry.tags!.first,
+                              color: colorScheme.secondary,
+                            ),
+                          ],
+                        ],
+                      ),
+                    ],
+                    if (entry.definition != null &&
+                        entry.definition!.isNotEmpty) ...[
                       const SizedBox(height: 4),
                       Text(
-                        entry.fullDefinition,
+                        entry.definition!,
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
                         style: TextStyle(
@@ -108,6 +129,43 @@ class WordCard extends ConsumerWidget {
             ],
           ),
         ),
+      ),
+    );
+  }
+
+  static Color _posColor(String pos) {
+    switch (pos) {
+      case 'Noun':
+        return Colors.indigo;
+      case 'Verb':
+        return Colors.teal;
+      case 'Adjective':
+        return Colors.orange;
+      case 'Expression':
+        return Colors.purple;
+      default:
+        return Colors.grey;
+    }
+  }
+}
+
+class _MiniTag extends StatelessWidget {
+  const _MiniTag({required this.label, required this.color});
+  final String label;
+  final Color color;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+      decoration: BoxDecoration(
+        color: color.withValues(alpha: 0.1),
+        borderRadius: BorderRadius.circular(4),
+        border: Border.all(color: color.withValues(alpha: 0.3)),
+      ),
+      child: Text(
+        label,
+        style: TextStyle(fontSize: 10, color: color, fontWeight: FontWeight.w600),
       ),
     );
   }

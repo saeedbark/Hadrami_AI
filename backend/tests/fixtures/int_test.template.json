@@ -1,0 +1,18 @@
+{
+  "name": "INT-test",
+  "description": "Messages labeled with one of five intents (word, translate, define, semantic, qa). Target N=500 with ~100 per intent for a balanced macro-F1.",
+  "version": "0.1-template",
+  "intents": ["word", "translate", "define", "semantic", "qa"],
+  "items": [
+    {"id": "int_001", "text": "أم حبيل", "intent": "word"},
+    {"id": "int_002", "text": "ترجم: اليوم شفت أم حبيل", "intent": "translate"},
+    {"id": "int_003", "text": "ما معنى أم حبيل؟", "intent": "define"},
+    {"id": "int_004", "text": "كلمة تعني الإهمال", "intent": "semantic"},
+    {"id": "int_005", "text": "هل أم حبيل تستخدم في وادي حضرموت؟", "intent": "qa"}
+  ],
+  "_todo": [
+    "Generate ~100 templated candidates per intent (synthetic + real chat logs).",
+    "Hand-label each; remove ambiguous items.",
+    "Cross-check 10% with a second annotator; report Cohen's kappa."
+  ]
+}

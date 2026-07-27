@@ -30,11 +30,13 @@ dart run build_runner build --delete-conflicting-outputs
 
 ### API Configuration
 
-The backend URL defaults to `http://localhost:8000`. Override at build time:
+The backend URL defaults to the **deployed API** (`https://hadrami-ai.vercel.app/`).
+Override at build time to use a local or different backend:
 
 ```bash
-flutter run --dart-define=API_BASE_URL=http://10.0.2.2:8000  # Android emulator
-flutter run --dart-define=API_BASE_URL=http://192.168.1.x:8000  # Physical device
+flutter run --dart-define=API_BASE_URL=http://localhost:8000          # Local backend
+flutter run --dart-define=API_BASE_URL=http://10.0.2.2:8000           # Android emulator → host
+flutter run --dart-define=API_BASE_URL=http://192.168.1.x:8000        # Physical device on LAN
 ```
 
 Configured in `lib/src/configs/api_config.dart`.
@@ -56,32 +58,37 @@ lib/
     │
     ├── core/                  ← Shared infrastructure
     │   ├── models/
-    │   │   └── word_entry.dart        ← All data models (freezed)
+    │   │   ├── word_entry.dart        ← All data models (freezed)
+    │   │   └── lexicon_section.dart   ← Letter section model
     │   ├── services/
     │   │   └── api_service.dart       ← HTTP client for all API calls
     │   ├── providers/
     │   │   └── theme_provider.dart    ← Theme persistence (shared_preferences)
     │   ├── routing/
     │   │   └── router.dart            ← go_router with StatefulShellRoute
-    │   └── theme/
-    │       └── theme.dart             ← Material 3 light/dark themes
+    │   ├── theme/
+    │   │   └── theme.dart             ← M3 light/dark themes (warm Yemeni palette: terracotta + saffron + cream — see docs/flutter_ui_changes.md)
+    │   └── utils/
+    │       └── hadrami_lexicon_spans.dart  ← Highlighted span utilities
     │
     ├── widgets/               ← Shared UI components
-    │   ├── app_card.dart              ← Styled card wrapper
-    │   ├── app_scaffold.dart          ← Common page scaffold
-    │   ├── loading_widget.dart        ← Loading indicator
+    │   ├── app_scaffold.dart          ← Common page scaffold + AppAppBar
+    │   ├── content_shell.dart         ← Responsive max-width wrapper (no-op on mobile, clamps on web/desktop)
+    │   ├── animated_appear.dart       ← AnimatedAppear + StaggeredAppear (one-shot fade + slide)
+    │   ├── loading_widget.dart        ← Themed spinner + animated SkeletonLine placeholder
     │   ├── error_widget.dart          ← Error display
     │   ├── empty_state.dart           ← Empty state placeholder
     │   └── hadrami_highlighted_text.dart  ← Highlighted span text
     │
     └── modules/               ← Feature modules
-        ├── landing/           ← Bottom nav / rail shell
-        ├── home/              ← Translate + stats + word of the day
+        ├── landing/           ← Bottom nav (mobile) / rail (desktop) shell
+        ├── home/              ← Hero gradient + stats + sections + word of the day
         ├── search/            ← Live debounced search
         ├── dictionary/        ← Full word list + letter filter
         ├── favorites/         ← Locally saved words
-        ├── ask/               ← AI Q&A
-        ├── phrase/            ← Phrase translation with spans
+        ├── ask/               ← AI Q&A (`/ask`)
+        ├── phrase/            ← Phrase translation with spans (`/translate-phrase`)
+        ├── chat/              ← Unified conversational dispatcher (`/chat`)
         └── settings/          ← Connection test, theme, about
 ```
 
@@ -126,13 +133,14 @@ All models are defined in `core/models/word_entry.dart`:
 
 | # | Screen | Route | Description |
 |---|--------|-------|-------------|
-| 1 | Home | `/` | Translate box, stats cards, random word |
+| 1 | Home | `/` | Hero gradient, stats cards, sections, random word, staggered entry animations |
 | 2 | Search | `/search` | Debounced search with result count |
 | 3 | Dictionary | `/dictionary` | Paginated list + Arabic letter filter chips |
 | 4 | Favorites | `/favorites` | Locally saved words (shared_preferences) |
 | 5 | Ask | `/ask` | AI Q&A with copy button and source mode |
-| 6 | Phrases | `/phrases` | Bidirectional phrase translation |
-| 7 | Settings | `/settings` | Backend test, theme selector, version info |
+| 6 | Phrases | `/phrase-translate` | Bidirectional phrase translation |
+| 7 | Chat | `/chat` | Unified conversational dispatcher (5 intents, refusal contract) |
+| 8 | Settings | `/settings` | Backend test, theme selector (light / dark / system), version info |
 
 ---
 

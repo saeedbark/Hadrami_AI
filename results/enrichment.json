@@ -1,0 +1,902 @@
+[
+  {
+    "id": 1,
+    "word": "أُمّ حُبَيْل",
+    "stored_pos": "Noun",
+    "llm": {
+      "semantic_intent": "object",
+      "transliteration": "umm Hubayl"
+    }
+  },
+  {
+    "id": 2,
+    "word": "إبِطْ",
+    "stored_pos": "Noun",
+    "llm": {
+      "semantic_intent": "action",
+      "transliteration": "ibT"
+    }
+  },
+  {
+    "id": 3,
+    "word": "الأَمَات",
+    "stored_pos": "Noun",
+    "llm": {
+      "semantic_intent": "object",
+      "transliteration": "al-amaat"
+    }
+  },
+  {
+    "id": 4,
+    "word": "أَبُوي",
+    "stored_pos": "Noun",
+    "llm": {
+      "semantic_intent": "person",
+      "transliteration": "abuy"
+    }
+  },
+  {
+    "id": 5,
+    "word": "أُبّب",
+    "stored_pos": "Expression",
+    "llm": {
+      "semantic_intent": "expression",
+      "transliteration": "ubbab"
+    }
+  },
+  {
+    "id": 6,
+    "word": "أَبَداً",
+    "stored_pos": "Expression",
+    "llm": {
+      "semantic_intent": "expression",
+      "transliteration": "abada"
+    }
+  },
+  {
+    "id": 7,
+    "word": "أَثَرَه",
+    "stored_pos": "Expression",
+    "llm": {
+      "semantic_intent": "expression",
+      "transliteration": "atharha"
+    }
+  },
+  {
+    "id": 8,
+    "word": "أَثَّر",
+    "stored_pos": "Verb",
+    "llm": {
+      "semantic_intent": "action",
+      "transliteration": "aththar"
+    }
+  },
+  {
+    "id": 9,
+    "word": "إِثّم",
+    "stored_pos": "Noun",
+    "llm": {
+      "semantic_intent": "object",
+      "transliteration": "ithim"
+    }
+  },
+  {
+    "id": 10,
+    "word": "أَرْبِيِه",
+    "stored_pos": "Noun",
+    "llm": {
+      "semantic_intent": "descriptor",
+      "transliteration": "arbiyeh"
+    }
+  },
+  {
+    "id": 11,
+    "word": "أَثَّث",
+    "stored_pos": "Verb",
+    "llm": {
+      "semantic_intent": "action",
+      "transliteration": "aththath"
+    }
+  },
+  {
+    "id": 12,
+    "word": "إِثْم",
+    "stored_pos": "Noun",
+    "llm": {
+      "semantic_intent": "object",
+      "transliteration": "ithm"
+    }
+  },
+  {
+    "id": 13,
+    "word": "الأَوَادِم",
+    "stored_pos": "Noun",
+    "llm": {
+      "semantic_intent": "person",
+      "transliteration": "al-awadim"
+    }
+  },
+  {
+    "id": 14,
+    "word": "إِسْتَادَى",
+    "stored_pos": "Verb",
+    "llm": {
+      "semantic_intent": "action",
+      "transliteration": "istada"
+    }
+  },
+  {
+    "id": 15,
+    "word": "انْقَاص البَرْد",
+    "stored_pos": "Noun",
+    "llm": {
+      "semantic_intent": "object",
+      "transliteration": "inqaas al-bard"
+    }
+  },
+  {
+    "id": 16,
+    "word": "إِثْل",
+    "stored_pos": "Noun",
+    "llm": {
+      "semantic_intent": "object",
+      "transliteration": "ithil"
+    }
+  },
+  {
+    "id": 17,
+    "word": "الأَزْمِيل",
+    "stored_pos": "Noun",
+    "llm": {
+      "semantic_intent": "object",
+      "transliteration": "al-zimil"
+    }
+  },
+  {
+    "id": 18,
+    "word": "إِيبَلَّه",
+    "stored_pos": "Expression",
+    "llm": {
+      "semantic_intent": "expression",
+      "transliteration": "iyyabballeh"
+    }
+  },
+  {
+    "id": 19,
+    "word": "الأَقْصَام",
+    "stored_pos": "Noun",
+    "llm": {
+      "semantic_intent": "object",
+      "transliteration": "al-aQSam"
+    }
+  },
+  {
+    "id": 20,
+    "word": "اللِّيف",
+    "stored_pos": "Noun",
+    "llm": {
+      "semantic_intent": "object",
+      "transliteration": "al-līf"
+    }
+  },
+  {
+    "id": 21,
+    "word": "أَقْلِيد",
+    "stored_pos": "Noun",
+    "llm": {
+      "semantic_intent": "object",
+      "transliteration": "aqleed"
+    }
+  },
+  {
+    "id": 22,
+    "word": "إِبْرَه",
+    "stored_pos": "Noun",
+    "llm": {
+      "semantic_intent": "object",
+      "transliteration": "ibrah"
+    }
+  },
+  {
+    "id": 23,
+    "word": "اشِر",
+    "stored_pos": "Verb",
+    "llm": {
+      "semantic_intent": "action",
+      "transliteration": "ashir"
+    }
+  },
+  {
+    "id": 24,
+    "word": "أَكْشَف",
+    "stored_pos": "Adjective",
+    "llm": {
+      "semantic_intent": "descriptor",
+      "transliteration": "akshaf"
+    }
+  },
+  {
+    "id": 25,
+    "word": "أَيْوَا",
+    "stored_pos": "Expression",
+    "llm": {
+      "semantic_intent": "expression",
+      "transliteration": "aywa"
+    }
+  },
+  {
+    "id": 26,
+    "word": "إِبْزِم",
+    "stored_pos": "Noun",
+    "llm": {
+      "semantic_intent": "object",
+      "transliteration": "ibzim"
+    }
+  },
+  {
+    "id": 27,
+    "word": "أُبّـل",
+    "stored_pos": "Noun",
+    "llm": {
+      "semantic_intent": "object",
+      "transliteration": "ubbul"
+    }
+  },
+  {
+    "id": 28,
+    "word": "إِبْلِيس",
+    "stored_pos": "Expression",
+    "llm": {
+      "semantic_intent": "person",
+      "transliteration": "iblīs"
+    }
+  },
+  {
+    "id": 29,
+    "word": "أَبُو / بُو",
+    "stored_pos": "Noun",
+    "llm": {
+      "semantic_intent": "person",
+      "transliteration": "abu"
+    }
+  },
+  {
+    "id": 30,
+    "word": "أُمّ سَبْعَة وَسَبْعِين",
+    "stored_pos": "Noun",
+    "llm": {
+      "semantic_intent": "object",
+      "transliteration": "umm sab3a w-sab3iin"
+    }
+  },
+  {
+    "id": 31,
+    "word": "أَمْبُوه",
+    "stored_pos": "Noun",
+    "llm": {
+      "semantic_intent": "object",
+      "transliteration": "ambuh"
+    }
+  },
+  {
+    "id": 32,
+    "word": "أَحّ",
+    "stored_pos": "Expression",
+    "llm": {
+      "semantic_intent": "expression",
+      "transliteration": "aHH"
+    }
+  },
+  {
+    "id": 33,
+    "word": "الآجر",
+    "stored_pos": "Noun",
+    "llm": {
+      "semantic_intent": "object",
+      "transliteration": "al-ajar"
+    }
+  },
+  {
+    "id": 34,
+    "word": "إِكِّس عَلَيْه",
+    "stored_pos": "Expression",
+    "llm": {
+      "semantic_intent": "expression",
+      "transliteration": "aks 3alyh"
+    }
+  },
+  {
+    "id": 35,
+    "word": "الأَوْد",
+    "stored_pos": "Noun",
+    "llm": {
+      "semantic_intent": "time",
+      "transliteration": "al-awd"
+    }
+  },
+  {
+    "id": 36,
+    "word": "الأَسْتَه",
+    "stored_pos": "Adjective",
+    "llm": {
+      "semantic_intent": "descriptor",
+      "transliteration": "al-astah"
+    }
+  },
+  {
+    "id": 37,
+    "word": "أُوقِيّه",
+    "stored_pos": "Noun",
+    "llm": {
+      "semantic_intent": "object",
+      "transliteration": "awqiyyh"
+    }
+  },
+  {
+    "id": 38,
+    "word": "أُص / أُصَّه",
+    "stored_pos": "Expression",
+    "llm": {
+      "semantic_intent": "expression",
+      "transliteration": "aS"
+    }
+  },
+  {
+    "id": 39,
+    "word": "أَوَاق",
+    "stored_pos": "Noun",
+    "llm": {
+      "semantic_intent": "object",
+      "transliteration": "awaq"
+    }
+  },
+  {
+    "id": 40,
+    "word": "الأَيْك",
+    "stored_pos": "Noun",
+    "llm": {
+      "semantic_intent": "object",
+      "transliteration": "al-ayk"
+    }
+  },
+  {
+    "id": 41,
+    "word": "إِدْحَق / دَحَق",
+    "stored_pos": "Verb",
+    "llm": {
+      "semantic_intent": "action",
+      "transliteration": "adHaQ"
+    }
+  },
+  {
+    "id": 42,
+    "word": "أَرْقَش",
+    "stored_pos": "Adjective",
+    "llm": {
+      "semantic_intent": "descriptor",
+      "transliteration": "arqash"
+    }
+  },
+  {
+    "id": 43,
+    "word": "أَطْلَس",
+    "stored_pos": "Noun",
+    "llm": {
+      "semantic_intent": "object",
+      "transliteration": "aTlas"
+    }
+  },
+  {
+    "id": 44,
+    "word": "اش",
+    "stored_pos": "Expression",
+    "llm": {
+      "semantic_intent": "expression",
+      "transliteration": "ash"
+    }
+  },
+  {
+    "id": 45,
+    "word": "إِيش",
+    "stored_pos": "Expression",
+    "llm": {
+      "semantic_intent": "expression",
+      "transliteration": "ish"
+    }
+  },
+  {
+    "id": 46,
+    "word": "بَعْرَه",
+    "stored_pos": "Noun",
+    "llm": {
+      "semantic_intent": "object",
+      "transliteration": "ba3rah"
+    }
+  },
+  {
+    "id": 47,
+    "word": "بَرِّك",
+    "stored_pos": "Verb",
+    "llm": {
+      "semantic_intent": "action",
+      "transliteration": "barrik"
+    }
+  },
+  {
+    "id": 48,
+    "word": "بِلِّي",
+    "stored_pos": "Expression",
+    "llm": {
+      "semantic_intent": "expression",
+      "transliteration": "billi"
+    }
+  },
+  {
+    "id": 49,
+    "word": "بَخْت",
+    "stored_pos": "Noun",
+    "llm": {
+      "semantic_intent": "object",
+      "transliteration": "bakht"
+    }
+  },
+  {
+    "id": 50,
+    "word": "يِئَذِّن",
+    "stored_pos": "Verb",
+    "llm": {
+      "semantic_intent": "action",
+      "transliteration": "yiadhdhin"
+    }
+  },
+  {
+    "id": 51,
+    "word": "بواه",
+    "stored_pos": "Expression",
+    "llm": {
+      "semantic_intent": "expression",
+      "transliteration": "bwah"
+    }
+  },
+  {
+    "id": 52,
+    "word": "البَغْزِيز",
+    "stored_pos": "Noun",
+    "llm": {
+      "semantic_intent": "object",
+      "transliteration": "albaghziz"
+    }
+  },
+  {
+    "id": 53,
+    "word": "بنزر",
+    "stored_pos": "Noun",
+    "llm": {
+      "semantic_intent": "object",
+      "transliteration": "bunzur"
+    }
+  },
+  {
+    "id": 54,
+    "word": "بَلَاش",
+    "stored_pos": "Noun",
+    "llm": {
+      "semantic_intent": "descriptor",
+      "transliteration": "balash"
+    }
+  },
+  {
+    "id": 55,
+    "word": "با محقب",
+    "stored_pos": "Noun",
+    "llm": {
+      "semantic_intent": "object",
+      "transliteration": "ba muHqab"
+    }
+  },
+  {
+    "id": 56,
+    "word": "بزبز",
+    "stored_pos": "Noun",
+    "llm": {
+      "semantic_intent": "object",
+      "transliteration": "bzbz"
+    }
+  },
+  {
+    "id": 57,
+    "word": "بُوفَتِيلَة",
+    "stored_pos": "Noun",
+    "llm": {
+      "semantic_intent": "object",
+      "transliteration": "bufatilah"
+    }
+  },
+  {
+    "id": 58,
+    "word": "بَاقِرِنْقَاح",
+    "stored_pos": "Noun",
+    "llm": {
+      "semantic_intent": "object",
+      "transliteration": "baqirnqaH"
+    }
+  },
+  {
+    "id": 59,
+    "word": "بطاح",
+    "stored_pos": "Noun",
+    "llm": {
+      "semantic_intent": "object",
+      "transliteration": "baTaH"
+    }
+  },
+  {
+    "id": 60,
+    "word": "بُغْيَة",
+    "stored_pos": "Noun",
+    "llm": {
+      "semantic_intent": "object",
+      "transliteration": "bghya"
+    }
+  },
+  {
+    "id": 61,
+    "word": "بَا",
+    "stored_pos": "Particle",
+    "llm": {
+      "semantic_intent": "function",
+      "transliteration": "ba"
+    }
+  },
+  {
+    "id": 62,
+    "word": "باير",
+    "stored_pos": "Adjective",
+    "llm": {
+      "semantic_intent": "descriptor",
+      "transliteration": "bayir"
+    }
+  },
+  {
+    "id": 63,
+    "word": "بِيح",
+    "stored_pos": "Noun",
+    "llm": {
+      "semantic_intent": "action",
+      "transliteration": "biiH"
+    }
+  },
+  {
+    "id": 64,
+    "word": "بَاع",
+    "stored_pos": "Noun",
+    "llm": {
+      "semantic_intent": "object",
+      "transliteration": "ba3"
+    }
+  },
+  {
+    "id": 65,
+    "word": "البَنْطَلُون",
+    "stored_pos": "Noun",
+    "llm": {
+      "semantic_intent": "object",
+      "transliteration": "al-bantalun"
+    }
+  },
+  {
+    "id": 66,
+    "word": "بِزْبُوز",
+    "stored_pos": "Noun",
+    "llm": {
+      "semantic_intent": "object",
+      "transliteration": "bizbuz"
+    }
+  },
+  {
+    "id": 67,
+    "word": "البُرْنُص",
+    "stored_pos": "Noun",
+    "llm": {
+      "semantic_intent": "object",
+      "transliteration": "al-burnus"
+    }
+  },
+  {
+    "id": 68,
+    "word": "بَاشْتَه",
+    "stored_pos": "Noun",
+    "llm": {
+      "semantic_intent": "object",
+      "transliteration": "bashta"
+    }
+  },
+  {
+    "id": 69,
+    "word": "البُونِي",
+    "stored_pos": "Noun",
+    "llm": {
+      "semantic_intent": "object",
+      "transliteration": "al-buni"
+    }
+  },
+  {
+    "id": 70,
+    "word": "بِشِق",
+    "stored_pos": "Noun",
+    "llm": {
+      "semantic_intent": "place",
+      "transliteration": "bishiq"
+    }
+  },
+  {
+    "id": 71,
+    "word": "برز به",
+    "stored_pos": "Verb",
+    "llm": {
+      "semantic_intent": "action",
+      "transliteration": "baraz bihi"
+    }
+  },
+  {
+    "id": 72,
+    "word": "البَكْرَة",
+    "stored_pos": "Noun",
+    "llm": {
+      "semantic_intent": "object",
+      "transliteration": "al-bakra"
+    }
+  },
+  {
+    "id": 73,
+    "word": "بَا فَتِيلَة",
+    "stored_pos": "Noun",
+    "llm": {
+      "semantic_intent": "object",
+      "transliteration": "ba fatila"
+    }
+  },
+  {
+    "id": 74,
+    "word": "البُنُص",
+    "stored_pos": "Noun",
+    "llm": {
+      "semantic_intent": "object",
+      "transliteration": "al-bunus"
+    }
+  },
+  {
+    "id": 75,
+    "word": "بهار",
+    "stored_pos": "Noun",
+    "llm": {
+      "semantic_intent": "object",
+      "transliteration": "bahaar"
+    }
+  },
+  {
+    "id": 76,
+    "word": "بِقَش",
+    "stored_pos": "Noun",
+    "llm": {
+      "semantic_intent": "object",
+      "transliteration": "bqash"
+    }
+  },
+  {
+    "id": 77,
+    "word": "البُرْمَة",
+    "stored_pos": "Noun",
+    "llm": {
+      "semantic_intent": "object",
+      "transliteration": "al-burmah"
+    }
+  },
+  {
+    "id": 78,
+    "word": "البَاغ",
+    "stored_pos": "Noun",
+    "llm": {
+      "semantic_intent": "object",
+      "transliteration": "al-bagh"
+    }
+  },
+  {
+    "id": 79,
+    "word": "بُنّة",
+    "stored_pos": "Noun",
+    "llm": {
+      "semantic_intent": "object",
+      "transliteration": "bunna"
+    }
+  },
+  {
+    "id": 80,
+    "word": "البَيْت",
+    "stored_pos": "Noun",
+    "llm": {
+      "semantic_intent": "object",
+      "transliteration": "al-bayt"
+    }
+  },
+  {
+    "id": 81,
+    "word": "بُرْقُع",
+    "stored_pos": "Noun",
+    "llm": {
+      "semantic_intent": "object",
+      "transliteration": "burqu3"
+    }
+  },
+  {
+    "id": 82,
+    "word": "بَسْط",
+    "stored_pos": "Noun",
+    "llm": {
+      "semantic_intent": "object",
+      "transliteration": "baST"
+    }
+  },
+  {
+    "id": 83,
+    "word": "البُورِي",
+    "stored_pos": "Noun",
+    "llm": {
+      "semantic_intent": "object",
+      "transliteration": "al-buri"
+    }
+  },
+  {
+    "id": 84,
+    "word": "بَاصْوَاب",
+    "stored_pos": "Noun",
+    "llm": {
+      "semantic_intent": "object",
+      "transliteration": "baSwaab"
+    }
+  },
+  {
+    "id": 85,
+    "word": "بَاصِيْقَع",
+    "stored_pos": "Noun",
+    "llm": {
+      "semantic_intent": "object",
+      "transliteration": "baSiq3"
+    }
+  },
+  {
+    "id": 86,
+    "word": "بَانَه",
+    "stored_pos": "Noun",
+    "llm": {
+      "semantic_intent": "object",
+      "transliteration": "baanah"
+    }
+  },
+  {
+    "id": 87,
+    "word": "بسر",
+    "stored_pos": "Noun",
+    "llm": {
+      "semantic_intent": "object",
+      "transliteration": "bsr"
+    }
+  },
+  {
+    "id": 88,
+    "word": "بَنْقَلَة",
+    "stored_pos": "Noun",
+    "llm": {
+      "semantic_intent": "object",
+      "transliteration": "banqala"
+    }
+  },
+  {
+    "id": 89,
+    "word": "بَقْل",
+    "stored_pos": "Noun",
+    "llm": {
+      "semantic_intent": "object",
+      "transliteration": "bql"
+    }
+  },
+  {
+    "id": 90,
+    "word": "البَدّ",
+    "stored_pos": "Noun",
+    "llm": {
+      "semantic_intent": "object",
+      "transliteration": "albadd"
+    }
+  },
+  {
+    "id": 91,
+    "word": "بركة",
+    "stored_pos": "Noun",
+    "llm": {
+      "semantic_intent": "object",
+      "transliteration": "baraka"
+    }
+  },
+  {
+    "id": 92,
+    "word": "بَلَالِيْط",
+    "stored_pos": "Noun",
+    "llm": {
+      "semantic_intent": "object",
+      "transliteration": "balaliT"
+    }
+  },
+  {
+    "id": 93,
+    "word": "بَطَّال",
+    "stored_pos": "Adjective",
+    "llm": {
+      "semantic_intent": "descriptor",
+      "transliteration": "baTTal"
+    }
+  },
+  {
+    "id": 94,
+    "word": "بَازَار",
+    "stored_pos": "Noun",
+    "llm": {
+      "semantic_intent": "place",
+      "transliteration": "bazar"
+    }
+  },
+  {
+    "id": 95,
+    "word": "بَرْدَلُو",
+    "stored_pos": "Noun",
+    "llm": {
+      "semantic_intent": "object",
+      "transliteration": "bardalu"
+    }
+  },
+  {
+    "id": 96,
+    "word": "بَابُور",
+    "stored_pos": "Noun",
+    "llm": {
+      "semantic_intent": "object",
+      "transliteration": "babur"
+    }
+  },
+  {
+    "id": 97,
+    "word": "بُنَيّة",
+    "stored_pos": "Noun",
+    "llm": {
+      "semantic_intent": "person",
+      "transliteration": "bunayya"
+    }
+  },
+  {
+    "id": 98,
+    "word": "بُقْعَة",
+    "stored_pos": "Noun",
+    "llm": {
+      "semantic_intent": "place",
+      "transliteration": "buq3ah"
+    }
+  },
+  {
+    "id": 99,
+    "word": "بقعه",
+    "stored_pos": "Noun",
+    "llm": {
+      "semantic_intent": "place",
+      "transliteration": "bq3h"
+    }
+  },
+  {
+    "id": 100,
+    "word": "بُوَيْن",
+    "stored_pos": "Noun",
+    "llm": {
+      "semantic_intent": "object",
+      "transliteration": "buwayn"
+    }
+  }
+]

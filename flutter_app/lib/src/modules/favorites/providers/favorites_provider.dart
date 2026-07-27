@@ -10,7 +10,7 @@ class Favorites extends _$Favorites {
 
   void toggle(WordEntry entry) {
     final list = [...state];
-    final idx = list.indexWhere((e) => e.hadramiWord == entry.hadramiWord);
+    final idx = list.indexWhere((e) => e.wordVocalized == entry.wordVocalized);
     if (idx >= 0) {
       list.removeAt(idx);
     } else {
@@ -20,7 +20,7 @@ class Favorites extends _$Favorites {
   }
 
   bool isFavorite(WordEntry entry) =>
-      state.any((e) => e.hadramiWord == entry.hadramiWord);
+      state.any((e) => e.wordVocalized == entry.wordVocalized);
 
   void clearAll() => state = [];
 }

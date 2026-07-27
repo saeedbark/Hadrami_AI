@@ -4,15 +4,18 @@ import 'package:flutter/services.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:reactive_forms/reactive_forms.dart';
 import 'package:hadrami_nlp/src/configs/app_colors.dart';
+import 'package:hadrami_nlp/src/core/models/word_entry.dart';
 import 'package:hadrami_nlp/src/core/utils/hadrami_lexicon_spans.dart';
 import 'package:hadrami_nlp/src/modules/ask/forms/ask_form.dart';
 import 'package:hadrami_nlp/src/modules/ask/providers/ask_provider.dart';
 import 'package:hadrami_nlp/src/widgets/app_scaffold.dart';
+import 'package:hadrami_nlp/src/widgets/content_shell.dart';
 import 'package:hadrami_nlp/src/widgets/hadrami_highlighted_text.dart';
 
 Widget _askAnswerBody(
   String answer,
-  List<Map<String, dynamic>> context,
+  List<WordEntry> context,
+  List<HadramiSpan> askResultSpans,
   bool isError,
   ColorScheme colorScheme,
   Color highlightBg,
@@ -37,7 +40,12 @@ Widget _askAnswerBody(
       style: baseStyle,
     );
   }
-  final spans = hadramiSpansFromLexiconContext(answer, context);
+  final spans = askResultSpans.isNotEmpty
+      ? askResultSpans
+      : hadramiSpansFromLexiconContext(
+          answer,
+          context.map((e) => e.toJson()).toList(growable: false),
+        );
   if (spans.isEmpty) {
     if (kIsWeb) {
       return Text(
@@ -78,16 +86,31 @@ class AskPage extends ConsumerWidget {
 
     return AppScaffold(
       appBar: const AppAppBar(title: Text('اسأل عن اللهجة')),
-      body: AskFormModelFormBuilder(
+      body: ContentShell(
+        maxWidth: 880,
+        child: AskFormModelFormBuilder(
         model: const AskFormModel(),
         builder: (context, formModel, _) {
+          void dismissInput() {
+            if (kIsWeb) {
+              // Avoid a Flutter web assertion when focus changes mid-pointer event.
+              WidgetsBinding.instance.addPostFrameCallback((_) {
+                if (context.mounted) {
+                  FocusManager.instance.primaryFocus?.unfocus();
+                }
+              });
+              return;
+            }
+            FocusScope.of(context).unfocus();
+          }
+
           void send() {
             formModel.form.markAllAsTouched();
             if (!formModel.form.valid) return;
             if (ref.read(askProvider).isLoading) return;
             final q = formModel.model.question.trim();
             ref.read(askProvider.notifier).ask(q);
-            FocusScope.of(context).unfocus();
+            dismissInput();
           }
 
           return ListView(
@@ -175,6 +198,7 @@ class AskPage extends ConsumerWidget {
                     child: _askAnswerBody(
                       askState.result!.answer,
                       askState.result!.context,
+                      askState.result!.hadramiSpans,
                       askState.result!.mode == 'error',
                       colorScheme,
                       highlightBg,
@@ -186,7 +210,9 @@ class AskPage extends ConsumerWidget {
                   Padding(
                     padding: const EdgeInsets.only(top: 8),
                     child: Text(
-                      'المصدر: ${askState.result!.mode}',
+                      askState.result!.answerSource == 'lexicon'
+                          ? 'المصدر: القاموس الاحتياطي (لم تُنطَق إجابة من نموذج التوليد). وضع الخادم: ${askState.result!.mode}'
+                          : 'المصدر: نص من نموذج التوليد. وضع الخادم: ${askState.result!.mode}',
                       style: Theme.of(context)
                           .textTheme
                           .labelSmall
@@ -197,6 +223,7 @@ class AskPage extends ConsumerWidget {
             ],
           );
         },
+      ),
       ),
     );
   }

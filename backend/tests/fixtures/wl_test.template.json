@@ -1,0 +1,19 @@
+{
+  "name": "WL-test",
+  "description": "Word-lookup queries: 100 in-lexicon (held out from any reranker training) + 100 out-of-lexicon (real Hadrami words deliberately not yet curated). Used to compute Recall@k and MRR.",
+  "version": "0.1-template",
+  "license": "TBD",
+  "items": [
+    {
+      "id": "wl_001",
+      "query": "أم حبيل",
+      "gold_entry_id": 1,
+      "in_lexicon": true
+    }
+  ],
+  "_todo": [
+    "Sample 100 in-lexicon entries (stratify by POS, region).",
+    "Solicit 100 real-but-uncurated Hadrami words from native speakers.",
+    "Tag each as in_lexicon=true|false and (when in_lexicon) note the gold entry id."
+  ]
+}

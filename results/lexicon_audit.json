@@ -1,0 +1,193 @@
+{
+  "total_entries": 1000,
+  "missing_fusha_equivalent": 0,
+  "missing_definition": 0,
+  "missing_examples": 4,
+  "missing_tags": 0,
+  "missing_word_clean": 0,
+  "embedding_dirty": 2,
+  "embedding_null": 2,
+  "pos_distribution": [
+    [
+      "Noun",
+      807
+    ],
+    [
+      "Verb",
+      79
+    ],
+    [
+      "Expression",
+      46
+    ],
+    [
+      "Adjective",
+      42
+    ],
+    [
+      "Noun/Verb",
+      11
+    ],
+    [
+      "Adverb",
+      5
+    ],
+    [
+      "Preposition",
+      4
+    ],
+    [
+      "Particle",
+      2
+    ],
+    [
+      "Adjective/Verb",
+      2
+    ],
+    [
+      "Verb Phrase",
+      1
+    ],
+    [
+      "Adjective/Noun",
+      1
+    ]
+  ],
+  "region_distribution": [
+    [
+      "General",
+      967
+    ],
+    [
+      "Coast",
+      11
+    ],
+    [
+      "Rural",
+      6
+    ],
+    [
+      "Wadi",
+      3
+    ],
+    [
+      "Badiyah",
+      3
+    ],
+    [
+      "Nature",
+      2
+    ],
+    [
+      "Interior",
+      2
+    ],
+    [
+      "Desert/Badia",
+      1
+    ],
+    [
+      "Coast/Wadi",
+      1
+    ],
+    [
+      "General/Rural",
+      1
+    ],
+    [
+      "Ghayl Ba Wazir",
+      1
+    ],
+    [
+      "Bedouin/Rural",
+      1
+    ],
+    [
+      "Agriculture",
+      1
+    ]
+  ],
+  "top_tags": [
+    [
+      "Daily Life",
+      441
+    ],
+    [
+      "Nature",
+      178
+    ],
+    [
+      "Agriculture",
+      158
+    ],
+    [
+      "Social Customs",
+      95
+    ],
+    [
+      "Architecture",
+      94
+    ],
+    [
+      "Clothing",
+      82
+    ],
+    [
+      "Food",
+      81
+    ],
+    [
+      "Tools",
+      74
+    ],
+    [
+      "Home",
+      50
+    ],
+    [
+      "Expressions",
+      45
+    ],
+    [
+      "Water",
+      44
+    ],
+    [
+      "History",
+      30
+    ],
+    [
+      "Construction",
+      30
+    ],
+    [
+      "Animals",
+      28
+    ],
+    [
+      "Weather",
+      27
+    ],
+    [
+      "Marriage",
+      27
+    ],
+    [
+      "Emotions",
+      24
+    ],
+    [
+      "Actions",
+      21
+    ],
+    [
+      "Verbs",
+      21
+    ],
+    [
+      "Insects",
+      19
+    ]
+  ],
+  "embedding_doc_version_in_use": "v2"
+}

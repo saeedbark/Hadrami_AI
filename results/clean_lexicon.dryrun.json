@@ -1,0 +1,596 @@
+{
+  "updates": [
+    {
+      "id": 18,
+      "before": {
+        "region": "Desert / Badia"
+      },
+      "after": {
+        "region": "Desert/Badia"
+      },
+      "notes": [
+        "region:Desert / Badia->Desert/Badia"
+      ]
+    },
+    {
+      "id": 33,
+      "before": {
+        "region": "Coast / Wadi"
+      },
+      "after": {
+        "region": "Coast/Wadi"
+      },
+      "notes": [
+        "region:Coast / Wadi->Coast/Wadi"
+      ]
+    },
+    {
+      "id": 63,
+      "before": {
+        "region": "General / Rural"
+      },
+      "after": {
+        "region": "General/Rural"
+      },
+      "notes": [
+        "region:General / Rural->General/Rural"
+      ]
+    },
+    {
+      "id": 99,
+      "before": {
+        "note": " بفتح الباء يستخدم غالباً في العبارة الترحيبية 'كيف بقعة؟' بمعنى 'كيف حالك؟' أو 'كيف الدنيا معك؟'."
+      },
+      "after": {
+        "note": "بفتح الباء يستخدم غالباً في العبارة الترحيبية 'كيف بقعة؟' بمعنى 'كيف حالك؟' أو 'كيف الدنيا معك؟'."
+      },
+      "notes": [
+        "note:trim"
+      ]
+    },
+    {
+      "id": 103,
+      "before": {
+        "region": "Coastal"
+      },
+      "after": {
+        "region": "Coast"
+      },
+      "notes": [
+        "region:Coastal->Coast"
+      ]
+    },
+    {
+      "id": 125,
+      "before": {
+        "region": "Bedouin / Rural"
+      },
+      "after": {
+        "region": "Bedouin/Rural"
+      },
+      "notes": [
+        "region:Bedouin / Rural->Bedouin/Rural"
+      ]
+    },
+    {
+      "id": 151,
+      "before": {
+        "region": "Coastal"
+      },
+      "after": {
+        "region": "Coast"
+      },
+      "notes": [
+        "region:Coastal->Coast"
+      ]
+    },
+    {
+      "id": 153,
+      "before": {
+        "note": " بعض المناطق ينطق جلح بجيم ياءً."
+      },
+      "after": {
+        "note": "بعض المناطق ينطق جلح بجيم ياءً."
+      },
+      "notes": [
+        "note:trim"
+      ]
+    },
+    {
+      "id": 154,
+      "before": {
+        "note": " بعض المناطق ينطق جعبه بجيم ياءً. مثل لهجة أهل الداخل والساحل."
+      },
+      "after": {
+        "note": "بعض المناطق ينطق جعبه بجيم ياءً. مثل لهجة أهل الداخل والساحل."
+      },
+      "notes": [
+        "note:trim"
+      ]
+    },
+    {
+      "id": 155,
+      "before": {
+        "note": " بعض المناطق ينطق جحي بجيم ياءً. مثل لهجة أهل الداخل والساحل."
+      },
+      "after": {
+        "note": "بعض المناطق ينطق جحي بجيم ياءً. مثل لهجة أهل الداخل والساحل."
+      },
+      "notes": [
+        "note:trim"
+      ]
+    },
+    {
+      "id": 156,
+      "before": {
+        "note": " بعض المناطق ينطق جلب بجيم ياءً. مثل لهجة أهل الداخل والساحل."
+      },
+      "after": {
+        "note": "بعض المناطق ينطق جلب بجيم ياءً. مثل لهجة أهل الداخل والساحل."
+      },
+      "notes": [
+        "note:trim"
+      ]
+    },
+    {
+      "id": 158,
+      "before": {
+        "note": " بشدة الباء ."
+      },
+      "after": {
+        "note": "بشدة الباء ."
+      },
+      "notes": [
+        "note:trim"
+      ]
+    },
+    {
+      "id": 161,
+      "before": {
+        "note": " بيُحذر دائماً من الاقتراب منه أو أكله بالخطأ. بعض المناطق ينطق جليجلة بجيم ياءً مثل لهجة أهل الداخل والساحل."
+      },
+      "after": {
+        "note": "بيُحذر دائماً من الاقتراب منه أو أكله بالخطأ. بعض المناطق ينطق جليجلة بجيم ياءً مثل لهجة أهل الداخل والساحل."
+      },
+      "notes": [
+        "region:flag-for-review:Nature",
+        "note:trim"
+      ]
+    },
+    {
+      "id": 162,
+      "before": {
+        "note": " بعض المناطق ينطق جبل بجيم ياءً مثل لهجة أهل الداخل والساحل."
+      },
+      "after": {
+        "note": "بعض المناطق ينطق جبل بجيم ياءً مثل لهجة أهل الداخل والساحل."
+      },
+      "notes": [
+        "note:trim"
+      ]
+    },
+    {
+      "id": 163,
+      "before": {
+        "note": " بعض المناطق ينطق جبل بجيم ياءً مثل لهجة أهل الداخل والساحل."
+      },
+      "after": {
+        "note": "بعض المناطق ينطق جبل بجيم ياءً مثل لهجة أهل الداخل والساحل."
+      },
+      "notes": [
+        "region:flag-for-review:Agriculture",
+        "note:trim"
+      ]
+    },
+    {
+      "id": 164,
+      "before": {
+        "note": " بعض المناطق ينطق جهر بجيم ياءً مثل لهجة أهل الداخل والساحل."
+      },
+      "after": {
+        "note": "بعض المناطق ينطق جهر بجيم ياءً مثل لهجة أهل الداخل والساحل."
+      },
+      "notes": [
+        "note:trim"
+      ]
+    },
+    {
+      "id": 167,
+      "before": {
+        "note": " بعض المناطق ينطق جحم بجيم ياءً مثل لهجة أهل الداخل والساحل."
+      },
+      "after": {
+        "note": "بعض المناطق ينطق جحم بجيم ياءً مثل لهجة أهل الداخل والساحل."
+      },
+      "notes": [
+        "note:trim"
+      ]
+    },
+    {
+      "id": 168,
+      "before": {
+        "note": " بعض المناطق ينطق جرب بجيم ياءً مثل لهجة أهل الداخل والساحل."
+      },
+      "after": {
+        "note": "بعض المناطق ينطق جرب بجيم ياءً مثل لهجة أهل الداخل والساحل."
+      },
+      "notes": [
+        "note:trim"
+      ]
+    },
+    {
+      "id": 170,
+      "before": {
+        "note": " بعض المناطق ينطق جذفرة بجيم ياءً مثل لهجة أهل الداخل والساحل."
+      },
+      "after": {
+        "note": "بعض المناطق ينطق جذفرة بجيم ياءً مثل لهجة أهل الداخل والساحل."
+      },
+      "notes": [
+        "region:flag-for-review:Nature",
+        "note:trim"
+      ]
+    },
+    {
+      "id": 171,
+      "before": {
+        "note": " بعض المناطق ينطق جفير بجيم ياءً مثل لهجة أهل الداخل والساحل."
+      },
+      "after": {
+        "note": "بعض المناطق ينطق جفير بجيم ياءً مثل لهجة أهل الداخل والساحل."
+      },
+      "notes": [
+        "note:trim"
+      ]
+    },
+    {
+      "id": 175,
+      "before": {
+        "region": "Coastal"
+      },
+      "after": {
+        "region": "Coast"
+      },
+      "notes": [
+        "region:Coastal->Coast"
+      ]
+    },
+    {
+      "id": 178,
+      "before": {
+        "note": " كلمة شائعة جداً للتعبير عن الخصام البسيط بكسر الحاء والنون."
+      },
+      "after": {
+        "note": "كلمة شائعة جداً للتعبير عن الخصام البسيط بكسر الحاء والنون."
+      },
+      "notes": [
+        "note:trim"
+      ]
+    },
+    {
+      "id": 179,
+      "before": {
+        "note": " بعض المناطق ينطق جل بجيم ياءً مثل لهجة أهل الداخل والساحل بكسر الحاء والجيم."
+      },
+      "after": {
+        "note": "بعض المناطق ينطق جل بجيم ياءً مثل لهجة أهل الداخل والساحل بكسر الحاء والجيم."
+      },
+      "notes": [
+        "note:trim"
+      ]
+    },
+    {
+      "id": 185,
+      "before": {
+        "note": " بكسر الحاء والفاء"
+      },
+      "after": {
+        "note": "بكسر الحاء والفاء"
+      },
+      "notes": [
+        "note:trim"
+      ]
+    },
+    {
+      "id": 189,
+      "before": {
+        "source": "قاموس اللهجة الحضرمية - فهد بن هلابي - ص 35  "
+      },
+      "after": {
+        "source": "قاموس اللهجة الحضرمية - فهد بن هلابي - ص 35"
+      },
+      "notes": [
+        "source:trim"
+      ]
+    },
+    {
+      "id": 216,
+      "before": {
+        "note": " ينطق الجيم ياء في بعض المناطق "
+      },
+      "after": {
+        "note": "ينطق الجيم ياء في بعض المناطق"
+      },
+      "notes": [
+        "note:trim"
+      ]
+    },
+    {
+      "id": 365,
+      "before": {
+        "pos": "Verb / Adjective"
+      },
+      "after": {
+        "pos": "Adjective/Verb"
+      },
+      "notes": [
+        "pos:Verb / Adjective->Adjective/Verb"
+      ]
+    },
+    {
+      "id": 369,
+      "before": {
+        "pos": "Noun / Verb"
+      },
+      "after": {
+        "pos": "Noun/Verb"
+      },
+      "notes": [
+        "pos:Noun / Verb->Noun/Verb"
+      ]
+    },
+    {
+      "id": 372,
+      "before": {
+        "pos": "Verb / Noun"
+      },
+      "after": {
+        "pos": "Noun/Verb"
+      },
+      "notes": [
+        "pos:Verb / Noun->Noun/Verb"
+      ]
+    },
+    {
+      "id": 375,
+      "before": {
+        "pos": "Noun / Verb"
+      },
+      "after": {
+        "pos": "Noun/Verb"
+      },
+      "notes": [
+        "pos:Noun / Verb->Noun/Verb"
+      ]
+    },
+    {
+      "id": 387,
+      "before": {
+        "pos": "Verb / Noun"
+      },
+      "after": {
+        "pos": "Noun/Verb"
+      },
+      "notes": [
+        "pos:Verb / Noun->Noun/Verb"
+      ]
+    },
+    {
+      "id": 407,
+      "before": {
+        "note": " يقال 'جانا زمان' أي أصابتنا سنة قحط. بسكون الزاء"
+      },
+      "after": {
+        "note": "يقال 'جانا زمان' أي أصابتنا سنة قحط. بسكون الزاء"
+      },
+      "notes": [
+        "note:trim"
+      ]
+    },
+    {
+      "id": 443,
+      "before": {
+        "fusha_equivalent": "جدار "
+      },
+      "after": {
+        "fusha_equivalent": "جدار"
+      },
+      "notes": [
+        "fusha_equivalent:trim"
+      ]
+    },
+    {
+      "id": 470,
+      "before": {
+        "pos": "Noun/Adjective"
+      },
+      "after": {
+        "pos": "Adjective/Noun"
+      },
+      "notes": [
+        "pos:Noun/Adjective->Adjective/Noun"
+      ]
+    },
+    {
+      "id": 471,
+      "before": {
+        "note": "بكسر الشين "
+      },
+      "after": {
+        "note": "بكسر الشين"
+      },
+      "notes": [
+        "note:trim"
+      ]
+    },
+    {
+      "id": 629,
+      "before": {
+        "pos": "Verb / Noun"
+      },
+      "after": {
+        "pos": "Noun/Verb"
+      },
+      "notes": [
+        "pos:Verb / Noun->Noun/Verb"
+      ]
+    },
+    {
+      "id": 630,
+      "before": {
+        "region": "Coastal"
+      },
+      "after": {
+        "region": "Coast"
+      },
+      "notes": [
+        "region:Coastal->Coast"
+      ]
+    },
+    {
+      "id": 636,
+      "before": {
+        "pos": "Noun / Verb"
+      },
+      "after": {
+        "pos": "Noun/Verb"
+      },
+      "notes": [
+        "pos:Noun / Verb->Noun/Verb"
+      ]
+    },
+    {
+      "id": 663,
+      "before": {
+        "pos": "Verb / Noun"
+      },
+      "after": {
+        "pos": "Noun/Verb"
+      },
+      "notes": [
+        "pos:Verb / Noun->Noun/Verb"
+      ]
+    },
+    {
+      "id": 671,
+      "before": {
+        "note": " بضم القاف"
+      },
+      "after": {
+        "note": "بضم القاف"
+      },
+      "notes": [
+        "note:trim"
+      ]
+    },
+    {
+      "id": 690,
+      "before": {
+        "region": "Coastal"
+      },
+      "after": {
+        "region": "Coast"
+      },
+      "notes": [
+        "region:Coastal->Coast"
+      ]
+    },
+    {
+      "id": 768,
+      "before": {
+        "fusha_equivalent": "محفظة نقود "
+      },
+      "after": {
+        "fusha_equivalent": "محفظة نقود"
+      },
+      "notes": [
+        "fusha_equivalent:trim"
+      ]
+    },
+    {
+      "id": 794,
+      "before": {
+        "region": "Coastal"
+      },
+      "after": {
+        "region": "Coast"
+      },
+      "notes": [
+        "region:Coastal->Coast"
+      ]
+    },
+    {
+      "id": 806,
+      "before": {
+        "pos": "Noun / Verb"
+      },
+      "after": {
+        "pos": "Noun/Verb"
+      },
+      "notes": [
+        "pos:Noun / Verb->Noun/Verb"
+      ]
+    },
+    {
+      "id": 823,
+      "before": {
+        "region": "Coastal"
+      },
+      "after": {
+        "region": "Coast"
+      },
+      "notes": [
+        "region:Coastal->Coast"
+      ]
+    },
+    {
+      "id": 833,
+      "before": {
+        "pos": "Verb / Adjective"
+      },
+      "after": {
+        "pos": "Adjective/Verb"
+      },
+      "notes": [
+        "pos:Verb / Adjective->Adjective/Verb"
+      ]
+    },
+    {
+      "id": 868,
+      "before": {
+        "note": " تسمية ناتجة عن تشابه شكل المصباح مع 'الميل' (المرود). بكسر الميم"
+      },
+      "after": {
+        "note": "تسمية ناتجة عن تشابه شكل المصباح مع 'الميل' (المرود). بكسر الميم"
+      },
+      "notes": [
+        "note:trim"
+      ]
+    },
+    {
+      "id": 939,
+      "before": {
+        "region": "Valleys"
+      },
+      "after": {
+        "region": "Wadi"
+      },
+      "notes": [
+        "region:Valleys->Wadi"
+      ]
+    },
+    {
+      "id": 954,
+      "before": {
+        "region": "Coastal"
+      },
+      "after": {
+        "region": "Coast"
+      },
+      "notes": [
+        "region:Coastal->Coast"
+      ]
+    }
+  ],
+  "flagged": []
+}

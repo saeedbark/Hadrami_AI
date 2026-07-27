@@ -38,7 +38,7 @@ final randomWordProvider = AutoDisposeFutureProvider<WordEntry?>.internal(
 @Deprecated('Will be removed in 3.0. Use Ref instead')
 // ignore: unused_element
 typedef RandomWordRef = AutoDisposeFutureProviderRef<WordEntry?>;
-String _$sectionsHash() => r'7201a2788b0111b7f84aa786267acfae9b81fcea';
+String _$sectionsHash() => r'b182c5618de85df525f30c9b64e4b72beab8714d';
 
 /// See also [sections].
 @ProviderFor(sections)

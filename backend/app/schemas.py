@@ -1,31 +1,61 @@
+import json
 from enum import Enum
-from typing import Optional
+from typing import Any, Optional
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, field_validator
 
-from .core.config import PHRASE_TRANSLATE_MAX_CHARS
+from .core.config import ASK_MAX_CHARS, PHRASE_TRANSLATE_MAX_CHARS
 
 
 class ExamplePair(BaseModel):
-    hadrami: str = ""
-    fusha: str = ""
+    h: str = ""
+    f: str = ""
+
+
+def _parse_json_list(v: Any) -> Any:
+    """Coerce a JSON-encoded string to a list; leave lists/None untouched."""
+    if isinstance(v, str):
+        try:
+            parsed = json.loads(v)
+            return parsed if isinstance(parsed, list) else None
+        except (json.JSONDecodeError, ValueError):
+            return None
+    return v
 
 
 class Entry(BaseModel):
     id: int
-    hadrami_word: str
-    arabic_fus7a: str
-    full_definition: str
-    fus7a_short: Optional[str] = None
-    aliases: Optional[list[str]] = None
+    word_vocalized: str
+    word_clean: Optional[str] = None
+    root: Optional[str] = None
+    pos: Optional[str] = None
+    fusha_equivalent: Optional[str] = None
+    definition: Optional[str] = None
+    region: str = "General"
+    synonyms: Optional[list[str]] = None
+    phonetic_variants: Optional[list[str]] = None
+    note: Optional[str] = None
+    source: Optional[str] = None
     examples: Optional[list[ExamplePair]] = None
+    proverbs: Optional[list[ExamplePair | str]] = None
+    tags: Optional[list[str]] = None
+
+    @field_validator("synonyms", "phonetic_variants", "tags", mode="before")
+    @classmethod
+    def coerce_str_to_list(cls, v: Any) -> Any:
+        return _parse_json_list(v)
+
+    @field_validator("examples", "proverbs", mode="before")
+    @classmethod
+    def coerce_examples_str(cls, v: Any) -> Any:
+        return _parse_json_list(v)
 
 
 class TranslateResponse(BaseModel):
     found: bool
-    hadrami_word: str
-    arabic_fus7a: str
-    full_definition: str
+    word_vocalized: str
+    fusha_equivalent: str
+    definition: str
     confidence: str
 
 
@@ -38,8 +68,8 @@ class FeedbackType(str, Enum):
 
 class FeedbackRequest(BaseModel):
     word_id: int = 0
-    hadrami_word: str
-    suggested_fus7a: str = ""
+    word_vocalized: str
+    suggested_fusha: str = ""
     comment: Optional[str] = None
     feedback_type: FeedbackType = FeedbackType.correction
     spelling_variants: Optional[list[str]] = None
@@ -54,8 +84,6 @@ class SearchResult(BaseModel):
 
 
 class LexiconSection(BaseModel):
-    """First-letter partition (حرف الابتداء) with live word count."""
-
     letter: str = Field(..., description="First Arabic letter of headwords in this section")
     word_count: int = Field(..., ge=0)
 
@@ -80,6 +108,23 @@ class HadramiSpan(BaseModel):
     surface: str = ""
 
 
+class AskResponse(BaseModel):
+    question: str
+    answer: str
+    mode: str
+    #: Whether ``answer`` was produced by Gemini (``"model"``) or the offline
+    #: lexicon fallback (``"lexicon"``) when Gemini is unavailable or refused.
+    answer_source: str = "model"
+    hadrami_spans: list[HadramiSpan] = Field(default_factory=list)
+    highlight_surfaces: list[str] = Field(default_factory=list)
+    context: list[Entry] = Field(default_factory=list)
+
+
+class AskRequest(BaseModel):
+    """POST body for /ask."""
+    q: str = Field(..., min_length=1, max_length=ASK_MAX_CHARS)
+
+
 class TranslatePhraseResponse(BaseModel):
     input_text: str
     direction: str
@@ -88,3 +133,38 @@ class TranslatePhraseResponse(BaseModel):
     mode: str
     rag_mode: str
     context: list[Entry]
+
+
+# ---------------------------------------------------------------------------
+# Chat models (conversational AI)
+# ---------------------------------------------------------------------------
+
+class ChatRole(str, Enum):
+    user = "user"
+    assistant = "assistant"
+
+
+class ChatMessage(BaseModel):
+    role: ChatRole
+    content: str
+
+
+class ChatRequest(BaseModel):
+    message: str = Field(..., min_length=1, max_length=ASK_MAX_CHARS)
+    history: list[ChatMessage] = Field(default_factory=list)
+
+
+class ChatResponse(BaseModel):
+    reply: str
+    #: Auto-classified intent: ``word`` / ``translate`` / ``define`` /
+    #: ``semantic`` / ``qa``. Lets the Flutter client pick a render layout.
+    intent: str = "qa"
+    #: True when retrieval did not produce a confident lexicon match — the
+    #: client can prompt the user to submit the word via the suggest flow.
+    suggest_word: bool = False
+    #: ``"model"`` when Gemini answered, ``"lexicon"`` for deterministic
+    #: fallback or the suggest-word short-circuit.
+    answer_source: str = "model"
+    context: list[Entry] = Field(default_factory=list)
+    hadrami_spans: list[HadramiSpan] = Field(default_factory=list)
+    highlight_surfaces: list[str] = Field(default_factory=list)

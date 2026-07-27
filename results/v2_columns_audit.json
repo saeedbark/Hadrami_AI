@@ -1,0 +1,16 @@
+{
+  "semantic_intent_populated": 100,
+  "transliteration_populated": 100,
+  "searchable_text_version_v2": 1000,
+  "semantic_intent_distribution": {
+    "NULL": 900,
+    "object": 60,
+    "descriptor": 7,
+    "action": 10,
+    "expression": 12,
+    "function": 1,
+    "person": 5,
+    "place": 4,
+    "time": 1
+  }
+}

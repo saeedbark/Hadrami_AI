@@ -9,6 +9,7 @@ import 'package:hadrami_nlp/src/configs/phrase_translate_config.dart';
 import 'package:hadrami_nlp/src/modules/phrase/forms/phrase_form.dart';
 import 'package:hadrami_nlp/src/modules/phrase/providers/phrase_translate_provider.dart';
 import 'package:hadrami_nlp/src/widgets/app_scaffold.dart';
+import 'package:hadrami_nlp/src/widgets/content_shell.dart';
 import 'package:hadrami_nlp/src/widgets/hadrami_highlighted_text.dart';
 
 /// Web: avoid [SelectableText] next to [TextField] (Flutter web input assertion).
@@ -48,7 +49,9 @@ class PhraseTranslatePage extends HookConsumerWidget {
 
     return AppScaffold(
       appBar: const AppAppBar(title: Text('ترجمة العبارات')),
-      body: Padding(
+      body: ContentShell(
+        maxWidth: 880,
+        child: Padding(
         padding: const EdgeInsets.all(16),
         child: PhraseFormModelFormBuilder(
           model: const PhraseFormModel(),
@@ -108,12 +111,12 @@ class PhraseTranslatePage extends HookConsumerWidget {
                     ValidationMessage.maxLength: (_) =>
                         'الحد الأعلى ${PhraseTranslateConfig.maxLength} حرفاً',
                   },
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     hintText:
                         'من ${PhraseTranslateConfig.minLength} إلى ${PhraseTranslateConfig.maxLength} حرفاً (أفضل جودة حتى ${PhraseTranslateConfig.softRecommendLength})',
                     alignLabelWithHint: true,
-                    border: const OutlineInputBorder(),
-                    prefixIcon: const Icon(Icons.translate),
+                    border: OutlineInputBorder(),
+                    prefixIcon: Icon(Icons.translate),
                   ),
                 ),
                 ReactiveValueListenableBuilder<String>(
@@ -279,7 +282,7 @@ class PhraseTranslatePage extends HookConsumerWidget {
                           .map(
                             (e) => Chip(
                               label: Text(
-                                '${e.hadramiWord} → ${e.arabicFus7a}',
+                                '${e.wordVocalized} → ${e.fushaEquivalent ?? ''}',
                                 textDirection: TextDirection.rtl,
                               ),
                             ),
@@ -292,6 +295,7 @@ class PhraseTranslatePage extends HookConsumerWidget {
             );
           },
         ),
+      ),
       ),
     );
   }

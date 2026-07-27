@@ -15,7 +15,7 @@ class WordDetailSheet extends HookConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final colorScheme = Theme.of(context).colorScheme;
     final isFav = ref.watch(favoritesProvider.select(
-        (list) => list.any((e) => e.hadramiWord == entry.hadramiWord)));
+        (list) => list.any((e) => e.wordVocalized == entry.wordVocalized)));
 
     final showFeedback = useState(false);
     final feedbackController = useTextEditingController();
@@ -28,8 +28,8 @@ class WordDetailSheet extends HookConsumerWidget {
 
       final success = await ref.read(apiServiceProvider).submitFeedback(
             wordId: entry.id,
-            hadramiWord: entry.hadramiWord,
-            suggestedFus7a: text,
+            wordVocalized: entry.wordVocalized,
+            suggestedFusha: text,
           );
 
       isSubmitting.value = false;
@@ -81,16 +81,15 @@ class WordDetailSheet extends HookConsumerWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          entry.hadramiWord,
+                          entry.wordVocalized,
                           style: const TextStyle(
                               fontSize: 28, fontWeight: FontWeight.bold),
                         ),
-                        if (entry.fus7aShort != null &&
-                            entry.fus7aShort!.isNotEmpty)
+                        if (entry.root != null && entry.root!.isNotEmpty)
                           Padding(
                             padding: const EdgeInsets.only(top: 4),
                             child: Text(
-                              entry.fus7aShort!,
+                              'الجذر: ${entry.root}',
                               style: TextStyle(
                                 fontSize: 14,
                                 color: colorScheme.outline,
@@ -98,7 +97,8 @@ class WordDetailSheet extends HookConsumerWidget {
                               ),
                             ),
                           ),
-                        if (entry.arabicFus7a.isNotEmpty)
+                        if (entry.fushaEquivalent != null &&
+                            entry.fushaEquivalent!.isNotEmpty)
                           Container(
                             margin: const EdgeInsets.only(top: 8),
                             padding: const EdgeInsets.symmetric(
@@ -108,7 +108,7 @@ class WordDetailSheet extends HookConsumerWidget {
                               borderRadius: BorderRadius.circular(20),
                             ),
                             child: Text(
-                              entry.arabicFus7a,
+                              entry.fushaEquivalent!,
                               style: TextStyle(
                                 fontSize: 16,
                                 color: colorScheme.onPrimaryContainer,
@@ -136,7 +136,7 @@ class WordDetailSheet extends HookConsumerWidget {
                         onPressed: () {
                           Clipboard.setData(ClipboardData(
                               text:
-                                  '${entry.hadramiWord} = ${entry.arabicFus7a}'));
+                                  '${entry.wordVocalized} = ${entry.fushaEquivalent ?? ""}'));
                           ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(content: Text('تم النسخ!')),
                           );
@@ -147,10 +147,46 @@ class WordDetailSheet extends HookConsumerWidget {
                 ],
               ),
 
-              if (entry.aliases != null && entry.aliases!.isNotEmpty) ...[
-                const SizedBox(height: 16),
+              const SizedBox(height: 12),
+              Wrap(
+                spacing: 6,
+                runSpacing: 6,
+                children: [
+                  if (entry.pos != null && entry.pos!.isNotEmpty)
+                    _PosChip(label: entry.pos!),
+                  if (entry.region != 'General' && entry.region.isNotEmpty)
+                    _TagChip(label: entry.region, icon: Icons.place_rounded),
+                  if (entry.tags != null)
+                    ...entry.tags!.map((tag) => _TagChip(
+                          label: tag,
+                          icon: Icons.label_rounded,
+                        )),
+                ],
+              ),
+
+              if (entry.phoneticVariants != null &&
+                  entry.phoneticVariants!.isNotEmpty) ...[
+                const SizedBox(height: 10),
+                Wrap(
+                  spacing: 6,
+                  runSpacing: 4,
+                  children: entry.phoneticVariants!
+                      .map((note) => Chip(
+                            avatar: const Icon(Icons.record_voice_over_rounded,
+                                size: 13),
+                            label: Text(note, style: const TextStyle(fontSize: 11)),
+                            visualDensity: VisualDensity.compact,
+                            materialTapTargetSize:
+                                MaterialTapTargetSize.shrinkWrap,
+                          ))
+                      .toList(),
+                ),
+              ],
+
+              if (entry.synonyms != null && entry.synonyms!.isNotEmpty) ...[
+                const SizedBox(height: 12),
                 Text(
-                  'أشكال أخرى',
+                  'مرادفات',
                   style: TextStyle(
                     fontSize: 13,
                     color: colorScheme.outline,
@@ -161,9 +197,9 @@ class WordDetailSheet extends HookConsumerWidget {
                 Wrap(
                   spacing: 6,
                   runSpacing: 6,
-                  children: entry.aliases!
-                      .map((alias) => Chip(
-                            label: Text(alias),
+                  children: entry.synonyms!
+                      .map((synonym) => Chip(
+                            label: Text(synonym),
                             visualDensity: VisualDensity.compact,
                             materialTapTargetSize:
                                 MaterialTapTargetSize.shrinkWrap,
@@ -199,7 +235,7 @@ class WordDetailSheet extends HookConsumerWidget {
                     ),
                     const SizedBox(height: 10),
                     SelectableText(
-                      entry.fullDefinition,
+                      entry.definition ?? '',
                       style: const TextStyle(fontSize: 15, height: 1.7),
                     ),
                   ],
@@ -241,16 +277,16 @@ class WordDetailSheet extends HookConsumerWidget {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          if (ex.hadrami.isNotEmpty)
+                          if (ex.h.isNotEmpty)
                             Text(
-                              ex.hadrami,
+                              ex.h,
                               style: const TextStyle(
                                   fontSize: 15, fontWeight: FontWeight.w600),
                             ),
-                          if (ex.fusha.isNotEmpty) ...[
+                          if (ex.f.isNotEmpty) ...[
                             const SizedBox(height: 4),
                             Text(
-                              ex.fusha,
+                              ex.f,
                               style: TextStyle(
                                   fontSize: 14, color: colorScheme.outline),
                             ),
@@ -260,7 +296,103 @@ class WordDetailSheet extends HookConsumerWidget {
                     )),
               ],
 
-              const SizedBox(height: 16),
+              if (entry.proverbs != null &&
+                  entry.proverbs!.isNotEmpty) ...[
+                const SizedBox(height: 16),
+                Row(
+                  children: [
+                    Icon(Icons.auto_stories_rounded,
+                        size: 16, color: colorScheme.tertiary),
+                    const SizedBox(width: 6),
+                    Text(
+                      'أمثال شعبية',
+                      style: TextStyle(
+                        fontSize: 13,
+                        color: colorScheme.tertiary,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 8),
+                ...entry.proverbs!.map((proverb) => Container(
+                      margin: const EdgeInsets.only(bottom: 8),
+                      padding: const EdgeInsets.all(12),
+                      decoration: BoxDecoration(
+                        color: colorScheme.tertiaryContainer
+                            .withValues(alpha: 0.3),
+                        borderRadius: BorderRadius.circular(10),
+                        border: Border(
+                          right: BorderSide(
+                            color: colorScheme.tertiary,
+                            width: 3,
+                          ),
+                        ),
+                      ),
+                      child: SelectableText(
+                        proverb,
+                        style: const TextStyle(
+                          fontSize: 15,
+                          height: 1.6,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    )),
+              ],
+
+              if (entry.note != null && entry.note!.isNotEmpty) ...[
+                const SizedBox(height: 16),
+                Container(
+                  padding: const EdgeInsets.all(14),
+                  decoration: BoxDecoration(
+                    color: colorScheme.surfaceContainerHighest
+                        .withValues(alpha: 0.5),
+                    borderRadius: BorderRadius.circular(12),
+                    border: Border.all(
+                      color: colorScheme.outlineVariant.withValues(alpha: 0.5),
+                    ),
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        children: [
+                          Icon(Icons.lightbulb_outline_rounded,
+                              size: 16, color: colorScheme.primary),
+                          const SizedBox(width: 6),
+                          Text(
+                            'ملاحظة',
+                            style: TextStyle(
+                              fontSize: 13,
+                              color: colorScheme.primary,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 8),
+                      SelectableText(
+                        entry.note!,
+                        style: TextStyle(
+                          fontSize: 14,
+                          height: 1.6,
+                          color: colorScheme.onSurfaceVariant,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+
+              if (entry.source != null && entry.source!.isNotEmpty) ...[
+                const SizedBox(height: 12),
+                Text(
+                  'المصدر: ${entry.source}',
+                  style: TextStyle(fontSize: 12, color: colorScheme.outline),
+                ),
+              ],
+
+              const SizedBox(height: 8),
               Text(
                 'رقم الكلمة في القاموس: ${entry.id}',
                 style: TextStyle(fontSize: 12, color: colorScheme.outline),
@@ -302,6 +434,51 @@ class WordDetailSheet extends HookConsumerWidget {
           ),
         ),
       ),
+    );
+  }
+}
+
+class _PosChip extends StatelessWidget {
+  const _PosChip({required this.label});
+  final String label;
+
+  static const _posColors = {
+    'Noun': Colors.indigo,
+    'Verb': Colors.teal,
+    'Adjective': Colors.orange,
+    'Expression': Colors.purple,
+  };
+
+  @override
+  Widget build(BuildContext context) {
+    final color = _posColors[label] ?? Colors.grey;
+    return Chip(
+      avatar: Icon(Icons.label_rounded, size: 14, color: color),
+      label: Text(label, style: TextStyle(fontSize: 11, color: color)),
+      visualDensity: VisualDensity.compact,
+      materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+      side: BorderSide(color: color.withValues(alpha: 0.3)),
+      backgroundColor: color.withValues(alpha: 0.08),
+    );
+  }
+}
+
+class _TagChip extends StatelessWidget {
+  const _TagChip({required this.label, required this.icon});
+  final String label;
+  final IconData icon;
+
+  @override
+  Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    return Chip(
+      avatar: Icon(icon, size: 14, color: colorScheme.secondary),
+      label: Text(label,
+          style: TextStyle(fontSize: 11, color: colorScheme.secondary)),
+      visualDensity: VisualDensity.compact,
+      materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+      side: BorderSide(color: colorScheme.secondary.withValues(alpha: 0.3)),
+      backgroundColor: colorScheme.secondaryContainer.withValues(alpha: 0.3),
     );
   }
 }

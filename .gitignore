@@ -1,9 +1,12 @@
 # ── Python / FastAPI backend ──
 backend/.env
 backend/venv/
+venv/
 **/__pycache__/
 *.pyc
 *.pyo
+*.egg-info/
+.pytest_cache/
 backend/data/feedback.json
 backend/data/*.backup.json
 backend/hadrami_chroma_db/
@@ -40,3 +43,5 @@ desktop.ini
 *.log
 *.bak
 *.tmp
+hadrami_clearn.json
+.mcp.json

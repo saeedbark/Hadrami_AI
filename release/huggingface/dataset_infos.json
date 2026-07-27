@@ -1,0 +1,86 @@
+{
+  "default": {
+    "description": "Curated Hadrami Arabic dialect lexicon.",
+    "license": "cc-by-sa-4.0",
+    "features": {
+      "id": {
+        "dtype": "int32",
+        "_type": "Value"
+      },
+      "word_vocalized": {
+        "dtype": "string",
+        "_type": "Value"
+      },
+      "word_clean": {
+        "dtype": "string",
+        "_type": "Value"
+      },
+      "transliteration": {
+        "dtype": "string",
+        "_type": "Value"
+      },
+      "root": {
+        "dtype": "string",
+        "_type": "Value"
+      },
+      "pos": {
+        "dtype": "string",
+        "_type": "Value"
+      },
+      "semantic_intent": {
+        "dtype": "string",
+        "_type": "Value"
+      },
+      "fusha_equivalent": {
+        "dtype": "string",
+        "_type": "Value"
+      },
+      "definition": {
+        "dtype": "string",
+        "_type": "Value"
+      },
+      "region": {
+        "dtype": "string",
+        "_type": "Value"
+      },
+      "synonyms": {
+        "dtype": "string",
+        "_type": "Value"
+      },
+      "phonetic_variants": {
+        "dtype": "string",
+        "_type": "Value"
+      },
+      "note": {
+        "dtype": "string",
+        "_type": "Value"
+      },
+      "source": {
+        "dtype": "string",
+        "_type": "Value"
+      },
+      "examples": {
+        "dtype": "string",
+        "_type": "Value"
+      },
+      "proverbs": {
+        "dtype": "string",
+        "_type": "Value"
+      },
+      "tags": {
+        "dtype": "string",
+        "_type": "Value"
+      },
+      "searchable_text": {
+        "dtype": "string",
+        "_type": "Value"
+      }
+    },
+    "splits": {
+      "train": {
+        "name": "train",
+        "num_examples": 1000
+      }
+    }
+  }
+}

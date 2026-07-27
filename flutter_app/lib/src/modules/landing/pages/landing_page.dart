@@ -19,6 +19,7 @@ const _destinations = [
   _NavItem(Icons.bookmark_outline_rounded, Icons.bookmark_rounded, 'المفضلة'),
   _NavItem(Icons.chat_bubble_outline_rounded, Icons.chat_bubble_rounded, 'اسأل'),
   _NavItem(Icons.translate_outlined, Icons.translate_rounded, 'عبارات'),
+  _NavItem(Icons.smart_toy_outlined, Icons.smart_toy_rounded, 'محادثة'),
 ];
 
 class LandingPage extends HookConsumerWidget {
@@ -103,11 +104,22 @@ class LandingPage extends HookConsumerWidget {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   IconButton(
-                    icon: Icon(
-                      ref.watch(appThemeModeProvider) == ThemeMode.dark
-                          ? Icons.light_mode_rounded
-                          : Icons.dark_mode_rounded,
-                      color: colorScheme.outline,
+                    icon: AnimatedSwitcher(
+                      duration: const Duration(milliseconds: 300),
+                      transitionBuilder: (child, animation) =>
+                          RotationTransition(
+                        turns: Tween<double>(begin: 0.6, end: 1.0)
+                            .animate(animation),
+                        child: FadeTransition(
+                            opacity: animation, child: child),
+                      ),
+                      child: Icon(
+                        ref.watch(appThemeModeProvider) == ThemeMode.dark
+                            ? Icons.light_mode_rounded
+                            : Icons.dark_mode_rounded,
+                        key: ValueKey(ref.watch(appThemeModeProvider)),
+                        color: colorScheme.outline,
+                      ),
                     ),
                     onPressed: () =>
                         ref.read(appThemeModeProvider.notifier).toggle(),

@@ -1,0 +1,1211 @@
+{
+  "name": "TR-test (candidate)",
+  "description": "Hadrami↔MSA pairs lifted verbatim from the lexicon's examples field. These are SENTENCE-level, not paragraph-level — for paragraph items you'll need to commission additional translations. Reviewers MUST verify before BLEU/chrF is computed against these references.",
+  "version": "0.2-candidate",
+  "items": [
+    {
+      "id": "tr_seed_001",
+      "hadrami": "في القوايل ما يبرد عليك إلا مصة باردة.",
+      "msa_gold": "في أوقات الظهيرة الحارة لا يبرد عليك إلا مثلج بارد.",
+      "source_entry_id": 889,
+      "source_headword": "مصة",
+      "annotators": [
+        "lexicon_example"
+      ],
+      "agreement": "single-source — needs second-annotator review",
+      "_review_note": "this gold MSA came verbatim from the lexicon's examples field. Reviewer must: (1) confirm the MSA is faithful and idiomatic, (2) edit if too literal, (3) flag if the Hadrami sentence is too short to be a real paragraph (target ≥1 clause with ≥2 dialect words)."
+    },
+    {
+      "id": "tr_seed_002",
+      "hadrami": "الروبة مع التمر أحلى عشاء في حضرموت.",
+      "msa_gold": "اللبن الرائب مع التمر هو أجمل وجبة عشاء في حضرموت.",
+      "source_entry_id": 374,
+      "source_headword": "روبه",
+      "annotators": [
+        "lexicon_example"
+      ],
+      "agreement": "single-source — needs second-annotator review",
+      "_review_note": "this gold MSA came verbatim from the lexicon's examples field. Reviewer must: (1) confirm the MSA is faithful and idiomatic, (2) edit if too literal, (3) flag if the Hadrami sentence is too short to be a real paragraph (target ≥1 clause with ≥2 dialect words)."
+    },
+    {
+      "id": "tr_seed_003",
+      "hadrami": "قرصني القعار في رجلي.",
+      "msa_gold": "لدغني النمل الأسود الكبير في رجلي.",
+      "source_entry_id": 727,
+      "source_headword": "القعار",
+      "annotators": [
+        "lexicon_example"
+      ],
+      "agreement": "single-source — needs second-annotator review",
+      "_review_note": "this gold MSA came verbatim from the lexicon's examples field. Reviewer must: (1) confirm the MSA is faithful and idiomatic, (2) edit if too literal, (3) flag if the Hadrami sentence is too short to be a real paragraph (target ≥1 clause with ≥2 dialect words)."
+    },
+    {
+      "id": "tr_seed_004",
+      "hadrami": "طبخنا دجر اليوم مع الرز.",
+      "msa_gold": "طبخنا لوبياء اليوم مع الأرز.",
+      "source_entry_id": 331,
+      "source_headword": "الدجر",
+      "annotators": [
+        "lexicon_example"
+      ],
+      "agreement": "single-source — needs second-annotator review",
+      "_review_note": "this gold MSA came verbatim from the lexicon's examples field. Reviewer must: (1) confirm the MSA is faithful and idiomatic, (2) edit if too literal, (3) flag if the Hadrami sentence is too short to be a real paragraph (target ≥1 clause with ≥2 dialect words)."
+    },
+    {
+      "id": "tr_seed_005",
+      "hadrami": "الأكل يحسف إذا تركته برع الثلاجة.",
+      "msa_gold": "الطعام يفسد إذا تركته خارج الثلاجة.",
+      "source_entry_id": 194,
+      "source_headword": "الحسف",
+      "annotators": [
+        "lexicon_example"
+      ],
+      "agreement": "single-source — needs second-annotator review",
+      "_review_note": "this gold MSA came verbatim from the lexicon's examples field. Reviewer must: (1) confirm the MSA is faithful and idiomatic, (2) edit if too literal, (3) flag if the Hadrami sentence is too short to be a real paragraph (target ≥1 clause with ≥2 dialect words)."
+    },
+    {
+      "id": "tr_seed_006",
+      "hadrami": "فحيط السمسم يعتبر نوع من السمسم.",
+      "msa_gold": "الجلجل يعتبر نوع من السمسم.",
+      "source_entry_id": 884,
+      "source_headword": "مفحط فحيط",
+      "annotators": [
+        "lexicon_example"
+      ],
+      "agreement": "single-source — needs second-annotator review",
+      "_review_note": "this gold MSA came verbatim from the lexicon's examples field. Reviewer must: (1) confirm the MSA is faithful and idiomatic, (2) edit if too literal, (3) flag if the Hadrami sentence is too short to be a real paragraph (target ≥1 clause with ≥2 dialect words)."
+    },
+    {
+      "id": "tr_seed_007",
+      "hadrami": "ضرب الديك الدجاجة بسنقوفه.",
+      "msa_gold": "نقر الديك الدجاجة بمنقاره.",
+      "source_entry_id": 449,
+      "source_headword": "سنقوف",
+      "annotators": [
+        "lexicon_example"
+      ],
+      "agreement": "single-source — needs second-annotator review",
+      "_review_note": "this gold MSA came verbatim from the lexicon's examples field. Reviewer must: (1) confirm the MSA is faithful and idiomatic, (2) edit if too literal, (3) flag if the Hadrami sentence is too short to be a real paragraph (target ≥1 clause with ≥2 dialect words)."
+    },
+    {
+      "id": "tr_seed_008",
+      "hadrami": "عساها رحمة دايمة تنفع البلاد والعباد.",
+      "msa_gold": "نرجو أن يكون مطراً دائماً ينفع البلاد والناس.",
+      "source_entry_id": 376,
+      "source_headword": "الرحمة",
+      "annotators": [
+        "lexicon_example"
+      ],
+      "agreement": "single-source — needs second-annotator review",
+      "_review_note": "this gold MSA came verbatim from the lexicon's examples field. Reviewer must: (1) confirm the MSA is faithful and idiomatic, (2) edit if too literal, (3) flag if the Hadrami sentence is too short to be a real paragraph (target ≥1 clause with ≥2 dialect words)."
+    },
+    {
+      "id": "tr_seed_009",
+      "hadrami": "اجتمعوا الشباب عند السدة.",
+      "msa_gold": "اجتمع الشبان عند البوابة الكبيرة.",
+      "source_entry_id": 426,
+      "source_headword": "السدة",
+      "annotators": [
+        "lexicon_example"
+      ],
+      "agreement": "single-source — needs second-annotator review",
+      "_review_note": "this gold MSA came verbatim from the lexicon's examples field. Reviewer must: (1) confirm the MSA is faithful and idiomatic, (2) edit if too literal, (3) flag if the Hadrami sentence is too short to be a real paragraph (target ≥1 clause with ≥2 dialect words)."
+    },
+    {
+      "id": "tr_seed_010",
+      "hadrami": "وقف عند الضيقة لين يفتحون لك.",
+      "msa_gold": "انتظر عند مدخل البيت حتى يفتحوا لك.",
+      "source_entry_id": 536,
+      "source_headword": "الضيقة",
+      "annotators": [
+        "lexicon_example"
+      ],
+      "agreement": "single-source — needs second-annotator review",
+      "_review_note": "this gold MSA came verbatim from the lexicon's examples field. Reviewer must: (1) confirm the MSA is faithful and idiomatic, (2) edit if too literal, (3) flag if the Hadrami sentence is too short to be a real paragraph (target ≥1 clause with ≥2 dialect words)."
+    },
+    {
+      "id": "tr_seed_011",
+      "hadrami": "هذا القمبر حق الصورة زين.",
+      "msa_gold": "هذا الإطار الخاص بالصورة جميل.",
+      "source_entry_id": 712,
+      "source_headword": "القمبر",
+      "annotators": [
+        "lexicon_example"
+      ],
+      "agreement": "single-source — needs second-annotator review",
+      "_review_note": "this gold MSA came verbatim from the lexicon's examples field. Reviewer must: (1) confirm the MSA is faithful and idiomatic, (2) edit if too literal, (3) flag if the Hadrami sentence is too short to be a real paragraph (target ≥1 clause with ≥2 dialect words)."
+    },
+    {
+      "id": "tr_seed_012",
+      "hadrami": "ابدا ما قد خرجت الشارع اليوم.",
+      "msa_gold": "لم أخرج إلى الشارع اليوم أبداً.",
+      "source_entry_id": 6,
+      "source_headword": "ابدا",
+      "annotators": [
+        "lexicon_example"
+      ],
+      "agreement": "single-source — needs second-annotator review",
+      "_review_note": "this gold MSA came verbatim from the lexicon's examples field. Reviewer must: (1) confirm the MSA is faithful and idiomatic, (2) edit if too literal, (3) flag if the Hadrami sentence is too short to be a real paragraph (target ≥1 clause with ≥2 dialect words)."
+    },
+    {
+      "id": "tr_seed_013",
+      "hadrami": "توك على مهلك.",
+      "msa_gold": "على راحتك.",
+      "source_entry_id": 139,
+      "source_headword": "توك",
+      "annotators": [
+        "lexicon_example"
+      ],
+      "agreement": "single-source — needs second-annotator review",
+      "_review_note": "this gold MSA came verbatim from the lexicon's examples field. Reviewer must: (1) confirm the MSA is faithful and idiomatic, (2) edit if too literal, (3) flag if the Hadrami sentence is too short to be a real paragraph (target ≥1 clause with ≥2 dialect words)."
+    },
+    {
+      "id": "tr_seed_014",
+      "hadrami": "شربت ماء الكزابة.",
+      "msa_gold": "شربت ماء جوز الهند.",
+      "source_entry_id": 770,
+      "source_headword": "الكزابة",
+      "annotators": [
+        "lexicon_example"
+      ],
+      "agreement": "single-source — needs second-annotator review",
+      "_review_note": "this gold MSA came verbatim from the lexicon's examples field. Reviewer must: (1) confirm the MSA is faithful and idiomatic, (2) edit if too literal, (3) flag if the Hadrami sentence is too short to be a real paragraph (target ≥1 clause with ≥2 dialect words)."
+    },
+    {
+      "id": "tr_seed_015",
+      "hadrami": "ذا الهيج ما حد يقدر يثني خطامه.",
+      "msa_gold": "هذا البعير الفحل لا يستطيع أحد ثني زمامه.",
+      "source_entry_id": 996,
+      "source_headword": "الهيج",
+      "annotators": [
+        "lexicon_example"
+      ],
+      "agreement": "single-source — needs second-annotator review",
+      "_review_note": "this gold MSA came verbatim from the lexicon's examples field. Reviewer must: (1) confirm the MSA is faithful and idiomatic, (2) edit if too literal, (3) flag if the Hadrami sentence is too short to be a real paragraph (target ≥1 clause with ≥2 dialect words)."
+    },
+    {
+      "id": "tr_seed_016",
+      "hadrami": "السيل طلع قامة.",
+      "msa_gold": "ارتفاع السيل وصل لمقدار طول الإنسان.",
+      "source_entry_id": 715,
+      "source_headword": "القامة",
+      "annotators": [
+        "lexicon_example"
+      ],
+      "agreement": "single-source — needs second-annotator review",
+      "_review_note": "this gold MSA came verbatim from the lexicon's examples field. Reviewer must: (1) confirm the MSA is faithful and idiomatic, (2) edit if too literal, (3) flag if the Hadrami sentence is too short to be a real paragraph (target ≥1 clause with ≥2 dialect words)."
+    },
+    {
+      "id": "tr_seed_017",
+      "hadrami": "الحريم ينسجن الخوص في الضحى.",
+      "msa_gold": "النساء ينسجن سعف النخل في وقت الضحى.",
+      "source_entry_id": 268,
+      "source_headword": "الخوص",
+      "annotators": [
+        "lexicon_example"
+      ],
+      "agreement": "single-source — needs second-annotator review",
+      "_review_note": "this gold MSA came verbatim from the lexicon's examples field. Reviewer must: (1) confirm the MSA is faithful and idiomatic, (2) edit if too literal, (3) flag if the Hadrami sentence is too short to be a real paragraph (target ≥1 clause with ≥2 dialect words)."
+    },
+    {
+      "id": "tr_seed_018",
+      "hadrami": "الليلة عشوة آل فلان، الزفين بيبدأ بدري.",
+      "msa_gold": "الليلة حفل زفاف آل فلان، الرقص سيبدأ باكراً.",
+      "source_entry_id": 596,
+      "source_headword": "العشوة",
+      "annotators": [
+        "lexicon_example"
+      ],
+      "agreement": "single-source — needs second-annotator review",
+      "_review_note": "this gold MSA came verbatim from the lexicon's examples field. Reviewer must: (1) confirm the MSA is faithful and idiomatic, (2) edit if too literal, (3) flag if the Hadrami sentence is too short to be a real paragraph (target ≥1 clause with ≥2 dialect words)."
+    },
+    {
+      "id": "tr_seed_019",
+      "hadrami": "فلان حناق، أي كلمة تأثر فيه.",
+      "msa_gold": "فلان سريع الزعل، أي كلمة تؤثر فيه.",
+      "source_entry_id": 225,
+      "source_headword": "حناق",
+      "annotators": [
+        "lexicon_example"
+      ],
+      "agreement": "single-source — needs second-annotator review",
+      "_review_note": "this gold MSA came verbatim from the lexicon's examples field. Reviewer must: (1) confirm the MSA is faithful and idiomatic, (2) edit if too literal, (3) flag if the Hadrami sentence is too short to be a real paragraph (target ≥1 clause with ≥2 dialect words)."
+    },
+    {
+      "id": "tr_seed_020",
+      "hadrami": "ذلا ذحين جيت من السفر.",
+      "msa_gold": "الآن فقط وصلت من السفر.",
+      "source_entry_id": 345,
+      "source_headword": "ذلا ذحين",
+      "annotators": [
+        "lexicon_example"
+      ],
+      "agreement": "single-source — needs second-annotator review",
+      "_review_note": "this gold MSA came verbatim from the lexicon's examples field. Reviewer must: (1) confirm the MSA is faithful and idiomatic, (2) edit if too literal, (3) flag if the Hadrami sentence is too short to be a real paragraph (target ≥1 clause with ≥2 dialect words)."
+    },
+    {
+      "id": "tr_seed_021",
+      "hadrami": "نصلة جنبيته حادة ولامعة.",
+      "msa_gold": "نصل خنجره حاد ولامع.",
+      "source_entry_id": 969,
+      "source_headword": "النصلة",
+      "annotators": [
+        "lexicon_example"
+      ],
+      "agreement": "single-source — needs second-annotator review",
+      "_review_note": "this gold MSA came verbatim from the lexicon's examples field. Reviewer must: (1) confirm the MSA is faithful and idiomatic, (2) edit if too literal, (3) flag if the Hadrami sentence is too short to be a real paragraph (target ≥1 clause with ≥2 dialect words)."
+    },
+    {
+      "id": "tr_seed_022",
+      "hadrami": "هذا القماش عيف، لونه يتغير بسرعة.",
+      "msa_gold": "هذا القماش رديء، لونه يتغير بسرعة.",
+      "source_entry_id": 573,
+      "source_headword": "العيف",
+      "annotators": [
+        "lexicon_example"
+      ],
+      "agreement": "single-source — needs second-annotator review",
+      "_review_note": "this gold MSA came verbatim from the lexicon's examples field. Reviewer must: (1) confirm the MSA is faithful and idiomatic, (2) edit if too literal, (3) flag if the Hadrami sentence is too short to be a real paragraph (target ≥1 clause with ≥2 dialect words)."
+    },
+    {
+      "id": "tr_seed_023",
+      "hadrami": "شفته أمس في السوق.",
+      "msa_gold": "رأيته بالأمس في السوق.",
+      "source_entry_id": 493,
+      "source_headword": "شاف",
+      "annotators": [
+        "lexicon_example"
+      ],
+      "agreement": "single-source — needs second-annotator review",
+      "_review_note": "this gold MSA came verbatim from the lexicon's examples field. Reviewer must: (1) confirm the MSA is faithful and idiomatic, (2) edit if too literal, (3) flag if the Hadrami sentence is too short to be a real paragraph (target ≥1 clause with ≥2 dialect words)."
+    },
+    {
+      "id": "tr_seed_024",
+      "hadrami": "زقلت الحجر في الوادي.",
+      "msa_gold": "رميت الحجر في الوادي.",
+      "source_entry_id": 392,
+      "source_headword": "زقل",
+      "annotators": [
+        "lexicon_example"
+      ],
+      "agreement": "single-source — needs second-annotator review",
+      "_review_note": "this gold MSA came verbatim from the lexicon's examples field. Reviewer must: (1) confirm the MSA is faithful and idiomatic, (2) edit if too literal, (3) flag if the Hadrami sentence is too short to be a real paragraph (target ≥1 clause with ≥2 dialect words)."
+    },
+    {
+      "id": "tr_seed_025",
+      "hadrami": "الدهلة عسرة.",
+      "msa_gold": "التعود والاعتياد أمر صعب (خاصة عند الفراق).",
+      "source_entry_id": 309,
+      "source_headword": "الدهله",
+      "annotators": [
+        "lexicon_example"
+      ],
+      "agreement": "single-source — needs second-annotator review",
+      "_review_note": "this gold MSA came verbatim from the lexicon's examples field. Reviewer must: (1) confirm the MSA is faithful and idiomatic, (2) edit if too literal, (3) flag if the Hadrami sentence is too short to be a real paragraph (target ≥1 clause with ≥2 dialect words)."
+    },
+    {
+      "id": "tr_seed_026",
+      "hadrami": "راحوا الشباب للقنص.",
+      "msa_gold": "ذهب الشباب في رحلة صيد.",
+      "source_entry_id": 714,
+      "source_headword": "قنص",
+      "annotators": [
+        "lexicon_example"
+      ],
+      "agreement": "single-source — needs second-annotator review",
+      "_review_note": "this gold MSA came verbatim from the lexicon's examples field. Reviewer must: (1) confirm the MSA is faithful and idiomatic, (2) edit if too literal, (3) flag if the Hadrami sentence is too short to be a real paragraph (target ≥1 clause with ≥2 dialect words)."
+    },
+    {
+      "id": "tr_seed_027",
+      "hadrami": "الجد مسوي حبوة في المجلس ويسولف.",
+      "msa_gold": "الجد جالس ضاماً ركبتيه في المجلس ويتحدث.",
+      "source_entry_id": 197,
+      "source_headword": "حبوة",
+      "annotators": [
+        "lexicon_example"
+      ],
+      "agreement": "single-source — needs second-annotator review",
+      "_review_note": "this gold MSA came verbatim from the lexicon's examples field. Reviewer must: (1) confirm the MSA is faithful and idiomatic, (2) edit if too literal, (3) flag if the Hadrami sentence is too short to be a real paragraph (target ≥1 clause with ≥2 dialect words)."
+    },
+    {
+      "id": "tr_seed_028",
+      "hadrami": "الجنبية في جفيرها.",
+      "msa_gold": "الجنبية في غمدها.",
+      "source_entry_id": 171,
+      "source_headword": "جفير",
+      "annotators": [
+        "lexicon_example"
+      ],
+      "agreement": "single-source — needs second-annotator review",
+      "_review_note": "this gold MSA came verbatim from the lexicon's examples field. Reviewer must: (1) confirm the MSA is faithful and idiomatic, (2) edit if too literal, (3) flag if the Hadrami sentence is too short to be a real paragraph (target ≥1 clause with ≥2 dialect words)."
+    },
+    {
+      "id": "tr_seed_029",
+      "hadrami": "عصا حذلة من خشب السدر.",
+      "msa_gold": "عصا قوية من خشب السدر.",
+      "source_entry_id": 181,
+      "source_headword": "حذل",
+      "annotators": [
+        "lexicon_example"
+      ],
+      "agreement": "single-source — needs second-annotator review",
+      "_review_note": "this gold MSA came verbatim from the lexicon's examples field. Reviewer must: (1) confirm the MSA is faithful and idiomatic, (2) edit if too literal, (3) flag if the Hadrami sentence is too short to be a real paragraph (target ≥1 clause with ≥2 dialect words)."
+    },
+    {
+      "id": "tr_seed_030",
+      "hadrami": "نظفوا الفرش حق المجلس.",
+      "msa_gold": "نظفوا مفارش غرفة الجلوس.",
+      "source_entry_id": 647,
+      "source_headword": "فرش",
+      "annotators": [
+        "lexicon_example"
+      ],
+      "agreement": "single-source — needs second-annotator review",
+      "_review_note": "this gold MSA came verbatim from the lexicon's examples field. Reviewer must: (1) confirm the MSA is faithful and idiomatic, (2) edit if too literal, (3) flag if the Hadrami sentence is too short to be a real paragraph (target ≥1 clause with ≥2 dialect words)."
+    },
+    {
+      "id": "tr_seed_031",
+      "hadrami": "نسيت مباصري في البيت، ما عاد ريت الكتابة.",
+      "msa_gold": "نسيت نظاراتي في البيت، لم أعد أرى الكتابة.",
+      "source_entry_id": 838,
+      "source_headword": "مباصر",
+      "annotators": [
+        "lexicon_example"
+      ],
+      "agreement": "single-source — needs second-annotator review",
+      "_review_note": "this gold MSA came verbatim from the lexicon's examples field. Reviewer must: (1) confirm the MSA is faithful and idiomatic, (2) edit if too literal, (3) flag if the Hadrami sentence is too short to be a real paragraph (target ≥1 clause with ≥2 dialect words)."
+    },
+    {
+      "id": "tr_seed_032",
+      "hadrami": "مسكين سعيد حصل إثم كبير.",
+      "msa_gold": "يا للمسكين، لقد ارتكب ذنباً كبيراً.",
+      "source_entry_id": 12,
+      "source_headword": "اثم",
+      "annotators": [
+        "lexicon_example"
+      ],
+      "agreement": "single-source — needs second-annotator review",
+      "_review_note": "this gold MSA came verbatim from the lexicon's examples field. Reviewer must: (1) confirm the MSA is faithful and idiomatic, (2) edit if too literal, (3) flag if the Hadrami sentence is too short to be a real paragraph (target ≥1 clause with ≥2 dialect words)."
+    },
+    {
+      "id": "tr_seed_033",
+      "hadrami": "القرمة غسلتها ولا عادها؟",
+      "msa_gold": "هل غسلت القميص الداخلي أم ليس بعد؟",
+      "source_entry_id": 720,
+      "source_headword": "القرمة",
+      "annotators": [
+        "lexicon_example"
+      ],
+      "agreement": "single-source — needs second-annotator review",
+      "_review_note": "this gold MSA came verbatim from the lexicon's examples field. Reviewer must: (1) confirm the MSA is faithful and idiomatic, (2) edit if too literal, (3) flag if the Hadrami sentence is too short to be a real paragraph (target ≥1 clause with ≥2 dialect words)."
+    },
+    {
+      "id": "tr_seed_034",
+      "hadrami": "حط الغنم في الدرع.",
+      "msa_gold": "ضع الأغنام في الحوش المسور.",
+      "source_entry_id": 316,
+      "source_headword": "الدرع",
+      "annotators": [
+        "lexicon_example"
+      ],
+      "agreement": "single-source — needs second-annotator review",
+      "_review_note": "this gold MSA came verbatim from the lexicon's examples field. Reviewer must: (1) confirm the MSA is faithful and idiomatic, (2) edit if too literal, (3) flag if the Hadrami sentence is too short to be a real paragraph (target ≥1 clause with ≥2 dialect words)."
+    },
+    {
+      "id": "tr_seed_035",
+      "hadrami": "الحرمل ينبت في الخبوت والوديان.",
+      "msa_gold": "نبات الحرمل ينبت في البراري والوديان.",
+      "source_entry_id": 250,
+      "source_headword": "الحرمل",
+      "annotators": [
+        "lexicon_example"
+      ],
+      "agreement": "single-source — needs second-annotator review",
+      "_review_note": "this gold MSA came verbatim from the lexicon's examples field. Reviewer must: (1) confirm the MSA is faithful and idiomatic, (2) edit if too literal, (3) flag if the Hadrami sentence is too short to be a real paragraph (target ≥1 clause with ≥2 dialect words)."
+    },
+    {
+      "id": "tr_seed_036",
+      "hadrami": "هذا الدواء طعمه مر مثل الحدج.",
+      "msa_gold": "هذا الدواء طعمه مر مثل الحنظل.",
+      "source_entry_id": 214,
+      "source_headword": "الحدج",
+      "annotators": [
+        "lexicon_example"
+      ],
+      "agreement": "single-source — needs second-annotator review",
+      "_review_note": "this gold MSA came verbatim from the lexicon's examples field. Reviewer must: (1) confirm the MSA is faithful and idiomatic, (2) edit if too literal, (3) flag if the Hadrami sentence is too short to be a real paragraph (target ≥1 clause with ≥2 dialect words)."
+    },
+    {
+      "id": "tr_seed_037",
+      "hadrami": "شغل المخرم في الطين عشان الأرض تشرب الماء.",
+      "msa_gold": "استخدم أداة الحرث في التربة لكي تمتص الأرض الماء.",
+      "source_entry_id": 844,
+      "source_headword": "المخرم",
+      "annotators": [
+        "lexicon_example"
+      ],
+      "agreement": "single-source — needs second-annotator review",
+      "_review_note": "this gold MSA came verbatim from the lexicon's examples field. Reviewer must: (1) confirm the MSA is faithful and idiomatic, (2) edit if too literal, (3) flag if the Hadrami sentence is too short to be a real paragraph (target ≥1 clause with ≥2 dialect words)."
+    },
+    {
+      "id": "tr_seed_038",
+      "hadrami": "شربوه حلتيت عشان تروح الرياح من بطنه.",
+      "msa_gold": "سقوه الحلتيت لكي تذهب الغازات من بطنه.",
+      "source_entry_id": 246,
+      "source_headword": "الحلتيت",
+      "annotators": [
+        "lexicon_example"
+      ],
+      "agreement": "single-source — needs second-annotator review",
+      "_review_note": "this gold MSA came verbatim from the lexicon's examples field. Reviewer must: (1) confirm the MSA is faithful and idiomatic, (2) edit if too literal, (3) flag if the Hadrami sentence is too short to be a real paragraph (target ≥1 clause with ≥2 dialect words)."
+    },
+    {
+      "id": "tr_seed_039",
+      "hadrami": "إنسان باير ما منه فايدة.",
+      "msa_gold": "إنسان رديء لا فائدة منه.",
+      "source_entry_id": 62,
+      "source_headword": "باير",
+      "annotators": [
+        "lexicon_example"
+      ],
+      "agreement": "single-source — needs second-annotator review",
+      "_review_note": "this gold MSA came verbatim from the lexicon's examples field. Reviewer must: (1) confirm the MSA is faithful and idiomatic, (2) edit if too literal, (3) flag if the Hadrami sentence is too short to be a real paragraph (target ≥1 clause with ≥2 dialect words)."
+    },
+    {
+      "id": "tr_seed_040",
+      "hadrami": "سوا تنصورة للعريس في ليلة الزفاف.",
+      "msa_gold": "أقاموا أهازيج النصر للعريس في ليلة الزفاف.",
+      "source_entry_id": 955,
+      "source_headword": "التنصورة",
+      "annotators": [
+        "lexicon_example"
+      ],
+      "agreement": "single-source — needs second-annotator review",
+      "_review_note": "this gold MSA came verbatim from the lexicon's examples field. Reviewer must: (1) confirm the MSA is faithful and idiomatic, (2) edit if too literal, (3) flag if the Hadrami sentence is too short to be a real paragraph (target ≥1 clause with ≥2 dialect words)."
+    },
+    {
+      "id": "tr_seed_041",
+      "hadrami": "الحزام الحضرمي قديم وغالي.",
+      "msa_gold": "الحزام التقليدي الحضرمي قديم وباهظ الثمن.",
+      "source_entry_id": 191,
+      "source_headword": "الحزام",
+      "annotators": [
+        "lexicon_example"
+      ],
+      "agreement": "single-source — needs second-annotator review",
+      "_review_note": "this gold MSA came verbatim from the lexicon's examples field. Reviewer must: (1) confirm the MSA is faithful and idiomatic, (2) edit if too literal, (3) flag if the Hadrami sentence is too short to be a real paragraph (target ≥1 clause with ≥2 dialect words)."
+    },
+    {
+      "id": "tr_seed_042",
+      "hadrami": "لبس القصيرة وخرج.",
+      "msa_gold": "لبس الجنبية وخرج.",
+      "source_entry_id": 686,
+      "source_headword": "القصيرة",
+      "annotators": [
+        "lexicon_example"
+      ],
+      "agreement": "single-source — needs second-annotator review",
+      "_review_note": "this gold MSA came verbatim from the lexicon's examples field. Reviewer must: (1) confirm the MSA is faithful and idiomatic, (2) edit if too literal, (3) flag if the Hadrami sentence is too short to be a real paragraph (target ≥1 clause with ≥2 dialect words)."
+    },
+    {
+      "id": "tr_seed_043",
+      "hadrami": "الطبين حقنا وزع التمر على كل العمال اليوم.",
+      "msa_gold": "صاحب العمل الخاص بنا وزع التمر على جميع العمال اليوم.",
+      "source_entry_id": 568,
+      "source_headword": "الطبين",
+      "annotators": [
+        "lexicon_example"
+      ],
+      "agreement": "single-source — needs second-annotator review",
+      "_review_note": "this gold MSA came verbatim from the lexicon's examples field. Reviewer must: (1) confirm the MSA is faithful and idiomatic, (2) edit if too literal, (3) flag if the Hadrami sentence is too short to be a real paragraph (target ≥1 clause with ≥2 dialect words)."
+    },
+    {
+      "id": "tr_seed_044",
+      "hadrami": "هرجه ملتلت وزين، يفهم الواحد منه.",
+      "msa_gold": "حديثه منسق وجميل، يفهمه المرء بسهولة.",
+      "source_entry_id": 819,
+      "source_headword": "ملتلت",
+      "annotators": [
+        "lexicon_example"
+      ],
+      "agreement": "single-source — needs second-annotator review",
+      "_review_note": "this gold MSA came verbatim from the lexicon's examples field. Reviewer must: (1) confirm the MSA is faithful and idiomatic, (2) edit if too literal, (3) flag if the Hadrami sentence is too short to be a real paragraph (target ≥1 clause with ≥2 dialect words)."
+    },
+    {
+      "id": "tr_seed_045",
+      "hadrami": "لبس المفرية وراح للمسجد.",
+      "msa_gold": "ارتدى الرداء الأبيض وذهب إلى المسجد.",
+      "source_entry_id": 887,
+      "source_headword": "المفرية",
+      "annotators": [
+        "lexicon_example"
+      ],
+      "agreement": "single-source — needs second-annotator review",
+      "_review_note": "this gold MSA came verbatim from the lexicon's examples field. Reviewer must: (1) confirm the MSA is faithful and idiomatic, (2) edit if too literal, (3) flag if the Hadrami sentence is too short to be a real paragraph (target ≥1 clause with ≥2 dialect words)."
+    },
+    {
+      "id": "tr_seed_046",
+      "hadrami": "تعال ساعدنا في الماهي نعرب القطعة.",
+      "msa_gold": "تعال ساعدنا في الماهي نصلح القطعة.",
+      "source_entry_id": 867,
+      "source_headword": "الماهي",
+      "annotators": [
+        "lexicon_example"
+      ],
+      "agreement": "single-source — needs second-annotator review",
+      "_review_note": "this gold MSA came verbatim from the lexicon's examples field. Reviewer must: (1) confirm the MSA is faithful and idiomatic, (2) edit if too literal, (3) flag if the Hadrami sentence is too short to be a real paragraph (target ≥1 clause with ≥2 dialect words)."
+    },
+    {
+      "id": "tr_seed_047",
+      "hadrami": "اشر في الصفحة اللي وقفت عندها.",
+      "msa_gold": "ضع علامة في الصفحة التي توقفت عندها.",
+      "source_entry_id": 23,
+      "source_headword": "اشر",
+      "annotators": [
+        "lexicon_example"
+      ],
+      "agreement": "single-source — needs second-annotator review",
+      "_review_note": "this gold MSA came verbatim from the lexicon's examples field. Reviewer must: (1) confirm the MSA is faithful and idiomatic, (2) edit if too literal, (3) flag if the Hadrami sentence is too short to be a real paragraph (target ≥1 clause with ≥2 dialect words)."
+    },
+    {
+      "id": "tr_seed_048",
+      "hadrami": "اليوم القر يكسر العظام.",
+      "msa_gold": "البرد اليوم شديد جداً.",
+      "source_entry_id": 671,
+      "source_headword": "القر",
+      "annotators": [
+        "lexicon_example"
+      ],
+      "agreement": "single-source — needs second-annotator review",
+      "_review_note": "this gold MSA came verbatim from the lexicon's examples field. Reviewer must: (1) confirm the MSA is faithful and idiomatic, (2) edit if too literal, (3) flag if the Hadrami sentence is too short to be a real paragraph (target ≥1 clause with ≥2 dialect words)."
+    },
+    {
+      "id": "tr_seed_049",
+      "hadrami": "بانروح السوق ذحين.",
+      "msa_gold": "سنذهب إلى السوق الآن.",
+      "source_entry_id": 344,
+      "source_headword": "ذحين",
+      "annotators": [
+        "lexicon_example"
+      ],
+      "agreement": "single-source — needs second-annotator review",
+      "_review_note": "this gold MSA came verbatim from the lexicon's examples field. Reviewer must: (1) confirm the MSA is faithful and idiomatic, (2) edit if too literal, (3) flag if the Hadrami sentence is too short to be a real paragraph (target ≥1 clause with ≥2 dialect words)."
+    },
+    {
+      "id": "tr_seed_050",
+      "hadrami": "وادينا مليان عشرق بعد المطر.",
+      "msa_gold": "وادينا ممتلئ بنبات العشرق بعد المطر.",
+      "source_entry_id": 580,
+      "source_headword": "العشرق",
+      "annotators": [
+        "lexicon_example"
+      ],
+      "agreement": "single-source — needs second-annotator review",
+      "_review_note": "this gold MSA came verbatim from the lexicon's examples field. Reviewer must: (1) confirm the MSA is faithful and idiomatic, (2) edit if too literal, (3) flag if the Hadrami sentence is too short to be a real paragraph (target ≥1 clause with ≥2 dialect words)."
+    },
+    {
+      "id": "tr_seed_051",
+      "hadrami": "الطريق كلها حصى، انتبه وأنت تمشي.",
+      "msa_gold": "الطريق كلها حجارة صغيرة، احذر وأنت تمشي.",
+      "source_entry_id": 251,
+      "source_headword": "الحصاة",
+      "annotators": [
+        "lexicon_example"
+      ],
+      "agreement": "single-source — needs second-annotator review",
+      "_review_note": "this gold MSA came verbatim from the lexicon's examples field. Reviewer must: (1) confirm the MSA is faithful and idiomatic, (2) edit if too literal, (3) flag if the Hadrami sentence is too short to be a real paragraph (target ≥1 clause with ≥2 dialect words)."
+    },
+    {
+      "id": "tr_seed_052",
+      "hadrami": "الماء كله خرج من القطب.",
+      "msa_gold": "تسرب الماء كله من خلال الفتحة في السد.",
+      "source_entry_id": 726,
+      "source_headword": "قطب",
+      "annotators": [
+        "lexicon_example"
+      ],
+      "agreement": "single-source — needs second-annotator review",
+      "_review_note": "this gold MSA came verbatim from the lexicon's examples field. Reviewer must: (1) confirm the MSA is faithful and idiomatic, (2) edit if too literal, (3) flag if the Hadrami sentence is too short to be a real paragraph (target ≥1 clause with ≥2 dialect words)."
+    },
+    {
+      "id": "tr_seed_053",
+      "hadrami": "شربنا من ماء القلت.",
+      "msa_gold": "شربنا من ماء الصهاريج الجبلية.",
+      "source_entry_id": 704,
+      "source_headword": "القلت",
+      "annotators": [
+        "lexicon_example"
+      ],
+      "agreement": "single-source — needs second-annotator review",
+      "_review_note": "this gold MSA came verbatim from the lexicon's examples field. Reviewer must: (1) confirm the MSA is faithful and idiomatic, (2) edit if too literal, (3) flag if the Hadrami sentence is too short to be a real paragraph (target ≥1 clause with ≥2 dialect words)."
+    },
+    {
+      "id": "tr_seed_054",
+      "hadrami": "حياك يا سعيد، تفضل المجلس.",
+      "msa_gold": "أهلاً بك يا سعيد، تفضل إلى المجلس.",
+      "source_entry_id": 182,
+      "source_headword": "حياك",
+      "annotators": [
+        "lexicon_example"
+      ],
+      "agreement": "single-source — needs second-annotator review",
+      "_review_note": "this gold MSA came verbatim from the lexicon's examples field. Reviewer must: (1) confirm the MSA is faithful and idiomatic, (2) edit if too literal, (3) flag if the Hadrami sentence is too short to be a real paragraph (target ≥1 clause with ≥2 dialect words)."
+    },
+    {
+      "id": "tr_seed_055",
+      "hadrami": "عدل عمامتك قبل ما تخرج.",
+      "msa_gold": "رتب غطاء رأسك قبل أن تخرج.",
+      "source_entry_id": 593,
+      "source_headword": "العمامة",
+      "annotators": [
+        "lexicon_example"
+      ],
+      "agreement": "single-source — needs second-annotator review",
+      "_review_note": "this gold MSA came verbatim from the lexicon's examples field. Reviewer must: (1) confirm the MSA is faithful and idiomatic, (2) edit if too literal, (3) flag if the Hadrami sentence is too short to be a real paragraph (target ≥1 clause with ≥2 dialect words)."
+    },
+    {
+      "id": "tr_seed_056",
+      "hadrami": "لا تقع متعرض في هرج الناس.",
+      "msa_gold": "لا تكن فضولياً وتتدخل في حديث الناس.",
+      "source_entry_id": 829,
+      "source_headword": "متعرض",
+      "annotators": [
+        "lexicon_example"
+      ],
+      "agreement": "single-source — needs second-annotator review",
+      "_review_note": "this gold MSA came verbatim from the lexicon's examples field. Reviewer must: (1) confirm the MSA is faithful and idiomatic, (2) edit if too literal, (3) flag if the Hadrami sentence is too short to be a real paragraph (target ≥1 clause with ≥2 dialect words)."
+    },
+    {
+      "id": "tr_seed_057",
+      "hadrami": "اشترِ قضب للغنم.",
+      "msa_gold": "اشترِ برسيماً للأغنام.",
+      "source_entry_id": 711,
+      "source_headword": "القضب",
+      "annotators": [
+        "lexicon_example"
+      ],
+      "agreement": "single-source — needs second-annotator review",
+      "_review_note": "this gold MSA came verbatim from the lexicon's examples field. Reviewer must: (1) confirm the MSA is faithful and idiomatic, (2) edit if too literal, (3) flag if the Hadrami sentence is too short to be a real paragraph (target ≥1 clause with ≥2 dialect words)."
+    },
+    {
+      "id": "tr_seed_058",
+      "hadrami": "ميل الشبث من زوايا البيت.",
+      "msa_gold": "أزل العنكبوت من زوايا المنزل.",
+      "source_entry_id": 384,
+      "source_headword": "الشبث",
+      "annotators": [
+        "lexicon_example"
+      ],
+      "agreement": "single-source — needs second-annotator review",
+      "_review_note": "this gold MSA came verbatim from the lexicon's examples field. Reviewer must: (1) confirm the MSA is faithful and idiomatic, (2) edit if too literal, (3) flag if the Hadrami sentence is too short to be a real paragraph (target ≥1 clause with ≥2 dialect words)."
+    },
+    {
+      "id": "tr_seed_059",
+      "hadrami": "سكر إبزم الحزام حقك.",
+      "msa_gold": "أغلق مشبك حزامك.",
+      "source_entry_id": 26,
+      "source_headword": "ابزم",
+      "annotators": [
+        "lexicon_example"
+      ],
+      "agreement": "single-source — needs second-annotator review",
+      "_review_note": "this gold MSA came verbatim from the lexicon's examples field. Reviewer must: (1) confirm the MSA is faithful and idiomatic, (2) edit if too literal, (3) flag if the Hadrami sentence is too short to be a real paragraph (target ≥1 clause with ≥2 dialect words)."
+    },
+    {
+      "id": "tr_seed_060",
+      "hadrami": "الحمد لله، الفضح بان في النخل.",
+      "msa_gold": "الحمد لله، بدأت علامات النضوج تظهر في النخيل.",
+      "source_entry_id": 662,
+      "source_headword": "الفضح",
+      "annotators": [
+        "lexicon_example"
+      ],
+      "agreement": "single-source — needs second-annotator review",
+      "_review_note": "this gold MSA came verbatim from the lexicon's examples field. Reviewer must: (1) confirm the MSA is faithful and idiomatic, (2) edit if too literal, (3) flag if the Hadrami sentence is too short to be a real paragraph (target ≥1 clause with ≥2 dialect words)."
+    },
+    {
+      "id": "tr_seed_061",
+      "hadrami": "اشتريت مصرتين بر من السوق.",
+      "msa_gold": "اشتريت مكيالين من القمح من السوق.",
+      "source_entry_id": 863,
+      "source_headword": "مصرى",
+      "annotators": [
+        "lexicon_example"
+      ],
+      "agreement": "single-source — needs second-annotator review",
+      "_review_note": "this gold MSA came verbatim from the lexicon's examples field. Reviewer must: (1) confirm the MSA is faithful and idiomatic, (2) edit if too literal, (3) flag if the Hadrami sentence is too short to be a real paragraph (target ≥1 clause with ≥2 dialect words)."
+    },
+    {
+      "id": "tr_seed_062",
+      "hadrami": "الحبر طعمه حالي ويذوب في الفم.",
+      "msa_gold": "البلح المتساقط طعمه حلو ويذوب في الفم.",
+      "source_entry_id": 217,
+      "source_headword": "الحبر",
+      "annotators": [
+        "lexicon_example"
+      ],
+      "agreement": "single-source — needs second-annotator review",
+      "_review_note": "this gold MSA came verbatim from the lexicon's examples field. Reviewer must: (1) confirm the MSA is faithful and idiomatic, (2) edit if too literal, (3) flag if the Hadrami sentence is too short to be a real paragraph (target ≥1 clause with ≥2 dialect words)."
+    },
+    {
+      "id": "tr_seed_063",
+      "hadrami": "سكر البزبوز زين.",
+      "msa_gold": "أغلق الصنبور جيداً.",
+      "source_entry_id": 66,
+      "source_headword": "بزبوز",
+      "annotators": [
+        "lexicon_example"
+      ],
+      "agreement": "single-source — needs second-annotator review",
+      "_review_note": "this gold MSA came verbatim from the lexicon's examples field. Reviewer must: (1) confirm the MSA is faithful and idiomatic, (2) edit if too literal, (3) flag if the Hadrami sentence is too short to be a real paragraph (target ≥1 clause with ≥2 dialect words)."
+    },
+    {
+      "id": "tr_seed_064",
+      "hadrami": "امسك يد الولد لا يضيع في الزحمة.",
+      "msa_gold": "أمسك بيد الطفل لكي لا يضيع في الازدحام.",
+      "source_entry_id": 806,
+      "source_headword": "مسكه",
+      "annotators": [
+        "lexicon_example"
+      ],
+      "agreement": "single-source — needs second-annotator review",
+      "_review_note": "this gold MSA came verbatim from the lexicon's examples field. Reviewer must: (1) confirm the MSA is faithful and idiomatic, (2) edit if too literal, (3) flag if the Hadrami sentence is too short to be a real paragraph (target ≥1 clause with ≥2 dialect words)."
+    },
+    {
+      "id": "tr_seed_065",
+      "hadrami": "اليوم معهم نقلاه عند عمهم.",
+      "msa_gold": "اليوم لديهم وليمة زفاف عند عمهم.",
+      "source_entry_id": 957,
+      "source_headword": "النقلاه",
+      "annotators": [
+        "lexicon_example"
+      ],
+      "agreement": "single-source — needs second-annotator review",
+      "_review_note": "this gold MSA came verbatim from the lexicon's examples field. Reviewer must: (1) confirm the MSA is faithful and idiomatic, (2) edit if too literal, (3) flag if the Hadrami sentence is too short to be a real paragraph (target ≥1 clause with ≥2 dialect words)."
+    },
+    {
+      "id": "tr_seed_066",
+      "hadrami": "سعيد يحب السفطة والضحك.",
+      "msa_gold": "سعيد يحب المزاح والضحك.",
+      "source_entry_id": 432,
+      "source_headword": "سفطة",
+      "annotators": [
+        "lexicon_example"
+      ],
+      "agreement": "single-source — needs second-annotator review",
+      "_review_note": "this gold MSA came verbatim from the lexicon's examples field. Reviewer must: (1) confirm the MSA is faithful and idiomatic, (2) edit if too literal, (3) flag if the Hadrami sentence is too short to be a real paragraph (target ≥1 clause with ≥2 dialect words)."
+    },
+    {
+      "id": "tr_seed_067",
+      "hadrami": "تان الحمار.",
+      "msa_gold": "أنثى الحمار.",
+      "source_entry_id": 123,
+      "source_headword": "تان",
+      "annotators": [
+        "lexicon_example"
+      ],
+      "agreement": "single-source — needs second-annotator review",
+      "_review_note": "this gold MSA came verbatim from the lexicon's examples field. Reviewer must: (1) confirm the MSA is faithful and idiomatic, (2) edit if too literal, (3) flag if the Hadrami sentence is too short to be a real paragraph (target ≥1 clause with ≥2 dialect words)."
+    },
+    {
+      "id": "tr_seed_068",
+      "hadrami": "كلنا كنا في ساعة صفاط.",
+      "msa_gold": "كنا جميعاً في ساعة مزح.",
+      "source_entry_id": 527,
+      "source_headword": "صفاط",
+      "annotators": [
+        "lexicon_example"
+      ],
+      "agreement": "single-source — needs second-annotator review",
+      "_review_note": "this gold MSA came verbatim from the lexicon's examples field. Reviewer must: (1) confirm the MSA is faithful and idiomatic, (2) edit if too literal, (3) flag if the Hadrami sentence is too short to be a real paragraph (target ≥1 clause with ≥2 dialect words)."
+    },
+    {
+      "id": "tr_seed_069",
+      "hadrami": "افتح اللهج عشان يدخل شوية هواء.",
+      "msa_gold": "افتح النافذة ليدخل بعض الهواء.",
+      "source_entry_id": 784,
+      "source_headword": "لهج",
+      "annotators": [
+        "lexicon_example"
+      ],
+      "agreement": "single-source — needs second-annotator review",
+      "_review_note": "this gold MSA came verbatim from the lexicon's examples field. Reviewer must: (1) confirm the MSA is faithful and idiomatic, (2) edit if too literal, (3) flag if the Hadrami sentence is too short to be a real paragraph (target ≥1 clause with ≥2 dialect words)."
+    },
+    {
+      "id": "tr_seed_070",
+      "hadrami": "البيت غرر علينا من مطر البارحة.",
+      "msa_gold": "سقف البيت سرب علينا الماء من مطر البارحة.",
+      "source_entry_id": 636,
+      "source_headword": "الغرة",
+      "annotators": [
+        "lexicon_example"
+      ],
+      "agreement": "single-source — needs second-annotator review",
+      "_review_note": "this gold MSA came verbatim from the lexicon's examples field. Reviewer must: (1) confirm the MSA is faithful and idiomatic, (2) edit if too literal, (3) flag if the Hadrami sentence is too short to be a real paragraph (target ≥1 clause with ≥2 dialect words)."
+    },
+    {
+      "id": "tr_seed_071",
+      "hadrami": "انفتح الخلص وراح الماء للبركة الثانية.",
+      "msa_gold": "انفتح المنفذ المائي وذهب الماء للحوض الآخر.",
+      "source_entry_id": 284,
+      "source_headword": "خلص",
+      "annotators": [
+        "lexicon_example"
+      ],
+      "agreement": "single-source — needs second-annotator review",
+      "_review_note": "this gold MSA came verbatim from the lexicon's examples field. Reviewer must: (1) confirm the MSA is faithful and idiomatic, (2) edit if too literal, (3) flag if the Hadrami sentence is too short to be a real paragraph (target ≥1 clause with ≥2 dialect words)."
+    },
+    {
+      "id": "tr_seed_072",
+      "hadrami": "ما قدرت عليه، قلت قاق.",
+      "msa_gold": "لم أستطع هزيمته، فاستسلمت.",
+      "source_entry_id": 674,
+      "source_headword": "قاق",
+      "annotators": [
+        "lexicon_example"
+      ],
+      "agreement": "single-source — needs second-annotator review",
+      "_review_note": "this gold MSA came verbatim from the lexicon's examples field. Reviewer must: (1) confirm the MSA is faithful and idiomatic, (2) edit if too literal, (3) flag if the Hadrami sentence is too short to be a real paragraph (target ≥1 clause with ≥2 dialect words)."
+    },
+    {
+      "id": "tr_seed_073",
+      "hadrami": "بطل العفاشة وكن عاقل.",
+      "msa_gold": "اترك الرعونة وكن عاقلاً.",
+      "source_entry_id": 581,
+      "source_headword": "العفاشه",
+      "annotators": [
+        "lexicon_example"
+      ],
+      "agreement": "single-source — needs second-annotator review",
+      "_review_note": "this gold MSA came verbatim from the lexicon's examples field. Reviewer must: (1) confirm the MSA is faithful and idiomatic, (2) edit if too literal, (3) flag if the Hadrami sentence is too short to be a real paragraph (target ≥1 clause with ≥2 dialect words)."
+    },
+    {
+      "id": "tr_seed_074",
+      "hadrami": "اربط الدلو بالزون زين.",
+      "msa_gold": "اربط الدلو بحبل البئر بإحكام.",
+      "source_entry_id": 390,
+      "source_headword": "الزون",
+      "annotators": [
+        "lexicon_example"
+      ],
+      "agreement": "single-source — needs second-annotator review",
+      "_review_note": "this gold MSA came verbatim from the lexicon's examples field. Reviewer must: (1) confirm the MSA is faithful and idiomatic, (2) edit if too literal, (3) flag if the Hadrami sentence is too short to be a real paragraph (target ≥1 clause with ≥2 dialect words)."
+    },
+    {
+      "id": "tr_seed_075",
+      "hadrami": "عادك إلا صغير على ذا الكلام.",
+      "msa_gold": "ما زلت صغيراً على هذا الحديث.",
+      "source_entry_id": 622,
+      "source_headword": "عادك",
+      "annotators": [
+        "lexicon_example"
+      ],
+      "agreement": "single-source — needs second-annotator review",
+      "_review_note": "this gold MSA came verbatim from the lexicon's examples field. Reviewer must: (1) confirm the MSA is faithful and idiomatic, (2) edit if too literal, (3) flag if the Hadrami sentence is too short to be a real paragraph (target ≥1 clause with ≥2 dialect words)."
+    },
+    {
+      "id": "tr_seed_076",
+      "hadrami": "بنى بيت في بقعة زينة.",
+      "msa_gold": "بنى منزلاً في مكان جميل.",
+      "source_entry_id": 98,
+      "source_headword": "بقعه",
+      "annotators": [
+        "lexicon_example"
+      ],
+      "agreement": "single-source — needs second-annotator review",
+      "_review_note": "this gold MSA came verbatim from the lexicon's examples field. Reviewer must: (1) confirm the MSA is faithful and idiomatic, (2) edit if too literal, (3) flag if the Hadrami sentence is too short to be a real paragraph (target ≥1 clause with ≥2 dialect words)."
+    },
+    {
+      "id": "tr_seed_077",
+      "hadrami": "الحنيشة من الفضة الخالصة وثقيلة في اللبس.",
+      "msa_gold": "هذا الحزام من الفضة الخالصة وهو ثقيل عند ارتدائه.",
+      "source_entry_id": 235,
+      "source_headword": "الحنيشة",
+      "annotators": [
+        "lexicon_example"
+      ],
+      "agreement": "single-source — needs second-annotator review",
+      "_review_note": "this gold MSA came verbatim from the lexicon's examples field. Reviewer must: (1) confirm the MSA is faithful and idiomatic, (2) edit if too literal, (3) flag if the Hadrami sentence is too short to be a real paragraph (target ≥1 clause with ≥2 dialect words)."
+    },
+    {
+      "id": "tr_seed_078",
+      "hadrami": "جدي عنده بوفتيله قديمة.",
+      "msa_gold": "جدي يملك بندقية بارود قديمة.",
+      "source_entry_id": 57,
+      "source_headword": "بوفتيله",
+      "annotators": [
+        "lexicon_example"
+      ],
+      "agreement": "single-source — needs second-annotator review",
+      "_review_note": "this gold MSA came verbatim from the lexicon's examples field. Reviewer must: (1) confirm the MSA is faithful and idiomatic, (2) edit if too literal, (3) flag if the Hadrami sentence is too short to be a real paragraph (target ≥1 clause with ≥2 dialect words)."
+    },
+    {
+      "id": "tr_seed_079",
+      "hadrami": "نكتب بواه صبحت مثل الساعية فوق القِشار",
+      "msa_gold": "بماذا نكتب وقد أصبحت حالنا كالسفينة المضطربة.",
+      "source_entry_id": 51,
+      "source_headword": "بواه",
+      "annotators": [
+        "lexicon_example"
+      ],
+      "agreement": "single-source — needs second-annotator review",
+      "_review_note": "this gold MSA came verbatim from the lexicon's examples field. Reviewer must: (1) confirm the MSA is faithful and idiomatic, (2) edit if too literal, (3) flag if the Hadrami sentence is too short to be a real paragraph (target ≥1 clause with ≥2 dialect words)."
+    },
+    {
+      "id": "tr_seed_080",
+      "hadrami": "قبصتني النوبة (النحلة).",
+      "msa_gold": "لدغتني النحلة.",
+      "source_entry_id": 675,
+      "source_headword": "قبصه",
+      "annotators": [
+        "lexicon_example"
+      ],
+      "agreement": "single-source — needs second-annotator review",
+      "_review_note": "this gold MSA came verbatim from the lexicon's examples field. Reviewer must: (1) confirm the MSA is faithful and idiomatic, (2) edit if too literal, (3) flag if the Hadrami sentence is too short to be a real paragraph (target ≥1 clause with ≥2 dialect words)."
+    },
+    {
+      "id": "tr_seed_081",
+      "hadrami": "لا تحط يدك في نخشوشك.",
+      "msa_gold": "لا تضع يدك في أنفك.",
+      "source_entry_id": 968,
+      "source_headword": "نخشوش",
+      "annotators": [
+        "lexicon_example"
+      ],
+      "agreement": "single-source — needs second-annotator review",
+      "_review_note": "this gold MSA came verbatim from the lexicon's examples field. Reviewer must: (1) confirm the MSA is faithful and idiomatic, (2) edit if too literal, (3) flag if the Hadrami sentence is too short to be a real paragraph (target ≥1 clause with ≥2 dialect words)."
+    },
+    {
+      "id": "tr_seed_082",
+      "hadrami": "هذا الثوب فصلته عند خياط فنان، طلع حايه فنانة.",
+      "msa_gold": "هذا الثوب خاطه خياط بارع، فخرج بشكل رائع.",
+      "source_entry_id": 216,
+      "source_headword": "حاجة فنانة",
+      "annotators": [
+        "lexicon_example"
+      ],
+      "agreement": "single-source — needs second-annotator review",
+      "_review_note": "this gold MSA came verbatim from the lexicon's examples field. Reviewer must: (1) confirm the MSA is faithful and idiomatic, (2) edit if too literal, (3) flag if the Hadrami sentence is too short to be a real paragraph (target ≥1 clause with ≥2 dialect words)."
+    },
+    {
+      "id": "tr_seed_083",
+      "hadrami": "الكرزام طعمه حالي ولين.",
+      "msa_gold": "قلب النخلة طعمه حلو وطري.",
+      "source_entry_id": 747,
+      "source_headword": "الكرزام",
+      "annotators": [
+        "lexicon_example"
+      ],
+      "agreement": "single-source — needs second-annotator review",
+      "_review_note": "this gold MSA came verbatim from the lexicon's examples field. Reviewer must: (1) confirm the MSA is faithful and idiomatic, (2) edit if too literal, (3) flag if the Hadrami sentence is too short to be a real paragraph (target ≥1 clause with ≥2 dialect words)."
+    },
+    {
+      "id": "tr_seed_084",
+      "hadrami": "شلو الطيران وبدوا الزفين في الحراوة.",
+      "msa_gold": "حملوا الدفوف وبدأوا الرقص في حفل الزفاف.",
+      "source_entry_id": 566,
+      "source_headword": "الطار",
+      "annotators": [
+        "lexicon_example"
+      ],
+      "agreement": "single-source — needs second-annotator review",
+      "_review_note": "this gold MSA came verbatim from the lexicon's examples field. Reviewer must: (1) confirm the MSA is faithful and idiomatic, (2) edit if too literal, (3) flag if the Hadrami sentence is too short to be a real paragraph (target ≥1 clause with ≥2 dialect words)."
+    },
+    {
+      "id": "tr_seed_085",
+      "hadrami": "ما حد كماك في الكرم.",
+      "msa_gold": "لا يوجد أحد مثلك في الكرم.",
+      "source_entry_id": 732,
+      "source_headword": "كماك",
+      "annotators": [
+        "lexicon_example"
+      ],
+      "agreement": "single-source — needs second-annotator review",
+      "_review_note": "this gold MSA came verbatim from the lexicon's examples field. Reviewer must: (1) confirm the MSA is faithful and idiomatic, (2) edit if too literal, (3) flag if the Hadrami sentence is too short to be a real paragraph (target ≥1 clause with ≥2 dialect words)."
+    },
+    {
+      "id": "tr_seed_086",
+      "hadrami": "سمعنا صليق الحريم من بيت الجيران.",
+      "msa_gold": "سمعنا زغاريد النساء من بيت الجيران.",
+      "source_entry_id": 501,
+      "source_headword": "الصليق",
+      "annotators": [
+        "lexicon_example"
+      ],
+      "agreement": "single-source — needs second-annotator review",
+      "_review_note": "this gold MSA came verbatim from the lexicon's examples field. Reviewer must: (1) confirm the MSA is faithful and idiomatic, (2) edit if too literal, (3) flag if the Hadrami sentence is too short to be a real paragraph (target ≥1 clause with ≥2 dialect words)."
+    },
+    {
+      "id": "tr_seed_087",
+      "hadrami": "وجعني كراعي من الشغل.",
+      "msa_gold": "آلمني ساعدي من كثرة العمل.",
+      "source_entry_id": 742,
+      "source_headword": "كراع",
+      "annotators": [
+        "lexicon_example"
+      ],
+      "agreement": "single-source — needs second-annotator review",
+      "_review_note": "this gold MSA came verbatim from the lexicon's examples field. Reviewer must: (1) confirm the MSA is faithful and idiomatic, (2) edit if too literal, (3) flag if the Hadrami sentence is too short to be a real paragraph (target ≥1 clause with ≥2 dialect words)."
+    },
+    {
+      "id": "tr_seed_088",
+      "hadrami": "دهنت القوامين حق الغرفة.",
+      "msa_gold": "صبغت قائمتي الباب الخاصتين بالغرفة.",
+      "source_entry_id": 721,
+      "source_headword": "القوام",
+      "annotators": [
+        "lexicon_example"
+      ],
+      "agreement": "single-source — needs second-annotator review",
+      "_review_note": "this gold MSA came verbatim from the lexicon's examples field. Reviewer must: (1) confirm the MSA is faithful and idiomatic, (2) edit if too literal, (3) flag if the Hadrami sentence is too short to be a real paragraph (target ≥1 clause with ≥2 dialect words)."
+    },
+    {
+      "id": "tr_seed_089",
+      "hadrami": "ادحق عليه بقوة برجلك.",
+      "msa_gold": "دوس عليه بقوة بقدمك.",
+      "source_entry_id": 41,
+      "source_headword": "ادحق",
+      "annotators": [
+        "lexicon_example"
+      ],
+      "agreement": "single-source — needs second-annotator review",
+      "_review_note": "this gold MSA came verbatim from the lexicon's examples field. Reviewer must: (1) confirm the MSA is faithful and idiomatic, (2) edit if too literal, (3) flag if the Hadrami sentence is too short to be a real paragraph (target ≥1 clause with ≥2 dialect words)."
+    },
+    {
+      "id": "tr_seed_090",
+      "hadrami": "جدي قاعد في الحيط يسقي الشجر.",
+      "msa_gold": "جدي جالس في البستان الصغير يسقي الأشجار.",
+      "source_entry_id": 242,
+      "source_headword": "حيط",
+      "annotators": [
+        "lexicon_example"
+      ],
+      "agreement": "single-source — needs second-annotator review",
+      "_review_note": "this gold MSA came verbatim from the lexicon's examples field. Reviewer must: (1) confirm the MSA is faithful and idiomatic, (2) edit if too literal, (3) flag if the Hadrami sentence is too short to be a real paragraph (target ≥1 clause with ≥2 dialect words)."
+    },
+    {
+      "id": "tr_seed_091",
+      "hadrami": "اربط الخبرة على العذق قبل ما يستوي.",
+      "msa_gold": "اربط كيس الخوص على عذق التمر قبل أن ينضج تماماً.",
+      "source_entry_id": 298,
+      "source_headword": "الخبرة",
+      "annotators": [
+        "lexicon_example"
+      ],
+      "agreement": "single-source — needs second-annotator review",
+      "_review_note": "this gold MSA came verbatim from the lexicon's examples field. Reviewer must: (1) confirm the MSA is faithful and idiomatic, (2) edit if too literal, (3) flag if the Hadrami sentence is too short to be a real paragraph (target ≥1 clause with ≥2 dialect words)."
+    },
+    {
+      "id": "tr_seed_092",
+      "hadrami": "بكرة بنبدأ رزم التمر حق الموسم.",
+      "msa_gold": "غداً سنبدأ عملية كبس وتخزين تمر هذا الموسم.",
+      "source_entry_id": 387,
+      "source_headword": "الرزم",
+      "annotators": [
+        "lexicon_example"
+      ],
+      "agreement": "single-source — needs second-annotator review",
+      "_review_note": "this gold MSA came verbatim from the lexicon's examples field. Reviewer must: (1) confirm the MSA is faithful and idiomatic, (2) edit if too literal, (3) flag if the Hadrami sentence is too short to be a real paragraph (target ≥1 clause with ≥2 dialect words)."
+    },
+    {
+      "id": "tr_seed_093",
+      "hadrami": "هذا الطير أرقش لونه يعجبك.",
+      "msa_gold": "هذا الطائر ملون بالبني والأبيض ولونه جميل.",
+      "source_entry_id": 42,
+      "source_headword": "ارقش",
+      "annotators": [
+        "lexicon_example"
+      ],
+      "agreement": "single-source — needs second-annotator review",
+      "_review_note": "this gold MSA came verbatim from the lexicon's examples field. Reviewer must: (1) confirm the MSA is faithful and idiomatic, (2) edit if too literal, (3) flag if the Hadrami sentence is too short to be a real paragraph (target ≥1 clause with ≥2 dialect words)."
+    },
+    {
+      "id": "tr_seed_094",
+      "hadrami": "تمر العرقدي أحسن نوع للقهوة.",
+      "msa_gold": "تمر العرقدي أفضل نوع مع القهوة.",
+      "source_entry_id": 605,
+      "source_headword": "العرقدي",
+      "annotators": [
+        "lexicon_example"
+      ],
+      "agreement": "single-source — needs second-annotator review",
+      "_review_note": "this gold MSA came verbatim from the lexicon's examples field. Reviewer must: (1) confirm the MSA is faithful and idiomatic, (2) edit if too literal, (3) flag if the Hadrami sentence is too short to be a real paragraph (target ≥1 clause with ≥2 dialect words)."
+    },
+    {
+      "id": "tr_seed_095",
+      "hadrami": "حط الحمل هنا.",
+      "msa_gold": "ضع الحمل في هذا المكان.",
+      "source_entry_id": 173,
+      "source_headword": "حط",
+      "annotators": [
+        "lexicon_example"
+      ],
+      "agreement": "single-source — needs second-annotator review",
+      "_review_note": "this gold MSA came verbatim from the lexicon's examples field. Reviewer must: (1) confirm the MSA is faithful and idiomatic, (2) edit if too literal, (3) flag if the Hadrami sentence is too short to be a real paragraph (target ≥1 clause with ≥2 dialect words)."
+    },
+    {
+      "id": "tr_seed_096",
+      "hadrami": "المستقيه جابت الماء من الصبح.",
+      "msa_gold": "أحضرت الساقية الماء منذ الصباح.",
+      "source_entry_id": 808,
+      "source_headword": "مستقيه",
+      "annotators": [
+        "lexicon_example"
+      ],
+      "agreement": "single-source — needs second-annotator review",
+      "_review_note": "this gold MSA came verbatim from the lexicon's examples field. Reviewer must: (1) confirm the MSA is faithful and idiomatic, (2) edit if too literal, (3) flag if the Hadrami sentence is too short to be a real paragraph (target ≥1 clause with ≥2 dialect words)."
+    },
+    {
+      "id": "tr_seed_097",
+      "hadrami": "وادينا مليان مسواك أخضر.",
+      "msa_gold": "وادِينا مليء بشجر الأراك الأخضر.",
+      "source_entry_id": 862,
+      "source_headword": "مسواك",
+      "annotators": [
+        "lexicon_example"
+      ],
+      "agreement": "single-source — needs second-annotator review",
+      "_review_note": "this gold MSA came verbatim from the lexicon's examples field. Reviewer must: (1) confirm the MSA is faithful and idiomatic, (2) edit if too literal, (3) flag if the Hadrami sentence is too short to be a real paragraph (target ≥1 clause with ≥2 dialect words)."
+    },
+    {
+      "id": "tr_seed_098",
+      "hadrami": "انتبه تأكل من اليلييله تراها تدوخ.",
+      "msa_gold": "احذر من أكل نبات الجليجلة فهو يسبب الدوار.",
+      "source_entry_id": 161,
+      "source_headword": "الجليجلة",
+      "annotators": [
+        "lexicon_example"
+      ],
+      "agreement": "single-source — needs second-annotator review",
+      "_review_note": "this gold MSA came verbatim from the lexicon's examples field. Reviewer must: (1) confirm the MSA is faithful and idiomatic, (2) edit if too literal, (3) flag if the Hadrami sentence is too short to be a real paragraph (target ≥1 clause with ≥2 dialect words)."
+    },
+    {
+      "id": "tr_seed_099",
+      "hadrami": "بطل كدم وصياح.",
+      "msa_gold": "توقف عن الضرب والصراخ.",
+      "source_entry_id": 734,
+      "source_headword": "الكدم",
+      "annotators": [
+        "lexicon_example"
+      ],
+      "agreement": "single-source — needs second-annotator review",
+      "_review_note": "this gold MSA came verbatim from the lexicon's examples field. Reviewer must: (1) confirm the MSA is faithful and idiomatic, (2) edit if too literal, (3) flag if the Hadrami sentence is too short to be a real paragraph (target ≥1 clause with ≥2 dialect words)."
+    },
+    {
+      "id": "tr_seed_100",
+      "hadrami": "فيني رشوح في رجلي من المشي.",
+      "msa_gold": "أشعر بألم في قدمي نتيجة المشي.",
+      "source_entry_id": 348,
+      "source_headword": "الرشوح",
+      "annotators": [
+        "lexicon_example"
+      ],
+      "agreement": "single-source — needs second-annotator review",
+      "_review_note": "this gold MSA came verbatim from the lexicon's examples field. Reviewer must: (1) confirm the MSA is faithful and idiomatic, (2) edit if too literal, (3) flag if the Hadrami sentence is too short to be a real paragraph (target ≥1 clause with ≥2 dialect words)."
+    }
+  ],
+  "_todo": [
+    "Have 2 native speakers re-translate each Hadrami sentence independently; compare to the lexicon-provided MSA; resolve disagreements.",
+    "Add ~30 longer paragraph items (mixed dialect + MSA + code-switching) for paragraph-level evaluation."
+  ]
+}

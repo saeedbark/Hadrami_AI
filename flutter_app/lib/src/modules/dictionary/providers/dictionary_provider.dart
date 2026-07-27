@@ -12,6 +12,20 @@ class SelectedLetter extends _$SelectedLetter {
   void setLetter(String? value) => state = value;
 }
 
+@Riverpod(keepAlive: true)
+class SelectedPos extends _$SelectedPos {
+  @override
+  String? build() => null;
+  void setPos(String? value) => state = value;
+}
+
+@Riverpod(keepAlive: true)
+class SelectedTag extends _$SelectedTag {
+  @override
+  String? build() => null;
+  void setTag(String? value) => state = value;
+}
+
 @riverpod
 class WordList extends _$WordList {
   int _currentPage = 1;
@@ -25,9 +39,11 @@ class WordList extends _$WordList {
     _currentPage = 1;
     _reachedMax = false;
     final letter = ref.watch(selectedLetterProvider);
+    final pos = ref.watch(selectedPosProvider);
+    final tag = ref.watch(selectedTagProvider);
     final result = await ref
         .read(apiServiceProvider)
-        .listWords(page: 1, letter: letter);
+        .listWords(page: 1, letter: letter, pos: pos, tag: tag);
     _total = result.total;
     _reachedMax = result.results.length >= _total;
     return result.results;
@@ -40,9 +56,17 @@ class WordList extends _$WordList {
     _currentPage++;
 
     final letter = ref.read(selectedLetterProvider);
+    final pos = ref.read(selectedPosProvider);
+    final tag = ref.read(selectedTagProvider);
     final result = await ref
         .read(apiServiceProvider)
-        .listWords(page: _currentPage, size: ApiConfig.defaultPageSize, letter: letter);
+        .listWords(
+          page: _currentPage,
+          size: ApiConfig.defaultPageSize,
+          letter: letter,
+          pos: pos,
+          tag: tag,
+        );
 
     _total = result.total;
     final current = state.value ?? [];
