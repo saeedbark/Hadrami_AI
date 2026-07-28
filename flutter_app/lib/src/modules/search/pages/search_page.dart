@@ -6,6 +6,7 @@ import 'package:hadrami_nlp/src/modules/search/providers/search_provider.dart';
 import 'package:hadrami_nlp/src/widgets/app_scaffold.dart';
 import 'package:hadrami_nlp/src/widgets/empty_state.dart';
 import 'package:hadrami_nlp/src/widgets/loading_widget.dart';
+import 'package:hadrami_nlp/src/widgets/text_input.dart';
 
 class SearchPage extends HookConsumerWidget {
   const SearchPage({super.key});
@@ -25,27 +26,24 @@ class SearchPage extends HookConsumerWidget {
           preferredSize: const Size.fromHeight(70),
           child: Padding(
             padding: const EdgeInsets.fromLTRB(16, 0, 16, 12),
-            child: TextField(
+            child: AppTextField(
               controller: controller,
               autofocus: true,
-              textDirection: TextDirection.rtl,
+              hintText: 'ابحث بالحضرمي أو الفصحى...',
               onChanged: (value) =>
                   ref.read(searchQueryProvider.notifier).set(value),
-              decoration: InputDecoration(
-                hintText: 'ابحث بالحضرمي أو الفصحى...',
-                prefixIcon: const Icon(Icons.search_rounded),
-                suffixIcon: hasQuery
-                    ? IconButton(
-                        icon: const Icon(Icons.clear_rounded),
-                        onPressed: () {
-                          controller.clear();
-                          ref
-                              .read(searchQueryProvider.notifier)
-                              .setImmediate('');
-                        },
-                      )
-                    : null,
-              ),
+              prefixIcon: const Icon(Icons.search_rounded),
+              suffixIcon: hasQuery
+                  ? IconButton(
+                      icon: const Icon(Icons.clear_rounded),
+                      onPressed: () {
+                        controller.clear();
+                        ref
+                            .read(searchQueryProvider.notifier)
+                            .setImmediate('');
+                      },
+                    )
+                  : null,
             ),
           ),
         ),

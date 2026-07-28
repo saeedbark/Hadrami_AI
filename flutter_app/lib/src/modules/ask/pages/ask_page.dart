@@ -11,6 +11,7 @@ import 'package:hadrami_nlp/src/modules/ask/providers/ask_provider.dart';
 import 'package:hadrami_nlp/src/widgets/app_scaffold.dart';
 import 'package:hadrami_nlp/src/widgets/content_shell.dart';
 import 'package:hadrami_nlp/src/widgets/hadrami_highlighted_text.dart';
+import 'package:hadrami_nlp/src/widgets/text_input.dart';
 
 Widget _askAnswerBody(
   String answer,
@@ -116,21 +117,18 @@ class AskPage extends ConsumerWidget {
           return ListView(
             padding: const EdgeInsets.all(16),
             children: [
-              ReactiveTextField<String>(
+              AppTextField(
                 formControlName: AskFormModelForm.questionControlName,
-                textDirection: TextDirection.rtl,
                 textInputAction: TextInputAction.send,
-                onSubmitted: (_) => send(),
+                onSubmitted: send,
                 minLines: 1,
                 maxLines: 4,
                 validationMessages: {
                   ValidationMessage.required: (_) => 'السؤال مطلوب',
                   ValidationMessage.minLength: (_) => 'أدخل سؤالا أوضح',
                 },
-                decoration: const InputDecoration(
-                  hintText: 'اسأل عن كلمة أو عبارة حضرمية...',
-                  prefixIcon: Icon(Icons.chat_rounded),
-                ),
+                hintText: 'اسأل عن كلمة أو عبارة حضرمية...',
+                prefixIcon: const Icon(Icons.chat_rounded),
               ),
               const SizedBox(height: 12),
               FilledButton.icon(

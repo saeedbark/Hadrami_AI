@@ -5,6 +5,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:hadrami_nlp/src/core/models/word_entry.dart';
 import 'package:hadrami_nlp/src/core/services/api_service.dart';
 import 'package:hadrami_nlp/src/modules/favorites/providers/favorites_provider.dart';
+import 'package:hadrami_nlp/src/widgets/text_input.dart';
 
 class WordDetailSheet extends HookConsumerWidget {
   const WordDetailSheet({super.key, required this.entry});
@@ -408,15 +409,11 @@ class WordDetailSheet extends HookConsumerWidget {
               ),
               if (showFeedback.value) ...[
                 const SizedBox(height: 12),
-                TextField(
+                AppTextField(
                   controller: feedbackController,
-                  textDirection: TextDirection.rtl,
-                  decoration: InputDecoration(
-                    hintText: 'الترجمة الصحيحة للفصحى...',
-                    border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(10)),
-                    filled: true,
-                  ),
+                  variant: AppTextFieldVariant.compact,
+                  borderRadius: BorderRadius.circular(10),
+                  hintText: 'الترجمة الصحيحة للفصحى...',
                 ),
                 const SizedBox(height: 8),
                 FilledButton.icon(
