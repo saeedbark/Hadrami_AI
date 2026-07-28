@@ -78,7 +78,9 @@ Both `backend/` and `flutter_app/` deploy to **separate Vercel projects** (`hadr
 **Frontend (Flutter/Dart)**
 - Standard `flutter_lints` rules (`flutter_app/analysis_options.yaml`), nothing customized.
 - Module layout: `lib/src/modules/<feature>/{pages,providers,forms,widgets}/`. New features should follow this shape.
+- Cross-feature shared widgets live in `lib/src/widgets/` (e.g. `app_scaffold.dart`, `empty_state.dart`), not inside a module's own `widgets/` folder.
 - `ApiService` (`lib/src/core/services/api_service.dart`) is the single HTTP boundary — every method catches its own errors and returns an Arabic-language fallback/error state rather than throwing. Match this pattern for new endpoints; don't let exceptions propagate into widgets.
+- **Text input fields:** use `AppTextField` (`lib/src/widgets/text_input.dart`) instead of a raw `TextField`/`ReactiveTextField`. It switches internally between a plain `TextEditingController` and a `reactive_forms` `formControlName` (pass exactly one), and exposes an `AppTextFieldVariant` (`standard`/`pill`/`compact`) for the few real visual differences that exist across the app (default themed field, the borderless chat pill, the dictionary feedback box's custom radius). Don't hand-roll a new `InputDecoration` for a text field — extend `AppTextField`'s variant enum instead if a genuinely new look is needed.
 - Generated files (`*.freezed.dart`, `*.g.dart`, `*.gform.dart`) are gitignored and must be regenerated after touching annotated classes:
   ```bash
   dart run build_runner build --delete-conflicting-outputs
