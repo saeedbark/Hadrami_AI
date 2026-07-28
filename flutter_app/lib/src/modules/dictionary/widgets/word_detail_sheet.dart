@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:hadrami_nlp/src/core/models/dictionary_labels.dart';
 import 'package:hadrami_nlp/src/core/models/word_entry.dart';
 import 'package:hadrami_nlp/src/core/services/api_service.dart';
 import 'package:hadrami_nlp/src/modules/favorites/providers/favorites_provider.dart';
@@ -154,12 +155,15 @@ class WordDetailSheet extends HookConsumerWidget {
                 runSpacing: 6,
                 children: [
                   if (entry.pos != null && entry.pos!.isNotEmpty)
-                    _PosChip(label: entry.pos!),
+                    _PosChip(rawPos: entry.pos!),
                   if (entry.region != 'General' && entry.region.isNotEmpty)
-                    _TagChip(label: entry.region, icon: Icons.place_rounded),
+                    _TagChip(
+                      label: WordRegion.arabicLabelFor(entry.region),
+                      icon: Icons.place_rounded,
+                    ),
                   if (entry.tags != null)
                     ...entry.tags!.map((tag) => _TagChip(
-                          label: tag,
+                          label: tagArabicLabel(tag),
                           icon: Icons.label_rounded,
                         )),
                 ],
@@ -436,8 +440,8 @@ class WordDetailSheet extends HookConsumerWidget {
 }
 
 class _PosChip extends StatelessWidget {
-  const _PosChip({required this.label});
-  final String label;
+  const _PosChip({required this.rawPos});
+  final String rawPos;
 
   static const _posColors = {
     'Noun': Colors.indigo,
@@ -448,10 +452,11 @@ class _PosChip extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final color = _posColors[label] ?? Colors.grey;
+    final color = _posColors[rawPos] ?? Colors.grey;
     return Chip(
       avatar: Icon(Icons.label_rounded, size: 14, color: color),
-      label: Text(label, style: TextStyle(fontSize: 11, color: color)),
+      label: Text(PartOfSpeech.arabicLabelFor(rawPos),
+          style: TextStyle(fontSize: 11, color: color)),
       visualDensity: VisualDensity.compact,
       materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
       side: BorderSide(color: color.withValues(alpha: 0.3)),
