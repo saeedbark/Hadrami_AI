@@ -6,6 +6,7 @@ import 'package:hadrami_nlp/src/core/providers/theme_provider.dart';
 import 'package:hadrami_nlp/src/core/services/api_service.dart';
 import 'package:hadrami_nlp/src/widgets/app_scaffold.dart';
 import 'package:hadrami_nlp/src/widgets/content_shell.dart';
+import 'package:hadrami_nlp/src/widgets/text_input.dart';
 
 class SettingsPage extends HookConsumerWidget {
   const SettingsPage({super.key});
@@ -84,14 +85,12 @@ class SettingsPage extends HookConsumerWidget {
                 const Text('عنوان الـ API:',
                     style: TextStyle(fontSize: 13)),
                 const SizedBox(height: 8),
-                TextField(
+                AppTextField(
                   controller: urlController,
                   textDirection: TextDirection.ltr,
                   style: const TextStyle(fontSize: 14),
-                  decoration: const InputDecoration(
-                    hintText: 'http://10.0.2.2:8000',
-                    isDense: true,
-                  ),
+                  hintText: 'http://10.0.2.2:8000',
+                  isDense: true,
                 ),
                 const SizedBox(height: 6),
                 Text(

@@ -11,6 +11,7 @@ import 'package:hadrami_nlp/src/modules/phrase/providers/phrase_translate_provid
 import 'package:hadrami_nlp/src/widgets/app_scaffold.dart';
 import 'package:hadrami_nlp/src/widgets/content_shell.dart';
 import 'package:hadrami_nlp/src/widgets/hadrami_highlighted_text.dart';
+import 'package:hadrami_nlp/src/widgets/text_input.dart';
 
 /// Web: avoid [SelectableText] next to [TextField] (Flutter web input assertion).
 Widget _plainResultText(String text, ColorScheme colorScheme, bool isError) {
@@ -94,11 +95,10 @@ class PhraseTranslatePage extends HookConsumerWidget {
                   multiSelectionEnabled: false,
                 ),
                 const SizedBox(height: 16),
-                ReactiveTextField<String>(
+                AppTextField(
                   formControlName: PhraseFormModelForm.phraseControlName,
                   minLines: 3,
                   maxLines: 8,
-                  textDirection: TextDirection.rtl,
                   textInputAction: TextInputAction.newline,
                   inputFormatters: [
                     LengthLimitingTextInputFormatter(
@@ -111,13 +111,10 @@ class PhraseTranslatePage extends HookConsumerWidget {
                     ValidationMessage.maxLength: (_) =>
                         'الحد الأعلى ${PhraseTranslateConfig.maxLength} حرفاً',
                   },
-                  decoration: const InputDecoration(
-                    hintText:
-                        'من ${PhraseTranslateConfig.minLength} إلى ${PhraseTranslateConfig.maxLength} حرفاً (أفضل جودة حتى ${PhraseTranslateConfig.softRecommendLength})',
-                    alignLabelWithHint: true,
-                    border: OutlineInputBorder(),
-                    prefixIcon: Icon(Icons.translate),
-                  ),
+                  alignLabelWithHint: true,
+                  hintText:
+                      'من ${PhraseTranslateConfig.minLength} إلى ${PhraseTranslateConfig.maxLength} حرفاً (أفضل جودة حتى ${PhraseTranslateConfig.softRecommendLength})',
+                  prefixIcon: const Icon(Icons.translate),
                 ),
                 ReactiveValueListenableBuilder<String>(
                   formControl: formModel.phraseControl,

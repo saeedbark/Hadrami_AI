@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hadrami_nlp/src/widgets/text_input.dart';
 
 class ChatInput extends StatefulWidget {
   const ChatInput({
@@ -69,26 +70,14 @@ class _ChatInputState extends State<ChatInput> {
                 color: colorScheme.surfaceContainerHigh,
                 borderRadius: BorderRadius.circular(24),
               ),
-              child: TextField(
+              child: AppTextField(
                 controller: _controller,
-                textDirection: TextDirection.rtl,
+                variant: AppTextFieldVariant.pill,
                 enabled: widget.enabled,
                 maxLines: null,
                 textInputAction: TextInputAction.newline,
-                onSubmitted: (_) => _send(),
-                decoration: InputDecoration(
-                  hintText: 'اسأل عن اللهجة الحضرمية...',
-                  hintTextDirection: TextDirection.rtl,
-                  border: InputBorder.none,
-                  contentPadding: const EdgeInsets.symmetric(
-                    horizontal: 16,
-                    vertical: 10,
-                  ),
-                  hintStyle: TextStyle(
-                    color: colorScheme.outline,
-                    fontSize: 14,
-                  ),
-                ),
+                onSubmitted: _send,
+                hintText: 'اسأل عن اللهجة الحضرمية...',
                 style: const TextStyle(fontSize: 15),
               ),
             ),
