@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:hadrami_nlp/src/modules/dictionary/providers/dictionary_provider.dart';
 import 'package:hadrami_nlp/src/modules/dictionary/widgets/word_card.dart';
+import 'package:hadrami_nlp/src/widgets/animated_appear.dart';
 import 'package:hadrami_nlp/src/widgets/app_scaffold.dart';
 import 'package:hadrami_nlp/src/widgets/empty_state.dart';
 import 'package:hadrami_nlp/src/widgets/error_widget.dart';
@@ -129,7 +130,11 @@ class DictionaryPage extends HookConsumerWidget {
                             child: CircularProgressIndicator.adaptive()),
                       );
                     }
-                    return WordCard(entry: words[i]);
+                    return AnimatedAppear(
+                      duration: const Duration(milliseconds: 280),
+                      delay: Duration(milliseconds: 20 * (i < 12 ? i : 12)),
+                      child: WordCard(entry: words[i]),
+                    );
                   },
                 );
               },
