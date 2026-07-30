@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:hadrami_nlp/src/core/models/dictionary_labels.dart';
 import 'package:hadrami_nlp/src/modules/dictionary/providers/dictionary_provider.dart';
 import 'package:hadrami_nlp/src/modules/dictionary/widgets/word_card.dart';
 import 'package:hadrami_nlp/src/widgets/animated_appear.dart';
@@ -217,15 +218,17 @@ class _PosAndCategoryFilter extends StatelessWidget {
   final WidgetRef ref;
 
   static const _posOptions = ['Noun', 'Verb', 'Adjective', 'Expression'];
+  // Supabase stores tags lowercased — these must match exactly since the
+  // backend filter (`.contains("tags", ...)`) is a case-sensitive match.
   static const _tagOptions = [
-    'Nature',
-    'Behavior',
-    'Wisdom',
-    'Insects',
-    'Food',
-    'Social',
-    'Emotions',
-    'Daily Life',
+    'nature',
+    'behavior',
+    'wisdom',
+    'insects',
+    'food',
+    'social',
+    'emotions',
+    'daily life',
   ];
 
   @override
@@ -243,6 +246,7 @@ class _PosAndCategoryFilter extends StatelessWidget {
             hint: 'نوع الكلمة',
             icon: Icons.label_rounded,
             items: _posOptions,
+            labelOf: PartOfSpeech.arabicLabelFor,
             onChanged: (v) => ref.read(selectedPosProvider.notifier).setPos(v),
           ),
           const SizedBox(width: 6),
@@ -252,6 +256,7 @@ class _PosAndCategoryFilter extends StatelessWidget {
             hint: 'التصنيف',
             icon: Icons.category_rounded,
             items: _tagOptions,
+            labelOf: tagArabicLabel,
             onChanged: (v) =>
                 ref.read(selectedTagProvider.notifier).setTag(v),
           ),
@@ -266,6 +271,7 @@ class _PosAndCategoryFilter extends StatelessWidget {
     required String hint,
     required IconData icon,
     required List<String> items,
+    required String Function(String) labelOf,
     required ValueChanged<String?> onChanged,
   }) {
     final colorScheme = Theme.of(context).colorScheme;
@@ -308,7 +314,8 @@ class _PosAndCategoryFilter extends StatelessWidget {
           isDense: true,
           style: TextStyle(fontSize: 11, color: colorScheme.onSurface),
           items: items
-              .map((item) => DropdownMenuItem(value: item, child: Text(item)))
+              .map((item) =>
+                  DropdownMenuItem(value: item, child: Text(labelOf(item))))
               .toList(),
           onChanged: onChanged,
         ),

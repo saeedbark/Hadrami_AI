@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:hadrami_nlp/src/core/models/dictionary_labels.dart';
 import 'package:hadrami_nlp/src/core/models/word_entry.dart';
 import 'package:hadrami_nlp/src/modules/dictionary/widgets/word_detail_sheet.dart';
 import 'package:hadrami_nlp/src/modules/favorites/providers/favorites_provider.dart';
@@ -83,14 +84,14 @@ class WordCard extends ConsumerWidget {
                       Row(
                         children: [
                           _MiniTag(
-                            label: entry.pos!,
+                            label: PartOfSpeech.arabicLabelFor(entry.pos!),
                             color: _posColor(entry.pos!),
                           ),
                           if (entry.tags != null &&
                               entry.tags!.isNotEmpty) ...[
                             const SizedBox(width: 4),
                             _MiniTag(
-                              label: entry.tags!.first,
+                              label: tagArabicLabel(entry.tags!.first),
                               color: colorScheme.secondary,
                             ),
                           ],

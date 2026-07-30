@@ -401,7 +401,7 @@ User must create backend/.env with:
 
 
 
-SUPABASE_URL=https://notmkrzxycbtipdrnhpj.supabase.co
+SUPABASE_URL=https://your-project-ref.supabase.co
 
 
 
@@ -409,7 +409,7 @@ SUPABASE_SERVICE_KEY=<service-role key from Supabase dashboard>
 
 
 
-GEMINI_API_KEY=AIzaSyC0u6mcM4wQb8mOzic2ztkx7AbIGF3N4GI
+GEMINI_API_KEY=<your Gemini API key>
 
 
 
