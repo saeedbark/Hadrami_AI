@@ -151,7 +151,7 @@ class _EmptyChat extends StatelessWidget {
               ),
               const SizedBox(height: 8),
               Text(
-                'اسألني عن أي كلمة أو عبارة حضرمية، أو اطلب ترجمة جملة',
+                'اسألني عن أي كلمة أو عبارة حضرمية، أو اطلب تحويل جملة إلى الفصحى',
                 textAlign: TextAlign.center,
                 textDirection: TextDirection.rtl,
                 style: textTheme.bodyMedium?.copyWith(
@@ -166,7 +166,7 @@ class _EmptyChat extends StatelessWidget {
                 alignment: WrapAlignment.center,
                 children: [
                   _SuggestionChip(label: 'ما معنى كلمة ويش؟'),
-                  _SuggestionChip(label: 'ترجم: كيف حالك؟'),
+                  _SuggestionChip(label: 'حوّل إلى الفصحى: كيف حالك؟'),
                   _SuggestionChip(label: 'أمثال حضرمية شهيرة'),
                 ],
               ),

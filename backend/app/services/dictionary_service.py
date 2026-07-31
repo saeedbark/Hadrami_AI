@@ -23,7 +23,7 @@ from ..core.data_store import (
     rpc_match_entries,
     rpc_search_entries_expanded,
 )
-from ..schemas import TranslateResponse
+from ..schemas import InterpretResponse
 
 _AR_LETTER_ORDER = (
     "أ", "إ", "آ", "ا", "ب", "ت", "ث", "ج", "ح", "خ",
@@ -110,7 +110,7 @@ def get_stats() -> dict[str, Any]:
 
     return {
         "total_words": total,
-        "translated": with_fusha,
+        "completed": with_fusha,
         "pending": total - with_fusha,
         "completion_percent": round(with_fusha / total * 100, 1) if total else 0,
         "by_pos": pos_counts,
@@ -119,7 +119,7 @@ def get_stats() -> dict[str, Any]:
     }
 
 
-def translate(query: str) -> TranslateResponse:
+def interpret(query: str) -> InterpretResponse:
     clean = query.strip()
     norm = _normalize_alef(clean)
 
@@ -131,7 +131,7 @@ def translate(query: str) -> TranslateResponse:
     )
     if resp.data:
         e = resp.data[0]
-        return TranslateResponse(
+        return InterpretResponse(
             found=True,
             word_vocalized=e["word_vocalized"],
             fusha_equivalent=e.get("fusha_equivalent", ""),
@@ -147,7 +147,7 @@ def translate(query: str) -> TranslateResponse:
     )
     if resp.data:
         e = resp.data[0]
-        return TranslateResponse(
+        return InterpretResponse(
             found=True,
             word_vocalized=e["word_vocalized"],
             fusha_equivalent=e.get("fusha_equivalent", ""),
@@ -164,7 +164,7 @@ def translate(query: str) -> TranslateResponse:
     )
     if resp.data:
         e = resp.data[0]
-        return TranslateResponse(
+        return InterpretResponse(
             found=True,
             word_vocalized=e["word_vocalized"],
             fusha_equivalent=e.get("fusha_equivalent", ""),
@@ -180,7 +180,7 @@ def translate(query: str) -> TranslateResponse:
     )
     if resp.data:
         e = resp.data[0]
-        return TranslateResponse(
+        return InterpretResponse(
             found=True,
             word_vocalized=e["word_vocalized"],
             fusha_equivalent=e.get("fusha_equivalent", ""),
@@ -188,7 +188,7 @@ def translate(query: str) -> TranslateResponse:
             confidence="partial",
         )
 
-    return TranslateResponse(
+    return InterpretResponse(
         found=False,
         word_vocalized=clean,
         fusha_equivalent="",
@@ -197,12 +197,46 @@ def translate(query: str) -> TranslateResponse:
     )
 
 
-def search(query: str, limit: int) -> dict[str, Any]:
-    """Keyword search with client-side relevance scoring."""
+def _matches_entry_filters(
+    entry: dict[str, Any],
+    pos: Optional[str],
+    region: Optional[str],
+    tag: Optional[str],
+) -> bool:
+    if pos and entry.get("pos") != pos:
+        return False
+    if region and entry.get("region") != region:
+        return False
+    if tag:
+        tags = entry.get("tags")
+        if not isinstance(tags, list) or tag not in tags:
+            return False
+    return True
+
+
+def search(
+    query: str,
+    limit: int,
+    pos: Optional[str] = None,
+    region: Optional[str] = None,
+    tag: Optional[str] = None,
+) -> dict[str, Any]:
+    """Keyword search with client-side relevance scoring.
+
+    ``pos``/``region``/``tag`` are applied as an additional AND filter on top of
+    the text match, so callers combining a free-text query with the same
+    dropdown filters used by ``list_words`` get results matching both.
+    """
     clean = query.strip()
     norm = _normalize_alef(clean)
+    has_filter = bool(pos or region or tag)
+    # Fetch extra candidates when filtering client-side, since the filter can
+    # discard some of the top text-match hits.
+    fetch_count = max(limit * (5 if has_filter else 3), limit)
     try:
-        rows = rpc_search_entries_expanded(clean, match_count=max(limit * 3, limit))
+        rows = rpc_search_entries_expanded(clean, match_count=fetch_count)
+        if has_filter:
+            rows = [r for r in rows if _matches_entry_filters(r, pos, region, tag)]
         if rows:
             top_score = max(int(r.get("match_score") or 0) for r in rows)
             return {"total": len(rows), "results": rows[:limit], "top_score": top_score}
@@ -219,10 +253,12 @@ def search(query: str, limit: int) -> dict[str, Any]:
             f"fusha_equivalent.ilike.{pattern},"
             f"definition.ilike.{pattern}"
         )
-        .limit(limit * 3)
+        .limit(fetch_count)
         .execute()
     )
     candidates = resp.data or []
+    if has_filter:
+        candidates = [c for c in candidates if _matches_entry_filters(c, pos, region, tag)]
 
     scored: list[tuple[int, dict[str, Any]]] = []
     for entry in candidates:
@@ -423,7 +459,7 @@ def _score_phrase_token_match(cand: str, entry: dict[str, Any]) -> int:
 
 
 def search_phrase_lexicon(query: str, limit: int) -> dict[str, Any]:
-    """Lexicon hits for phrase translation -- token-wise scoring."""
+    """Lexicon hits for phrase conversion -- token-wise scoring."""
     candidates = _extract_search_candidates(query)
     all_entries: list[dict[str, Any]] = []
     seen_ids: set[int] = set()

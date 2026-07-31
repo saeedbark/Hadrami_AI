@@ -11,23 +11,26 @@ from __future__ import annotations
 import re
 from typing import Any
 
-from ..core.config import PHRASE_TRANSLATE_LONG_HINT_CHARS
+from ..core.config import PHRASE_CONVERT_LONG_HINT_CHARS
 from .text_utils import first_example, synonyms_from_entry
 
 
 _USAGE_EXAMPLE_PATTERN = re.compile(r"\)\s*:\s*([^()]+?)\s*\(", re.UNICODE)
 
 
-_TRANSLATION_INTENT_PATTERN = re.compile(
+# Matches how users actually phrase a conversion request ("ترجم", "translate",
+# "حول إلى الفصحى", ...) -- this is user-facing vocabulary we detect, not
+# terminology the app itself uses to describe the feature.
+_CONVERSION_INTENT_PATTERN = re.compile(
     r"(ترجم|ترجمة|إلى\s*الفصحى|إلى\s*العربية|بالفصحى|بالعربية\s*الفصحى|"
     r"translate|حول\s*إلى\s*الفصحى|عبر\s*إلى\s*الفصحى|فصحى\s*هذه)",
     re.IGNORECASE,
 )
 
 
-def looks_like_translation_request(question: str) -> bool:
+def looks_like_conversion_request(question: str) -> bool:
     q = (question or "").strip()
-    return bool(q) and bool(_TRANSLATION_INTENT_PATTERN.search(q))
+    return bool(q) and bool(_CONVERSION_INTENT_PATTERN.search(q))
 
 
 # ---------------------------------------------------------------------------
@@ -70,7 +73,7 @@ def ask_context_block(entries: list[dict], definition_max_chars: int = 160) -> s
 
 
 def phrase_context_block(entries: list[dict], *, definition_cap: int) -> str:
-    """Compact one-entry-per-line block used by the phrase translator.
+    """Compact one-entry-per-line block used by the phrase converter.
 
     Wrapped in ``[CONTEXT START]`` / ``[CONTEXT END]`` markers to match the
     unified system prompt's retrieval contract.
@@ -133,7 +136,7 @@ def prompt_for_gemini(question: str, context_entries: list[dict]) -> str:
 
 
 # ---------------------------------------------------------------------------
-# /ask — Hadrami→MSA translation sub-prompt
+# /ask — Hadrami→MSA conversion sub-prompt
 # ---------------------------------------------------------------------------
 
 def _few_shot_pairs_from_entry(entry: dict[str, Any]) -> list[tuple[str, str]]:
@@ -164,8 +167,8 @@ def _few_shot_pairs_from_entry(entry: dict[str, Any]) -> list[tuple[str, str]]:
     return out[:2]
 
 
-def translation_prompt(question: str, context_entries: list[dict]) -> str:
-    """Hadrami→MSA translation prompt: demand grounding in retrieved lexicon only."""
+def conversion_prompt(question: str, context_entries: list[dict]) -> str:
+    """Hadrami→MSA conversion prompt: demand grounding in retrieved lexicon only."""
     blocks: list[str] = []
     for e in context_entries[:12]:
         for had, fusha in _few_shot_pairs_from_entry(e):
@@ -176,7 +179,7 @@ def translation_prompt(question: str, context_entries: list[dict]) -> str:
             if not had_clean or not fusha_clean:
                 continue
             blocks.append(
-                f"- Hadrami Example: {had_clean}\n  - Fusha Translation: {fusha_clean}"
+                f"- Hadrami Example: {had_clean}\n  - Fusha Rendering: {fusha_clean}"
             )
         if len(blocks) >= 16:
             break
@@ -184,29 +187,29 @@ def translation_prompt(question: str, context_entries: list[dict]) -> str:
     if blocks:
         reference_text = "\n\n".join(blocks)
         intro = (
-            "You are a professional translator from Hadrami Arabic to Modern Standard Arabic. "
+            "You convert Hadrami Arabic dialect into Modern Standard Arabic (MSA). "
             "Every content word mapping MUST be licensed by the Hadrami↔MSA pairs below. "
             "Do not invent senses, synonyms, or free paraphrase beyond what these pairs support. "
-            "If the sentence cannot be translated faithfully from these pairs alone, output exactly one line:\n"
-            "لم يُسترجَع قاموسياً ما يكفي لترجمة هذه الجملة بدقة."
+            "If the sentence cannot be converted faithfully from these pairs alone, output exactly one line:\n"
+            "لم يُسترجَع قاموسياً ما يكفي لتحويل هذه الجملة بدقة."
         )
     else:
         reference_text = ask_context_block(context_entries, definition_max_chars=220)
         intro = (
-            "You are a professional translator from Hadrami Arabic to Modern Standard Arabic. "
-            "You MUST ground the translation ONLY in the Arabic lexicon excerpt below "
+            "You convert Hadrami Arabic dialect into Modern Standard Arabic (MSA). "
+            "You MUST ground the conversion ONLY in the Arabic lexicon excerpt below "
             "(headwords, MSA glosses, definitions, examples). "
             "Do not use general bilingual knowledge to fill gaps. "
-            "If the excerpt does not license a faithful full-sentence translation, output exactly:\n"
-            "لم يُسترجَع قاموسياً ما يكفي لترجمة هذه الجملة بدقة.\n"
-            "Otherwise output only the MSA translation."
+            "If the excerpt does not license a faithful full-sentence conversion, output exactly:\n"
+            "لم يُسترجَع قاموسياً ما يكفي لتحويل هذه الجملة بدقة.\n"
+            "Otherwise output only the MSA rendering."
         )
 
     return f"""{intro}
 
 {reference_text}
 
-Translate the following Hadrami text to Modern Standard Arabic. Output only the MSA translation, or the exact refusal sentence above:
+Convert the following Hadrami text into Modern Standard Arabic. Output only the MSA rendering, or the exact refusal sentence above:
 {question}"""
 
 
@@ -250,16 +253,16 @@ def chat_prompt(
 
 
 # ---------------------------------------------------------------------------
-# /translate-phrase prompt
+# /convert-phrase prompt
 # ---------------------------------------------------------------------------
 
 def phrase_prompt(text: str, direction: str, entries: list[dict]) -> str:
-    """Strict lexicon-grounded phrase translation prompt."""
+    """Strict lexicon-grounded phrase conversion prompt."""
     n = len(text)
-    def_cap = 70 if n > PHRASE_TRANSLATE_LONG_HINT_CHARS else 160
+    def_cap = 70 if n > PHRASE_CONVERT_LONG_HINT_CHARS else 160
     ctx = phrase_context_block(entries, definition_cap=def_cap)
     long_note = ""
-    if n > PHRASE_TRANSLATE_LONG_HINT_CHARS:
+    if n > PHRASE_CONVERT_LONG_HINT_CHARS:
         long_note = (
             "\n\nالنص طويل: حافظ على ترتيب الجمل والفقرات دون حذف. "
             "في hadrami_spans أدرج على الأكثر 12 إدخالاً، وأدرج فقط أشكالاً "
@@ -267,7 +270,7 @@ def phrase_prompt(text: str, direction: str, entries: list[dict]) -> str:
         )
     if direction == "ar_to_hadrami":
         task = (
-            "ترجم النص من العربية الفصحى إلى اللهجة الحضرمية. "
+            "حوّل النص من العربية الفصحى إلى اللهجة الحضرمية. "
             "كل كلمة لهجية في ناتجك يجب أن تكون مذكورة في قائمة القاموس "
             "أعلاه (كمدخل أو مرادف أو ظاهرة في مثال). "
             "حروف الجر والضمائر والأدوات المشتركة مع الفصحى مسموحة دون قيد."
@@ -278,7 +281,7 @@ def phrase_prompt(text: str, direction: str, entries: list[dict]) -> str:
         )
     else:
         task = (
-            "ترجم النص من اللهجة الحضرمية إلى العربية الفصحى. "
+            "حوّل النص من اللهجة الحضرمية إلى العربية الفصحى. "
             "كل كلمة فصحى تقابل لفظاً لهجياً في النص يجب أن تُستمد من "
             "عمود «فصحى» أو من شرح مدخل قاموسي ورد في القائمة أعلاه. "
             "لا تعتمد على معرفتك العامة بمعاني الألفاظ الحضرمية."
@@ -290,13 +293,13 @@ def phrase_prompt(text: str, direction: str, entries: list[dict]) -> str:
 
     empty_rule = (
         "\nإن لم تتضمن قائمة القاموس أي مدخل ذي صلة بالنص، "
-        "أعد translated_text كسلسلة فارغة وأضف حقل note بالقيمة "
+        "أعد converted_text كسلسلة فارغة وأضف حقل note بالقيمة "
         '"insufficient_lexicon_coverage" وhadrami_spans فارغة.'
         if not entries
         else ""
     )
 
-    return f"""أنت مترجم بحثي مقيَّد بقاموس حضرمي-فصحى.
+    return f"""أنت مُحوِّل لهجات بحثي مقيَّد بقاموس حضرمي-فصحى.
 التزم حرفياً بالمداخل المسترجعة؛ لا تستنتج معاني لهجية من معرفتك العامة.
 
 مراجع من القاموس (هذه هي المرجعية الوحيدة للمقابلات اللهجية):
@@ -309,9 +312,10 @@ def phrase_prompt(text: str, direction: str, entries: list[dict]) -> str:
 {text}
 
 أعد الإجابة كـ JSON صالح فقط بدون شرح أو markdown:
-{{"translated_text":"...","hadrami_spans":[{{"start":0,"end":3,"surface":"..."}}],"note":""}}
+{{"converted_text":"...","hadrami_spans":[{{"start":0,"end":3,"surface":"..."}}],"note":""}}
 
 قواعد تقنية:
-- start و end: موضعا الأحرف في translated_text (عدّ الأحرف كوحدات يونيكود، len والقطع كما في بايثون).
-- surface يجب أن يساوي translated_text[start:end].
+- start و end: موضعا الأحرف في converted_text (عدّ الأحرف كوحدات يونيكود، len والقطع كما في بايثون).
+- surface يجب أن يساوي converted_text[start:end].
 - hadrami_spans = [] إذا لم توجد مداخل قاموس مناسبة."""
+    

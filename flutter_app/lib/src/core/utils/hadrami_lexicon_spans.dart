@@ -1,7 +1,7 @@
 import 'package:hadrami_nlp/src/core/models/word_entry.dart';
 
 /// Collects highlight-able Hadrami surface forms from a list of dictionary
-/// entries (as returned by `/ask`, `/chat`, `/translate-phrase`).
+/// entries (as returned by `/ask`, `/chat`, `/convert-phrase`).
 ///
 /// The production schema exposes:
 ///   * `word_vocalized`   — canonical headword with diacritics

@@ -60,9 +60,9 @@ def main() -> None:
     for gate in values:
         os.environ["RAG_CONFIDENCE_GATE"] = str(gate)
         _reload_pipeline()
-        from app.rag.pipeline import get_chat_answer, get_translation_answer
+        from app.rag.pipeline import get_chat_answer, get_conversion_answer
 
-        # Translation slice.
+        # Conversion slice.
         hyps: list[str] = []
         refs: list[str] = []
         for it in tr_items:
@@ -71,7 +71,7 @@ def main() -> None:
             if not h or not ref:
                 continue
             try:
-                payload = get_translation_answer(h)
+                payload = get_conversion_answer(h)
                 hyps.append((payload.get("answer") or "").strip())
             except Exception as exc:  # noqa: BLE001
                 hyps.append(f"<<error:{exc!r}>>")

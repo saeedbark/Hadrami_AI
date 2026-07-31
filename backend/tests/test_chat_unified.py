@@ -1,11 +1,11 @@
 """Tests for the unified ``/chat`` dispatcher.
 
-The chat endpoint now merges ``/ask`` and translation behaviour. We verify:
+The chat endpoint now merges ``/ask`` and dialect-conversion behaviour. We verify:
 
 * The intent classifier maps the spec's TYPE 1–5 examples correctly.
 * ``get_chat_answer`` passes ``HADRAMI_SYSTEM_PROMPT`` to Gemini and threads
   the ``intent`` / ``suggest_word`` / ``answer_source`` fields through.
-* When retrieval is weak for a word/define/translate intent, the dispatcher
+* When retrieval is weak for a word/define/convert intent, the dispatcher
   short-circuits to the unknown-word block without calling Gemini.
 
 All tests stub Supabase + Gemini so the suite stays hermetic.
@@ -31,9 +31,9 @@ from app.rag.system_prompt import HADRAMI_SYSTEM_PROMPT, intent_for
         # TYPE 1 — single word
         ("بغية", "word"),
         ("أم حبيل", "word"),
-        # TYPE 2 — explicit translation directive
-        ("ترجم: إكس على كلامه", "translate"),
-        ("translate this sentence to fusha", "translate"),
+        # TYPE 2 — explicit conversion directive (user's own wording)
+        ("ترجم: إكس على كلامه", "convert"),
+        ("translate this sentence to fusha", "convert"),
         # TYPE 3 — definition
         ("ما معنى أمبوه؟", "define"),
         ("اشرح كلمة بانه", "define"),
@@ -43,8 +43,8 @@ from app.rag.system_prompt import HADRAMI_SYSTEM_PROMPT, intent_for
         # TYPE 5 — generic question
         ("هل كلمة باير تستخدم للناس؟", "qa"),
         ("كيف أقول مرحبا بالحضرمية", "qa"),
-        # multi-word free text without explicit instruction → translate fallback
-        ("أبوي قال لي إبط في شغلك لا تستعجل", "translate"),
+        # multi-word free text without explicit instruction → convert fallback
+        ("أبوي قال لي إبط في شغلك لا تستعجل", "convert"),
         # empty
         ("", "qa"),
     ],
@@ -103,8 +103,8 @@ def test_chat_qa_passes_system_prompt(monkeypatch: pytest.MonkeyPatch) -> None:
     assert result["reply"] == "إجابة من النموذج"
 
 
-def test_chat_translation_uses_phrase_retrieval(monkeypatch: pytest.MonkeyPatch) -> None:
-    """A translation directive routes through phrase retrieval + translation prompt."""
+def test_chat_conversion_uses_phrase_retrieval(monkeypatch: pytest.MonkeyPatch) -> None:
+    """A conversion directive routes through phrase retrieval + conversion prompt."""
     calls: dict[str, int] = {"phrase": 0, "rag": 0}
 
     def fake_phrase(q: str) -> tuple[list[dict], list[dict]]:
@@ -138,9 +138,9 @@ def test_chat_translation_uses_phrase_retrieval(monkeypatch: pytest.MonkeyPatch)
 
     result = pipeline.get_chat_answer("ترجم: إكس على كلامه", history=[])
 
-    assert calls["phrase"] == 1, "translation intent must use phrase retrieval"
-    assert calls["rag"] == 0, "translation intent must NOT use ask retrieval"
-    assert result["intent"] == "translate"
+    assert calls["phrase"] == 1, "convert intent must use phrase retrieval"
+    assert calls["rag"] == 0, "convert intent must NOT use ask retrieval"
+    assert result["intent"] == "convert"
     assert result["suggest_word"] is False
 
 
@@ -151,7 +151,7 @@ def test_chat_translation_uses_phrase_retrieval(monkeypatch: pytest.MonkeyPatch)
 def test_chat_unknown_word_short_circuits_to_suggest(
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
-    """Empty retrieval + word/define/translate intent emits suggest block, no LLM."""
+    """Empty retrieval + word/define/convert intent emits suggest block, no LLM."""
     gemini_called = {"n": 0}
 
     def fake_gemini(*a: Any, **kw: Any) -> str:

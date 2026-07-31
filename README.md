@@ -1,12 +1,12 @@
 # Hadrami NLP Project
 
-A bilingual dictionary and **retrieval-augmented** translation system for the
-**Hadrami dialect** of Yemeni Arabic. The system combines a curated
+A bilingual dictionary and **retrieval-augmented** dialect-conversion system
+for the **Hadrami dialect** of Yemeni Arabic. The system combines a curated
 1,000+ entry lexicon stored in Supabase (Postgres + pgvector) with
 Google Gemini generation to provide:
 
-- word-level translation (exact / partial / expanded keyword search)
-- phrase translation (MSA ↔ Hadrami) with **lexicon-grounded** prompting
+- word-level interpretation (exact / partial / expanded keyword search)
+- phrase conversion (MSA ↔ Hadrami) with **lexicon-grounded** prompting
 - semantic search over 768-dim Gemini embeddings
 - conversational Q&A (`/ask`, `/chat`) that refuses to answer when retrieval
   coverage is insufficient rather than hallucinating from general knowledge
@@ -29,12 +29,11 @@ hadrami_project/
 │   ├── app/
 │   │   ├── main.py                  ← Routes, CORS, lifespan
 │   │   ├── schemas.py               ← Pydantic request/response models
-│   │   ├── rag_engine.py            ← Backward-compat shim → app.rag.*
 │   │   ├── rag/                     ← Modular RAG pipeline
 │   │   │   ├── config.py            ← Env knobs (RAG_MODE, GEMINI_MODEL, cache TTL)
 │   │   │   ├── retrieval.py         ← Keyword / vector / phrase retrievers
 │   │   │   ├── generation.py        ← Gemini client + fallback models
-│   │   │   ├── prompts.py           ← All grounded prompts (ask, chat, translate)
+│   │   │   ├── prompts.py           ← All grounded prompts (ask, chat, convert)
 │   │   │   ├── serialization.py     ← DB-row → Pydantic Entry + response shaping
 │   │   │   ├── text_utils.py        ← Arabic normalization + span detection
 │   │   │   ├── system_prompt.py     ← HADRAMI_SYSTEM_PROMPT + intent_for() classifier
@@ -44,10 +43,10 @@ hadrami_project/
 │   │   │   ├── config.py            ← App constants, Supabase config, limits
 │   │   │   └── data_store.py        ← Supabase client + PostgREST / RPC helpers
 │   │   └── services/
-│   │       ├── dictionary_service.py        ← Search, translate, pagination, feedback
+│   │       ├── dictionary_service.py        ← Search, interpret, pagination, feedback
 │   │       ├── embedding_service.py         ← Gemini gemini-embedding-001 wrapper (768-dim)
 │   │       ├── embedding_doc.py             ← Canonical embedding-doc text (versioned, v2)
-│   │       └── phrase_translation_service.py ← Chunked phrase translation
+│   │       └── phrase_conversion_service.py ← Chunked phrase conversion
 │   ├── data/
 │   │   ├── hadrami_dataset.json     ← Main lexicon (source of truth; see schema below)
 │   │   └── eval_pairs.json          ← Held-out Hadrami↔MSA evaluation pairs
@@ -69,7 +68,7 @@ hadrami_project/
 │   │       ├── configs/             ← API URL, colors, radii, phrase limits
 │   │       ├── core/                ← Models, services, providers, routing, theme
 │   │       ├── widgets/             ← Shared UI components
-│   │       └── modules/             ← Feature modules (home, dictionary, ask, chat, phrase, …)
+│   │       └── modules/             ← Feature modules (home, dictionary, favorites, chat, landing, settings)
 │   └── pubspec.yaml
 │
 ├── scripts/
@@ -197,8 +196,8 @@ JWT — the script verifies this and refuses anon keys), and `GEMINI_API_KEY`
 | GET | `/` | API info + total entries |
 | GET | `/stats` | Dataset coverage statistics |
 | GET | `/sections` | Lexicon partitioned by first Arabic letter |
-| GET | `/translate?q=word` | Translate a single Hadrami word |
-| POST | `/translate-phrase` | Phrase translation, body: `{"text","direction"}` |
+| GET | `/interpret?q=word` | Interpret a single Hadrami word |
+| POST | `/convert-phrase` | Phrase conversion, body: `{"text","direction"}` |
 | GET | `/search?q=text&limit=20` | Scored keyword search |
 | GET | `/semantic-search?q=text&limit=10&threshold=0.3` | pgvector similarity search |
 | GET | `/words?page=1&size=20` | Paginated word list (optional `letter`, `pos`, `tag`) |
@@ -248,7 +247,7 @@ python scripts/audit_dataset.py
 
 ## Retrieval-Augmented Generation
 
-Every AI-facing endpoint (`/ask`, `/chat`, `/translate-phrase`) follows the
+Every AI-facing endpoint (`/ask`, `/chat`, `/convert-phrase`) follows the
 same lexicon-grounded contract:
 
 1. **Retrieve** — expanded keyword search (`search_entries_expanded` RPC) and
@@ -288,15 +287,19 @@ The full audit that motivated these changes is in
 
 ## App Screens (Flutter)
 
-1. **Home** — translate a word, dataset stats, word of the day.
-2. **Search** — live debounced search with result count.
-3. **Dictionary** — full word list filtered by Arabic letter.
-4. **Favorites** — locally saved words.
-5. **Ask** — grounded Q&A about the Hadrami dialect.
-6. **Chat** — multi-turn chat with grounded answers.
-7. **Phrases** — phrase-level MSA ↔ Hadrami translation with highlighted
-   Hadrami spans.
-8. **Settings** — connection test, theme toggle, about info.
+1. **Home** — interpret a word, dataset stats, word of the day.
+2. **Dictionary** — full word list filtered by Arabic letter/POS/tag, plus a
+   built-in text search (merged in from the former standalone Search screen).
+3. **Favorites** — locally saved words.
+4. **Chat** — multi-turn, grounded Q&A and dialect conversion in one surface
+   (the former single-turn Ask screen and the dedicated Phrase-translate
+   screen were merged into Chat; `/ask` and `/phrase-translate` deep links
+   redirect here).
+5. **Settings** — connection test, theme toggle, about info.
+
+The backend still exposes `/ask` and `/convert-phrase` as separate, tested
+API routes (used by the evaluation scripts in `scripts/eval/`) — only the
+dedicated frontend screens for them were removed as redundant with Chat.
 
 ---
 

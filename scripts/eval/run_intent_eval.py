@@ -32,7 +32,7 @@ def main() -> None:
 
     labels_known: list[str] = list(fixture.get("intents") or [
         "word",
-        "translate",
+        "convert",
         "define",
         "semantic",
         "qa",

@@ -10,7 +10,7 @@ Usage::
         --systems ours,no_rag
 
 Systems implemented:
-    * ``ours``    — full pipeline (``get_translation_answer``).
+    * ``ours``    — full pipeline (``get_conversion_answer``).
     * ``no_rag``  — Gemini with no retrieval and no system prompt (B1 in §5).
 
 External-baselines (Google Translate, GPT-4o) are intentionally NOT
@@ -38,9 +38,9 @@ setup_backend_path()
 
 
 def _system_ours(text: str) -> str:
-    from app.rag.pipeline import get_translation_answer
+    from app.rag.pipeline import get_conversion_answer
 
-    payload = get_translation_answer(text)
+    payload = get_conversion_answer(text)
     return (payload.get("answer") or "").strip()
 
 

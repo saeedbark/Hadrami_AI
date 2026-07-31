@@ -4,7 +4,7 @@
   "version": "0.2-candidate",
   "intents": [
     "word",
-    "translate",
+    "convert",
     "define",
     "semantic",
     "qa"
@@ -45,7 +45,7 @@
     {
       "id": "int_seed_040",
       "text": "ايش الفصحى لـ الكفاه",
-      "intent": "translate",
+      "intent": "convert",
       "_template": "ايش الفصحى لـ {w}",
       "_source_entry_id": 774,
       "_review_note": "confirm intent label is unambiguous; remove if borderline"
@@ -85,7 +85,7 @@
     {
       "id": "int_seed_037",
       "text": "ترجم: الكفاه",
-      "intent": "translate",
+      "intent": "convert",
       "_template": "ترجم: {w}",
       "_source_entry_id": 774,
       "_review_note": "confirm intent label is unambiguous; remove if borderline"
@@ -93,7 +93,7 @@
     {
       "id": "int_seed_028",
       "text": "ايش الفصحى لـ الجهر",
-      "intent": "translate",
+      "intent": "convert",
       "_template": "ايش الفصحى لـ {w}",
       "_source_entry_id": 164,
       "_review_note": "confirm intent label is unambiguous; remove if borderline"
@@ -197,7 +197,7 @@
     {
       "id": "int_seed_032",
       "text": "ايش الفصحى لـ مصرى",
-      "intent": "translate",
+      "intent": "convert",
       "_template": "ايش الفصحى لـ {w}",
       "_source_entry_id": 863,
       "_review_note": "confirm intent label is unambiguous; remove if borderline"
@@ -213,7 +213,7 @@
     {
       "id": "int_seed_021",
       "text": "ترجم: تاير",
-      "intent": "translate",
+      "intent": "convert",
       "_template": "ترجم: {w}",
       "_source_entry_id": 131,
       "_review_note": "confirm intent label is unambiguous; remove if borderline"
@@ -237,7 +237,7 @@
     {
       "id": "int_seed_029",
       "text": "ترجم: مصرى",
-      "intent": "translate",
+      "intent": "convert",
       "_template": "ترجم: {w}",
       "_source_entry_id": 863,
       "_review_note": "confirm intent label is unambiguous; remove if borderline"
@@ -285,7 +285,7 @@
     {
       "id": "int_seed_039",
       "text": "translate to fusha: الكفاه",
-      "intent": "translate",
+      "intent": "convert",
       "_template": "translate to fusha: {w}",
       "_source_entry_id": 774,
       "_review_note": "confirm intent label is unambiguous; remove if borderline"
@@ -309,7 +309,7 @@
     {
       "id": "int_seed_025",
       "text": "ترجم: الجهر",
-      "intent": "translate",
+      "intent": "convert",
       "_template": "ترجم: {w}",
       "_source_entry_id": 164,
       "_review_note": "confirm intent label is unambiguous; remove if borderline"
@@ -389,7 +389,7 @@
     {
       "id": "int_seed_038",
       "text": "ترجم هذه الجملة: قال لي الكفاه",
-      "intent": "translate",
+      "intent": "convert",
       "_template": "ترجم هذه الجملة: قال لي {w}",
       "_source_entry_id": 774,
       "_review_note": "confirm intent label is unambiguous; remove if borderline"
@@ -397,7 +397,7 @@
     {
       "id": "int_seed_026",
       "text": "ترجم هذه الجملة: قال لي الجهر",
-      "intent": "translate",
+      "intent": "convert",
       "_template": "ترجم هذه الجملة: قال لي {w}",
       "_source_entry_id": 164,
       "_review_note": "confirm intent label is unambiguous; remove if borderline"
@@ -421,7 +421,7 @@
     {
       "id": "int_seed_023",
       "text": "translate to fusha: تاير",
-      "intent": "translate",
+      "intent": "convert",
       "_template": "translate to fusha: {w}",
       "_source_entry_id": 131,
       "_review_note": "confirm intent label is unambiguous; remove if borderline"
@@ -437,7 +437,7 @@
     {
       "id": "int_seed_031",
       "text": "translate to fusha: مصرى",
-      "intent": "translate",
+      "intent": "convert",
       "_template": "translate to fusha: {w}",
       "_source_entry_id": 863,
       "_review_note": "confirm intent label is unambiguous; remove if borderline"
@@ -453,7 +453,7 @@
     {
       "id": "int_seed_035",
       "text": "translate to fusha: القناقن",
-      "intent": "translate",
+      "intent": "convert",
       "_template": "translate to fusha: {w}",
       "_source_entry_id": 706,
       "_review_note": "confirm intent label is unambiguous; remove if borderline"
@@ -477,7 +477,7 @@
     {
       "id": "int_seed_027",
       "text": "translate to fusha: الجهر",
-      "intent": "translate",
+      "intent": "convert",
       "_template": "translate to fusha: {w}",
       "_source_entry_id": 164,
       "_review_note": "confirm intent label is unambiguous; remove if borderline"
@@ -509,7 +509,7 @@
     {
       "id": "int_seed_036",
       "text": "ايش الفصحى لـ القناقن",
-      "intent": "translate",
+      "intent": "convert",
       "_template": "ايش الفصحى لـ {w}",
       "_source_entry_id": 706,
       "_review_note": "confirm intent label is unambiguous; remove if borderline"
@@ -629,7 +629,7 @@
     {
       "id": "int_seed_022",
       "text": "ترجم هذه الجملة: قال لي تاير",
-      "intent": "translate",
+      "intent": "convert",
       "_template": "ترجم هذه الجملة: قال لي {w}",
       "_source_entry_id": 131,
       "_review_note": "confirm intent label is unambiguous; remove if borderline"
@@ -653,7 +653,7 @@
     {
       "id": "int_seed_033",
       "text": "ترجم: القناقن",
-      "intent": "translate",
+      "intent": "convert",
       "_template": "ترجم: {w}",
       "_source_entry_id": 706,
       "_review_note": "confirm intent label is unambiguous; remove if borderline"
@@ -773,7 +773,7 @@
     {
       "id": "int_seed_030",
       "text": "ترجم هذه الجملة: قال لي مصرى",
-      "intent": "translate",
+      "intent": "convert",
       "_template": "ترجم هذه الجملة: قال لي {w}",
       "_source_entry_id": 863,
       "_review_note": "confirm intent label is unambiguous; remove if borderline"
@@ -781,7 +781,7 @@
     {
       "id": "int_seed_034",
       "text": "ترجم هذه الجملة: قال لي القناقن",
-      "intent": "translate",
+      "intent": "convert",
       "_template": "ترجم هذه الجملة: قال لي {w}",
       "_source_entry_id": 706,
       "_review_note": "confirm intent label is unambiguous; remove if borderline"
@@ -797,7 +797,7 @@
     {
       "id": "int_seed_024",
       "text": "ايش الفصحى لـ تاير",
-      "intent": "translate",
+      "intent": "convert",
       "_template": "ايش الفصحى لـ {w}",
       "_source_entry_id": 131,
       "_review_note": "confirm intent label is unambiguous; remove if borderline"

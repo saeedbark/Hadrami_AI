@@ -4,11 +4,13 @@ Guidance for Claude Code sessions working in this repository.
 
 ## Project purpose
 
-Hadrami NLP is a bilingual dictionary and translation tool for the **Hadrami dialect** of Yemeni Arabic. It combines a curated 1,000+ entry lexicon with RAG (Retrieval-Augmented Generation) powered by Gemini to provide:
+Hadrami NLP is a bilingual dictionary and dialect-conversion tool for the **Hadrami dialect** of Yemeni Arabic. It combines a curated 1,000+ entry lexicon with RAG (Retrieval-Augmented Generation) powered by Gemini to provide:
 
-- Word-level translation (Hadrami → Modern Standard Arabic / Fus7a)
-- Phrase/paragraph-level bidirectional translation (MSA ↔ Hadrami)
+- Word-level interpretation (Hadrami → Modern Standard Arabic / Fus7a)
+- Phrase/paragraph-level bidirectional dialect conversion (MSA ↔ Hadrami)
 - AI-powered Q&A about the Hadrami dialect
+
+**Terminology note:** this project deliberately avoids the word "ترجمة"/"translation" for what it does, since Hadrami and MSA are dialects of the same language, not separate languages. Internally and in the UI, the concepts are "interpretation" (تفسير/شرح المعنى — explaining a word's meaning), "conversion" (تحويل — rendering a phrase from one register to the other), and "normalization to Fusha" (تطبيع اللهجة إلى الفصحى). Endpoint/function/schema names follow this: `/interpret`, `/convert-phrase`, `get_conversion_answer`, `InterpretResponse`, `ConvertPhraseRequest/Response`, etc. Don't reintroduce "translate"/"Translation" naming in new code — match the existing convention instead.
 
 The long-term goal (see `docs/research_paper_plan.md` if present) includes an academic paper — **Hadrami-RAG** — targeting ArabicNLP@EMNLP 2026, with LREC-COLING 2026 as backup. Treat dataset quality and evaluation rigor as first-class concerns, not just app features.
 
@@ -26,9 +28,9 @@ FastAPI backend (uvicorn)
   │                                      rpc_match_entries, rpc_search_entries_expanded,
   │                                      insert_feedback, count_rows, ...)
   ├─ services/dictionary_service.py   — search/scoring/formatting on top of data_store
-  ├─ services/phrase_translation_service.py — chunked bidirectional phrase translation
+  ├─ services/phrase_conversion_service.py — chunked bidirectional phrase conversion
   ├─ services/embedding_service.py / embedding_doc.py — embedding generation for semantic search
-  └─ rag/                             — modular RAG pipeline (replaces the old monolithic rag_engine.py)
+  └─ rag/                             — modular RAG pipeline
       ├─ pipeline.py    — get_rag_answer() (/ask) and get_chat_answer() (/chat) entry points
       ├─ retrieval.py   — keyword + vector retrieval over Supabase
       ├─ generation.py  — Gemini prompt construction + generation
@@ -36,11 +38,11 @@ FastAPI backend (uvicorn)
       ├─ serialization.py, text_utils.py, logging_utils.py, config.py
 ```
 
-**`backend/app/rag_engine.py` is dead code post-merge** — nothing imports it anymore (`/ask` and `/chat` both import from `.rag.pipeline`). It's a leftover from the pre-merge `main` and a cleanup candidate; don't extend it, and don't assume it's what runs in production.
+**`backend/app/rag_engine.py` no longer exists** — it was a backward-compat shim re-exporting `app.rag.*` symbols; confirmed zero importers (app code, tests, scripts) and deleted. If you see a stale reference to it anywhere, the real pipeline is `backend/app/rag/`.
 
 `backend/data/hadrami_dataset.json` is **not read by the running app** — it's a local staging/working copy used by `backend/scripts/*.py` (audit/refactor/validate) before syncing to Supabase via `scripts/sync_to_supabase.py`. Supabase is the single source of truth for what the API actually serves.
 
-New unified endpoint: `POST /chat` auto-classifies a message into `word`/`translate`/`define`/`semantic`/`qa` intent and routes through the matching retrieval+prompt path — meant to eventually replace direct `/ask` + `/translate-phrase` calls for chat-style clients.
+New unified endpoint: `POST /chat` auto-classifies a message into `word`/`convert`/`define`/`semantic`/`qa` intent and routes through the matching retrieval+prompt path — meant to eventually replace direct `/ask` + `/convert-phrase` calls for chat-style clients.
 
 ## Deployment (read this before touching Flutter deploy config)
 
@@ -69,9 +71,9 @@ Both `backend/` and `flutter_app/` deploy to **separate Vercel projects** (`hadr
 
 **Backend (Python)**
 - Type hints everywhere; modern syntax (`list[dict]`, `X | None`, `from __future__ import annotations` where used).
-- No framework-level logging setup — debug output goes through `_rag_log()` in `rag_engine.py`, gated by `RAG_DEBUG` env var. Don't introduce `print()` elsewhere; route RAG-related debug output through the existing logger helper.
-- Routes in `main.py` stay thin — business logic belongs in `services/*.py` or `rag_engine.py`, not inline in route handlers.
-- Docstrings are used sparingly, only to explain *why* (a non-obvious regex, a workaround, an ordering constraint) — see existing one-liners in `dictionary_service.py` and `rag_engine.py` as the model. Don't add docstrings that restate the function name.
+- No framework-level logging setup — debug output goes through `rag_log()` in `rag/logging_utils.py`, gated by `RAG_DEBUG` env var. Don't introduce `print()` elsewhere; route RAG-related debug output through the existing logger helper.
+- Routes in `main.py` stay thin — business logic belongs in `services/*.py` or `rag/*.py`, not inline in route handlers.
+- Docstrings are used sparingly, only to explain *why* (a non-obvious regex, a workaround, an ordering constraint) — see existing one-liners in `dictionary_service.py` and `rag/retrieval.py` as the model. Don't add docstrings that restate the function name.
 - Arabic string literals (prompts, regexes, error messages) are common and intentional — don't "fix" or reformat Arabic text unless the task is specifically about it.
 - Tests follow the `TestXxx` class-per-endpoint-group pattern in `backend/tests/test_api.py` (pytest, `TestClient`).
 
@@ -95,7 +97,7 @@ Both `backend/` and `flutter_app/` deploy to **separate Vercel projects** (`hadr
 | [backend/app/rag/pipeline.py](backend/app/rag/pipeline.py) | `get_rag_answer()` / `get_chat_answer()` — the actual live RAG entry points |
 | [backend/app/core/data_store.py](backend/app/core/data_store.py) | Supabase client + all read/write queries |
 | [backend/app/services/dictionary_service.py](backend/app/services/dictionary_service.py) | Search/scoring/formatting on top of `data_store` |
-| [backend/app/services/phrase_translation_service.py](backend/app/services/phrase_translation_service.py) | Chunked phrase translation |
+| [backend/app/services/phrase_conversion_service.py](backend/app/services/phrase_conversion_service.py) | Chunked phrase conversion |
 | [backend/app/core/config.py](backend/app/core/config.py) | Constants, paths, Supabase env var names, chunk sizes |
 | [backend/app/schemas.py](backend/app/schemas.py) | All Pydantic request/response models (`Entry` now has `word_vocalized`, `pos`, `region`, `tags`, `proverbs`, etc. — Supabase schema, not the old flat lexicon shape) |
 | [backend/.env.example](backend/.env.example) | Required env vars and their exact names — check this before assuming a var name |
@@ -103,7 +105,7 @@ Both `backend/` and `flutter_app/` deploy to **separate Vercel projects** (`hadr
 | [backend/data/eval_pairs.json](backend/data/eval_pairs.json) | Held-out Hadrami↔MSA pairs for evaluation |
 | [backend/scripts/](backend/scripts/) | Dataset audit/refactor/validate scripts (tracked) |
 | [scripts/sync_to_supabase.py](scripts/sync_to_supabase.py) | Pushes the local staged dataset to Supabase (service-role key required) |
-| [scripts/eval/](scripts/eval/) | Hallucination/intent/lookup/translation eval suite |
+| [scripts/eval/](scripts/eval/) | Hallucination/intent/lookup/conversion eval suite |
 | [flutter_app/vercel_build.sh](flutter_app/vercel_build.sh) | Vercel build script — installs Flutter, runs codegen, builds web. Read the Deployment section above before touching this. |
 | [flutter_app/lib/src/core/services/api_service.dart](flutter_app/lib/src/core/services/api_service.dart) | Sole HTTP client boundary |
 | [flutter_app/lib/src/configs/api_config.dart](flutter_app/lib/src/configs/api_config.dart) | Backend base URL (baked in at build time via `--dart-define=API_BASE_URL`), timeouts |
@@ -118,7 +120,8 @@ Both `backend/` and `flutter_app/` deploy to **separate Vercel projects** (`hadr
 - **Don't reformat or "clean up" Arabic text** (prompts, dataset entries, error strings) as a side effect of an unrelated change — dialect spelling and MSA glosses are content, not style.
 - **Don't silently change RAG fallback/degrade behavior** without flagging it — check `backend/app/rag/pipeline.py` for the current fallback path before assuming it matches older descriptions of this system.
 - **Regenerate Flutter codegen** after touching any `@freezed`, `@JsonSerializable`, `@riverpod`, or `@ReactiveFormAnnotation`-decorated class (`dart run build_runner build --delete-conflicting-outputs`); don't hand-patch generated output, and don't commit `*.freezed.dart`/`*.g.dart`/`*.gform.dart` — they're gitignored on purpose and regenerated by `vercel_build.sh` on every deploy.
-- **`backend/app/rag_engine.py` is dead code** — don't extend it under the assumption it's live; the real pipeline is `backend/app/rag/`.
+- **`backend/app/rag_engine.py` was deleted** (dead backward-compat shim, zero importers) — the RAG pipeline lives entirely in `backend/app/rag/`.
+- **Frontend nav is 4 destinations** (Home, Dictionary, Favorites, Chat) — Search, Ask, and Phrase-translate were merged in as redundant with Dictionary/Chat and their modules deleted; `/search`, `/ask`, `/phrase-translate` are GoRouter redirects now, not real pages. Don't re-add a standalone page for one of these without confirming with the user first — it was a deliberate consolidation, not an oversight.
 - **Run tests before declaring backend changes done:** `cd backend && python -m pytest tests/ -v`.
 - **After any change touching `flutter_app/pubspec.yaml`, `vercel_build.sh`, or `vercel.json`, verify locally before pushing to `main`:** `flutter pub get && dart run build_runner build --delete-conflicting-outputs && flutter build web --release`. This exact gap (untested Vercel-only build path) caused a production outage on 2026-07-27 — see the Deployment section above.
 - Don't add authentication, rate limiting, or other ROADMAP "High Priority" items speculatively — implement them only when the user asks for that specific item.

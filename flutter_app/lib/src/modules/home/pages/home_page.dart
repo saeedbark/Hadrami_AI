@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:hadrami_nlp/src/core/theme/theme.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:hadrami_nlp/src/configs/api_config.dart';
 import 'package:hadrami_nlp/src/configs/app_colors.dart';
@@ -116,9 +117,8 @@ class HomePage extends ConsumerWidget {
     final colorScheme = Theme.of(context).colorScheme;
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
-    final heroTop = isDark
-        ? colorScheme.surfaceContainerHigh
-        : AppColors.primaryLight;
+    final heroTop =
+        isDark ? colorScheme.surfaceContainerHigh : AppColors.primaryLight;
     final heroBottom = isDark
         ? colorScheme.surfaceContainerLow
         : colorScheme.primary.withValues(alpha: 0.88);
@@ -165,51 +165,50 @@ class HomePage extends ConsumerWidget {
                             ),
                           ],
                         ),
-                        Row(
-                          children: [
-                            IconButton(
-                              icon: AnimatedSwitcher(
-                                duration: const Duration(milliseconds: 300),
-                                transitionBuilder: (child, animation) =>
-                                    RotationTransition(
-                                  turns: Tween<double>(begin: 0.6, end: 1.0)
-                                      .animate(animation),
-                                  child: FadeTransition(
-                                      opacity: animation, child: child),
+                        if (context.isMobile)
+                          Row(
+                            children: [
+                              IconButton(
+                                icon: AnimatedSwitcher(
+                                  duration: const Duration(milliseconds: 300),
+                                  transitionBuilder: (child, animation) =>
+                                      RotationTransition(
+                                    turns: Tween<double>(begin: 0.6, end: 1.0)
+                                        .animate(animation),
+                                    child: FadeTransition(
+                                        opacity: animation, child: child),
+                                  ),
+                                  child: Icon(
+                                    ref.watch(appThemeModeProvider) ==
+                                            ThemeMode.dark
+                                        ? Icons.light_mode_rounded
+                                        : Icons.dark_mode_rounded,
+                                    key: ValueKey(
+                                        ref.watch(appThemeModeProvider)),
+                                    color: onHero.withValues(alpha: 0.85),
+                                  ),
                                 ),
-                                child: Icon(
-                                  ref.watch(appThemeModeProvider) ==
-                                          ThemeMode.dark
-                                      ? Icons.light_mode_rounded
-                                      : Icons.dark_mode_rounded,
-                                  key: ValueKey(
-                                      ref.watch(appThemeModeProvider)),
-                                  color: onHero.withValues(alpha: 0.85),
-                                ),
+                                onPressed: () => ref
+                                    .read(appThemeModeProvider.notifier)
+                                    .toggle(),
                               ),
-                              onPressed: () => ref
-                                  .read(appThemeModeProvider.notifier)
-                                  .toggle(),
-                            ),
-                            IconButton(
-                              icon: Icon(Icons.settings_rounded,
-                                  color: onHero.withValues(alpha: 0.85)),
-                              onPressed: () => context.push('/settings'),
-                            ),
-                          ],
-                        ),
+                              IconButton(
+                                icon: Icon(Icons.settings_rounded,
+                                    color: onHero.withValues(alpha: 0.85)),
+                                onPressed: () => context.push('/settings'),
+                              ),
+                            ],
+                          ),
                       ],
                     ),
                     const SizedBox(height: 20),
                     Text(
                       'اللهجة الحضرمية',
-                      style: Theme.of(context)
-                          .textTheme
-                          .headlineSmall
-                          ?.copyWith(
-                            color: onHero,
-                            fontWeight: FontWeight.w700,
-                          ),
+                      style:
+                          Theme.of(context).textTheme.headlineSmall?.copyWith(
+                                color: onHero,
+                                fontWeight: FontWeight.w700,
+                              ),
                     ),
                     const SizedBox(height: 8),
                     Text(
@@ -223,13 +222,13 @@ class HomePage extends ConsumerWidget {
                     FilledButton.tonal(
                       onPressed: () => context.go('/dictionary'),
                       style: FilledButton.styleFrom(
-                        backgroundColor: onHero.withValues(
-                            alpha: isDark ? 0.12 : 0.2),
+                        backgroundColor:
+                            onHero.withValues(alpha: isDark ? 0.12 : 0.2),
                         foregroundColor: onHero,
                         padding: const EdgeInsets.symmetric(
                             horizontal: 20, vertical: 14),
-                        shape: RoundedRectangleBorder(
-                            borderRadius: AppRadius.md),
+                        shape:
+                            RoundedRectangleBorder(borderRadius: AppRadius.md),
                       ),
                       child: const Text('تصفح القاموس الكامل'),
                     ),
@@ -247,118 +246,120 @@ class HomePage extends ConsumerWidget {
                   stagger: const Duration(milliseconds: 80),
                   itemDuration: const Duration(milliseconds: 360),
                   children: [
-                statsAsync.when(
-                  data: (stats) => _HomeSectionCard(
-                    title: 'إحصائيات المعجم',
-                    subtitle:
-                        'عدد المدخلات في القاموس، والكلمات ذات الترجمة، ونسبة الاكتمال',
-                    child: _StatsRow(stats: stats),
-                  ),
-                  loading: () => const _HomeSectionCard(
-                    title: 'إحصائيات المعجم',
-                    subtitle: 'جاري تحميل أرقام القاموس…',
-                    child: Padding(
-                      padding: EdgeInsets.symmetric(vertical: 24),
-                      child: LoadingWidget(),
-                    ),
-                  ),
-                  error: (err, _) => _HomeSectionCard(
-                    title: 'إحصائيات المعجم',
-                    subtitle: 'تعذّر الاتصال بالخادم',
-                    child: _ApiErrorCard(message: err.toString()),
-                  ),
-                ),
-                _HomeSectionCard(
-                  title: 'كلمات وعبارات',
-                  subtitle:
-                      'عبارات شائعة من اللهجة، وعيّنة مباشرة من أول مدخلات المعجم',
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      ..._kPhraseHighlights.map(
-                        (t) => Padding(
-                          padding: const EdgeInsets.only(bottom: 8),
-                          child: _PhraseTeaserCard(phrase: t.$1, gloss: t.$2),
-                        ),
+                    statsAsync.when(
+                      data: (stats) => _HomeSectionCard(
+                        title: 'إحصائيات المعجم',
+                        subtitle:
+                            'عدد المدخلات في القاموس، والكلمات المكتملة (ذات مقابل فصيح)، ونسبة الاكتمال',
+                        child: _StatsRow(stats: stats),
                       ),
-                      featuredAsync.when(
-                        data: (words) {
-                          if (words.isEmpty) {
-                            return const SizedBox.shrink();
-                          }
-                          return Column(
-                            children: [
-                              for (final w in words) WordCard(entry: w),
-                            ],
-                          );
-                        },
-                        loading: () => const Padding(
-                          padding: EdgeInsets.symmetric(vertical: 16),
+                      loading: () => const _HomeSectionCard(
+                        title: 'إحصائيات المعجم',
+                        subtitle: 'جاري تحميل أرقام القاموس…',
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(vertical: 24),
                           child: LoadingWidget(),
                         ),
-                        error: (_, __) => const SizedBox.shrink(),
                       ),
-                    ],
-                  ),
-                ),
-                sectionsAsync.when(
-                  data: (sections) {
-                    if (sections.isEmpty) {
-                      return const _HomeSectionCard(
+                      error: (err, _) => _HomeSectionCard(
+                        title: 'إحصائيات المعجم',
+                        subtitle: 'تعذّر الاتصال بالخادم',
+                        child: _ApiErrorCard(message: err.toString()),
+                      ),
+                    ),
+                    _HomeSectionCard(
+                      title: 'كلمات وعبارات',
+                      subtitle:
+                          'عبارات شائعة من اللهجة، وعيّنة مباشرة من أول مدخلات المعجم',
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          ..._kPhraseHighlights.map(
+                            (t) => Padding(
+                              padding: const EdgeInsets.only(bottom: 8),
+                              child:
+                                  _PhraseTeaserCard(phrase: t.$1, gloss: t.$2),
+                            ),
+                          ),
+                          featuredAsync.when(
+                            data: (words) {
+                              if (words.isEmpty) {
+                                return const SizedBox.shrink();
+                              }
+                              return Column(
+                                children: [
+                                  for (final w in words) WordCard(entry: w),
+                                ],
+                              );
+                            },
+                            loading: () => const Padding(
+                              padding: EdgeInsets.symmetric(vertical: 16),
+                              child: LoadingWidget(),
+                            ),
+                            error: (_, __) => const SizedBox.shrink(),
+                          ),
+                        ],
+                      ),
+                    ),
+                    sectionsAsync.when(
+                      data: (sections) {
+                        if (sections.isEmpty) {
+                          return const _HomeSectionCard(
+                            title: 'أقسام القاموس',
+                            subtitle:
+                                'تصفّح حسب أول حرف من الكلمة — يظهر عدد الكلمات في كل قسم',
+                            child: _ApiErrorCard(
+                              message:
+                                  'تعذّر تحميل أقسام القاموس. شغّل الـ backend على ${ApiConfig.baseUrl}',
+                            ),
+                          );
+                        }
+                        return _HomeSectionCard(
+                          title: 'أقسام القاموس',
+                          subtitle:
+                              'تصفّح حسب أول حرف من الكلمة — يظهر عدد الكلمات في كل قسم',
+                          child: Column(
+                            children: [
+                              for (final s in sections)
+                                _SectionTile(
+                                  letter: s.letter,
+                                  wordCount: s.wordCount,
+                                  onTap: () =>
+                                      _openDictionarySection(context, s.letter),
+                                ),
+                            ],
+                          ),
+                        );
+                      },
+                      loading: () => const _HomeSectionCard(
                         title: 'أقسام القاموس',
                         subtitle:
                             'تصفّح حسب أول حرف من الكلمة — يظهر عدد الكلمات في كل قسم',
-                        child: _ApiErrorCard(
-                          message:
-                              'تعذّر تحميل أقسام القاموس. شغّل الـ backend على ${ApiConfig.baseUrl}',
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(vertical: 24),
+                          child: LoadingWidget(),
                         ),
-                      );
-                    }
-                    return _HomeSectionCard(
-                      title: 'أقسام القاموس',
-                      subtitle:
-                          'تصفّح حسب أول حرف من الكلمة — يظهر عدد الكلمات في كل قسم',
-                      child: Column(
-                        children: [
-                          for (final s in sections)
-                            _SectionTile(
-                              letter: s.letter,
-                              wordCount: s.wordCount,
-                              onTap: () =>
-                                  _openDictionarySection(context, s.letter),
-                            ),
-                        ],
                       ),
-                    );
-                  },
-                  loading: () => const _HomeSectionCard(
-                    title: 'أقسام القاموس',
-                    subtitle:
-                        'تصفّح حسب أول حرف من الكلمة — يظهر عدد الكلمات في كل قسم',
-                    child: Padding(
-                      padding: EdgeInsets.symmetric(vertical: 24),
-                      child: LoadingWidget(),
+                      error: (err, _) => _HomeSectionCard(
+                        title: 'أقسام القاموس',
+                        subtitle:
+                            'تصفّح حسب أول حرف من الكلمة — يظهر عدد الكلمات في كل قسم',
+                        child: _ApiErrorCard(message: err.toString()),
+                      ),
                     ),
-                  ),
-                  error: (err, _) => _HomeSectionCard(
-                    title: 'أقسام القاموس',
-                    subtitle:
-                        'تصفّح حسب أول حرف من الكلمة — يظهر عدد الكلمات في كل قسم',
-                    child: _ApiErrorCard(message: err.toString()),
-                  ),
-                ),
-                randomAsync.when(
-                  data: (word) {
-                    if (word == null) return const SizedBox.shrink();
-                    return _HomeSectionCard(
-                      title: 'كلمة اليوم',
-                      subtitle: 'اقتراح عشوائي من قاموس حضرموت — اضغط البطاقة للتفاصيل',
-                      child: WordCard(entry: word, highlight: true),
-                    );
-                  },
-                  loading: () => const SizedBox.shrink(),
-                  error: (_, __) => const SizedBox.shrink(),
-                ),
+                    randomAsync.when(
+                      data: (word) {
+                        if (word == null) return const SizedBox.shrink();
+                        return _HomeSectionCard(
+                          title: 'كلمة اليوم',
+                          subtitle:
+                              'اقتراح عشوائي من قاموس حضرموت — اضغط البطاقة للتفاصيل',
+                          child: WordCard(entry: word, highlight: true),
+                        );
+                      },
+                      loading: () => const SizedBox.shrink(),
+                      error: (_, __) => const SizedBox.shrink(),
+                    ),
                   ],
                 ),
               ),
@@ -448,8 +449,8 @@ class _SectionTile extends StatelessWidget {
               child: Row(
                 children: [
                   CircleAvatar(
-                    backgroundColor: colorScheme.primary
-                        .withValues(alpha: 0.12),
+                    backgroundColor:
+                        colorScheme.primary.withValues(alpha: 0.12),
                     foregroundColor: colorScheme.primary,
                     child: Text(
                       letter.isNotEmpty ? letter : '؟',
@@ -551,8 +552,8 @@ class _StatsRow extends StatelessWidget {
               const SizedBox(width: 8),
               Expanded(
                 child: _StatCard(
-                  '${stats.translated}',
-                  'مترجمة',
+                  '${stats.completed}',
+                  'مكتملة',
                   Icons.check_circle_rounded,
                   colorScheme.secondary,
                   colorScheme.secondaryContainer,

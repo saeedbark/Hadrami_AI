@@ -69,29 +69,23 @@ class ApiService {
     return response.statusCode == 200;
   }
 
-  Future<TranslateResult> translate(String query) async {
-    try {
-      final data = await _getJson(
-        '/translate',
-        queryParameters: {'q': query},
-      );
-      return TranslateResult.fromJson(data);
-    } catch (_) {
-      return TranslateResult(
-        found: false,
-        wordVocalized: query,
-        fushaEquivalent: '',
-        definition: 'تعذّر الاتصال بالخادم. تأكد من تشغيل الـ backend.',
-        confidence: 'error',
-      );
-    }
-  }
-
-  Future<SearchResult> search(String query, {int limit = 20}) async {
+  Future<SearchResult> search(
+    String query, {
+    int limit = 20,
+    String? pos,
+    String? region,
+    String? tag,
+  }) async {
     try {
       final data = await _getJson(
         '/search',
-        queryParameters: {'q': query, 'limit': '$limit'},
+        queryParameters: {
+          'q': query,
+          'limit': '$limit',
+          if (pos != null) 'pos': pos,
+          if (region != null) 'region': region,
+          if (tag != null) 'tag': tag,
+        },
       );
       return SearchResult.fromJson(data);
     } catch (_) {
@@ -161,86 +155,6 @@ class ApiService {
       return WordEntry.fromJson(data);
     } catch (_) {
       return null;
-    }
-  }
-
-  Future<PhraseTranslateResult> translatePhrase({
-    required String text,
-    required String direction,
-  }) async {
-    try {
-      final response = await _client
-          .post(
-            _buildUri('/translate-phrase'),
-            headers: const {'Content-Type': 'application/json'},
-            body: json.encode({'text': text, 'direction': direction}),
-          )
-          .timeout(ApiConfig.longTimeout);
-      if (response.statusCode != 200) {
-        return PhraseTranslateResult(
-          inputText: text,
-          direction: direction,
-          translatedText:
-              'خطأ من الخادم (${response.statusCode}). تحقق من النص واتجاه الترجمة.',
-          mode: 'error',
-        );
-      }
-      final data =
-          json.decode(utf8.decode(response.bodyBytes)) as Map<String, dynamic>;
-      return PhraseTranslateResult.fromJson(data);
-    } on TimeoutException {
-      return PhraseTranslateResult(
-        inputText: text,
-        direction: direction,
-        translatedText:
-            'انتهت مهلة الانتظار. جرّب مرة أخرى أو تأكد من تشغيل الـ backend.',
-        mode: 'error',
-      );
-    } catch (_) {
-      return PhraseTranslateResult(
-        inputText: text,
-        direction: direction,
-        translatedText:
-            'تعذّر الاتصال بالخادم. تأكد من تشغيل الـ backend على ${ApiConfig.baseUrl}',
-        mode: 'error',
-      );
-    }
-  }
-
-  Future<AskResult> ask(String question) async {
-    try {
-      final response = await _client
-          .post(
-            _buildUri('/ask'),
-            headers: const {'Content-Type': 'application/json'},
-            body: json.encode({'q': question}),
-          )
-          .timeout(ApiConfig.longTimeout);
-      if (response.statusCode != 200) {
-        return AskResult(
-          question: question,
-          answer:
-              'خطأ من الخادم (${response.statusCode}). جرّب تقصير السؤال أو تقسيمه.',
-          mode: 'error',
-        );
-      }
-      final data =
-          json.decode(utf8.decode(response.bodyBytes)) as Map<String, dynamic>;
-      return AskResult.fromJson(data);
-    } on TimeoutException {
-      return AskResult(
-        question: question,
-        answer:
-            'انتهت مهلة الانتظار. أول طلب للخادم قد يستغرق وقتاً. جرّب مرة أخرى، أو تأكد من تشغيل الـ backend.',
-        mode: 'error',
-      );
-    } catch (_) {
-      return AskResult(
-        question: question,
-        answer:
-            'تعذّر الاتصال بالخادم. تأكد من تشغيل الـ backend على ${ApiConfig.baseUrl}',
-        mode: 'error',
-      );
     }
   }
 

@@ -358,7 +358,7 @@ final_entries = [normalize_entry(e) for e in entries]
 output = {
     "version": "1.1.0",
     "updated": str(date.today()),
-    "description": "Hadrami dialect dictionary - Arabic Fusha translations with examples",
+    "description": "Hadrami dialect dictionary - Arabic Fusha equivalents with examples",
     "total": len(final_entries),
     "entries": final_entries,
 }

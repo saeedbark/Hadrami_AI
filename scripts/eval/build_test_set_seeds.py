@@ -164,7 +164,7 @@ INTENT_PATTERNS: dict[str, list[str]] = {
         "{w}؟",
         "كلمة {w}",
     ],
-    "translate": [
+    "convert": [
         "ترجم: {w}",
         "ترجم هذه الجملة: قال لي {w}",
         "translate to fusha: {w}",

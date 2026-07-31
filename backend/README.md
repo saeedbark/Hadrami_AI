@@ -1,7 +1,7 @@
 # Backend — Hadrami NLP API
 
 FastAPI REST API serving the Hadrami dialect dictionary, word/phrase
-translation, semantic search, conversational chat, and **retrieval-grounded**
+interpretation/conversion, semantic search, conversational chat, and **retrieval-grounded**
 Q&A. Data lives in **Supabase** (PostgreSQL + pgvector).
 
 ---
@@ -26,13 +26,13 @@ cp .env.example .env              # then fill in the required keys
 |----------|--------------|-------|
 | `SUPABASE_URL` | all endpoints | `https://<ref>.supabase.co` |
 | `SUPABASE_SERVICE_KEY` | all endpoints | **service_role JWT**, not anon |
-| `GEMINI_API_KEY` | `/ask`, `/chat`, `/translate-phrase`, `/semantic-search` | Google AI Studio key |
+| `GEMINI_API_KEY` | `/ask`, `/chat`, `/convert-phrase`, `/semantic-search` | Google AI Studio key |
 | `RAG_MODE` | optional | `local` (default, hybrid) or `simple` (keyword-only) |
 | `GEMINI_MODEL` | optional | Default `gemini-2.5-flash` |
 | `RAG_CACHE_TTL_SECONDS` | optional | In-memory query cache TTL (default 90, 0 disables) |
 | `RAG_DEBUG` | optional | `1` (default) enables retrieval/prompt logging to stdout |
 | `ASK_MAX_CHARS` | optional | Max body length for `/ask` / `/chat` (default 3000) |
-| `PHRASE_TRANSLATE_MAX_WORKERS` | optional | Parallelism for chunked translation (default 3, max 8) |
+| `PHRASE_CONVERT_MAX_WORKERS` | optional | Parallelism for chunked conversion (default 3, max 8) |
 
 ### Run the server
 
@@ -53,28 +53,27 @@ app/
 ├── __init__.py
 ├── main.py                      ← FastAPI app (lifespan, CORS, routes)
 ├── schemas.py                   ← Pydantic models (Entry, AskResponse, ChatResponse, …)
-├── rag_engine.py                ← Backward-compat shim → app.rag.*
 ├── rag/                         ← Modular RAG pipeline
 │   ├── __init__.py              ← Re-exports public entrypoints
 │   ├── config.py                ← RAG_MODE, GEMINI_MODEL, cache TTL
 │   ├── retrieval.py             ← Keyword / vector / phrase retrievers + orchestrators
 │   ├── generation.py            ← Gemini wrapper (model fallbacks, chat config)
-│   ├── prompts.py               ← ask / chat / translate / phrase prompts (grounded)
+│   ├── prompts.py               ← ask / chat / convert / phrase prompts (grounded)
 │   ├── serialization.py         ← DB-row → Entry + response shaping
 │   ├── text_utils.py            ← Arabic normalization + span detection
 │   ├── system_prompt.py         ← HADRAMI_SYSTEM_PROMPT + intent_for() classifier
 │   ├── logging_utils.py         ← RAG_DEBUG logging + previews
-│   └── pipeline.py              ← get_rag_answer / get_chat_answer / get_translation_answer
+│   └── pipeline.py              ← get_rag_answer / get_chat_answer / get_conversion_answer
 ├── core/
 │   ├── __init__.py
-│   ├── config.py                ← App constants, Supabase config, translation limits
+│   ├── config.py                ← App constants, Supabase config, conversion limits
 │   └── data_store.py            ← Supabase client + PostgREST / RPC helpers
 └── services/
     ├── __init__.py
-    ├── dictionary_service.py           ← Keyword search, translate, feedback, pagination
+    ├── dictionary_service.py           ← Keyword search, interpret, feedback, pagination
     ├── embedding_service.py            ← Gemini gemini-embedding-001 wrapper (768-dim)
     ├── embedding_doc.py                ← Canonical embedding-doc text builder (versioned, v2)
-    └── phrase_translation_service.py   ← Chunked phrase translation with grounding
+    └── phrase_conversion_service.py    ← Chunked phrase conversion with grounding
 ```
 
 The `migrations/` folder (v2 schema delta — `searchable_text`, `semantic_intent`,
@@ -100,8 +99,8 @@ The `migrations/` folder (v2 schema delta — `searchable_text`, `semantic_inten
 - **Supabase-persisted feedback.** `/feedback` writes to a Postgres table
   (`feedback`) instead of a local JSON file — works under serverless
   deployments and is auditable.
-- **Chunked phrase translation.** Long inputs are split on paragraph /
-  sentence boundaries and translated in bounded parallel (default 3
+- **Chunked phrase conversion.** Long inputs are split on paragraph /
+  sentence boundaries and converted in bounded parallel (default 3
   workers).
 
 ---
@@ -115,21 +114,21 @@ The `migrations/` folder (v2 schema delta — `searchable_text`, `semantic_inten
 | `/` | GET | API info + total entries |
 | `/stats` | GET | Dataset coverage statistics |
 | `/sections` | GET | Lexicon partitioned by first Arabic letter |
-| `/translate?q=<word>` | GET | Translate a single Hadrami word (exact → partial → definition match) |
+| `/interpret?q=<word>` | GET | Interpret a single Hadrami word (exact → partial → definition match) |
 | `/search?q=<query>&limit=20` | GET | Scored keyword search across headword, synonyms, gloss, definition |
 | `/semantic-search?q=<query>&limit=10&threshold=0.3` | GET | Vector similarity search using pgvector embeddings |
 | `/words?page=1&size=20&letter=أ` | GET | Paginated list (optional `letter`, `pos`, `tag` filters) |
 | `/word/<id>` | GET | Single entry by ID |
 | `/random` | GET | Random entry |
 
-### AI / Translation
+### AI / Conversion
 
 | Endpoint | Method | Body | Purpose |
 |----------|--------|------|---------|
 | `/ask?q=<question>` | GET | — | Retrieval-grounded Q&A |
 | `/ask` | POST | `{"q":"..."}` | Same, via JSON body |
 | `/chat` | POST | `{"message":"...","history":[{"role":"user","content":"..."}]}` | Multi-turn chat, grounded |
-| `/translate-phrase` | POST | `{"text":"...","direction":"ar_to_hadrami"}` | Phrase translation (MSA ↔ Hadrami) |
+| `/convert-phrase` | POST | `{"text":"...","direction":"ar_to_hadrami"}` | Phrase conversion (MSA ↔ Hadrami) |
 
 Direction values: `ar_to_hadrami`, `hadrami_to_ar`.
 
@@ -158,7 +157,7 @@ python -m pytest tests/ -v
   env var is missing.
 - `tests/test_chat_unified.py` — **16 hermetic tests**. All Supabase + Gemini
   calls are stubbed; verify the unified `/chat` dispatcher's intent
-  classifier and the routing into word / translate / define / semantic / qa
+  classifier and the routing into word / convert / define / semantic / qa
   paths. Run anywhere, no credentials required.
 
 Notable tests:
@@ -170,8 +169,8 @@ Notable tests:
 - `test_ask_with_irrelevant_question_refuses_or_admits` — guards the
   single largest hallucination path: returning the MSA gloss of a
   loosely-matched entry for an out-of-domain question.
-- `test_translate_phrase_*_returns_shape` — validates the grounded
-  phrase-translation response shape in both directions.
+- `test_convert_phrase_*_returns_shape` — validates the grounded
+  phrase-conversion response shape in both directions.
 - `test_submit_basic_feedback_persists` — round-trips feedback through
   Supabase.
 
@@ -192,7 +191,7 @@ Notable tests:
 | `../scripts/gemini_rotator.py` | Round-robin across `GEMINI_API_KEY` / `GEMINI_API_KEY1..N` to spread free-tier quota. |
 | `../scripts/finalize_pipeline.sh` | Apply POS corrections + audit + Kaggle/HF re-export in sequence. |
 | `../scripts/eval/build_test_set_seeds.py` | Generate `*.candidate.json` test-set seeds for reviewer audit. |
-| `../scripts/eval/run_{intent,lookup,translation,hallucination,gate_sweep}_eval.py` | Per-experiment evaluation runners (E1–E5; see `docs/research_paper_plan.md`). |
+| `../scripts/eval/run_{intent,lookup,conversion,hallucination,gate_sweep}_eval.py` | Per-experiment evaluation runners (E1–E5; see `docs/research_paper_plan.md`). |
 | `../scripts/export/{to_kaggle,to_huggingface}.py` | Release bundle builders. Read-only Supabase pull. |
 
 Run from the `backend/` directory with the venv interpreter:
