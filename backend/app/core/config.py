@@ -12,7 +12,7 @@ except ImportError:
 
 APP_VERSION = "2.0.0"
 APP_TITLE = "Hadrami Dialect NLP API"
-APP_DESCRIPTION = "API for Hadrami Arabic dialect translation and search"
+APP_DESCRIPTION = "API for Hadrami Arabic dialect interpretation, conversion, and search"
 
 DATA_DIR = BASE_DIR / "data"
 DATA_FILE = DATA_DIR / "hadrami_dataset.json"
@@ -21,9 +21,9 @@ EVAL_PAIRS_FILE = DATA_DIR / "eval_pairs.json"
 DEFAULT_PAGE_SIZE = 20
 MAX_PAGE_SIZE = 100
 
-PHRASE_TRANSLATE_MAX_CHARS = 3000
-PHRASE_TRANSLATE_LONG_HINT_CHARS = 400
-PHRASE_TRANSLATE_CHUNK_SIZE = 800
+PHRASE_CONVERT_MAX_CHARS = 3000
+PHRASE_CONVERT_LONG_HINT_CHARS = 400
+PHRASE_CONVERT_CHUNK_SIZE = 800
 
 
 def _ask_max_chars() -> int:
@@ -34,14 +34,14 @@ def _ask_max_chars() -> int:
             return max(256, min(int(raw), 16000))
         except ValueError:
             pass
-    return PHRASE_TRANSLATE_MAX_CHARS
+    return PHRASE_CONVERT_MAX_CHARS
 
 
 ASK_MAX_CHARS = _ask_max_chars()
 
 
-def _phrase_translate_max_workers() -> int:
-    raw = (os.getenv("PHRASE_TRANSLATE_MAX_WORKERS") or "3").strip()
+def _phrase_convert_max_workers() -> int:
+    raw = (os.getenv("PHRASE_CONVERT_MAX_WORKERS") or "3").strip()
     try:
         v = int(raw)
     except ValueError:
@@ -49,7 +49,7 @@ def _phrase_translate_max_workers() -> int:
     return max(1, min(8, v))
 
 
-PHRASE_TRANSLATE_MAX_WORKERS = _phrase_translate_max_workers()
+PHRASE_CONVERT_MAX_WORKERS = _phrase_convert_max_workers()
 
 # ---------------------------------------------------------------------------
 # Supabase

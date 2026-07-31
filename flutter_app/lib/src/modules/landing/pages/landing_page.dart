@@ -14,11 +14,8 @@ class _NavItem {
 
 const _destinations = [
   _NavItem(Icons.home_outlined, Icons.home_rounded, 'الرئيسية'),
-  _NavItem(Icons.search_outlined, Icons.search_rounded, 'بحث'),
   _NavItem(Icons.menu_book_outlined, Icons.menu_book_rounded, 'القاموس'),
   _NavItem(Icons.bookmark_outline_rounded, Icons.bookmark_rounded, 'المفضلة'),
-  _NavItem(Icons.chat_bubble_outline_rounded, Icons.chat_bubble_rounded, 'اسأل'),
-  _NavItem(Icons.translate_outlined, Icons.translate_rounded, 'عبارات'),
   _NavItem(Icons.smart_toy_outlined, Icons.smart_toy_rounded, 'محادثة'),
 ];
 
@@ -99,42 +96,44 @@ class LandingPage extends HookConsumerWidget {
                 ],
               ),
             ),
-            trailing: Expanded(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  IconButton(
-                    icon: AnimatedSwitcher(
-                      duration: const Duration(milliseconds: 300),
-                      transitionBuilder: (child, animation) =>
-                          RotationTransition(
-                        turns: Tween<double>(begin: 0.6, end: 1.0)
-                            .animate(animation),
-                        child: FadeTransition(
-                            opacity: animation, child: child),
-                      ),
-                      child: Icon(
-                        ref.watch(appThemeModeProvider) == ThemeMode.dark
-                            ? Icons.light_mode_rounded
-                            : Icons.dark_mode_rounded,
-                        key: ValueKey(ref.watch(appThemeModeProvider)),
-                        color: colorScheme.outline,
-                      ),
+            trailing: !isMobile
+                ? Expanded(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        IconButton(
+                          icon: AnimatedSwitcher(
+                            duration: const Duration(milliseconds: 300),
+                            transitionBuilder: (child, animation) =>
+                                RotationTransition(
+                              turns: Tween<double>(begin: 0.6, end: 1.0)
+                                  .animate(animation),
+                              child: FadeTransition(
+                                  opacity: animation, child: child),
+                            ),
+                            child: Icon(
+                              ref.watch(appThemeModeProvider) == ThemeMode.dark
+                                  ? Icons.light_mode_rounded
+                                  : Icons.dark_mode_rounded,
+                              key: ValueKey(ref.watch(appThemeModeProvider)),
+                              color: colorScheme.outline,
+                            ),
+                          ),
+                          onPressed: () =>
+                              ref.read(appThemeModeProvider.notifier).toggle(),
+                          tooltip: 'تبديل المظهر',
+                        ),
+                        IconButton(
+                          icon: Icon(Icons.settings_rounded,
+                              color: colorScheme.outline),
+                          tooltip: 'الإعدادات',
+                          onPressed: () => context.push('/settings'),
+                        ),
+                        const SizedBox(height: 16),
+                      ],
                     ),
-                    onPressed: () =>
-                        ref.read(appThemeModeProvider.notifier).toggle(),
-                    tooltip: 'تبديل المظهر',
-                  ),
-                  IconButton(
-                    icon: Icon(Icons.settings_rounded,
-                        color: colorScheme.outline),
-                    tooltip: 'الإعدادات',
-                    onPressed: () => context.push('/settings'),
-                  ),
-                  const SizedBox(height: 16),
-                ],
-              ),
-            ),
+                  )
+                : null,
             destinations: [
               for (final d in _destinations)
                 NavigationRailDestination(

@@ -61,13 +61,13 @@ def test_stats_returns_counts(client: TestClient):
 
 
 # ---------------------------------------------------------------------------
-# Translate (single word)
+# Interpret (single word)
 # ---------------------------------------------------------------------------
 
 
 @db_only
-def test_translate_known_word_returns_fusha(client: TestClient):
-    resp = client.get("/translate", params={"q": "أم حبيل"})
+def test_interpret_known_word_returns_fusha(client: TestClient):
+    resp = client.get("/interpret", params={"q": "أم حبيل"})
     assert resp.status_code == 200
     data = resp.json()
     assert data["found"] is True
@@ -76,16 +76,16 @@ def test_translate_known_word_returns_fusha(client: TestClient):
 
 
 @db_only
-def test_translate_unknown_word_returns_not_found(client: TestClient):
-    resp = client.get("/translate", params={"q": "xyznonexistent123"})
+def test_interpret_unknown_word_returns_not_found(client: TestClient):
+    resp = client.get("/interpret", params={"q": "xyznonexistent123"})
     assert resp.status_code == 200
     data = resp.json()
     assert data["found"] is False
     assert data["confidence"] == "not_found"
 
 
-def test_translate_requires_query(client: TestClient):
-    resp = client.get("/translate")
+def test_interpret_requires_query(client: TestClient):
+    resp = client.get("/interpret")
     assert resp.status_code == 422
 
 
@@ -223,53 +223,53 @@ def test_feedback_missing_required_422(client: TestClient):
 
 
 # ---------------------------------------------------------------------------
-# Phrase translation (/translate-phrase)
+# Phrase conversion (/convert-phrase)
 # ---------------------------------------------------------------------------
 
 
 @rag_only
-def test_translate_phrase_ar_to_hadrami_returns_shape(client: TestClient):
+def test_convert_phrase_ar_to_hadrami_returns_shape(client: TestClient):
     resp = client.post(
-        "/translate-phrase",
+        "/convert-phrase",
         json={"text": "مرحبا كيف حالك", "direction": "ar_to_hadrami"},
     )
     assert resp.status_code == 200
     data = resp.json()
     assert data["direction"] == "ar_to_hadrami"
-    assert "translated_text" in data
+    assert "converted_text" in data
     assert "hadrami_spans" in data and isinstance(data["hadrami_spans"], list)
     assert "context" in data and isinstance(data["context"], list)
 
 
 @rag_only
-def test_translate_phrase_hadrami_to_ar_returns_shape(client: TestClient):
+def test_convert_phrase_hadrami_to_ar_returns_shape(client: TestClient):
     resp = client.post(
-        "/translate-phrase",
+        "/convert-phrase",
         json={"text": "شحوالك", "direction": "hadrami_to_ar"},
     )
     assert resp.status_code == 200
     assert resp.json()["direction"] == "hadrami_to_ar"
 
 
-def test_translate_phrase_invalid_direction_422(client: TestClient):
+def test_convert_phrase_invalid_direction_422(client: TestClient):
     resp = client.post(
-        "/translate-phrase",
+        "/convert-phrase",
         json={"text": "test", "direction": "invalid"},
     )
     assert resp.status_code == 422
 
 
-def test_translate_phrase_empty_text_422(client: TestClient):
+def test_convert_phrase_empty_text_422(client: TestClient):
     resp = client.post(
-        "/translate-phrase",
+        "/convert-phrase",
         json={"text": "", "direction": "ar_to_hadrami"},
     )
     assert resp.status_code == 422
 
 
-def test_translate_phrase_too_long_422(client: TestClient):
+def test_convert_phrase_too_long_422(client: TestClient):
     resp = client.post(
-        "/translate-phrase",
+        "/convert-phrase",
         json={"text": "كلمة " * 1000, "direction": "ar_to_hadrami"},
     )
     assert resp.status_code == 422

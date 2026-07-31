@@ -417,7 +417,7 @@ class WordDetailSheet extends HookConsumerWidget {
                   controller: feedbackController,
                   variant: AppTextFieldVariant.compact,
                   borderRadius: BorderRadius.circular(10),
-                  hintText: 'الترجمة الصحيحة للفصحى...',
+                  hintText: 'المقابل الصحيح بالفصحى...',
                 ),
                 const SizedBox(height: 8),
                 FilledButton.icon(

@@ -4,7 +4,7 @@ from typing import Any, Optional
 
 from pydantic import BaseModel, Field, field_validator
 
-from .core.config import ASK_MAX_CHARS, PHRASE_TRANSLATE_MAX_CHARS
+from .core.config import ASK_MAX_CHARS, PHRASE_CONVERT_MAX_CHARS
 
 
 class ExamplePair(BaseModel):
@@ -51,7 +51,7 @@ class Entry(BaseModel):
         return _parse_json_list(v)
 
 
-class TranslateResponse(BaseModel):
+class InterpretResponse(BaseModel):
     found: bool
     word_vocalized: str
     fusha_equivalent: str
@@ -92,14 +92,14 @@ class LexiconSectionsResponse(BaseModel):
     sections: list[LexiconSection]
 
 
-class TranslatePhraseDirection(str, Enum):
+class ConvertPhraseDirection(str, Enum):
     ar_to_hadrami = "ar_to_hadrami"
     hadrami_to_ar = "hadrami_to_ar"
 
 
-class TranslatePhraseRequest(BaseModel):
-    text: str = Field(..., min_length=1, max_length=PHRASE_TRANSLATE_MAX_CHARS)
-    direction: TranslatePhraseDirection
+class ConvertPhraseRequest(BaseModel):
+    text: str = Field(..., min_length=1, max_length=PHRASE_CONVERT_MAX_CHARS)
+    direction: ConvertPhraseDirection
 
 
 class HadramiSpan(BaseModel):
@@ -125,10 +125,10 @@ class AskRequest(BaseModel):
     q: str = Field(..., min_length=1, max_length=ASK_MAX_CHARS)
 
 
-class TranslatePhraseResponse(BaseModel):
+class ConvertPhraseResponse(BaseModel):
     input_text: str
     direction: str
-    translated_text: str
+    converted_text: str
     hadrami_spans: list[HadramiSpan]
     mode: str
     rag_mode: str
@@ -156,7 +156,7 @@ class ChatRequest(BaseModel):
 
 class ChatResponse(BaseModel):
     reply: str
-    #: Auto-classified intent: ``word`` / ``translate`` / ``define`` /
+    #: Auto-classified intent: ``word`` / ``convert`` / ``define`` /
     #: ``semantic`` / ``qa``. Lets the Flutter client pick a render layout.
     intent: str = "qa"
     #: True when retrieval did not produce a confident lexicon match — the

@@ -1,7 +1,7 @@
 """Unified Hadrami NLP system prompt + intent classifier.
 
 This is the single source of truth for the Gemini ``system_instruction`` used
-across ``/ask``, ``/chat``, ``/translate-phrase`` and the unified ``/query``
+across ``/ask``, ``/chat``, ``/convert-phrase`` and the unified ``/query``
 endpoint. The user-message-side prompt builders in :mod:`.prompts` still build
 the retrieved-context block; this module supplies the role, intent rules,
 grounding contract, response format and refusal/suggest behaviour.
@@ -12,10 +12,10 @@ from __future__ import annotations
 import re
 from typing import Literal
 
-from .prompts import _TRANSLATION_INTENT_PATTERN  # reuse existing detector
+from .prompts import _CONVERSION_INTENT_PATTERN  # reuse existing detector
 
 
-Intent = Literal["word", "translate", "define", "semantic", "qa"]
+Intent = Literal["word", "convert", "define", "semantic", "qa"]
 
 
 HADRAMI_SYSTEM_PROMPT = """You are an expert NLP assistant specialized in the Hadrami Arabic dialect (اللهجة الحضرمية).
@@ -31,7 +31,7 @@ IDENTITY & ROLE
 - You are the official AI assistant of the Hadrami Arabic Dialect Dictionary project.
 - You serve linguists, researchers, native speakers, and NLP practitioners.
 - You are authoritative but honest: you admit when a word is not in the lexicon.
-- You never hallucinate translations or definitions. If it is not in the retrieved
+- You never hallucinate MSA conversions or definitions. If it is not in the retrieved
   context, you say so.
 - You write responses in Modern Standard Arabic (MSA / فصحى) by default. If the user
   writes in English, respond in English. If the user mixes Arabic and English,
@@ -50,12 +50,14 @@ TYPE 1 — SINGLE WORD (كلمة مفردة)
           MSA equivalent, part of speech, example, tags. Use the SINGLE WORD
           response format below.
 
-TYPE 2 — TRANSLATION REQUEST (طلب ترجمة)
+TYPE 2 — DIALECT CONVERSION REQUEST (طلب تحويل إلى الفصحى)
   Trigger: a sentence or paragraph in Hadrami dialect, OR an explicit
-           "ترجم / translate / حول إلى الفصحى" instruction.
-  Action: Translate naturally to MSA. Do NOT translate word-by-word. Preserve
-          meaning, context, and flow. Keep unknown words as-is and flag them
-          ONCE at the end of the response, never inline.
+           "ترجم / translate / حول إلى الفصحى" instruction (the user's own
+           wording — recognize it, but this is dialect conversion, not
+           translation between two languages).
+  Action: Render the meaning naturally in MSA. Do NOT convert word-by-word.
+          Preserve meaning, context, and flow. Keep unknown words as-is and
+          flag them ONCE at the end of the response, never inline.
 
 TYPE 3 — MEANING / DEFINITION (طلب معنى)
   Trigger: phrases such as "ما معنى / اشرح / وضح / ايش يعني" or any semantic
@@ -121,9 +123,9 @@ For SINGLE WORD lookup (TYPE 1):
 - مثال: [example_h] ← [example_f]
 - [proverb if available]
 
-For TRANSLATION (TYPE 2):
+For DIALECT CONVERSION (TYPE 2):
 
-[Natural MSA translation as one connected paragraph.]
+[Natural MSA rendering as one connected paragraph.]
 
 For DEFINITION (TYPE 3):
 
@@ -155,13 +157,13 @@ TONE & LANGUAGE
 ═══════════════════════════════════════════════════
 WHAT YOU MUST NEVER DO
 ═══════════════════════════════════════════════════
-- Never translate using general Arabic knowledge if the word is not in the lexicon.
+- Never convert using general Arabic knowledge if the word is not in the lexicon.
 - Never guess a Hadrami word's meaning without retrieval grounding.
 - Never claim a word is Hadrami if it is not in the retrieved context.
 - Never answer questions about other Arabic dialects (Gulf, Egyptian, Levantine,
   etc.) as if they were Hadrami.
 - Never fabricate proverbs or examples.
-- Never break paragraph translation into disconnected fragments.
+- Never break paragraph conversion into disconnected fragments.
 - Never paraphrase or rename the unknown-word marker block.
 """
 
@@ -211,16 +213,16 @@ def _is_single_word(text: str) -> bool:
 def intent_for(question: str) -> Intent:
     """Classify a user input into one of the five Hadrami NLP intents.
 
-    Order matters: an explicit "translate this" wins over single-word, an
-    explicit "ما معنى" wins over generic question detection, etc.
+    Order matters: an explicit "convert this to fusha" wins over single-word,
+    an explicit "ما معنى" wins over generic question detection, etc.
     """
     q = (question or "").strip()
     if not q:
         return "qa"
 
-    # 1. Explicit translation directive (Arabic or English).
-    if _TRANSLATION_INTENT_PATTERN.search(q):
-        return "translate"
+    # 1. Explicit dialect-conversion directive (Arabic or English).
+    if _CONVERSION_INTENT_PATTERN.search(q):
+        return "convert"
 
     # 2. Concept-description (semantic search) phrases.
     if _SEMANTIC_PATTERN.search(q):
@@ -238,6 +240,6 @@ def intent_for(question: str) -> Intent:
     if _QUESTION_PATTERN.search(q):
         return "qa"
 
-    # 6. Multi-word free text → treat as translation request by default
+    # 6. Multi-word free text → treat as a conversion request by default
     #    (Hadrami sentences land here without "ترجم" prefix).
-    return "translate"
+    return "convert"

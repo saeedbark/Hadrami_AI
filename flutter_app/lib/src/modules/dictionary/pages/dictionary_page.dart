@@ -1,3 +1,4 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:go_router/go_router.dart';
@@ -10,14 +11,40 @@ import 'package:hadrami_nlp/src/widgets/app_scaffold.dart';
 import 'package:hadrami_nlp/src/widgets/empty_state.dart';
 import 'package:hadrami_nlp/src/widgets/error_widget.dart';
 import 'package:hadrami_nlp/src/widgets/loading_widget.dart';
+import 'package:hadrami_nlp/src/widgets/text_input.dart';
 
 class DictionaryPage extends HookConsumerWidget {
   const DictionaryPage({super.key});
 
   static const List<String> _arabicLetters = [
-    'أ', 'ب', 'ت', 'ث', 'ج', 'ح', 'خ', 'د', 'ذ', 'ر', 'ز',
-    'س', 'ش', 'ص', 'ض', 'ط', 'ظ', 'ع', 'غ', 'ف', 'ق', 'ك',
-    'ل', 'م', 'ن', 'ه', 'و', 'ي',
+    'أ',
+    'ب',
+    'ت',
+    'ث',
+    'ج',
+    'ح',
+    'خ',
+    'د',
+    'ذ',
+    'ر',
+    'ز',
+    'س',
+    'ش',
+    'ص',
+    'ض',
+    'ط',
+    'ظ',
+    'ع',
+    'غ',
+    'ف',
+    'ق',
+    'ك',
+    'ل',
+    'م',
+    'ن',
+    'ه',
+    'و',
+    'ي',
   ];
 
   @override
@@ -27,6 +54,25 @@ class DictionaryPage extends HookConsumerWidget {
     final colorScheme = Theme.of(context).colorScheme;
     final letterFromRoute =
         GoRouterState.of(context).uri.queryParameters['letter'];
+
+    final searchController = useTextEditingController();
+    final searchQuery = ref.watch(dictionarySearchQueryProvider);
+    final searchResultsAsync = ref.watch(dictionarySearchResultsProvider);
+    final isSearching = searchQuery.trim().isNotEmpty;
+    final filterPanelVisible = ref.watch(dictionaryFilterPanelVisibleProvider);
+
+    void toggleFilterPanel() {
+      final opening = !filterPanelVisible;
+      ref.read(dictionaryFilterPanelVisibleProvider.notifier).toggle();
+      if (opening) {
+        ref.read(selectedLetterProvider.notifier).setLetter(null);
+      } else {
+        searchController.clear();
+        ref.read(dictionarySearchQueryProvider.notifier).setImmediate('');
+        ref.read(selectedPosProvider.notifier).setPos(null);
+        ref.read(selectedTagProvider.notifier).setTag(null);
+      }
+    }
 
     useEffect(() {
       final p = letterFromRoute;
@@ -46,6 +92,7 @@ class DictionaryPage extends HookConsumerWidget {
           ref.read(wordListProvider.notifier).loadMore();
         }
       }
+
       scrollController.addListener(onScroll);
       return () => scrollController.removeListener(onScroll);
     }, [scrollController]);
@@ -53,98 +100,157 @@ class DictionaryPage extends HookConsumerWidget {
     return AppScaffold(
       appBar: AppAppBar(
         title: const Text('القاموس الكامل'),
-        bottom: PreferredSize(
-          preferredSize: const Size.fromHeight(52),
-          child: _LetterFilter(
-            letters: _arabicLetters,
-            selected: selectedLetter,
-            onSelect: (letter) =>
-                ref.read(selectedLetterProvider.notifier).setLetter(letter),
+        actions: [
+          IconButton(
+            icon: Icon(filterPanelVisible
+                ? Icons.filter_alt_off_rounded
+                : Icons.filter_alt_rounded),
+            tooltip: filterPanelVisible ? 'إغلاق البحث والفلاتر' : 'بحث وفلاتر',
+            onPressed: toggleFilterPanel,
           ),
-        ),
+        ],
+        bottom: filterPanelVisible
+            ? null
+            : PreferredSize(
+                preferredSize: const Size.fromHeight(52),
+                child: _LetterFilter(
+                  letters: _arabicLetters,
+                  selected: selectedLetter,
+                  onSelect: (letter) => ref
+                      .read(selectedLetterProvider.notifier)
+                      .setLetter(letter),
+                ),
+              ),
       ),
       body: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(children: [
-                  wordsAsync.when(
-                    data: (_) {
-                      final total = ref.read(wordListProvider.notifier).total;
-                      return Container(
-                        padding:
-                            const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-                        decoration: BoxDecoration(
-                          color: colorScheme.primaryContainer,
-                          borderRadius: BorderRadius.circular(12),
+          if (filterPanelVisible) ...[
+            Padding(
+              padding: const EdgeInsets.fromLTRB(16, 8, 16, 0),
+              child: AppTextField(
+                controller: searchController,
+                hintText: 'ابحث بالحضرمي أو الفصحى...',
+                prefixIcon: const Icon(Icons.search_rounded),
+                suffixIcon: isSearching
+                    ? IconButton(
+                        icon: const Icon(Icons.clear_rounded),
+                        onPressed: () {
+                          searchController.clear();
+                          ref
+                              .read(dictionarySearchQueryProvider.notifier)
+                              .setImmediate('');
+                        },
+                      )
+                    : null,
+                onChanged: (value) =>
+                    ref.read(dictionarySearchQueryProvider.notifier).set(value),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              child: _PosAndCategoryFilter(ref: ref),
+            ),
+          ] else
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              child: wordsAsync.when(
+                data: (_) {
+                  final total = ref.read(wordListProvider.notifier).total;
+                  return Row(children: [
+                    Container(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 10, vertical: 4),
+                      decoration: BoxDecoration(
+                        color: colorScheme.primaryContainer,
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      child: Text(
+                        '$total كلمة',
+                        style: TextStyle(
+                          color: colorScheme.onPrimaryContainer,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 12,
                         ),
-                        child: Text(
-                          '$total كلمة',
-                          style: TextStyle(
-                            color: colorScheme.onPrimaryContainer,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 12,
-                          ),
+                      ),
+                    ),
+                    if (selectedLetter != null) ...[
+                      const SizedBox(width: 8),
+                      InputChip(
+                        label: Text('حرف $selectedLetter'),
+                        onDeleted: () => ref
+                            .read(selectedLetterProvider.notifier)
+                            .setLetter(null),
+                        deleteIcon: const Icon(Icons.close_rounded, size: 16),
+                        visualDensity: VisualDensity.compact,
+                      ),
+                    ],
+                  ]);
+                },
+                loading: () => const SizedBox.shrink(),
+                error: (_, __) => const SizedBox.shrink(),
+              ),
+            ),
+          Expanded(
+            child: isSearching
+                ? searchResultsAsync.when(
+                    data: (result) {
+                      if (result.results.isEmpty) {
+                        return EmptyState(
+                          icon: Icons.search_off_rounded,
+                          message: 'لا نتائج لـ "$searchQuery"',
+                          subtitle: 'جرّب كلمة مختلفة أو تهجئة أخرى',
+                        );
+                      }
+                      return ListView.builder(
+                        padding: const EdgeInsets.fromLTRB(16, 8, 16, 16),
+                        itemCount: result.results.length,
+                        itemBuilder: (_, i) => AnimatedAppear(
+                          duration: const Duration(milliseconds: 280),
+                          delay: Duration(milliseconds: 20 * (i < 12 ? i : 12)),
+                          child: WordCard(entry: result.results[i]),
                         ),
                       );
                     },
-                    loading: () => const SizedBox.shrink(),
-                    error: (_, __) => const SizedBox.shrink(),
-                  ),
-                  if (selectedLetter != null) ...[
-                    const SizedBox(width: 8),
-                    InputChip(
-                      label: Text('حرف $selectedLetter'),
-                      onDeleted: () =>
-                          ref.read(selectedLetterProvider.notifier).setLetter(null),
-                      deleteIcon: const Icon(Icons.close_rounded, size: 16),
-                      visualDensity: VisualDensity.compact,
-                    ),
-                  ],
-                ]),
-                const SizedBox(height: 6),
-                _PosAndCategoryFilter(ref: ref),
-              ],
-            ),
-          ),
-          Expanded(
-            child: wordsAsync.when(
-              data: (words) {
-                if (words.isEmpty) {
-                  return const EmptyState(
-                      icon: Icons.menu_book_rounded,
-                      message: 'لا توجد كلمات');
-                }
-                final total = ref.read(wordListProvider.notifier).total;
-                return ListView.builder(
-                  controller: scrollController,
-                  padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
-                  itemCount: words.length + (words.length < total ? 1 : 0),
-                  itemBuilder: (_, i) {
-                    if (i == words.length) {
-                      return const Padding(
-                        padding: EdgeInsets.all(16),
-                        child: Center(
-                            child: CircularProgressIndicator.adaptive()),
+                    loading: () => const LoadingWidget(),
+                    error: (e, _) => Center(child: Text('$e')),
+                  )
+                : wordsAsync.when(
+                    data: (words) {
+                      if (words.isEmpty) {
+                        return const EmptyState(
+                            icon: Icons.menu_book_rounded,
+                            message: 'لا توجد كلمات');
+                      }
+                      final total = ref.read(wordListProvider.notifier).total;
+                      return ListView.builder(
+                        controller: scrollController,
+                        padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
+                        itemCount:
+                            words.length + (words.length < total ? 1 : 0),
+                        itemBuilder: (_, i) {
+                          if (i == words.length) {
+                            return const Padding(
+                              padding: EdgeInsets.all(16),
+                              child: Center(
+                                  child: CircularProgressIndicator.adaptive()),
+                            );
+                          }
+                          return AnimatedAppear(
+                            duration: const Duration(milliseconds: 280),
+                            delay:
+                                Duration(milliseconds: 20 * (i < 12 ? i : 12)),
+                            child: WordCard(entry: words[i]),
+                          );
+                        },
                       );
-                    }
-                    return AnimatedAppear(
-                      duration: const Duration(milliseconds: 280),
-                      delay: Duration(milliseconds: 20 * (i < 12 ? i : 12)),
-                      child: WordCard(entry: words[i]),
-                    );
-                  },
-                );
-              },
-              loading: () => const LoadingWidget(),
-              error: (e, _) => AppErrorWidget(
-                message: e.toString(),
-                onRetry: () => ref.invalidate(wordListProvider),
-              ),
-            ),
+                    },
+                    loading: () => const LoadingWidget(),
+                    error: (e, _) => AppErrorWidget(
+                      message: e.toString(),
+                      onRetry: () => ref.invalidate(wordListProvider),
+                    ),
+                  ),
           ),
         ],
       ),
@@ -152,7 +258,7 @@ class DictionaryPage extends HookConsumerWidget {
   }
 }
 
-class _LetterFilter extends StatelessWidget {
+class _LetterFilter extends HookWidget {
   const _LetterFilter({
     required this.letters,
     required this.selected,
@@ -166,48 +272,71 @@ class _LetterFilter extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
-    return SizedBox(
+    final scrollController = useScrollController();
+    return Container(
       height: 52,
-      child: ListView.builder(
-        scrollDirection: Axis.horizontal,
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-        itemCount: letters.length + 1,
-        itemBuilder: (_, i) {
-          if (i == 0) {
-            final isAll = selected == null;
-            return Padding(
-              padding: const EdgeInsets.only(left: 6),
-              child: FilterChip(
-                label: const Text('الكل'),
-                selected: isAll,
-                onSelected: (_) => onSelect(null),
-                selectedColor: colorScheme.primary,
-                checkmarkColor: Colors.white,
-                labelStyle: TextStyle(
-                    color: isAll ? Colors.white : null,
-                    fontSize: 12,
-                    fontWeight: isAll ? FontWeight.bold : FontWeight.normal),
-              ),
-            );
+      margin: const EdgeInsets.only(left: 20),
+      // Mouse wheels only report a vertical delta, and Scrollable ignores it
+      // on a horizontal axis by default -- forward it manually so wheel
+      // scrolling works here the same as it does over a vertical list.
+      child: Listener(
+        onPointerSignal: (event) {
+          if (event is! PointerScrollEvent || !scrollController.hasClients) {
+            return;
           }
-          final letter = letters[i - 1];
-          final isSelected = selected == letter;
-          return Padding(
-            padding: const EdgeInsets.only(left: 5),
-            child: FilterChip(
-              label: Text(letter),
-              selected: isSelected,
-              onSelected: (_) => onSelect(isSelected ? null : letter),
-              selectedColor: colorScheme.primary,
-              checkmarkColor: Colors.white,
-              showCheckmark: false,
-              labelStyle: TextStyle(
-                  color: isSelected ? Colors.white : null,
-                  fontSize: 14,
-                  fontWeight: isSelected ? FontWeight.bold : FontWeight.normal),
+          final delta = event.scrollDelta.dx != 0
+              ? event.scrollDelta.dx
+              : event.scrollDelta.dy;
+          scrollController.jumpTo(
+            (scrollController.offset + delta).clamp(
+              scrollController.position.minScrollExtent,
+              scrollController.position.maxScrollExtent,
             ),
           );
         },
+        child: ListView.builder(
+          controller: scrollController,
+          scrollDirection: Axis.horizontal,
+          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+          itemCount: letters.length + 1,
+          itemBuilder: (_, i) {
+            if (i == 0) {
+              final isAll = selected == null;
+              return Padding(
+                padding: const EdgeInsets.only(left: 6),
+                child: FilterChip(
+                  label: const Text('الكل'),
+                  selected: isAll,
+                  onSelected: (_) => onSelect(null),
+                  selectedColor: colorScheme.primary,
+                  checkmarkColor: Colors.white,
+                  labelStyle: TextStyle(
+                      color: isAll ? Colors.white : null,
+                      fontSize: 12,
+                      fontWeight: isAll ? FontWeight.bold : FontWeight.normal),
+                ),
+              );
+            }
+            final letter = letters[i - 1];
+            final isSelected = selected == letter;
+            return Padding(
+              padding: const EdgeInsets.only(left: 5),
+              child: FilterChip(
+                label: Text(letter),
+                selected: isSelected,
+                onSelected: (_) => onSelect(isSelected ? null : letter),
+                selectedColor: colorScheme.primary,
+                checkmarkColor: Colors.white,
+                showCheckmark: false,
+                labelStyle: TextStyle(
+                    color: isSelected ? Colors.white : null,
+                    fontSize: 14,
+                    fontWeight:
+                        isSelected ? FontWeight.bold : FontWeight.normal),
+              ),
+            );
+          },
+        ),
       ),
     );
   }
@@ -257,8 +386,7 @@ class _PosAndCategoryFilter extends StatelessWidget {
             icon: Icons.category_rounded,
             items: _tagOptions,
             labelOf: tagArabicLabel,
-            onChanged: (v) =>
-                ref.read(selectedTagProvider.notifier).setTag(v),
+            onChanged: (v) => ref.read(selectedTagProvider.notifier).setTag(v),
           ),
         ],
       ),

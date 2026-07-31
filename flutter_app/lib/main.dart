@@ -9,5 +9,8 @@ void main() {
     const ProviderScope(
       child: HadramiApp(),
     ),
-  );
+  ); 
+
 }
+ 
+ 

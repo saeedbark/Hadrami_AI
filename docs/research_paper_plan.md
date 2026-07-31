@@ -355,7 +355,7 @@ I'll need explicit "go" before I run any UPDATE / re-embedding job.
   `.,!?؟،؛\n`) and merge the results. Top-k bumped to 12 for paragraphs,
   10 for short input. Output cap 12 for paragraphs (was 5). Directly
   addresses §6 fix #2 and §6 fix #3.
-- `backend/app/rag/prompts.py:translation_prompt`: bumped few-shot pair
+- `backend/app/rag/prompts.py:conversion_prompt`: bumped few-shot pair
   budget from 10 to 16 and the entry walk from 8 to 12, so the wider
   paragraph context is not silently truncated.
 - `backend/app/services/embedding_doc.py` (new): canonical Arabic-first

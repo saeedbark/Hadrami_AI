@@ -49,7 +49,7 @@ asking about".
 | Orchestrator | Used by | Behaviour |
 |---|---|---|
 | `retrieve_rag_context(q)` | `/chat` intents `word`, `define`, `semantic`, `qa` &mdash; and the legacy `/ask` | Hybrid: tries `expanded_keyword_context` first; if `top_score >= 100` (exact keyword hit) it skips the vector path entirely. Otherwise merges keyword (top-8) + vector (top-4) by `id`, returns top-5. |
-| `retrieve_phrase_context(q)` | `/chat` `translate` intent and `/translate-phrase` | Stricter, lexicon-first. For multi-clause input (≥ 60 chars OR ≥ 2 segments after sentence-split) it retrieves per-sentence and merges, with bumped top-k (12 keyword + 6 vector main; 4 keyword + 2 vector per sentence; cap 12). For short input: keyword 10 + vector 4, cap 5. |
+| `retrieve_phrase_context(q)` | `/chat` `convert` intent and `/convert-phrase` | Stricter, lexicon-first. For multi-clause input (≥ 60 chars OR ≥ 2 segments after sentence-split) it retrieves per-sentence and merges, with bumped top-k (12 keyword + 6 vector main; 4 keyword + 2 vector per sentence; cap 12). For short input: keyword 10 + vector 4, cap 5. |
 
 ### Score fusion
 
@@ -70,13 +70,13 @@ LLM. Two gating signals are combined:
 1. The merged top-k must contain at least one entry whose
    keyword-side `top_score` ≥ a per-intent floor, **or** whose
    vector-side cosine similarity ≥ `RAG_CONFIDENCE_GATE`.
-2. For `word` / `define` / `translate` (single OOV headword) intents
+2. For `word` / `define` / `convert` (single OOV headword) intents
    the unknown-word short-circuit fires when (1) fails: the dispatcher
    returns a deterministic suggest-this-word block with no LLM call.
 
 The gate sweep experiment (E5 in the paper, `scripts/eval/run_gate_sweep.py`)
 varies this threshold over {0.45, 0.55, 0.65, 0.75, 0.85} and reports
-the trade-off curve between refusal rate and translation quality.
+the trade-off curve between refusal rate and conversion quality.
 
 ### Paragraph mode
 
@@ -109,7 +109,7 @@ in `backend/app/rag/system_prompt.py:intent_for`. The mapping:
 | User input shape | Intent | Retriever called | Top-k cap |
 |---|---|---|---|
 | Single Hadrami token, no question particle | `word` | `retrieve_rag_context` | 5 |
-| Explicit <span dir="rtl">«ترجم»</span> / "translate", **or** ≥ 8 chars with sentence punctuation | `translate` | `retrieve_phrase_context` | 5 (short) / 12 (paragraph) |
+| Explicit <span dir="rtl">«ترجم»</span> / "translate", **or** ≥ 8 chars with sentence punctuation | `convert` | `retrieve_phrase_context` | 5 (short) / 12 (paragraph) |
 | <span dir="rtl">«ما معنى»</span>, <span dir="rtl">«اشرح»</span>, "what does X mean" | `define` | `retrieve_rag_context` | 5 |
 | <span dir="rtl">«كلمة تعني»</span>, <span dir="rtl">«أداة لـ»</span> (gloss-first description) | `semantic` | `vector_context` only (no keyword path) | 6 |
 | Open question, default fall-through | `qa` | `retrieve_rag_context` | 5 |
@@ -120,9 +120,9 @@ Two consequences of this design worth flagging:
   <span dir="rtl">«كلمة تعني الإهمال»</span> ("a word meaning negligence") almost
   never contains a Hadrami headword, so keyword search returns no hits
   and we save the round-trip.
-* **Paragraph translation widens the retrieval pool, not the LLM
+* **Paragraph conversion widens the retrieval pool, not the LLM
   budget.** Top-k goes from 5 to 12 in paragraph mode, but the
-  few-shot pair budget in `prompts.py:translation_prompt` is only 16
+  few-shot pair budget in `prompts.py:conversion_prompt` is only 16
   pairs. Pair selection happens after retrieval.
 
 ---
@@ -298,7 +298,7 @@ does not motivate sentence-level retrieval. The motivation is purely
 all 4 in the top-5 is luck. With per-sentence retrieval and a 12-entry
 cap we observe (qualitative, on the canonical Example 8 paragraph)
 that all four content words have their licensing pairs in the prompt.
-Without this, the translation prompt's grounding contract — *"every
+Without this, the conversion prompt's grounding contract — *"every
 content word mapping MUST be licensed by the Hadrami↔MSA pairs below"* —
 is unenforceable because the licenses are not actually there.
 
@@ -384,4 +384,4 @@ the eval scripts.
 * Doc:     `backend/app/services/embedding_doc.py` (`EMBEDDING_DOC_VERSION`)
 * Eval:    `scripts/eval/{run_lookup_eval,run_gate_sweep,run_translation_eval,run_hallucination_eval}.py`
 * Paper:   `docs/hadrami_rag_paper.html` §4.3 (Retrieval), §6 (Results), §7 (Error Analysis)
-* Plan:    `docs/research_paper_plan.md` §6 (paragraph-translation diagnosis)
+* Plan:    `docs/research_paper_plan.md` §6 (paragraph-conversion diagnosis)

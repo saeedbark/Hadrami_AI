@@ -1,6 +1,6 @@
-/// Must match backend [PHRASE_TRANSLATE_MAX_CHARS] / long-hint thresholds.
-class PhraseTranslateConfig {
-  PhraseTranslateConfig._();
+/// Must match backend [PHRASE_CONVERT_MAX_CHARS] / long-hint thresholds.
+class PhraseConversionConfig {
+  PhraseConversionConfig._();
 
   static const int minLength = 2;
   static const int maxLength = 3000;
