@@ -11,7 +11,7 @@ Plus the two orchestrators that callers should use:
 
 * :func:`retrieve_rag_context`     — hybrid merge for ``/ask`` and ``/chat``
 * :func:`retrieve_phrase_context`  — stricter lexicon retrieval for
-                                      ``/translate-phrase``
+                                      ``/convert-phrase``
 """
 
 from __future__ import annotations
@@ -176,8 +176,8 @@ def _is_multi_clause(text: str, segments: list[str]) -> bool:
 
 
 def retrieve_phrase_context(query: str) -> tuple[list[dict], list[dict]]:
-    """Stricter lexicon-first retrieval for ``/translate-phrase`` and the
-    chat ``translate`` intent.
+    """Stricter lexicon-first retrieval for ``/convert-phrase`` and the
+    chat ``convert`` intent.
 
     For multi-clause input we additionally retrieve per-sentence and merge —
     without this, a 4-headword paragraph can exhaust the top-5 cap and lose

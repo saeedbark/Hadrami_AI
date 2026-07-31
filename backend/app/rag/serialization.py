@@ -1,6 +1,6 @@
 """DB dict → Pydantic entry + response-payload helpers.
 
-These helpers live in one place so both ``/ask`` and ``/translate-phrase``
+These helpers live in one place so both ``/ask`` and ``/convert-phrase``
 return structurally-identical ``Entry`` objects.
 """
 

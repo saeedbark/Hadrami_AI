@@ -12,8 +12,8 @@ Arabic, spoken in Hadhramaut, Yemen). It exposes four user-facing tasks:
 
 | Task | Endpoint | Grounding strategy |
 |------|----------|-------------------|
-| Word translation | `GET /translate` | Exact / partial scoring over the lexicon (no LLM) |
-| Phrase translation | `POST /translate-phrase` | Retrieve lexicon entries → prompt Gemini → lexicon-filter spans |
+| Word interpretation | `GET /interpret` | Exact / partial scoring over the lexicon (no LLM) |
+| Phrase conversion | `POST /convert-phrase` | Retrieve lexicon entries → prompt Gemini → lexicon-filter spans |
 | Semantic search | `GET /semantic-search` | pgvector ANN over Gemini 768-dim embeddings |
 | Q&A | `GET·POST /ask`, `POST /chat` | Hybrid retrieval → grounded prompt → refusal when empty |
 
@@ -117,9 +117,9 @@ inference; they exist solely for the evaluation protocol in §4.
 
 ## 3. Methods
 
-### 3.1 Word-level translation (`/translate`)
+### 3.1 Word-level interpretation (`/interpret`)
 
-Implemented in `dictionary_service.translate`. Deterministic, non-LLM:
+Implemented in `dictionary_service.interpret`. Deterministic, non-LLM:
 
 1. **Exact match** on `word_vocalized`, `word_clean`, or `synonyms` → score 100.
 2. **Prefix / substring** match → score 70–80.
@@ -138,19 +138,19 @@ the system.
    threshold (default 0.25, client-overridable).
 3. Response includes similarity score per hit.
 
-### 3.3 Phrase translation (`/translate-phrase`)
+### 3.3 Phrase conversion (`/convert-phrase`)
 
-Implemented in `services/phrase_translation_service.py` using
+Implemented in `services/phrase_conversion_service.py` using
 `rag.retrieval.retrieve_phrase_context` and `rag.prompts.phrase_prompt`:
 
 1. **Lexicon-first retrieval** — `search_phrase_lexicon` tokenizes the
    input, scores each token against headwords / synonyms /
    phonetic_variants, and deduplicates. A pgvector pass augments
    semantically-related entries.
-2. **Chunking** — inputs > `PHRASE_TRANSLATE_CHUNK_SIZE` (default
+2. **Chunking** — inputs > `PHRASE_CONVERT_CHUNK_SIZE` (default
    800 chars) are split on paragraph boundaries (then sentence
-   boundaries if needed) and translated with bounded thread-pool
-   parallelism (`PHRASE_TRANSLATE_MAX_WORKERS`, default 3, max 8).
+   boundaries if needed) and converted with bounded thread-pool
+   parallelism (`PHRASE_CONVERT_MAX_WORKERS`, default 3, max 8).
 3. **Grounded prompt** — the prompt mandates that every
    dialectal mapping be licensed by an entry in the retrieved
    context (headword, synonym, or example). Function words
@@ -159,7 +159,7 @@ Implemented in `services/phrase_translation_service.py` using
    is instructed to return an empty string and
    `"note": "insufficient_lexicon_coverage"`.
 4. **Span post-processing** — the model returns
-   `{"translated_text": "...", "hadrami_spans": [...], "note": "..."}`.
+   `{"converted_text": "...", "hadrami_spans": [...], "note": "..."}`.
    Spans are normalized (Arabic alef variants collapsed, tashkeel
    stripped) and **filtered to the retrieved lexicon surfaces** — no
    span survives that doesn't match a headword or MSA gloss in the
@@ -171,9 +171,9 @@ Implemented in `services/phrase_translation_service.py` using
 
 Implemented in `rag/pipeline.py`.
 
-1. **Translation-intent detection** — `/ask` questions matching a
-   translation pattern (`ترجم`, `إلى الفصحى`, etc.) are routed to the
-   phrase-translation pipeline.
+1. **Conversion-intent detection** — `/ask` questions matching a
+   conversion pattern (`ترجم`, `إلى الفصحى`, etc.) are routed to the
+   phrase-conversion pipeline.
 2. **Hybrid retrieval** — `retrieve_rag_context`:
    - `search_entries_expanded` (server-side, PostgREST RPC) for scored
      keyword matches over headword, synonyms, gloss, and definition.
@@ -321,7 +321,7 @@ the service-role key.
 - **Publish** the dataset and evaluation pairs under a permissive license
   with proper provenance metadata.
 - **Fine-tune** a smaller open model on verified pairs for offline
-  translation (privacy + latency win).
+  conversion (privacy + latency win).
 - **Cross-dialect generalization**: test whether the lexicon-grounded
   pipeline transfers to other low-resource Arabic varieties (Mehri,
   Soqotri) without changes to the pipeline.

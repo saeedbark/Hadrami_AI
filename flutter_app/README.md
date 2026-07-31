@@ -1,6 +1,6 @@
 # Flutter App — Hadrami NLP
 
-Cross-platform client for the Hadrami dialect dictionary and translation API.
+Cross-platform client for the Hadrami dialect dictionary and conversion API.
 Built with **Flutter 3.x**, **Riverpod** for state management, and **go_router** for navigation.
 
 ---
@@ -52,7 +52,7 @@ lib/
     ├── app.dart               ← MaterialApp.router, theme binding
     ├── configs/               ← App-wide constants
     │   ├── api_config.dart    ← Backend URL (compile-time define)
-    │   ├── phrase_translate_config.dart  ← Phrase limits
+    │   ├── phrase_conversion_config.dart  ← Phrase limits
     │   ├── app_colors.dart    ← Color palette
     │   └── app_radius.dart    ← Border radii
     │
@@ -87,7 +87,7 @@ lib/
         ├── dictionary/        ← Full word list + letter filter
         ├── favorites/         ← Locally saved words
         ├── ask/               ← AI Q&A (`/ask`)
-        ├── phrase/            ← Phrase translation with spans (`/translate-phrase`)
+        ├── phrase/            ← Phrase conversion with spans (`/convert-phrase`)
         ├── chat/              ← Unified conversational dispatcher (`/chat`)
         └── settings/          ← Connection test, theme, about
 ```
@@ -120,10 +120,10 @@ All models are defined in `core/models/word_entry.dart`:
 |-------|---------|
 | `WordEntry` | Dictionary entry with optional `fus7aShort`, `aliases`, `examples` |
 | `ExamplePair` | Usage example pair (`hadrami` + `fusha`) |
-| `TranslateResult` | Single word translation response |
+| `InterpretResult` | Single word interpretation response |
 | `SearchResult` | Search response with total count + results list |
 | `AskResult` | AI Q&A response with answer + mode + context |
-| `PhraseTranslateResult` | Phrase translation with highlighted spans |
+| `PhraseConversionResult` | Phrase conversion with highlighted spans |
 | `HadramiSpan` | Start/end/surface for highlighted Hadrami words |
 | `AppStats` | Dictionary statistics |
 
@@ -138,7 +138,7 @@ All models are defined in `core/models/word_entry.dart`:
 | 3 | Dictionary | `/dictionary` | Paginated list + Arabic letter filter chips |
 | 4 | Favorites | `/favorites` | Locally saved words (shared_preferences) |
 | 5 | Ask | `/ask` | AI Q&A with copy button and source mode |
-| 6 | Phrases | `/phrase-translate` | Bidirectional phrase translation |
+| 6 | Phrases | `/phrase-translate` | Bidirectional phrase conversion |
 | 7 | Chat | `/chat` | Unified conversational dispatcher (5 intents, refusal contract) |
 | 8 | Settings | `/settings` | Backend test, theme selector (light / dark / system), version info |
 

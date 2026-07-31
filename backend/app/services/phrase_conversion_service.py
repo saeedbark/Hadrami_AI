@@ -1,7 +1,7 @@
-"""RAG-grounded phrase translation (MSA <-> Hadrami) via Gemini.
+"""RAG-grounded phrase conversion (MSA <-> Hadrami) via Gemini.
 
 Retrieval, prompting, and Gemini access all live in :mod:`app.rag.*` now;
-this module owns only the pieces that are specific to the phrase-translate
+this module owns only the pieces that are specific to the phrase-conversion
 endpoint:
 
 * chunked long-text handling with bounded parallelism,
@@ -16,7 +16,7 @@ import re
 from concurrent.futures import Future, ThreadPoolExecutor, as_completed
 from typing import Any
 
-from ..core.config import PHRASE_TRANSLATE_CHUNK_SIZE, PHRASE_TRANSLATE_MAX_WORKERS
+from ..core.config import PHRASE_CONVERT_CHUNK_SIZE, PHRASE_CONVERT_MAX_WORKERS
 from ..rag.config import MODE, gemini_api_key, rag_response_mode_tag
 from ..rag.generation import (
     GEMINI_UNAVAILABLE_PREFIX,
@@ -62,7 +62,7 @@ def _allowed_surfaces_from_entries(merged: list[dict], direction: str) -> set[st
 
 
 def _filter_spans_to_lexicon(
-    translated_text: str,
+    converted_text: str,
     spans: list[dict[str, Any]],
     merged: list[dict],
     direction: str,
@@ -77,8 +77,8 @@ def _filter_spans_to_lexicon(
         if not surf:
             try:
                 s, e = int(sp["start"]), int(sp["end"])
-                if 0 <= s <= e <= len(translated_text):
-                    surf = translated_text[s:e].strip()
+                if 0 <= s <= e <= len(converted_text):
+                    surf = converted_text[s:e].strip()
             except (KeyError, TypeError, ValueError):
                 surf = ""
         if not surf:
@@ -105,10 +105,10 @@ def _parse_json_payload(raw: str) -> dict[str, Any]:
         return {}
 
 
-def _normalize_spans(translated_text: str, spans: Any) -> list[dict[str, Any]]:
+def _normalize_spans(converted_text: str, spans: Any) -> list[dict[str, Any]]:
     if not isinstance(spans, list):
         return []
-    n = len(translated_text)
+    n = len(converted_text)
     out: list[dict[str, Any]] = []
     for s in spans:
         if not isinstance(s, dict):
@@ -120,21 +120,21 @@ def _normalize_spans(translated_text: str, spans: Any) -> list[dict[str, Any]]:
             surf = str(s.get("surface") or "").strip()
             if not surf:
                 continue
-            idx = translated_text.find(surf)
+            idx = converted_text.find(surf)
             if idx < 0:
                 continue
             start, end = idx, idx + len(surf)
         if start < 0 or end > n or start > end:
             surf = str(s.get("surface") or "").strip()
             if surf:
-                idx = translated_text.find(surf)
+                idx = converted_text.find(surf)
                 if idx >= 0:
                     start, end = idx, idx + len(surf)
                 else:
                     continue
             else:
                 continue
-        surface = translated_text[start:end]
+        surface = converted_text[start:end]
         if not surface and str(s.get("surface") or "").strip():
             surface = str(s.get("surface")).strip()
         out.append({"start": start, "end": end, "surface": surface})
@@ -183,10 +183,10 @@ def _split_into_chunks(text: str, max_chunk: int) -> list[str]:
 
 
 # ---------------------------------------------------------------------------
-# Per-chunk translation
+# Per-chunk conversion
 # ---------------------------------------------------------------------------
 
-def _translate_single_chunk(
+def _convert_single_chunk(
     text: str, direction: str, merged: list[dict], api_key: str
 ) -> tuple[str, list[dict[str, Any]]]:
     prompt = phrase_prompt(text, direction, merged)
@@ -194,54 +194,54 @@ def _translate_single_chunk(
     if is_gemini_unavailable(raw):
         return raw, []
     data = _parse_json_payload(raw)
-    translated = (data.get("translated_text") if isinstance(data, dict) else None) or raw.strip()
+    converted = (data.get("converted_text") if isinstance(data, dict) else None) or raw.strip()
     spans = _normalize_spans(
-        translated,
+        converted,
         data.get("hadrami_spans") if isinstance(data, dict) else None,
     )
-    spans = _filter_spans_to_lexicon(translated, spans, merged, direction)
-    return translated, spans
+    spans = _filter_spans_to_lexicon(converted, spans, merged, direction)
+    return converted, spans
 
 
 # ---------------------------------------------------------------------------
 # Public entrypoint
 # ---------------------------------------------------------------------------
 
-def translate_phrase(text: str, direction: str) -> dict[str, Any]:
+def convert_phrase(text: str, direction: str) -> dict[str, Any]:
     stripped = (text or "").strip()
     merged, ctx_for_api = retrieve_phrase_context(stripped)
     context_models = entries_to_response(ctx_for_api)
     api_key = gemini_api_key()
 
-    chunks = _split_into_chunks(stripped, PHRASE_TRANSLATE_CHUNK_SIZE)
+    chunks = _split_into_chunks(stripped, PHRASE_CONVERT_CHUNK_SIZE)
 
     if len(chunks) == 1:
-        translated, spans = _translate_single_chunk(stripped, direction, merged, api_key)
-        if is_gemini_unavailable(translated):
-            rag_log(f"translate-phrase Gemini fail -> {preview(translated)}")
+        converted, spans = _convert_single_chunk(stripped, direction, merged, api_key)
+        if is_gemini_unavailable(converted):
+            rag_log(f"convert-phrase Gemini fail -> {preview(converted)}")
             return {
                 "input_text": stripped,
                 "direction": direction,
-                "translated_text": translated,
+                "converted_text": converted,
                 "hadrami_spans": [],
                 "mode": "error",
                 "rag_mode": MODE,
                 "context": context_models,
             }
     else:
-        workers = min(PHRASE_TRANSLATE_MAX_WORKERS, len(chunks))
+        workers = min(PHRASE_CONVERT_MAX_WORKERS, len(chunks))
         rag_log(
-            f"translate-phrase chunked: {len(chunks)} chunks for {len(stripped)} chars "
+            f"convert-phrase chunked: {len(chunks)} chunks for {len(stripped)} chars "
             f"(workers={workers})"
         )
-        ordered = _translate_chunks_parallel(chunks, direction, merged, api_key, workers)
+        ordered = _convert_chunks_parallel(chunks, direction, merged, api_key, workers)
 
-        translated, spans = _merge_chunk_results(ordered)
-        if is_gemini_unavailable(translated):
+        converted, spans = _merge_chunk_results(ordered)
+        if is_gemini_unavailable(converted):
             return {
                 "input_text": stripped,
                 "direction": direction,
-                "translated_text": translated,
+                "converted_text": converted,
                 "hadrami_spans": [],
                 "mode": "error",
                 "rag_mode": MODE,
@@ -250,14 +250,14 @@ def translate_phrase(text: str, direction: str) -> dict[str, Any]:
 
     mode_tag = rag_response_mode_tag()
     rag_log(
-        f"translate-phrase dir={direction!r} mode={mode_tag} "
-        f"chars={len(translated)} spans={len(spans)} preview={preview(translated)}"
+        f"convert-phrase dir={direction!r} mode={mode_tag} "
+        f"chars={len(converted)} spans={len(spans)} preview={preview(converted)}"
     )
 
     return {
         "input_text": stripped,
         "direction": direction,
-        "translated_text": translated,
+        "converted_text": converted,
         "hadrami_spans": spans,
         "mode": mode_tag,
         "rag_mode": MODE,
@@ -266,10 +266,10 @@ def translate_phrase(text: str, direction: str) -> dict[str, Any]:
 
 
 # ---------------------------------------------------------------------------
-# Parallel chunk translation helpers
+# Parallel chunk conversion helpers
 # ---------------------------------------------------------------------------
 
-def _translate_chunks_parallel(
+def _convert_chunks_parallel(
     chunks: list[str],
     direction: str,
     merged: list[dict],
@@ -277,12 +277,12 @@ def _translate_chunks_parallel(
     workers: int,
 ) -> list[tuple[str, list[dict[str, Any]]]]:
     if workers <= 1:
-        return [_translate_single_chunk(c, direction, merged, api_key) for c in chunks]
+        return [_convert_single_chunk(c, direction, merged, api_key) for c in chunks]
 
     future_to_idx: dict[Future, int] = {}
     with ThreadPoolExecutor(max_workers=workers) as ex:
         for i, chunk in enumerate(chunks):
-            fut = ex.submit(_translate_single_chunk, chunk, direction, merged, api_key)
+            fut = ex.submit(_convert_single_chunk, chunk, direction, merged, api_key)
             future_to_idx[fut] = i
         indexed: list[tuple[int, str, list[dict[str, Any]]]] = []
         for fut in as_completed(future_to_idx):
@@ -296,7 +296,7 @@ def _translate_chunks_parallel(
 def _merge_chunk_results(
     ordered: list[tuple[str, list[dict[str, Any]]]],
 ) -> tuple[str, list[dict[str, Any]]]:
-    all_translated: list[str] = []
+    all_converted: list[str] = []
     all_spans: list[dict[str, Any]] = []
     offset = 0
     for t, s in ordered:
@@ -305,7 +305,7 @@ def _merge_chunk_results(
         for sp in s:
             sp["start"] += offset
             sp["end"] += offset
-        all_translated.append(t)
+        all_converted.append(t)
         all_spans.extend(s)
         offset += len(t) + 1
-    return "\n".join(all_translated), all_spans
+    return "\n".join(all_converted), all_spans

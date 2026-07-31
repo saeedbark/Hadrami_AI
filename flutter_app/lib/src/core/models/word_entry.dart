@@ -41,21 +41,6 @@ class WordEntry with _$WordEntry {
 }
 
 @freezed
-class TranslateResult with _$TranslateResult {
-  @JsonSerializable(fieldRename: FieldRename.snake)
-  const factory TranslateResult({
-    @Default(false) bool found,
-    @Default('') String wordVocalized,
-    @Default('') String fushaEquivalent,
-    @Default('') String definition,
-    @Default('not_found') String confidence,
-  }) = _TranslateResult;
-
-  factory TranslateResult.fromJson(Map<String, dynamic> json) =>
-      _$TranslateResultFromJson(json);
-}
-
-@freezed
 class SearchResult with _$SearchResult {
   @JsonSerializable(fieldRename: FieldRename.snake)
   const factory SearchResult({
@@ -65,24 +50,6 @@ class SearchResult with _$SearchResult {
 
   factory SearchResult.fromJson(Map<String, dynamic> json) =>
       _$SearchResultFromJson(json);
-}
-
-@freezed
-class AskResult with _$AskResult {
-  @JsonSerializable(fieldRename: FieldRename.snake)
-  const factory AskResult({
-    @Default('') String question,
-    @Default('') String answer,
-    @Default('simple') String mode,
-    /// `model` = text from Gemini; `lexicon` = offline dictionary fallback.
-    @Default('model') String answerSource,
-    @Default(<HadramiSpan>[]) List<HadramiSpan> hadramiSpans,
-    @Default(<String>[]) List<String> highlightSurfaces,
-    @Default(<WordEntry>[]) List<WordEntry> context,
-  }) = _AskResult;
-
-  factory AskResult.fromJson(Map<String, dynamic> json) =>
-      _$AskResultFromJson(json);
 }
 
 @freezed
@@ -99,28 +66,11 @@ class HadramiSpan with _$HadramiSpan {
 }
 
 @freezed
-class PhraseTranslateResult with _$PhraseTranslateResult {
-  @JsonSerializable(fieldRename: FieldRename.snake)
-  const factory PhraseTranslateResult({
-    @Default('') String inputText,
-    @Default('') String direction,
-    @Default('') String translatedText,
-    @Default(<HadramiSpan>[]) List<HadramiSpan> hadramiSpans,
-    @Default('error') String mode,
-    @Default('') String ragMode,
-    @Default(<WordEntry>[]) List<WordEntry> context,
-  }) = _PhraseTranslateResult;
-
-  factory PhraseTranslateResult.fromJson(Map<String, dynamic> json) =>
-      _$PhraseTranslateResultFromJson(json);
-}
-
-@freezed
 class AppStats with _$AppStats {
   @JsonSerializable(fieldRename: FieldRename.snake)
   const factory AppStats({
     @Default(0) int totalWords,
-    @Default(0) int translated,
+    @Default(0) int completed,
     @Default(0) int pending,
     @Default(0.0) double completionPercent,
     @Default(<String, int>{}) Map<String, int> byPos,

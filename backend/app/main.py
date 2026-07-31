@@ -24,16 +24,16 @@ from .schemas import (
     AskResponse,
     ChatRequest,
     ChatResponse,
+    ConvertPhraseRequest,
+    ConvertPhraseResponse,
     Entry,
     FeedbackRequest,
+    InterpretResponse,
     LexiconSectionsResponse,
     SearchResult,
-    TranslatePhraseRequest,
-    TranslatePhraseResponse,
-    TranslateResponse,
 )
 from .services import dictionary_service
-from .services.phrase_translation_service import translate_phrase as run_translate_phrase
+from .services.phrase_conversion_service import convert_phrase as run_convert_phrase
 
 
 @asynccontextmanager
@@ -70,8 +70,8 @@ def root():
         "version": APP_VERSION,
         "total_words": total,
         "endpoints": [
-            "/translate",
-            "/translate-phrase",
+            "/interpret",
+            "/convert-phrase",
             "/search",
             "/semantic-search",
             "/word/{id}",
@@ -94,22 +94,25 @@ def list_sections():
     return dictionary_service.get_sections()
 
 
-@app.get("/translate", response_model=TranslateResponse)
-def translate(q: str = Query(..., description="Hadrami word to translate")):
-    return dictionary_service.translate(q)
+@app.get("/interpret", response_model=InterpretResponse)
+def interpret(q: str = Query(..., description="Hadrami word to interpret")):
+    return dictionary_service.interpret(q)
 
 
-@app.post("/translate-phrase", response_model=TranslatePhraseResponse)
-def translate_phrase(body: TranslatePhraseRequest):
-    return run_translate_phrase(body.text, body.direction.value)
+@app.post("/convert-phrase", response_model=ConvertPhraseResponse)
+def convert_phrase(body: ConvertPhraseRequest):
+    return run_convert_phrase(body.text, body.direction.value)
 
 
 @app.get("/search", response_model=SearchResult)
 def search(
     q: str = Query(..., description="Search query"),
     limit: int = Query(DEFAULT_PAGE_SIZE, ge=1, le=MAX_PAGE_SIZE),
+    pos: Optional[str] = Query(None, description="Filter by pos (Noun, Verb, Adjective, Expression)"),
+    region: Optional[str] = Query(None, description="Filter by region"),
+    tag: Optional[str] = Query(None, description="Filter by tag"),
 ):
-    payload = dictionary_service.search(q, limit)
+    payload = dictionary_service.search(q, limit, pos=pos, region=region, tag=tag)
     return SearchResult(total=payload["total"], results=payload["results"])
 
 
@@ -244,10 +247,10 @@ def ask_post(body: AskRequest):
 def chat(body: ChatRequest):
     """Unified Hadrami LLM endpoint.
 
-    Auto-classifies the message into one of ``word`` / ``translate`` /
+    Auto-classifies the message into one of ``word`` / ``convert`` /
     ``define`` / ``semantic`` / ``qa`` and routes through the matching
     retrieval + prompt path. Replaces direct calls to ``/ask`` and
-    ``/translate-phrase`` for clients that want a single conversational
+    ``/convert-phrase`` for clients that want a single conversational
     surface.
     """
     from .rag.pipeline import get_chat_answer

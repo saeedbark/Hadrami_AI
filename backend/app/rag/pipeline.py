@@ -2,14 +2,14 @@
 
 This module owns the three user-facing functions the HTTP handlers call:
 
-* :func:`get_rag_answer`         — ``/ask``
-* :func:`get_chat_answer`        — ``/chat``
-* :func:`get_translation_answer` — ``/ask`` when the question looks like a
-                                   translation request (shared behavior with
-                                   ``/translate-phrase`` but without chunking)
+* :func:`get_rag_answer`        — ``/ask``
+* :func:`get_chat_answer`       — ``/chat``
+* :func:`get_conversion_answer` — ``/ask`` when the question looks like a
+                                  dialect-conversion request (shared behavior
+                                  with ``/convert-phrase`` but without chunking)
 
-The phrase-translation service
-(:mod:`app.services.phrase_translation_service`) imports a few helpers from
+The phrase-conversion service
+(:mod:`app.services.phrase_conversion_service`) imports a few helpers from
 :mod:`.generation` and :mod:`.retrieval` directly — it is *not* a
 private-import coupling; it is a deliberately-thin wrapper around the same
 retrieval + generation primitives.
@@ -29,9 +29,9 @@ from .generation import chat_generation_config, gemini_generate, is_gemini_unava
 from .logging_utils import preview, rag_log
 from .prompts import (
     chat_prompt,
-    looks_like_translation_request,
+    conversion_prompt,
+    looks_like_conversion_request,
     prompt_for_gemini,
-    translation_prompt,
 )
 from .retrieval import (
     expanded_keyword_context,
@@ -47,8 +47,8 @@ from .text_utils import first_example
 __all__ = [
     "MODE",
     "get_chat_answer",
+    "get_conversion_answer",
     "get_rag_answer",
-    "get_translation_answer",
     "retrieve_phrase_context",
     "retrieve_rag_context",
 ]
@@ -127,56 +127,48 @@ def _lexicon_fallback_answer(entries: list[dict], top_score: int) -> str:
 
 
 def _chat_fallback_reply(entries: list[dict], top_score: int = 0) -> str:
-    """Grounded fallback for ``/chat`` when Gemini fails."""
+    """Grounded fallback for ``/chat`` when Gemini fails.
+
+    Mirrors :func:`_lexicon_fallback_answer` (single best-match entry) rather
+    than dumping the top-3 hits — a multi-entry dump reads as broken/unrelated
+    answers glued together when the user only asked about one word.
+    """
     if not entries or top_score < _MIN_FALLBACK_SCORE:
         return (
             "تعذّر الاتصال بنموذج الإجابة، ولم يُسترجَع من القاموس ما يكفي للإجابة بدقة. "
             "جرّب إعادة صياغة السؤال أو البحث عن الكلمة مباشرةً في صفحة القاموس."
         )
-    parts: list[str] = []
-    for entry in entries[:3]:
-        head = str(entry.get("word_vocalized") or "").strip() or "—"
-        fusha = str(entry.get("fusha_equivalent") or "").strip() or "—"
-        definition = str(entry.get("definition") or "").strip()
-        ex_h, ex_f = first_example(entry)
-        block = f"**{head}**\n\nالمعنى بالفصحى: {fusha}"
-        if definition:
-            block += f"\n\nالشرح (من القاموس): {definition[:500]}"
-        if ex_h and ex_f:
-            block += f"\n\nمثال: {ex_h} — {ex_f}"
-        parts.append(block)
-    tail = "\n\n_(إجابة مبسّطة من القاموس فقط؛ لتفسير أغنى فعّل نموذج Gemini.)_"
-    return "\n\n---\n\n".join(parts) + tail
+    return _lexicon_fallback_answer(entries, top_score)
 
 
 # ---------------------------------------------------------------------------
 # Public entrypoints
 # ---------------------------------------------------------------------------
 
-def get_translation_answer(question: str) -> dict[str, Any]:
-    """Answer a Hadrami→MSA translation question with phrase-lexicon retrieval."""
+def get_conversion_answer(question: str) -> dict[str, Any]:
+    """Answer a Hadrami→MSA conversion question with phrase-lexicon retrieval."""
     merged, ctx_for_api = retrieve_phrase_context(question)
     top_score = phrase_top_score(question)
-    prompt = translation_prompt(question, merged)
+    prompt = conversion_prompt(question, merged)
     answer = gemini_generate(prompt, gemini_api_key())
 
     if is_gemini_unavailable(answer):
         print(
-            f"🤖❌ RAG/translate: Gemini not used. Reason: {preview(answer, 240)} | "
+            f"🤖❌ RAG/convert: Gemini not used. Reason: {preview(answer, 240)} | "
             f"top_score={top_score} | lexicon_hits={len(merged)}",
             flush=True,
         )
         fb = _lexicon_fallback_answer(merged, top_score)
         tag = rag_response_mode_tag()
-        rag_log(f"translation Gemini failed -> grounded fallback mode={tag} preview={preview(fb)}")
+        rag_log(f"conversion Gemini failed -> grounded fallback mode={tag} preview={preview(fb)}")
         return finalize_ask_payload(fb, tag, ctx_for_api, answer_source="lexicon")
 
     tag = rag_response_mode_tag()
     rag_log(
-        f"🤖✅ RAG/translate: reply from Gemini | mode={tag!r} | chars={len(answer)} | "
+        f"🤖✅ RAG/convert: reply from Gemini | mode={tag!r} | chars={len(answer)} | "
         f"preview: {preview(answer)}"
     )
-    rag_log(f"get_translation_answer END mode={tag} preview={preview(answer)}")
+    rag_log(f"get_conversion_answer END mode={tag} preview={preview(answer)}")
     return finalize_ask_payload(answer, tag, ctx_for_api, answer_source="model")
 
 
@@ -184,8 +176,8 @@ def get_rag_answer(question: str) -> dict[str, Any]:
     """Answer an informational question about a Hadrami word/phrase."""
     q = (question or "").strip()
 
-    if looks_like_translation_request(q):
-        return get_translation_answer(q)
+    if looks_like_conversion_request(q):
+        return get_conversion_answer(q)
 
     merged, ctx_for_api = retrieve_rag_context(q)
     kw_payload = expanded_keyword_context(q, top_k=8)
@@ -249,22 +241,22 @@ def get_chat_answer(message: str, history: list[dict[str, str]]) -> dict[str, An
     """Unified Hadrami chat dispatcher.
 
     Auto-classifies the user message and routes through the right
-    retrieval + prompt builder. ``/ask`` (Q&A) and ``/translate-phrase``
+    retrieval + prompt builder. ``/ask`` (Q&A) and ``/convert-phrase``
     behaviour are merged into this entrypoint behind a single Gemini call
     that always carries the canonical Hadrami system prompt.
 
     Intents:
-      * ``translate`` — phrase-lexicon retrieval + translation prompt
+      * ``convert`` — phrase-lexicon retrieval + conversion prompt
       * ``word`` / ``define`` / ``semantic`` / ``qa`` — RAG retrieval +
         chat prompt body
     """
     q = (message or "").strip()
     intent: Intent = intent_for(q)
 
-    if intent == "translate":
+    if intent == "convert":
         merged, ctx_for_api = retrieve_phrase_context(q)
         top_score = phrase_top_score(q)
-        body = translation_prompt(q, merged)
+        body = conversion_prompt(q, merged)
     else:
         merged, ctx_for_api = retrieve_rag_context(q)
         kw_payload = expanded_keyword_context(q, top_k=8)
@@ -276,7 +268,7 @@ def get_chat_answer(message: str, history: list[dict[str, str]]) -> dict[str, An
     # Short-circuit when the user is clearly asking about a specific word that
     # is not in the lexicon — emit the spec's suggest-word block deterministically
     # rather than spend a Gemini call to refuse.
-    if not confident and intent in ("word", "define", "translate"):
+    if not confident and intent in ("word", "define", "convert"):
         rag_log(
             f"chat suggest-word short-circuit intent={intent} top_score={top_score} "
             f"hits={len(merged)}"

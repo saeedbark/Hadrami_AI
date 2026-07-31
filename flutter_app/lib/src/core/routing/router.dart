@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:hadrami_nlp/src/modules/ask/pages/ask_page.dart';
 import 'package:hadrami_nlp/src/modules/chat/pages/chat_page.dart';
-import 'package:hadrami_nlp/src/modules/phrase/pages/phrase_translate_page.dart';
 import 'package:hadrami_nlp/src/modules/dictionary/pages/dictionary_page.dart';
 import 'package:hadrami_nlp/src/modules/favorites/pages/favorites_page.dart';
 import 'package:hadrami_nlp/src/modules/home/pages/home_page.dart';
 import 'package:hadrami_nlp/src/modules/landing/pages/landing_page.dart';
-import 'package:hadrami_nlp/src/modules/search/pages/search_page.dart';
 import 'package:hadrami_nlp/src/modules/settings/pages/settings_page.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
@@ -34,13 +31,6 @@ GoRouter router(RouterRef ref) {
           ]),
           StatefulShellBranch(routes: [
             GoRoute(
-              path: '/search',
-              name: 'search',
-              builder: (context, state) => const SearchPage(),
-            ),
-          ]),
-          StatefulShellBranch(routes: [
-            GoRoute(
               path: '/dictionary',
               name: 'dictionary',
               builder: (context, state) => const DictionaryPage(),
@@ -51,20 +41,6 @@ GoRouter router(RouterRef ref) {
               path: '/favorites',
               name: 'favorites',
               builder: (context, state) => const FavoritesPage(),
-            ),
-          ]),
-          StatefulShellBranch(routes: [
-            GoRoute(
-              path: '/ask',
-              name: 'ask',
-              builder: (context, state) => const AskPage(),
-            ),
-          ]),
-          StatefulShellBranch(routes: [
-            GoRoute(
-              path: '/phrase-translate',
-              name: 'phrase_translate',
-              builder: (context, state) => const PhraseTranslatePage(),
             ),
           ]),
           StatefulShellBranch(routes: [
@@ -81,6 +57,23 @@ GoRouter router(RouterRef ref) {
         name: 'settings',
         parentNavigatorKey: _rootNavigatorKey,
         builder: (context, state) => const SettingsPage(),
+      ),
+      // Merged into other destinations (nav-rail reduction) — keep old links
+      // and bookmarks working instead of 404ing.
+      GoRoute(
+        path: '/search',
+        parentNavigatorKey: _rootNavigatorKey,
+        redirect: (context, state) => '/dictionary',
+      ),
+      GoRoute(
+        path: '/ask',
+        parentNavigatorKey: _rootNavigatorKey,
+        redirect: (context, state) => '/chat',
+      ),
+      GoRoute(
+        path: '/phrase-translate',
+        parentNavigatorKey: _rootNavigatorKey,
+        redirect: (context, state) => '/chat',
       ),
     ],
   );

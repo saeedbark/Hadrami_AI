@@ -3,7 +3,7 @@
 
 Computes four families of metrics:
 
-* **Translation quality (Hadrami → MSA)** — chrF, chrF++, BLEU, and
+* **Conversion quality (Hadrami → MSA)** — chrF, chrF++, BLEU, and
   exact-match, via ``sacrebleu``. Uses character-level tokenization for
   BLEU when requested to stay fair across dialect pairs.
 * **Retrieval quality** — Recall@k and MRR against the gold headword(s).
@@ -115,10 +115,10 @@ def _mrr(retrieved_ids: list[int], gold: set[int]) -> float:
 
 
 # ---------------------------------------------------------------------------
-# Translation quality
+# Conversion quality
 # ---------------------------------------------------------------------------
 
-def _compute_translation_metrics(
+def _compute_conversion_metrics(
     hyps: list[str], refs: list[str]
 ) -> dict[str, float]:
     """Aggregate sacrebleu-style metrics over a corpus of hypotheses."""
@@ -185,9 +185,9 @@ def _run_vector_only(hadrami: str) -> tuple[str, list[int]]:
 
 def _run_ours(hadrami: str) -> tuple[str, list[int]]:
     """Full pipeline (honors current ``RAG_MODE`` env)."""
-    from app.rag.pipeline import get_translation_answer
+    from app.rag.pipeline import get_conversion_answer
 
-    result = get_translation_answer(hadrami)
+    result = get_conversion_answer(hadrami)
     answer = str(result.get("answer") or "").strip()
     ids = [int(getattr(e, "id", 0)) for e in result.get("context") or []]
     return answer, ids
@@ -199,8 +199,8 @@ def _run_plain_gemini(hadrami: str) -> tuple[str, list[int]]:
     from app.rag.generation import gemini_generate, is_gemini_unavailable
 
     prompt = (
-        "You are a professional translator from Hadrami Arabic to Modern Standard Arabic. "
-        "Translate the following sentence. Output only the MSA translation, no explanation.\n\n"
+        "You convert Hadrami Arabic dialect into Modern Standard Arabic. "
+        "Convert the following sentence. Output only the MSA rendering, no explanation.\n\n"
         f"{hadrami}"
     )
     reply = gemini_generate(prompt, gemini_api_key())
@@ -326,7 +326,7 @@ def evaluate(
     finally:
         _restore_env(saved_env)
 
-    quality = _compute_translation_metrics(hyps, refs)
+    quality = _compute_conversion_metrics(hyps, refs)
     retrieval = {
         "recall_at_1": round(sum(recalls_at_1) / retrieval_eligible, 4)
         if retrieval_eligible

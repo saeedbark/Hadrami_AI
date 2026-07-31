@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:hadrami_nlp/src/configs/api_config.dart';
 import 'package:hadrami_nlp/src/core/models/word_entry.dart';
@@ -24,6 +26,15 @@ class SelectedTag extends _$SelectedTag {
   @override
   String? build() => null;
   void setTag(String? value) => state = value;
+}
+
+/// Whether the search + status-filter panel is shown instead of the letter
+/// filter. Toggled by the filter icon in [DictionaryPage].
+@Riverpod(keepAlive: true)
+class DictionaryFilterPanelVisible extends _$DictionaryFilterPanelVisible {
+  @override
+  bool build() => false;
+  void toggle() => state = !state;
 }
 
 @riverpod
@@ -74,4 +85,39 @@ class WordList extends _$WordList {
     _reachedMax = combined.length >= _total;
     state = AsyncValue.data(combined);
   }
+}
+
+/// Free-text search over the dictionary (merged in from the former standalone
+/// Search page — `/search` doesn't support a letter param, so this stays a
+/// separate query path from [WordList]; pos/tag are shared with it).
+@riverpod
+class DictionarySearchQuery extends _$DictionarySearchQuery {
+  Timer? _debounce;
+
+  @override
+  String build() {
+    ref.onDispose(() => _debounce?.cancel());
+    return '';
+  }
+
+  void set(String value) {
+    _debounce?.cancel();
+    _debounce = Timer(const Duration(milliseconds: 350), () {
+      state = value;
+    });
+  }
+
+  void setImmediate(String value) => state = value;
+}
+
+@riverpod
+Future<SearchResult> dictionarySearchResults(
+    DictionarySearchResultsRef ref) async {
+  final query = ref.watch(dictionarySearchQueryProvider);
+  final pos = ref.watch(selectedPosProvider);
+  final tag = ref.watch(selectedTagProvider);
+  if (query.trim().length < 2) {
+    return const SearchResult(total: 0, results: []);
+  }
+  return ref.read(apiServiceProvider).search(query, pos: pos, tag: tag);
 }
