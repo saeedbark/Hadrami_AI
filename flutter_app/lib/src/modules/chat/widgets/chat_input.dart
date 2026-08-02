@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hadrami_nlp/src/core/strings/app_strings.dart';
 import 'package:hadrami_nlp/src/widgets/text_input.dart';
 
 class ChatInput extends StatefulWidget {
@@ -77,7 +78,7 @@ class _ChatInputState extends State<ChatInput> {
                 maxLines: null,
                 textInputAction: TextInputAction.newline,
                 onSubmitted: _send,
-                hintText: 'اسأل عن اللهجة الحضرمية...',
+                hintText: AppStrings.chatInputHint,
                 style: const TextStyle(fontSize: 15),
               ),
             ),

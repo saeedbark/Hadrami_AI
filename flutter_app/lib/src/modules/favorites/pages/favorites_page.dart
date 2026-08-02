@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:hadrami_nlp/src/core/strings/app_strings.dart';
 import 'package:hadrami_nlp/src/modules/dictionary/widgets/word_card.dart';
 import 'package:hadrami_nlp/src/modules/favorites/providers/favorites_provider.dart';
 import 'package:hadrami_nlp/src/widgets/app_scaffold.dart';
@@ -14,28 +15,29 @@ class FavoritesPage extends ConsumerWidget {
 
     return AppScaffold(
       appBar: AppAppBar(
-        title: const Text('المفضلة'),
+        title: const Text(AppStrings.commonFavoritesLabel),
         actions: [
           if (favorites.isNotEmpty)
             IconButton(
               icon: const Icon(Icons.delete_sweep),
-              tooltip: 'مسح الكل',
+              tooltip: AppStrings.favoritesClearAllTooltip,
               onPressed: () => showDialog(
                 context: context,
                 builder: (_) => AlertDialog(
-                  title: const Text('مسح المفضلة؟'),
-                  content: const Text('هل تريد مسح جميع الكلمات المحفوظة؟'),
+                  title: const Text(AppStrings.favoritesClearConfirmTitle),
+                  content:
+                      const Text(AppStrings.favoritesClearConfirmMessage),
                   actions: [
                     TextButton(
                       onPressed: () => Navigator.pop(context),
-                      child: const Text('إلغاء'),
+                      child: const Text(AppStrings.commonCancelLabel),
                     ),
                     FilledButton(
                       onPressed: () {
                         ref.read(favoritesProvider.notifier).clearAll();
                         Navigator.pop(context);
                       },
-                      child: const Text('مسح'),
+                      child: const Text(AppStrings.commonClearLabel),
                     ),
                   ],
                 ),
@@ -46,8 +48,8 @@ class FavoritesPage extends ConsumerWidget {
       body: favorites.isEmpty
           ? const EmptyState(
               icon: Icons.bookmark_border,
-              message: 'لا توجد كلمات محفوظة',
-              subtitle: 'اضغط على النجمة لحفظ أي كلمة',
+              message: AppStrings.favoritesEmptyMessage,
+              subtitle: AppStrings.favoritesEmptySubtitle,
             )
           : ListView.builder(
               padding: const EdgeInsets.all(16),

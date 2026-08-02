@@ -1,10 +1,11 @@
 import 'package:flutter/foundation.dart' show kDebugMode;
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:hadrami_nlp/src/modules/home/services/home_service.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:hadrami_nlp/src/configs/api_config.dart';
 import 'package:hadrami_nlp/src/core/providers/theme_provider.dart';
-import 'package:hadrami_nlp/src/core/services/api_service.dart';
+import 'package:hadrami_nlp/src/core/strings/app_strings.dart';
 import 'package:hadrami_nlp/src/widgets/app_scaffold.dart';
 import 'package:hadrami_nlp/src/widgets/content_shell.dart';
 
@@ -23,95 +24,101 @@ class SettingsPage extends HookConsumerWidget {
       testing.value = true;
       testResult.value = null;
       try {
-        final stats = await ref.read(apiServiceProvider).getStats();
-        if (stats.isNotEmpty) {
+        final stats = await ref.read(homeServiceProvider).getStats();
+        if (stats != null && stats.totalWords > 0) {
           testResult.value =
-              'الاتصال ناجح! ${stats['total_words']} كلمة متاحة';
+              '${AppStrings.settingsConnectionSuccessPrefix}${stats.totalWords}${AppStrings.settingsConnectionSuccessSuffix}';
         } else {
-          testResult.value = 'الخادم لا يستجيب';
+          testResult.value = AppStrings.settingsServerNotRespondingMessage;
         }
       } catch (e) {
-        testResult.value = 'خطأ: $e';
+        testResult.value = '${AppStrings.settingsConnectionErrorPrefix}$e';
       }
       testing.value = false;
     }
 
     return AppScaffold(
-      appBar: const AppAppBar(title: Text('الإعدادات')),
+      appBar: const AppAppBar(title: Text(AppStrings.commonSettingsLabel)),
       body: ContentShell(
         maxWidth: 720,
         child: ListView(
           padding: const EdgeInsets.all(16),
           children: [
-          _SectionCard(
-            icon: Icons.palette_rounded,
-            title: 'المظهر',
-            child: SegmentedButton<ThemeMode>(
-              segments: const [
-                ButtonSegment(
-                  value: ThemeMode.light,
-                  icon: Icon(Icons.light_mode_rounded, size: 18),
-                  label: Text('فاتح'),
-                ),
-                ButtonSegment(
-                  value: ThemeMode.dark,
-                  icon: Icon(Icons.dark_mode_rounded, size: 18),
-                  label: Text('داكن'),
-                ),
-                ButtonSegment(
-                  value: ThemeMode.system,
-                  icon: Icon(Icons.settings_brightness_rounded, size: 18),
-                  label: Text('النظام'),
-                ),
-              ],
-              selected: {themeMode},
-              onSelectionChanged: (s) =>
-                  ref.read(appThemeModeProvider.notifier).setTheme(s.first),
-              multiSelectionEnabled: false,
-              showSelectedIcon: false,
+            _SectionCard(
+              icon: Icons.palette_rounded,
+              title: AppStrings.settingsThemeSectionLabel,
+              child: SegmentedButton<ThemeMode>(
+                segments: const [
+                  ButtonSegment(
+                    value: ThemeMode.light,
+                    icon: Icon(Icons.light_mode_rounded, size: 18),
+                    label: Text(AppStrings.settingsThemeLightLabel),
+                  ),
+                  ButtonSegment(
+                    value: ThemeMode.dark,
+                    icon: Icon(Icons.dark_mode_rounded, size: 18),
+                    label: Text(AppStrings.settingsThemeDarkLabel),
+                  ),
+                  ButtonSegment(
+                    value: ThemeMode.system,
+                    icon: Icon(Icons.settings_brightness_rounded, size: 18),
+                    label: Text(AppStrings.settingsThemeSystemLabel),
+                  ),
+                ],
+                selected: {themeMode},
+                onSelectionChanged: (s) =>
+                    ref.read(appThemeModeProvider.notifier).setTheme(s.first),
+                multiSelectionEnabled: false,
+                showSelectedIcon: false,
+              ),
             ),
-          ),
-          const SizedBox(height: 12),
-
-          _SectionCard(
-            icon: Icons.dns_rounded,
-            title: 'حالة الخادم',
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                if (testResult.value != null)
-                  _TestResultBanner(result: testResult.value!),
-                OutlinedButton.icon(
-                  onPressed: testing.value ? null : testConnection,
-                  icon: testing.value
-                      ? const SizedBox(
-                          width: 16,
-                          height: 16,
-                          child: CircularProgressIndicator(strokeWidth: 2))
-                      : const Icon(Icons.wifi_tethering_rounded, size: 18),
-                  label: Text(
-                      testing.value ? 'جاري الاختبار...' : 'اختبار الاتصال'),
-                ),
-              ],
+            const SizedBox(height: 12),
+            _SectionCard(
+              icon: Icons.dns_rounded,
+              title: AppStrings.settingsServerStatusSectionLabel,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  if (testResult.value != null)
+                    _TestResultBanner(result: testResult.value!),
+                  OutlinedButton.icon(
+                    onPressed: testing.value ? null : testConnection,
+                    icon: testing.value
+                        ? const SizedBox(
+                            width: 16,
+                            height: 16,
+                            child: CircularProgressIndicator(strokeWidth: 2))
+                        : const Icon(Icons.wifi_tethering_rounded, size: 18),
+                    label: Text(testing.value
+                        ? AppStrings.settingsTestingInProgressLabel
+                        : AppStrings.settingsTestConnectionLabel),
+                  ),
+                ],
+              ),
             ),
-          ),
-          const SizedBox(height: 12),
-
-          const _SectionCard(
-            icon: Icons.info_outline_rounded,
-            title: 'عن المشروع',
-            child: Column(
-              children: [
-                _InfoRow('الإصدار', _appVersion),
-                _InfoRow('المصدر', 'القاموس الحضرمي'),
-                _InfoRow('Backend', 'FastAPI + Python'),
-                _InfoRow('Frontend', 'Flutter + Riverpod'),
-                _InfoRow('AI', 'RAG + Gemini'),
-                if (kDebugMode) _InfoRow('API', ApiConfig.baseUrl),
-              ],
+            const SizedBox(height: 12),
+            const _SectionCard(
+              icon: Icons.info_outline_rounded,
+              title: AppStrings.settingsAboutSectionLabel,
+              child: Column(
+                children: [
+                  _InfoRow(
+                      AppStrings.settingsInfoVersionLabel, _appVersion),
+                  _InfoRow(AppStrings.settingsInfoSourceLabel,
+                      AppStrings.settingsInfoSourceValue),
+                  _InfoRow(AppStrings.settingsInfoBackendLabel,
+                      AppStrings.settingsInfoBackendValue),
+                  _InfoRow(AppStrings.settingsInfoFrontendLabel,
+                      AppStrings.settingsInfoFrontendValue),
+                  _InfoRow(AppStrings.settingsInfoAiLabel,
+                      AppStrings.settingsInfoAiValue),
+                  if (kDebugMode)
+                    _InfoRow(
+                        AppStrings.settingsInfoApiLabel, ApiConfig.baseUrl),
+                ],
+              ),
             ),
-          ),
-          const SizedBox(height: 24),
+            const SizedBox(height: 24),
           ],
         ),
       ),
@@ -178,7 +185,9 @@ class _TestResultBanner extends StatelessWidget {
       child: Row(
         children: [
           Icon(
-            isSuccess ? Icons.check_circle_rounded : Icons.error_outline_rounded,
+            isSuccess
+                ? Icons.check_circle_rounded
+                : Icons.error_outline_rounded,
             size: 18,
             color: color,
           ),
@@ -207,8 +216,8 @@ class _InfoRow extends StatelessWidget {
           SizedBox(
             width: 80,
             child: Text(label,
-                style: const TextStyle(
-                    fontSize: 13, fontWeight: FontWeight.w600)),
+                style:
+                    const TextStyle(fontSize: 13, fontWeight: FontWeight.w600)),
           ),
           Expanded(
             child: Text(value,

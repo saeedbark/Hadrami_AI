@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:hadrami_nlp/src/core/routing/app_routes.dart';
 import 'package:hadrami_nlp/src/modules/chat/pages/chat_page.dart';
 import 'package:hadrami_nlp/src/modules/dictionary/pages/dictionary_page.dart';
 import 'package:hadrami_nlp/src/modules/favorites/pages/favorites_page.dart';
@@ -24,28 +25,28 @@ GoRouter router(RouterRef ref) {
         branches: [
           StatefulShellBranch(routes: [
             GoRoute(
-              path: '/',
+              path: AppRoutes.home,
               name: 'home',
               builder: (context, state) => const HomePage(),
             ),
           ]),
           StatefulShellBranch(routes: [
             GoRoute(
-              path: '/dictionary',
+              path: AppRoutes.dictionary,
               name: 'dictionary',
               builder: (context, state) => const DictionaryPage(),
             ),
           ]),
           StatefulShellBranch(routes: [
             GoRoute(
-              path: '/favorites',
+              path: AppRoutes.favorites,
               name: 'favorites',
               builder: (context, state) => const FavoritesPage(),
             ),
           ]),
           StatefulShellBranch(routes: [
             GoRoute(
-              path: '/chat',
+              path: AppRoutes.chat,
               name: 'chat',
               builder: (context, state) => const ChatPage(),
             ),
@@ -53,7 +54,7 @@ GoRouter router(RouterRef ref) {
         ],
       ),
       GoRoute(
-        path: '/settings',
+        path: AppRoutes.settings,
         name: 'settings',
         parentNavigatorKey: _rootNavigatorKey,
         builder: (context, state) => const SettingsPage(),
@@ -61,19 +62,19 @@ GoRouter router(RouterRef ref) {
       // Merged into other destinations (nav-rail reduction) — keep old links
       // and bookmarks working instead of 404ing.
       GoRoute(
-        path: '/search',
+        path: AppRoutes.search,
         parentNavigatorKey: _rootNavigatorKey,
-        redirect: (context, state) => '/dictionary',
+        redirect: (context, state) => AppRoutes.dictionary,
       ),
       GoRoute(
-        path: '/ask',
+        path: AppRoutes.ask,
         parentNavigatorKey: _rootNavigatorKey,
-        redirect: (context, state) => '/chat',
+        redirect: (context, state) => AppRoutes.chat,
       ),
       GoRoute(
-        path: '/phrase-translate',
+        path: AppRoutes.phraseTranslate,
         parentNavigatorKey: _rootNavigatorKey,
-        redirect: (context, state) => '/chat',
+        redirect: (context, state) => AppRoutes.chat,
       ),
     ],
   );

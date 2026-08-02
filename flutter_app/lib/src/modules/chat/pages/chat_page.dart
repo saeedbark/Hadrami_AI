@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
+import 'package:hadrami_nlp/src/core/strings/app_strings.dart';
 import 'package:hadrami_nlp/src/modules/chat/providers/chat_provider.dart';
 import 'package:hadrami_nlp/src/modules/chat/widgets/chat_bubble.dart';
 import 'package:hadrami_nlp/src/modules/chat/widgets/chat_input.dart';
@@ -39,13 +40,13 @@ class ChatPage extends HookConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('المحادثة الذكية'),
+        title: const Text(AppStrings.chatAppBarTitle),
         centerTitle: true,
         actions: [
           if (messages.isNotEmpty)
             IconButton(
               icon: const Icon(Icons.delete_outline_rounded),
-              tooltip: 'مسح المحادثة',
+              tooltip: AppStrings.chatClearConversationLabel,
               onPressed: () => _confirmClear(context, ref),
             ),
         ],
@@ -84,19 +85,19 @@ class ChatPage extends HookConsumerWidget {
     showDialog<void>(
       context: context,
       builder: (ctx) => AlertDialog(
-        title: const Text('مسح المحادثة'),
-        content: const Text('هل تريد مسح جميع الرسائل؟'),
+        title: const Text(AppStrings.chatClearConversationLabel),
+        content: const Text(AppStrings.chatClearConfirmMessage),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(ctx),
-            child: const Text('إلغاء'),
+            child: const Text(AppStrings.commonCancelLabel),
           ),
           FilledButton(
             onPressed: () {
               ref.read(chatProvider.notifier).clearHistory();
               Navigator.pop(ctx);
             },
-            child: const Text('مسح'),
+            child: const Text(AppStrings.commonClearLabel),
           ),
         ],
       ),
@@ -141,7 +142,7 @@ class _EmptyChat extends StatelessWidget {
               ),
               const SizedBox(height: 20),
               Text(
-                'مرحباً! أنا مساعدك في اللهجة الحضرمية',
+                AppStrings.chatEmptyTitle,
                 textAlign: TextAlign.center,
                 textDirection: TextDirection.rtl,
                 style: textTheme.titleMedium?.copyWith(
@@ -151,7 +152,7 @@ class _EmptyChat extends StatelessWidget {
               ),
               const SizedBox(height: 8),
               Text(
-                'اسألني عن أي كلمة أو عبارة حضرمية، أو اطلب تحويل جملة إلى الفصحى',
+                AppStrings.chatEmptySubtitle,
                 textAlign: TextAlign.center,
                 textDirection: TextDirection.rtl,
                 style: textTheme.bodyMedium?.copyWith(
@@ -165,9 +166,10 @@ class _EmptyChat extends StatelessWidget {
                 runSpacing: 8,
                 alignment: WrapAlignment.center,
                 children: [
-                  _SuggestionChip(label: 'ما معنى كلمة ويش؟'),
-                  _SuggestionChip(label: 'حوّل إلى الفصحى: كيف حالك؟'),
-                  _SuggestionChip(label: 'أمثال حضرمية شهيرة'),
+                  _SuggestionChip(label: AppStrings.chatSuggestionWordMeaning),
+                  _SuggestionChip(
+                      label: AppStrings.chatSuggestionConvertPhrase),
+                  _SuggestionChip(label: AppStrings.chatSuggestionProverbs),
                 ],
               ),
             ],
@@ -259,7 +261,7 @@ class _TypingIndicatorState extends State<_TypingIndicator>
               ),
             const SizedBox(width: 10),
             Text(
-              'جاري الكتابة...',
+              AppStrings.chatTypingIndicatorLabel,
               textDirection: TextDirection.rtl,
               style: TextStyle(fontSize: 13, color: widget.scheme.outline),
             ),
