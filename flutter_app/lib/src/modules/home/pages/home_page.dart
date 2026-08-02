@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:hadrami_nlp/src/core/routing/app_routes.dart';
 import 'package:hadrami_nlp/src/core/theme/theme.dart';
+import 'package:hadrami_nlp/src/modules/home/home_models/home_model.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:hadrami_nlp/src/configs/api_config.dart';
 import 'package:hadrami_nlp/src/configs/app_colors.dart';
 import 'package:hadrami_nlp/src/configs/app_radius.dart';
-import 'package:hadrami_nlp/src/core/models/word_entry.dart';
 import 'package:hadrami_nlp/src/core/providers/theme_provider.dart';
+import 'package:hadrami_nlp/src/core/strings/app_strings.dart';
 import 'package:hadrami_nlp/src/modules/dictionary/widgets/word_card.dart';
 import 'package:hadrami_nlp/src/modules/home/providers/home_provider.dart';
 import 'package:hadrami_nlp/src/widgets/animated_appear.dart';
 import 'package:hadrami_nlp/src/widgets/content_shell.dart';
 import 'package:hadrami_nlp/src/widgets/loading_widget.dart';
 
-/// Fixed Hadrami phrases for the home teaser (no API).
 const _kPhraseHighlights = <(String phrase, String gloss)>[
   ('إبط تسرع', 'مثل للتأني والحكمة'),
   ('أبداً ما جلست', 'نفي قاطع في اللهجة'),
@@ -71,7 +71,7 @@ class _HomeSectionCard extends StatelessWidget {
               : null,
         ),
         child: Padding(
-          padding: const EdgeInsets.fromLTRB(16, 16, 16, 16),
+          padding: const EdgeInsets.all(16),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -105,7 +105,7 @@ class HomePage extends ConsumerWidget {
 
   static void _openDictionarySection(BuildContext context, String letter) {
     final enc = Uri.encodeQueryComponent(letter);
-    context.go('/dictionary?letter=$enc');
+    context.go('${AppRoutes.dictionary}?letter=$enc');
   }
 
   @override
@@ -154,7 +154,7 @@ class HomePage extends ConsumerWidget {
                                 color: onHero, size: 26),
                             const SizedBox(width: 10),
                             Text(
-                              'قاموس حضرموت',
+                              AppStrings.appName,
                               style: Theme.of(context)
                                   .textTheme
                                   .titleMedium
@@ -176,7 +176,9 @@ class HomePage extends ConsumerWidget {
                                     turns: Tween<double>(begin: 0.6, end: 1.0)
                                         .animate(animation),
                                     child: FadeTransition(
-                                        opacity: animation, child: child),
+                                      opacity: animation,
+                                      child: child,
+                                    ),
                                   ),
                                   child: Icon(
                                     ref.watch(appThemeModeProvider) ==
@@ -195,7 +197,8 @@ class HomePage extends ConsumerWidget {
                               IconButton(
                                 icon: Icon(Icons.settings_rounded,
                                     color: onHero.withValues(alpha: 0.85)),
-                                onPressed: () => context.push('/settings'),
+                                onPressed: () =>
+                                    context.push(AppRoutes.settings),
                               ),
                             ],
                           ),
@@ -203,7 +206,7 @@ class HomePage extends ConsumerWidget {
                     ),
                     const SizedBox(height: 20),
                     Text(
-                      'اللهجة الحضرمية',
+                      AppStrings.homeHeroTitle,
                       style:
                           Theme.of(context).textTheme.headlineSmall?.copyWith(
                                 color: onHero,
@@ -212,7 +215,7 @@ class HomePage extends ConsumerWidget {
                     ),
                     const SizedBox(height: 8),
                     Text(
-                      'تصفح الأقسام أو اطّلع على عينات من الكلمات والعبارات',
+                      AppStrings.homeHeroSubtitle,
                       style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                             color: onHero.withValues(alpha: 0.88),
                             height: 1.45,
@@ -220,17 +223,20 @@ class HomePage extends ConsumerWidget {
                     ),
                     const SizedBox(height: 20),
                     FilledButton.tonal(
-                      onPressed: () => context.go('/dictionary'),
+                      onPressed: () => context.go(AppRoutes.dictionary),
                       style: FilledButton.styleFrom(
-                        backgroundColor:
-                            onHero.withValues(alpha: isDark ? 0.12 : 0.2),
+                        backgroundColor: onHero.withValues(
+                          alpha: isDark ? 0.12 : 0.2,
+                        ),
                         foregroundColor: onHero,
                         padding: const EdgeInsets.symmetric(
-                            horizontal: 20, vertical: 14),
+                          horizontal: 20,
+                          vertical: 14,
+                        ),
                         shape:
                             RoundedRectangleBorder(borderRadius: AppRadius.md),
                       ),
-                      child: const Text('تصفح القاموس الكامل'),
+                      child: const Text(AppStrings.homeBrowseDictionaryLabel),
                     ),
                   ],
                 ),
@@ -248,37 +254,37 @@ class HomePage extends ConsumerWidget {
                   children: [
                     statsAsync.when(
                       data: (stats) => _HomeSectionCard(
-                        title: 'إحصائيات المعجم',
-                        subtitle:
-                            'عدد المدخلات في القاموس، والكلمات المكتملة (ذات مقابل فصيح)، ونسبة الاكتمال',
+                        title: AppStrings.homeStatsSectionTitle,
+                        subtitle: AppStrings.homeStatsSectionSubtitle,
                         child: _StatsRow(stats: stats),
                       ),
                       loading: () => const _HomeSectionCard(
-                        title: 'إحصائيات المعجم',
-                        subtitle: 'جاري تحميل أرقام القاموس…',
+                        title: AppStrings.homeStatsSectionTitle,
+                        subtitle: AppStrings.homeStatsLoadingSubtitle,
                         child: Padding(
                           padding: EdgeInsets.symmetric(vertical: 24),
                           child: LoadingWidget(),
                         ),
                       ),
                       error: (err, _) => _HomeSectionCard(
-                        title: 'إحصائيات المعجم',
-                        subtitle: 'تعذّر الاتصال بالخادم',
+                        title: AppStrings.homeStatsSectionTitle,
+                        subtitle: AppStrings.homeStatsErrorSubtitle,
                         child: _ApiErrorCard(message: err.toString()),
                       ),
                     ),
                     _HomeSectionCard(
-                      title: 'كلمات وعبارات',
-                      subtitle:
-                          'عبارات شائعة من اللهجة، وعيّنة مباشرة من أول مدخلات المعجم',
+                      title: AppStrings.homeWordsPhrasesSectionTitle,
+                      subtitle: AppStrings.homeWordsPhrasesSectionSubtitle,
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.stretch,
                         children: [
                           ..._kPhraseHighlights.map(
                             (t) => Padding(
                               padding: const EdgeInsets.only(bottom: 8),
-                              child:
-                                  _PhraseTeaserCard(phrase: t.$1, gloss: t.$2),
+                              child: _PhraseTeaserCard(
+                                phrase: t.$1,
+                                gloss: t.$2,
+                              ),
                             ),
                           ),
                           featuredAsync.when(
@@ -305,19 +311,16 @@ class HomePage extends ConsumerWidget {
                       data: (sections) {
                         if (sections.isEmpty) {
                           return const _HomeSectionCard(
-                            title: 'أقسام القاموس',
-                            subtitle:
-                                'تصفّح حسب أول حرف من الكلمة — يظهر عدد الكلمات في كل قسم',
+                            title: AppStrings.homeSectionsSectionTitle,
+                            subtitle: AppStrings.homeSectionsSectionSubtitle,
                             child: _ApiErrorCard(
-                              message:
-                                  'تعذّر تحميل أقسام القاموس. شغّل الـ backend على ${ApiConfig.baseUrl}',
+                              message: AppStrings.homeSectionsErrorMessage,
                             ),
                           );
                         }
                         return _HomeSectionCard(
-                          title: 'أقسام القاموس',
-                          subtitle:
-                              'تصفّح حسب أول حرف من الكلمة — يظهر عدد الكلمات في كل قسم',
+                          title: AppStrings.homeSectionsSectionTitle,
+                          subtitle: AppStrings.homeSectionsSectionSubtitle,
                           child: Column(
                             children: [
                               for (final s in sections)
@@ -332,18 +335,16 @@ class HomePage extends ConsumerWidget {
                         );
                       },
                       loading: () => const _HomeSectionCard(
-                        title: 'أقسام القاموس',
-                        subtitle:
-                            'تصفّح حسب أول حرف من الكلمة — يظهر عدد الكلمات في كل قسم',
+                        title: AppStrings.homeSectionsSectionTitle,
+                        subtitle: AppStrings.homeSectionsSectionSubtitle,
                         child: Padding(
                           padding: EdgeInsets.symmetric(vertical: 24),
                           child: LoadingWidget(),
                         ),
                       ),
                       error: (err, _) => _HomeSectionCard(
-                        title: 'أقسام القاموس',
-                        subtitle:
-                            'تصفّح حسب أول حرف من الكلمة — يظهر عدد الكلمات في كل قسم',
+                        title: AppStrings.homeSectionsSectionTitle,
+                        subtitle: AppStrings.homeSectionsSectionSubtitle,
                         child: _ApiErrorCard(message: err.toString()),
                       ),
                     ),
@@ -351,9 +352,8 @@ class HomePage extends ConsumerWidget {
                       data: (word) {
                         if (word == null) return const SizedBox.shrink();
                         return _HomeSectionCard(
-                          title: 'كلمة اليوم',
-                          subtitle:
-                              'اقتراح عشوائي من قاموس حضرموت — اضغط البطاقة للتفاصيل',
+                          title: AppStrings.homeRandomWordSectionTitle,
+                          subtitle: AppStrings.homeRandomWordSectionSubtitle,
                           child: WordCard(entry: word, highlight: true),
                         );
                       },
@@ -387,8 +387,11 @@ class _PhraseTeaserCard extends StatelessWidget {
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Icon(Icons.format_quote_rounded,
-                size: 22, color: colorScheme.secondary.withValues(alpha: 0.8)),
+            Icon(
+              Icons.format_quote_rounded,
+              size: 22,
+              color: colorScheme.secondary.withValues(alpha: 0.8),
+            ),
             const SizedBox(width: 10),
             Expanded(
               child: Column(
@@ -453,7 +456,9 @@ class _SectionTile extends StatelessWidget {
                         colorScheme.primary.withValues(alpha: 0.12),
                     foregroundColor: colorScheme.primary,
                     child: Text(
-                      letter.isNotEmpty ? letter : '؟',
+                      letter.isNotEmpty
+                          ? letter
+                          : AppStrings.commonUnknownPlaceholder,
                       style: const TextStyle(
                           fontWeight: FontWeight.bold, fontSize: 18),
                     ),
@@ -464,7 +469,7 @@ class _SectionTile extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'قسم $letter',
+                          '${AppStrings.homeSectionTilePrefix}$letter',
                           style: TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.w600,
@@ -473,7 +478,7 @@ class _SectionTile extends StatelessWidget {
                         ),
                         const SizedBox(height: 2),
                         Text(
-                          '$wordCount ${wordCount == 1 ? 'كلمة' : 'كلمات'}',
+                          '$wordCount ${wordCount == 1 ? AppStrings.homeSectionWordCountSingular : AppStrings.homeSectionWordCountPlural}',
                           style: TextStyle(
                             fontSize: 13,
                             color: colorScheme.onSurfaceVariant,
@@ -543,7 +548,7 @@ class _StatsRow extends StatelessWidget {
               Expanded(
                 child: _StatCard(
                   '${stats.totalWords}',
-                  'كلمة',
+                  AppStrings.homeStatWordsLabel,
                   Icons.menu_book_rounded,
                   colorScheme.primary,
                   colorScheme.primaryContainer,
@@ -553,7 +558,7 @@ class _StatsRow extends StatelessWidget {
               Expanded(
                 child: _StatCard(
                   '${stats.completed}',
-                  'مكتملة',
+                  AppStrings.homeStatCompletedLabel,
                   Icons.check_circle_rounded,
                   colorScheme.secondary,
                   colorScheme.secondaryContainer,
@@ -563,7 +568,7 @@ class _StatsRow extends StatelessWidget {
               Expanded(
                 child: _StatCard(
                   '${stats.completionPercent.toStringAsFixed(0)}%',
-                  'الاكتمال',
+                  AppStrings.homeStatCompletionLabel,
                   Icons.trending_up_rounded,
                   colorScheme.primary.withValues(alpha: 0.75),
                   colorScheme.surfaceContainerHigh,
@@ -577,7 +582,7 @@ class _StatsRow extends StatelessWidget {
               Expanded(
                 child: _StatCard(
                   '${stats.totalProverbs}',
-                  'مثل شعبي',
+                  AppStrings.homeStatProverbsLabel,
                   Icons.auto_stories_rounded,
                   colorScheme.tertiary,
                   colorScheme.tertiaryContainer,
@@ -587,7 +592,7 @@ class _StatsRow extends StatelessWidget {
               Expanded(
                 child: _StatCard(
                   '${stats.byPos.length}',
-                  'أصناف نحوية',
+                  AppStrings.homeStatPosLabel,
                   Icons.label_rounded,
                   Colors.indigo,
                   Colors.indigo.withValues(alpha: 0.08),
@@ -597,7 +602,7 @@ class _StatsRow extends StatelessWidget {
               Expanded(
                 child: _StatCard(
                   '${stats.byTag.length}',
-                  'تصنيفات',
+                  AppStrings.homeStatTagsLabel,
                   Icons.category_rounded,
                   colorScheme.secondary,
                   colorScheme.secondaryContainer,

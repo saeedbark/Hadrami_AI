@@ -3,6 +3,8 @@ import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:hadrami_nlp/src/configs/app_colors.dart';
 import 'package:hadrami_nlp/src/core/providers/theme_provider.dart';
+import 'package:hadrami_nlp/src/core/routing/app_routes.dart';
+import 'package:hadrami_nlp/src/core/strings/app_strings.dart';
 import 'package:hadrami_nlp/src/core/theme/theme.dart';
 
 class _NavItem {
@@ -13,10 +15,14 @@ class _NavItem {
 }
 
 const _destinations = [
-  _NavItem(Icons.home_outlined, Icons.home_rounded, 'الرئيسية'),
-  _NavItem(Icons.menu_book_outlined, Icons.menu_book_rounded, 'القاموس'),
-  _NavItem(Icons.bookmark_outline_rounded, Icons.bookmark_rounded, 'المفضلة'),
-  _NavItem(Icons.smart_toy_outlined, Icons.smart_toy_rounded, 'محادثة'),
+  _NavItem(Icons.home_outlined, Icons.home_rounded,
+      AppStrings.landingNavHomeLabel),
+  _NavItem(Icons.menu_book_outlined, Icons.menu_book_rounded,
+      AppStrings.landingNavDictionaryLabel),
+  _NavItem(Icons.bookmark_outline_rounded, Icons.bookmark_rounded,
+      AppStrings.commonFavoritesLabel),
+  _NavItem(Icons.smart_toy_outlined, Icons.smart_toy_rounded,
+      AppStrings.landingNavChatLabel),
 ];
 
 class LandingPage extends HookConsumerWidget {
@@ -86,7 +92,7 @@ class LandingPage extends HookConsumerWidget {
                   if (isDesktop) ...[
                     const SizedBox(height: 8),
                     Text(
-                      'قاموس حضرموت',
+                      AppStrings.appName,
                       style: Theme.of(context)
                           .textTheme
                           .labelLarge
@@ -121,13 +127,13 @@ class LandingPage extends HookConsumerWidget {
                           ),
                           onPressed: () =>
                               ref.read(appThemeModeProvider.notifier).toggle(),
-                          tooltip: 'تبديل المظهر',
+                          tooltip: AppStrings.landingThemeToggleTooltip,
                         ),
                         IconButton(
                           icon: Icon(Icons.settings_rounded,
                               color: colorScheme.outline),
-                          tooltip: 'الإعدادات',
-                          onPressed: () => context.push('/settings'),
+                          tooltip: AppStrings.commonSettingsLabel,
+                          onPressed: () => context.push(AppRoutes.settings),
                         ),
                         const SizedBox(height: 16),
                       ],

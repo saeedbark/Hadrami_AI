@@ -5,7 +5,6 @@ part 'word_entry.g.dart';
 
 @freezed
 class ExamplePair with _$ExamplePair {
-  @JsonSerializable(fieldRename: FieldRename.snake)
   const factory ExamplePair({
     @Default('') String h,
     @Default('') String f,
@@ -17,7 +16,6 @@ class ExamplePair with _$ExamplePair {
 
 @freezed
 class WordEntry with _$WordEntry {
-  @JsonSerializable(fieldRename: FieldRename.snake)
   const factory WordEntry({
     @Default(0) int id,
     @Default('') String wordVocalized,
@@ -42,7 +40,6 @@ class WordEntry with _$WordEntry {
 
 @freezed
 class SearchResult with _$SearchResult {
-  @JsonSerializable(fieldRename: FieldRename.snake)
   const factory SearchResult({
     @Default(0) int total,
     @Default(<WordEntry>[]) List<WordEntry> results,
@@ -54,7 +51,6 @@ class SearchResult with _$SearchResult {
 
 @freezed
 class HadramiSpan with _$HadramiSpan {
-  @JsonSerializable(fieldRename: FieldRename.snake)
   const factory HadramiSpan({
     @Default(0) int start,
     @Default(0) int end,
@@ -66,25 +62,7 @@ class HadramiSpan with _$HadramiSpan {
 }
 
 @freezed
-class AppStats with _$AppStats {
-  @JsonSerializable(fieldRename: FieldRename.snake)
-  const factory AppStats({
-    @Default(0) int totalWords,
-    @Default(0) int completed,
-    @Default(0) int pending,
-    @Default(0.0) double completionPercent,
-    @Default(<String, int>{}) Map<String, int> byPos,
-    @Default(<String, int>{}) Map<String, int> byTag,
-    @Default(0) int totalProverbs,
-  }) = _AppStats;
-
-  factory AppStats.fromJson(Map<String, dynamic> json) =>
-      _$AppStatsFromJson(json);
-}
-
-@freezed
 class ChatResult with _$ChatResult {
-  @JsonSerializable(fieldRename: FieldRename.snake)
   const factory ChatResult({
     @Default('') String reply,
     @Default(<WordEntry>[]) List<WordEntry> context,

@@ -4,6 +4,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:hadrami_nlp/src/configs/api_config.dart';
 import 'package:hadrami_nlp/src/core/models/word_entry.dart';
 import 'package:hadrami_nlp/src/core/services/api_service.dart';
+import 'package:hadrami_nlp/src/modules/dictionary/services/dictionary_service.dart';
 
 part 'dictionary_provider.g.dart';
 
@@ -69,9 +70,7 @@ class WordList extends _$WordList {
     final letter = ref.read(selectedLetterProvider);
     final pos = ref.read(selectedPosProvider);
     final tag = ref.read(selectedTagProvider);
-    final result = await ref
-        .read(apiServiceProvider)
-        .listWords(
+    final result = await ref.read(apiServiceProvider).listWords(
           page: _currentPage,
           size: ApiConfig.defaultPageSize,
           letter: letter,
@@ -112,12 +111,13 @@ class DictionarySearchQuery extends _$DictionarySearchQuery {
 
 @riverpod
 Future<SearchResult> dictionarySearchResults(
-    DictionarySearchResultsRef ref) async {
+  DictionarySearchResultsRef ref,
+) async {
   final query = ref.watch(dictionarySearchQueryProvider);
   final pos = ref.watch(selectedPosProvider);
   final tag = ref.watch(selectedTagProvider);
   if (query.trim().length < 2) {
     return const SearchResult(total: 0, results: []);
   }
-  return ref.read(apiServiceProvider).search(query, pos: pos, tag: tag);
+  return ref.read(dictionaryServiceProvider).search(query, pos: pos, tag: tag);
 }

@@ -4,7 +4,8 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:hadrami_nlp/src/core/models/dictionary_labels.dart';
 import 'package:hadrami_nlp/src/core/models/word_entry.dart';
-import 'package:hadrami_nlp/src/core/services/api_service.dart';
+import 'package:hadrami_nlp/src/core/strings/app_strings.dart';
+import 'package:hadrami_nlp/src/modules/dictionary/services/dictionary_service.dart';
 import 'package:hadrami_nlp/src/modules/favorites/providers/favorites_provider.dart';
 import 'package:hadrami_nlp/src/widgets/text_input.dart';
 
@@ -28,7 +29,7 @@ class WordDetailSheet extends HookConsumerWidget {
       if (text.isEmpty) return;
       isSubmitting.value = true;
 
-      final success = await ref.read(apiServiceProvider).submitFeedback(
+      final success = await ref.read(dictionaryServiceProvider).submitFeedback(
             wordId: entry.id,
             wordVocalized: entry.wordVocalized,
             suggestedFusha: text,
@@ -38,7 +39,9 @@ class WordDetailSheet extends HookConsumerWidget {
       if (context.mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text(success ? 'شكراً على مساهمتك!' : 'حدث خطأ'),
+            content: Text(success
+                ? AppStrings.wordDetailFeedbackSuccessMessage
+                : AppStrings.commonGenericErrorMessage),
             backgroundColor: success ? Colors.green : Colors.red,
           ),
         );
@@ -91,7 +94,7 @@ class WordDetailSheet extends HookConsumerWidget {
                           Padding(
                             padding: const EdgeInsets.only(top: 4),
                             child: Text(
-                              'الجذر: ${entry.root}',
+                              '${AppStrings.wordDetailRootPrefix}${entry.root}',
                               style: TextStyle(
                                 fontSize: 14,
                                 color: colorScheme.outline,
@@ -134,13 +137,15 @@ class WordDetailSheet extends HookConsumerWidget {
                       ),
                       IconButton(
                         icon: const Icon(Icons.copy_rounded, size: 22),
-                        tooltip: 'نسخ',
+                        tooltip: AppStrings.wordDetailCopyTooltip,
                         onPressed: () {
                           Clipboard.setData(ClipboardData(
                               text:
                                   '${entry.wordVocalized} = ${entry.fushaEquivalent ?? ""}'));
                           ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(content: Text('تم النسخ!')),
+                            const SnackBar(
+                                content:
+                                    Text(AppStrings.wordDetailCopiedSnackbar)),
                           );
                         },
                       ),
@@ -191,7 +196,7 @@ class WordDetailSheet extends HookConsumerWidget {
               if (entry.synonyms != null && entry.synonyms!.isNotEmpty) ...[
                 const SizedBox(height: 12),
                 Text(
-                  'مرادفات',
+                  AppStrings.wordDetailSynonymsLabel,
                   style: TextStyle(
                     fontSize: 13,
                     color: colorScheme.outline,
@@ -229,7 +234,7 @@ class WordDetailSheet extends HookConsumerWidget {
                             size: 16, color: colorScheme.outline),
                         const SizedBox(width: 6),
                         Text(
-                          'الشرح من القاموس',
+                          AppStrings.wordDetailDefinitionLabel,
                           style: TextStyle(
                             fontSize: 13,
                             color: colorScheme.outline,
@@ -255,7 +260,7 @@ class WordDetailSheet extends HookConsumerWidget {
                         size: 16, color: colorScheme.secondary),
                     const SizedBox(width: 6),
                     Text(
-                      'أمثلة',
+                      AppStrings.wordDetailExamplesLabel,
                       style: TextStyle(
                         fontSize: 13,
                         color: colorScheme.secondary,
@@ -310,7 +315,7 @@ class WordDetailSheet extends HookConsumerWidget {
                         size: 16, color: colorScheme.tertiary),
                     const SizedBox(width: 6),
                     Text(
-                      'أمثال شعبية',
+                      AppStrings.wordDetailProverbsLabel,
                       style: TextStyle(
                         fontSize: 13,
                         color: colorScheme.tertiary,
@@ -366,7 +371,7 @@ class WordDetailSheet extends HookConsumerWidget {
                               size: 16, color: colorScheme.primary),
                           const SizedBox(width: 6),
                           Text(
-                            'ملاحظة',
+                            AppStrings.wordDetailNoteLabel,
                             style: TextStyle(
                               fontSize: 13,
                               color: colorScheme.primary,
@@ -392,14 +397,14 @@ class WordDetailSheet extends HookConsumerWidget {
               if (entry.source != null && entry.source!.isNotEmpty) ...[
                 const SizedBox(height: 12),
                 Text(
-                  'المصدر: ${entry.source}',
+                  '${AppStrings.wordDetailSourcePrefix}${entry.source}',
                   style: TextStyle(fontSize: 12, color: colorScheme.outline),
                 ),
               ],
 
               const SizedBox(height: 8),
               Text(
-                'رقم الكلمة في القاموس: ${entry.id}',
+                '${AppStrings.wordDetailIdPrefix}${entry.id}',
                 style: TextStyle(fontSize: 12, color: colorScheme.outline),
               ),
               const SizedBox(height: 20),
@@ -409,7 +414,9 @@ class WordDetailSheet extends HookConsumerWidget {
                 icon: Icon(showFeedback.value
                     ? Icons.close_rounded
                     : Icons.edit_note_rounded),
-                label: Text(showFeedback.value ? 'إلغاء' : 'اقتراح تصحيح'),
+                label: Text(showFeedback.value
+                    ? AppStrings.commonCancelLabel
+                    : AppStrings.wordDetailSuggestCorrectionLabel),
               ),
               if (showFeedback.value) ...[
                 const SizedBox(height: 12),
@@ -417,7 +424,7 @@ class WordDetailSheet extends HookConsumerWidget {
                   controller: feedbackController,
                   variant: AppTextFieldVariant.compact,
                   borderRadius: BorderRadius.circular(10),
-                  hintText: 'المقابل الصحيح بالفصحى...',
+                  hintText: AppStrings.wordDetailFeedbackHint,
                 ),
                 const SizedBox(height: 8),
                 FilledButton.icon(
@@ -428,7 +435,9 @@ class WordDetailSheet extends HookConsumerWidget {
                           height: 16,
                           child: CircularProgressIndicator(strokeWidth: 2))
                       : const Icon(Icons.send_rounded),
-                  label: Text(isSubmitting.value ? 'جاري الإرسال...' : 'إرسال'),
+                  label: Text(isSubmitting.value
+                      ? AppStrings.wordDetailSendingLabel
+                      : AppStrings.wordDetailSendLabel),
                 ),
               ],
             ],

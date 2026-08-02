@@ -4,6 +4,7 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:hadrami_nlp/src/core/providers/theme_provider.dart';
 import 'package:hadrami_nlp/src/core/routing/router.dart';
+import 'package:hadrami_nlp/src/core/strings/app_strings.dart';
 import 'package:hadrami_nlp/src/core/theme/theme.dart';
 
 /// Flutter's default [MaterialScrollBehavior] only lets touch/stylus drag
@@ -28,7 +29,7 @@ class HadramiApp extends ConsumerWidget {
     final themeMode = ref.watch(appThemeModeProvider);
 
     return MaterialApp.router(
-      title: 'قاموس حضرموت',
+      title: AppStrings.appName,
       debugShowCheckedModeBanner: false,
       scrollBehavior: _AppScrollBehavior(),
       routerConfig: goRouter,
