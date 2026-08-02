@@ -4,8 +4,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart' as http;
 import 'package:hadrami_nlp/src/configs/api_config.dart';
 import 'package:hadrami_nlp/src/configs/api_endpoints.dart';
-import 'package:hadrami_nlp/src/core/models/lexicon_section.dart';
 import 'package:hadrami_nlp/src/core/models/word_entry.dart';
+import 'package:hadrami_nlp/src/core/strings/app_strings.dart';
 
 final apiServiceProvider = Provider<ApiService>((_) => ApiService());
 
@@ -82,46 +82,7 @@ class ApiService {
     }
   }
 
-  Future<Map<String, dynamic>> getStats() async {
-    try {
-      final data = await getJson(
-        ApiEndpoints.stats,
-        timeout: const Duration(seconds: 5),
-      );
-      return Map<String, dynamic>.from(data);
-    } catch (_) {
-      return {};
-    }
-  }
 
-  Future<List<LexiconSection>> getSections() async {
-    try {
-      final data = await getJson(
-        ApiEndpoints.sections,
-        timeout: const Duration(seconds: 5),
-      ) as Map<String, dynamic>;
-      final raw = data['sections'];
-      if (raw is! List) return [];
-      return raw
-          .whereType<Map<String, dynamic>>()
-          .map(LexiconSection.fromJson)
-          .toList();
-    } catch (_) {
-      return [];
-    }
-  }
-
-  Future<WordEntry?> randomWord() async {
-    try {
-      final data = await getJson(
-        ApiEndpoints.random,
-        timeout: const Duration(seconds: 5),
-      );
-      return WordEntry.fromJson(data);
-    } catch (_) {
-      return null;
-    }
-  }
 
   Future<ChatResult> sendChatMessage({
     required String message,
@@ -137,12 +98,12 @@ class ApiService {
       return ChatResult.fromJson(data);
     } on TimeoutException {
       return const ChatResult(
-        reply: 'انتهت مهلة الانتظار. جرّب مرة أخرى.',
+        reply: AppStrings.apiServiceChatTimeoutReply,
       );
     } catch (_) {
       return const ChatResult(
         reply:
-            'تعذّر الاتصال بالخادم. تأكد من تشغيل الـ backend على ${ApiConfig.baseUrl}',
+            '${AppStrings.apiServiceChatConnectionErrorPrefix}${ApiConfig.baseUrl}',
       );
     }
   }

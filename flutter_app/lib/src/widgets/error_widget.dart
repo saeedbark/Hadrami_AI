@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hadrami_nlp/src/core/strings/app_strings.dart';
 
 class AppErrorWidget extends StatelessWidget {
   const AppErrorWidget({
@@ -23,7 +24,7 @@ class AppErrorWidget extends StatelessWidget {
                 size: 56, color: colorScheme.error),
             const SizedBox(height: 16),
             Text(
-              message ?? 'حدث خطأ',
+              message ?? AppStrings.commonGenericErrorMessage,
               style: Theme.of(context).textTheme.bodyLarge,
               textAlign: TextAlign.center,
             ),
@@ -32,7 +33,7 @@ class AppErrorWidget extends StatelessWidget {
               ElevatedButton.icon(
                 onPressed: onRetry,
                 icon: const Icon(Icons.refresh),
-                label: const Text('إعادة المحاولة'),
+                label: const Text(AppStrings.errorWidgetRetryLabel),
               ),
             ],
           ],

@@ -4,6 +4,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:hadrami_nlp/src/core/models/dictionary_labels.dart';
+import 'package:hadrami_nlp/src/core/strings/app_strings.dart';
 import 'package:hadrami_nlp/src/modules/dictionary/providers/dictionary_provider.dart';
 import 'package:hadrami_nlp/src/modules/dictionary/widgets/word_card.dart';
 import 'package:hadrami_nlp/src/widgets/animated_appear.dart';
@@ -99,13 +100,15 @@ class DictionaryPage extends HookConsumerWidget {
 
     return AppScaffold(
       appBar: AppAppBar(
-        title: const Text('القاموس الكامل'),
+        title: const Text(AppStrings.dictionaryAppBarTitle),
         actions: [
           IconButton(
             icon: Icon(filterPanelVisible
                 ? Icons.filter_alt_off_rounded
                 : Icons.filter_alt_rounded),
-            tooltip: filterPanelVisible ? 'إغلاق البحث والفلاتر' : 'بحث وفلاتر',
+            tooltip: filterPanelVisible
+                ? AppStrings.dictionaryCloseFiltersTooltip
+                : AppStrings.dictionaryOpenFiltersTooltip,
             onPressed: toggleFilterPanel,
           ),
         ],
@@ -130,7 +133,7 @@ class DictionaryPage extends HookConsumerWidget {
               padding: const EdgeInsets.fromLTRB(16, 8, 16, 0),
               child: AppTextField(
                 controller: searchController,
-                hintText: 'ابحث بالحضرمي أو الفصحى...',
+                hintText: AppStrings.dictionarySearchHint,
                 prefixIcon: const Icon(Icons.search_rounded),
                 suffixIcon: isSearching
                     ? IconButton(
@@ -166,7 +169,7 @@ class DictionaryPage extends HookConsumerWidget {
                         borderRadius: BorderRadius.circular(12),
                       ),
                       child: Text(
-                        '$total كلمة',
+                        '$total ${AppStrings.dictionaryTotalWordsSuffix}',
                         style: TextStyle(
                           color: colorScheme.onPrimaryContainer,
                           fontWeight: FontWeight.bold,
@@ -177,7 +180,8 @@ class DictionaryPage extends HookConsumerWidget {
                     if (selectedLetter != null) ...[
                       const SizedBox(width: 8),
                       InputChip(
-                        label: Text('حرف $selectedLetter'),
+                        label: Text(
+                            '${AppStrings.dictionaryLetterChipPrefix}$selectedLetter'),
                         onDeleted: () => ref
                             .read(selectedLetterProvider.notifier)
                             .setLetter(null),
@@ -198,8 +202,9 @@ class DictionaryPage extends HookConsumerWidget {
                       if (result.results.isEmpty) {
                         return EmptyState(
                           icon: Icons.search_off_rounded,
-                          message: 'لا نتائج لـ "$searchQuery"',
-                          subtitle: 'جرّب كلمة مختلفة أو تهجئة أخرى',
+                          message:
+                              '${AppStrings.dictionaryNoResultsPrefix}$searchQuery${AppStrings.dictionaryNoResultsSuffix}',
+                          subtitle: AppStrings.dictionaryNoResultsSubtitle,
                         );
                       }
                       return ListView.builder(
@@ -220,7 +225,7 @@ class DictionaryPage extends HookConsumerWidget {
                       if (words.isEmpty) {
                         return const EmptyState(
                             icon: Icons.menu_book_rounded,
-                            message: 'لا توجد كلمات');
+                            message: AppStrings.dictionaryEmptyMessage);
                       }
                       final total = ref.read(wordListProvider.notifier).total;
                       return ListView.builder(
@@ -305,7 +310,7 @@ class _LetterFilter extends HookWidget {
               return Padding(
                 padding: const EdgeInsets.only(left: 6),
                 child: FilterChip(
-                  label: const Text('الكل'),
+                  label: const Text(AppStrings.dictionaryAllLetterLabel),
                   selected: isAll,
                   onSelected: (_) => onSelect(null),
                   selectedColor: colorScheme.primary,
@@ -372,7 +377,7 @@ class _PosAndCategoryFilter extends StatelessWidget {
           _buildDropdown(
             context,
             value: selectedPos,
-            hint: 'نوع الكلمة',
+            hint: AppStrings.dictionaryPosFilterHint,
             icon: Icons.label_rounded,
             items: _posOptions,
             labelOf: PartOfSpeech.arabicLabelFor,
@@ -382,7 +387,7 @@ class _PosAndCategoryFilter extends StatelessWidget {
           _buildDropdown(
             context,
             value: selectedTag,
-            hint: 'التصنيف',
+            hint: AppStrings.dictionaryTagFilterHint,
             icon: Icons.category_rounded,
             items: _tagOptions,
             labelOf: tagArabicLabel,
