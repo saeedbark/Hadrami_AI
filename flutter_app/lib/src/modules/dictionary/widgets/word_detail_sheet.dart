@@ -4,7 +4,7 @@ import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:hadrami_nlp/src/core/models/dictionary_labels.dart';
 import 'package:hadrami_nlp/src/core/models/word_entry.dart';
-import 'package:hadrami_nlp/src/core/services/api_service.dart';
+import 'package:hadrami_nlp/src/modules/dictionary/services/dictionary_service.dart';
 import 'package:hadrami_nlp/src/modules/favorites/providers/favorites_provider.dart';
 import 'package:hadrami_nlp/src/widgets/text_input.dart';
 
@@ -28,7 +28,7 @@ class WordDetailSheet extends HookConsumerWidget {
       if (text.isEmpty) return;
       isSubmitting.value = true;
 
-      final success = await ref.read(apiServiceProvider).submitFeedback(
+      final success = await ref.read(dictionaryServiceProvider).submitFeedback(
             wordId: entry.id,
             wordVocalized: entry.wordVocalized,
             suggestedFusha: text,
