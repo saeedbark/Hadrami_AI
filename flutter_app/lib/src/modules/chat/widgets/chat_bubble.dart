@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:hadrami_nlp/src/core/strings/app_strings.dart';
+import 'package:hadrami_nlp/src/core/utils/time_formatting.dart';
 import 'package:hadrami_nlp/src/modules/chat/models/chat_message.dart';
 import 'package:hadrami_nlp/src/widgets/animated_appear.dart';
 
@@ -33,11 +35,12 @@ class ChatBubble extends StatelessWidget {
               children: [
                 Container(
                   padding: const EdgeInsets.symmetric(
-                      horizontal: 16, vertical: 12),
+                    horizontal: 16,
+                    vertical: 12,
+                  ),
                   decoration: BoxDecoration(
-                    color: isUser
-                        ? scheme.primary
-                        : scheme.surfaceContainerHigh,
+                    color:
+                        isUser ? scheme.primary : scheme.surfaceContainerHigh,
                     borderRadius: BorderRadius.only(
                       topLeft: const Radius.circular(18),
                       topRight: const Radius.circular(18),
@@ -52,20 +55,61 @@ class ChatBubble extends StatelessWidget {
                       ),
                     ],
                   ),
-                  child: SelectableText(
-                    message.content,
-                    textDirection: TextDirection.rtl,
-                    style: TextStyle(
-                      fontSize: 15,
-                      height: 1.5,
-                      color: isUser ? scheme.onPrimary : scheme.onSurface,
-                    ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      SelectableText(
+                        message.content,
+                        textDirection: TextDirection.rtl,
+                        style: TextStyle(
+                          fontSize: 15,
+                          height: 1.5,
+                          color: isUser ? scheme.onPrimary : scheme.onSurface,
+                        ),
+                      ),
+                      if (message.note != null && message.note!.isNotEmpty) ...[
+                        const SizedBox(height: 12),
+                        Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Icon(
+                              Icons.lightbulb_outline_rounded,
+                              size: 14,
+                              color: isUser ? scheme.onPrimary : scheme.primary,
+                            ),
+                            const SizedBox(width: 6),
+                            Text(
+                              AppStrings.wordDetailNoteLabel,
+                              style: TextStyle(
+                                fontSize: 12,
+                                fontWeight: FontWeight.bold,
+                                color:
+                                    isUser ? scheme.onPrimary : scheme.primary,
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 6),
+                        SelectableText(
+                          message.note!,
+                          textDirection: TextDirection.rtl,
+                          style: TextStyle(
+                            fontSize: 13,
+                            height: 1.5,
+                            color:
+                                (isUser ? scheme.onPrimary : scheme.onSurface)
+                                    .withValues(alpha: 0.85),
+                          ),
+                        ),
+                      ],
+                    ],
                   ),
                 ),
                 Padding(
                   padding: const EdgeInsets.only(top: 4, left: 4, right: 4),
                   child: Text(
-                    _formatTime(message.timestamp),
+                    formatTime(message.timestamp),
                     style: TextStyle(fontSize: 10, color: scheme.outline),
                   ),
                 ),
@@ -75,10 +119,5 @@ class ChatBubble extends StatelessWidget {
         ),
       ),
     );
-  }
-
-  static String _formatTime(DateTime dt) {
-    String two(int n) => n.toString().padLeft(2, '0');
-    return '${two(dt.hour)}:${two(dt.minute)}';
   }
 }

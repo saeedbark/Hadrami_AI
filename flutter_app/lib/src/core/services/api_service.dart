@@ -1,11 +1,9 @@
-import 'dart:async';
 import 'dart:convert';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart' as http;
 import 'package:hadrami_nlp/src/configs/api_config.dart';
 import 'package:hadrami_nlp/src/configs/api_endpoints.dart';
 import 'package:hadrami_nlp/src/core/models/word_entry.dart';
-import 'package:hadrami_nlp/src/core/strings/app_strings.dart';
 
 final apiServiceProvider = Provider<ApiService>((_) => ApiService());
 
@@ -79,32 +77,6 @@ class ApiService {
       return SearchResult.fromJson(data);
     } catch (_) {
       return const SearchResult(total: 0, results: []);
-    }
-  }
-
-
-
-  Future<ChatResult> sendChatMessage({
-    required String message,
-    required List<Map<String, String>> history,
-  }) async {
-    try {
-      final body = {
-        'message': message,
-        'history': history,
-      };
-      final data = await postJson(ApiEndpoints.chat, body,
-          timeout: ApiConfig.longTimeout);
-      return ChatResult.fromJson(data);
-    } on TimeoutException {
-      return const ChatResult(
-        reply: AppStrings.apiServiceChatTimeoutReply,
-      );
-    } catch (_) {
-      return const ChatResult(
-        reply:
-            '${AppStrings.apiServiceChatConnectionErrorPrefix}${ApiConfig.baseUrl}',
-      );
     }
   }
 }
