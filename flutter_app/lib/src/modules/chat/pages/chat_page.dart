@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hadrami_nlp/src/core/strings/app_strings.dart';
+import 'package:hadrami_nlp/src/modules/chat/models/chat_state.dart';
 import 'package:hadrami_nlp/src/modules/chat/providers/chat_provider.dart';
 import 'package:hadrami_nlp/src/modules/chat/widgets/chat_bubble.dart';
 import 'package:hadrami_nlp/src/modules/chat/widgets/chat_input.dart';
@@ -72,8 +73,9 @@ class ChatPage extends HookConsumerWidget {
             ),
             ChatInput(
               enabled: !chatState.isLoading,
-              onSend: (text) =>
-                  ref.read(chatProvider.notifier).sendMessage(text),
+              onSend: (text) => ref.read(chatProvider.notifier).sendMessage(
+                    text,
+                  ),
             ),
           ],
         ),
@@ -124,8 +126,10 @@ class _EmptyChat extends StatelessWidget {
                 tween: Tween(begin: 0.85, end: 1.0),
                 duration: const Duration(milliseconds: 600),
                 curve: Curves.elasticOut,
-                builder: (_, scale, child) =>
-                    Transform.scale(scale: scale, child: child),
+                builder: (_, scale, child) => Transform.scale(
+                  scale: scale,
+                  child: child,
+                ),
                 child: Container(
                   width: 80,
                   height: 80,
@@ -168,7 +172,8 @@ class _EmptyChat extends StatelessWidget {
                 children: [
                   _SuggestionChip(label: AppStrings.chatSuggestionWordMeaning),
                   _SuggestionChip(
-                      label: AppStrings.chatSuggestionConvertPhrase),
+                    label: AppStrings.chatSuggestionConvertPhrase,
+                  ),
                   _SuggestionChip(label: AppStrings.chatSuggestionProverbs),
                 ],
               ),
@@ -247,7 +252,8 @@ class _TypingIndicatorState extends State<_TypingIndicator>
                   animation: _controller,
                   builder: (_, __) {
                     final phase = (_controller.value + i / 3) % 1.0;
-                    final opacity = 0.3 + 0.7 * (1 - (phase - 0.5).abs() * 2).clamp(0.0, 1.0);
+                    final opacity = 0.3 +
+                        0.7 * (1 - (phase - 0.5).abs() * 2).clamp(0.0, 1.0);
                     return Container(
                       width: 6,
                       height: 6,

@@ -36,6 +36,7 @@ def embed_text(text: str, *, task_type: str = _EMBED_TASK) -> Optional[list[floa
             task_type=task_type,
             output_dimensionality=OUTPUT_DIM,
         )
+    
         return result["embedding"]
     except Exception as e:
         try:

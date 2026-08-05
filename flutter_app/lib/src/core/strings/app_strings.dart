@@ -31,7 +31,7 @@ class AppStrings {
   static const String chatEmptyTitle = 'مرحباً! أنا مساعدك في اللهجة الحضرمية';
   static const String chatEmptySubtitle =
       'اسألني عن أي كلمة أو عبارة حضرمية، أو اطلب تحويل جملة إلى الفصحى';
-  static const String chatSuggestionWordMeaning = 'ما معنى كلمة ويش؟';
+  static const String chatSuggestionWordMeaning = 'ما معنى كلمة الريم؟';
   static const String chatSuggestionConvertPhrase =
       'حوّل إلى الفصحى: كيف حالك؟';
   static const String chatSuggestionProverbs = 'أمثال حضرمية شهيرة';
