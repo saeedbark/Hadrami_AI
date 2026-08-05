@@ -73,8 +73,9 @@ class ChatPage extends HookConsumerWidget {
             ),
             ChatInput(
               enabled: !chatState.isLoading,
-              onSend: (text) =>
-                  ref.read(chatProvider.notifier).sendMessage(text),
+              onSend: (text) => ref.read(chatProvider.notifier).sendMessage(
+                    text,
+                  ),
             ),
           ],
         ),

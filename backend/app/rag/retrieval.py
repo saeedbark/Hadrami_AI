@@ -98,19 +98,20 @@ def vector_context(query: str, top_k: int = 6) -> list[dict]:
     # Short "focus" query helps vectors match headwords, not the whole MSA question.
     qv = (focus_query_for_embedding(query) or query).strip() or query
     embedding = embed_text(qv)
+    rag_log(f"🔢 embedding result: {embedding}")
     if embedding is None:
         rag_log(
             f"vector_context: embedding unavailable for q={query!r} (focus={qv!r}) — skipping"
         )
         return []
-
+    
     rows = rpc_match_entries(embedding, match_threshold=0.25, match_count=top_k)
     labels = [
         f"{r.get('word_vocalized', '?')}->{r.get('fusha_equivalent', '')} "
         f"({r.get('similarity', 0):.2f})"
         for r in rows[:5]
     ]
-    rag_log(f"vector_context q={query!r} -> {len(rows)} hits: {labels}")
+    rag_log(f"🎯 vector_context q={query!r} -> {len(rows)} hits: {labels}")
     return _cache_put(_vector_cache, cache_key, rows)
 
 

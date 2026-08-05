@@ -23,8 +23,11 @@ class Chat extends _$Chat {
       isLoading: true,
     );
 
-    final history =
-        state.messages.where((m) => m != userMessage).toList();
+    final history = state.messages
+        .where(
+          (m) => m != userMessage,
+        )
+        .toList();
 
     final result = await ref
         .read(chatServiceProvider)

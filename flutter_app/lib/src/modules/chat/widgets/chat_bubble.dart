@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:hadrami_nlp/src/core/strings/app_strings.dart';
 import 'package:hadrami_nlp/src/core/utils/time_formatting.dart';
 import 'package:hadrami_nlp/src/modules/chat/models/chat_message.dart';
 import 'package:hadrami_nlp/src/widgets/animated_appear.dart';
@@ -68,41 +67,41 @@ class ChatBubble extends StatelessWidget {
                           color: isUser ? scheme.onPrimary : scheme.onSurface,
                         ),
                       ),
-                      if (message.note != null && message.note!.isNotEmpty) ...[
-                        const SizedBox(height: 12),
-                        Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Icon(
-                              Icons.lightbulb_outline_rounded,
-                              size: 14,
-                              color: isUser ? scheme.onPrimary : scheme.primary,
-                            ),
-                            const SizedBox(width: 6),
-                            Text(
-                              AppStrings.wordDetailNoteLabel,
-                              style: TextStyle(
-                                fontSize: 12,
-                                fontWeight: FontWeight.bold,
-                                color:
-                                    isUser ? scheme.onPrimary : scheme.primary,
-                              ),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: 6),
-                        SelectableText(
-                          message.note!,
-                          textDirection: TextDirection.rtl,
-                          style: TextStyle(
-                            fontSize: 13,
-                            height: 1.5,
-                            color:
-                                (isUser ? scheme.onPrimary : scheme.onSurface)
-                                    .withValues(alpha: 0.85),
-                          ),
-                        ),
-                      ],
+                      // if (message.note != null && message.note!.isNotEmpty) ...[
+                      //   const SizedBox(height: 12),
+                      //   Row(
+                      //     mainAxisSize: MainAxisSize.min,
+                      //     children: [
+                      //       Icon(
+                      //         Icons.lightbulb_outline_rounded,
+                      //         size: 14,
+                      //         color: isUser ? scheme.onPrimary : scheme.primary,
+                      //       ),
+                      //       const SizedBox(width: 6),
+                      //       Text(
+                      //         AppStrings.wordDetailNoteLabel,
+                      //         style: TextStyle(
+                      //           fontSize: 12,
+                      //           fontWeight: FontWeight.bold,
+                      //           color:
+                      //               isUser ? scheme.onPrimary : scheme.primary,
+                      //         ),
+                      //       ),
+                      //     ],
+                      //   ),
+                      // const SizedBox(height: 6),
+                      // SelectableText(
+                      //   message.note!,
+                      //   textDirection: TextDirection.rtl,
+                      //   style: TextStyle(
+                      //     fontSize: 13,
+                      //     height: 1.5,
+                      //     color:
+                      //         (isUser ? scheme.onPrimary : scheme.onSurface)
+                      //             .withValues(alpha: 0.85),
+                      //   ),
+                      // ),
+                      // ],
                     ],
                   ),
                 ),
