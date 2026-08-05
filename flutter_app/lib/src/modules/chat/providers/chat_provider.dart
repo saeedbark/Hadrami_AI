@@ -1,24 +1,15 @@
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:hadrami_nlp/src/core/services/api_service.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
+import 'package:hadrami_nlp/src/core/models/word_entry.dart';
 import 'package:hadrami_nlp/src/modules/chat/models/chat_message.dart';
+import 'package:hadrami_nlp/src/modules/chat/models/chat_state.dart';
+import 'package:hadrami_nlp/src/modules/chat/services/chat_service.dart';
 
-class ChatState {
-  final List<ChatMessage> messages;
-  final bool isLoading;
+part 'chat_provider.g.dart';
 
-  const ChatState({this.messages = const [], this.isLoading = false});
-
-  ChatState copyWith({List<ChatMessage>? messages, bool? isLoading}) =>
-      ChatState(
-        messages: messages ?? this.messages,
-        isLoading: isLoading ?? this.isLoading,
-      );
-}
-
-class ChatNotifier extends StateNotifier<ChatState> {
-  final ApiService _api;
-
-  ChatNotifier(this._api) : super(const ChatState());
+@Riverpod(keepAlive: true)
+class Chat extends _$Chat {
+  @override
+  ChatState build() => const ChatState();
 
   Future<void> sendMessage(String text) async {
     final userMessage = ChatMessage(
@@ -33,19 +24,20 @@ class ChatNotifier extends StateNotifier<ChatState> {
     );
 
     final history = state.messages
-        .where((m) => m != userMessage)
-        .map((m) => m.toApiMap())
+        .where(
+          (m) => m != userMessage,
+        )
         .toList();
 
-    final result = await _api.sendChatMessage(
-      message: text,
-      history: history,
-    );
+    final result = await ref
+        .read(chatServiceProvider)
+        .sendMessage(message: text, history: history);
 
     final assistantMessage = ChatMessage(
       role: ChatRole.assistant,
       content: result.reply,
       timestamp: DateTime.now(),
+      note: _firstNote(result.context),
     );
 
     state = state.copyWith(
@@ -57,8 +49,11 @@ class ChatNotifier extends StateNotifier<ChatState> {
   void clearHistory() {
     state = const ChatState();
   }
-}
 
-final chatProvider = StateNotifierProvider<ChatNotifier, ChatState>((ref) {
-  return ChatNotifier(ref.read(apiServiceProvider));
-});
+  String? _firstNote(List<WordEntry> context) {
+    for (final entry in context) {
+      if (entry.note != null && entry.note!.isNotEmpty) return entry.note;
+    }
+    return null;
+  }
+}
