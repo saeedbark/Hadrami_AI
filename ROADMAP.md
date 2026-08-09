@@ -9,11 +9,15 @@ Items are grouped by area and roughly ordered by impact.
 
 ### Dataset Quality
 
-- [ ] **Expert review workflow**: Recruit native Hadrami speakers to verify `arabic_fus7a` glosses and usage examples. Distribute via spreadsheet batches and track with a `verified_by` field.
-- [ ] **Complete fus7a_short coverage**: Currently 170/1026 entries have concise glosses. Use Gemini to suggest short glosses for the remaining entries, then human-verify.
-- [ ] **Fill fusha side of examples**: The 338 extracted examples only have the Hadrami side. Add MSA equivalents to create proper parallel pairs useful for training.
-- [ ] **Grow the lexicon to 2000+ entries**: Collect new words from community contributions, social media, and published Hadrami dialect resources.
-- [ ] **Add phonetic transcription**: Include IPA or a simplified phonetic field to help non-native learners with pronunciation.
+*Re-baselined 2026-08-08 against a fresh `python scripts/audit_dataset.py` run on the live 1047-entry dataset — the previous bullets here (170/1026 `fus7a_short`, 338 examples) described a schema from an earlier refactor pass (`v1.1.0`) that no longer matches the live dataset (`fus7a_short` isn't a field at all today; it was superseded by a later full-stack refactor to the current `word_vocalized`/`fusha_equivalent`/`word_clean` schema). Current real gaps, largest first:*
+
+- [ ] **Add phonetic transcription**: only 29/1047 (2.8%) entries have `phonetic_variants` populated. Include IPA or a simplified phonetic field to help non-native learners with pronunciation.
+- [ ] **Add usage notes**: 620/1047 (59.2%) entries have a `note`; the rest don't.
+- [ ] **Add proverbs**: only 89/1047 (8.5%) entries have `proverbs`.
+- [ ] **Add synonyms**: 742/1047 (70.9%) entries have `synonyms`.
+- [ ] **Backfill missing examples**: 1043/1047 (99.6%) entries have at least one example; 4 entries have none. Of the 1268 example pairs, 1267 (99.9%) already have both the Hadrami and MSA side — only 1 pair is missing its MSA gloss. This gap is nearly closed already; low remaining effort.
+- [ ] **Expert review workflow**: Recruit native Hadrami speakers to verify `fusha_equivalent` glosses and usage examples. Distribute via spreadsheet batches and track with a `verified_by` field.
+- [ ] **Grow the lexicon to 2000+ entries**: Collect new words from community contributions, social media, and published Hadrami dialect resources. See `CLAUDE.md`'s "Dataset copyright / usage rules" before scraping any external source — needs explicit per-source approval.
 
 ### Backend
 
@@ -46,7 +50,7 @@ Items are grouped by area and roughly ordered by impact.
 
 ### Backend Improvements
 
-- [ ] **Evaluation pipeline**: Automated chrF/BLEU scoring against `eval_pairs.json` to track conversion quality over time.
+- [x] **Evaluation pipeline**: Automated chrF/BLEU scoring already exists in `backend/scripts/evaluate.py` (uses `sacrebleu`, reads `backend/data/eval_pairs.json`, supports 5 systems, reports latency/domain breakdown) — it was just undocumented as done. Separately, `scripts/eval/` has a hallucination/intent/lookup/conversion suite (`CLAUDE.md`-referenced). Known gap: `eval_pairs.json` pairs have no `gold_ids`, so Recall@k/MRR never actually run against them — that's a content/annotation task, not a code gap.
 - [ ] **API versioning**: Introduce `/v1/` prefix to allow backward-compatible API evolution.
 - [ ] **Batch conversion endpoint**: Accept multiple words or phrases in a single request to reduce round trips.
 - [ ] **WebSocket for streaming**: Stream long phrase conversions token-by-token for better UX.
@@ -75,6 +79,7 @@ Items are grouped by area and roughly ordered by impact.
 
 ## Completed
 
+- [x] **Fixed P0 chat/conversion outage (2026-08-08)**: `phrase_top_score()` always returned 0 (`search_phrase_lexicon()` never set the key it reads), and the phrase scorer ignored Arabic normalization (diacritics/alef variants), so real content words scored 0 while short stopword substrings scored high — together these made dialect conversion refuse almost every input. Also fixed: `_SEMANTIC_PATTERN` missing `كلمة تستخدم`, and added `sanitize_model_reply()` to strip prompt-scaffold leaks (raw `id: N`, echoed context/role labels) from Gemini replies. Verified live against the exact failing cases in `docs/chat_testing.md`. See that doc's §4 for full detail and what's still open (prod deploy config, Supabase RLS finding — separate decisions, not code bugs).
 - [x] Migrated from in-memory JSON store to Supabase (PostgreSQL + pgvector)
 - [x] Added pgvector-based semantic search (`/semantic-search` endpoint + `match_entries` RPC)
 - [x] Gemini text-embedding-004 integration for 768-dim entry embeddings

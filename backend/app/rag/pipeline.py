@@ -41,7 +41,7 @@ from .retrieval import (
 )
 from .serialization import finalize_ask_payload
 from .system_prompt import HADRAMI_SYSTEM_PROMPT, Intent, intent_for
-from .text_utils import first_example
+from .text_utils import first_example, sanitize_model_reply
 
 
 __all__ = [
@@ -163,6 +163,7 @@ def get_conversion_answer(question: str) -> dict[str, Any]:
         rag_log(f"conversion Gemini failed -> grounded fallback mode={tag} preview={preview(fb)}")
         return finalize_ask_payload(fb, tag, ctx_for_api, answer_source="lexicon")
 
+    answer = sanitize_model_reply(answer)
     tag = rag_response_mode_tag()
     rag_log(
         f"🤖✅ RAG/convert: reply from Gemini | mode={tag!r} | chars={len(answer)} | "
@@ -205,6 +206,7 @@ def get_rag_answer(question: str) -> dict[str, Any]:
         )
         return finalize_ask_payload(fb, tag, ctx_for_api, answer_source="lexicon")
 
+    answer = sanitize_model_reply(answer)
     tag = rag_response_mode_tag()
     rag_log(
         f"🤖✅ /ask: reply from Gemini | mode={tag!r} | chars={len(answer)} | "
@@ -302,6 +304,7 @@ def get_chat_answer(message: str, history: list[dict[str, str]]) -> dict[str, An
             answer_source="lexicon",
         )
 
+    answer = sanitize_model_reply(answer)
     rag_log(
         f"🤖✅ /chat: reply from Gemini | intent={intent} | chars={len(answer)} | "
         f"preview: {preview(answer)}"

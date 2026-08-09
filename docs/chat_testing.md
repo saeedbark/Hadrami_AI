@@ -110,59 +110,65 @@ python3 chat_eval.py http://localhost:8000
 
 ---
 
-## 4. Known issues found on 2026-07-30
+## 4. Known issues found on 2026-07-30 — status as of 2026-08-08
 
 Measured, not assumed. Local = backend running with the `.env` Gemini key;
 Prod = `https://hadrami-ai.vercel.app`.
 
 | | Intent correct | Gemini reached |
 |---|---|---|
-| Local | 11 / 12 | yes |
-| Prod | 8 / 12 | **0 / 12** |
+| Local (2026-07-30) | 11 / 12 | yes |
+| Prod (2026-07-30) | 8 / 12 | **0 / 12** |
 
-1. **Production has no working Gemini.** Every one of the 12 cases returned
-   `answer_source: lexicon`. Sentence and paragraph conversion are effectively
-   dead in production — cases 3 and 5 return
-   `تعذّر الاتصال بنموذج الإجابة`. Fix is a config change, not code: set
-   `GEMINI_API_KEY` as a Production env var in the Vercel project `hadrami-ai`.
+**Fixed 2026-08-08** (verified locally against the real Supabase+Gemini
+backend — case 4 `ادحق بسرعة لا نتأخر` now returns the exact expected reply
+`امشِ بسرعة كي لا نتأخر.` with `answer_source: "model"`; case 7
+`كلمة تستخدم للأطفال لطلب الماء` now classifies as `semantic` and proposes
+`أَمْبُوه`; case 12 `زنكوش` still correctly refuses instead of hallucinating):
 
-2. **Production is running older code than `main`.** `/stats` returns the key
-   `translated` in production vs `completed` locally, and the intent label
-   `translate` vs `convert`. Production predates the interpretation/conversion
-   renaming.
+3. ~~**`phrase_top_score()` always returns 0.**~~ Fixed:
+   `search_phrase_lexicon()` (`dictionary_service.py`) now returns a
+   `top_score` computed from its own ranked results, so `phrase_top_score()`
+   no longer reads a missing key.
 
-3. **`phrase_top_score()` always returns 0.**
-   `search_phrase_lexicon()` (dictionary_service.py:487) computes per-entry
-   scores internally but returns only `{"total", "results"}` — never
-   `top_score`. So `phrase_top_score()` reads a missing key and yields 0 for
-   every input, including an exact single-word hit like `إبط`. Consequence:
-   the keyword branch of `_is_confidently_grounded()` can never fire for
-   convert intent, and `_lexicon_fallback_answer()` always refuses
-   (`top_score < 70`).
+4. ~~**The phrase scorer ignores Arabic normalization.**~~ Fixed:
+   `_score_phrase_token_match()` now compares the alef-normalized candidate
+   against `word_clean` (mirroring `_entry_match_score()`), and the
+   substring-match branch now requires `len(cand) >= 3`, closing the
+   2-letter-stopword false-positive path (`لا` vs `طُلاب` now scores 0
+   instead of 88).
 
-4. **The phrase scorer ignores Arabic normalization.**
-   `_score_phrase_token_match()` compares against raw `word_vocalized` only.
-   It does not use the undiacritized `word_clean` column or `_normalize_alef()`
-   — both of which the working `/search` scorer (`_entry_match_score`) *does*
-   use. Measured effect:
-   - `ادحق` vs its own entry `إِدْحَق / دَحَق` → score **0** (diacritics + `ا`/`إ`)
-   - stopword `لا` vs `طُلاب` → score **88** (pure substring accident)
+5. ~~**Intent classifier gap (case 7).**~~ Fixed: `_SEMANTIC_PATTERN` now also
+   matches `كلمة تستخدم`.
 
-   So real content words score zero while stopwords score high. Fixing issue 3
-   alone would make this worse, not better — it would ground answers on the
-   spurious stopword matches. Both need fixing together.
+**New fix, not in the original list**: added `sanitize_model_reply()`
+(`text_utils.py`) as a defense-in-depth strip of leaked prompt-scaffold
+artifacts (raw `id: N` lines, echoed `[CONTEXT START]...[CONTEXT END]`
+blocks, echoed `المساعد:`/`المستخدم:` role labels) from every Gemini reply
+before it reaches the client, addressing the ~1-in-3 follow-up-turn prompt
+leakage observed earlier.
 
-5. **Intent classifier gap (case 7).** `_SEMANTIC_PATTERN` matches
-   `كلمة تعني` and `كلمة ل` but not `كلمة تستخدم`, so
-   `كلمة تستخدم للأطفال لطلب الماء` falls through to `convert`.
+**Still open — not code bugs, need a separate decision**:
 
-6. **Chat history is not persisted.** It lives in in-memory Riverpod state; a
-   page reload clears the conversation.
+1. **Production has no working Gemini / is running older code than `main`.**
+   Config/deploy issue (`GEMINI_API_KEY` not set as a Vercel Production env
+   var; production predates the interpretation/conversion renaming). Needs
+   the user to confirm before touching the Vercel project.
+
+2. **Chat history is not persisted.** Lives in in-memory Riverpod state; a
+   page reload clears the conversation. Tracked as a feature request in
+   `ROADMAP.md`, not a P0 bug.
+
+3. **Supabase `apply_entry_embedding` is `SECURITY DEFINER` and
+   anon-executable** over the public REST API — a separate security finding
+   from the same audit, needs a migration decision from the user before any
+   Supabase change is made.
 
 ### Impact on evaluation
 
-Issues 3 and 4 mean phrase- and paragraph-level conversion is not really being
-grounded by keyword retrieval at all — it currently succeeds only when vector
-similarity happens to clear `RAG_CONFIDENCE_GATE`. Any Recall@k / grounding
-numbers measured on the current code describe the vector path alone, so they
-should not be reported as characterising the hybrid retriever.
+The retrieval-grounding caveat from the original write-up (issues 3+4 meaning
+Recall@k/grounding numbers only characterised the vector path) no longer
+applies as of the 2026-08-08 fix — the keyword branch is live again. Any
+evaluation numbers gathered *before* this date should still be treated with
+that caveat; numbers gathered after should not carry it forward without
+re-verifying.

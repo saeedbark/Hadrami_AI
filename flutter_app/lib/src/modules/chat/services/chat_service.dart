@@ -35,7 +35,6 @@ class ChatService {
         },
         timeout: ApiConfig.longTimeout,
       );
-      print(response);
       return ChatResult.fromJson(response);
     } on TimeoutException {
       return const ChatResult(
