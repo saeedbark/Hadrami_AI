@@ -40,6 +40,7 @@ from app.rag.system_prompt import HADRAMI_SYSTEM_PROMPT, intent_for
         # TYPE 4 — concept / semantic search
         ("أداة لفك الصواميل", "semantic"),
         ("كلمة تعني التريث", "semantic"),
+        ("كلمة تستخدم للأطفال لطلب الماء", "semantic"),
         # TYPE 5 — generic question
         ("هل كلمة باير تستخدم للناس؟", "qa"),
         ("كيف أقول مرحبا بالحضرمية", "qa"),

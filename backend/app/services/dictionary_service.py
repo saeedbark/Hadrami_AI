@@ -439,13 +439,15 @@ def _score_phrase_token_match(cand: str, entry: dict[str, Any]) -> int:
     cand = cand.strip()
     if len(cand) < 2:
         return 0
+    cand_norm = _normalize_alef(cand)
     word = (entry.get("word_vocalized") or "").strip()
+    word_clean = (entry.get("word_clean") or "").strip()
     fusha = (entry.get("fusha_equivalent") or "").strip()
     definition = (entry.get("definition") or "").strip()
 
-    if word == cand or fusha == cand:
+    if word == cand or word_clean == cand_norm or fusha == cand:
         return 100
-    if cand in word and len(cand) >= 2:
+    if len(cand) >= _MIN_SUBWORD_LEN and (cand in word or cand_norm in word_clean):
         return 88
     if word in cand:
         if len(word) < _MIN_SUBWORD_LEN:
@@ -484,7 +486,8 @@ def search_phrase_lexicon(query: str, limit: int) -> dict[str, Any]:
 
     ranked = sorted(best.values(), key=lambda x: -x[0])
     merged = [e for _, e in ranked[:limit]]
-    return {"total": len(merged), "results": merged}
+    top_score = ranked[0][0] if ranked else 0
+    return {"total": len(merged), "results": merged, "top_score": top_score}
 
 
 def get_word(word_id: int) -> Optional[dict[str, Any]]:

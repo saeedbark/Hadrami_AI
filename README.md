@@ -65,10 +65,19 @@ hadrami_project/
 │   │   ├── main.dart                ← Entry point (ProviderScope)
 │   │   └── src/
 │   │       ├── app.dart             ← MaterialApp.router + theme
-│   │       ├── configs/             ← API URL, colors, radii, phrase limits
-│   │       ├── core/                ← Models, services, providers, routing, theme
+│   │       ├── configs/             ← API URL, endpoint path constants, colors, radii, phrase limits
+│   │       ├── core/
+│   │       │   ├── models/          ← Shared models (WordEntry, dictionary labels, ...)
+│   │       │   ├── services/        ← api_service.dart — shared HTTP transport + cross-module endpoints
+│   │       │   ├── providers/       ← App-wide Riverpod providers
+│   │       │   ├── routing/         ← GoRouter setup + app_routes.dart path constants
+│   │       │   ├── strings/         ← app_strings.dart — centralized UI copy (per screen/widget)
+│   │       │   └── theme/           ← Material 3 theme, light/dark
 │   │       ├── widgets/             ← Shared UI components
-│   │       └── modules/             ← Feature modules (home, dictionary, favorites, chat, landing, settings)
+│   │       └── modules/             ← Feature modules (home, dictionary, favorites, chat, landing, settings),
+│   │                                  each with pages/providers/widgets and, where the module owns
+│   │                                  module-specific API calls or models, its own services/ and models/
+│   │                                  (e.g. dictionary/services/, home/services/ + home/home_models/)
 │   └── pubspec.yaml
 │
 ├── scripts/

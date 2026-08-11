@@ -189,7 +189,7 @@ _QUESTION_PATTERN = re.compile(
 # Triggered by phrases that ask for a word *for* something rather than asking
 # about a specific known word.
 _SEMANTIC_PATTERN = re.compile(
-    r"(كلمة\s+تعني|كلمة\s+ل|أداة\s+ل|شيء\s+يستخدم|word\s+for|term\s+for)",
+    r"(كلمة\s+تعني|كلمة\s+تستخدم|كلمة\s+ل|أداة\s+ل|شيء\s+يستخدم|word\s+for|term\s+for)",
     re.IGNORECASE,
 )
 

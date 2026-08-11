@@ -2,8 +2,34 @@
 
 from __future__ import annotations
 
+import re
 import unicodedata
 from typing import Any
+
+
+_LEAKED_ID_LINE = re.compile(r"[ \t]*\bid:\s*\d+\b[ \t]*", re.IGNORECASE)
+_LEAKED_CONTEXT_BLOCK = re.compile(
+    r"\[CONTEXT START\].*?\[CONTEXT END\]", re.DOTALL | re.IGNORECASE
+)
+_LEAKED_ROLE_PREFIX = re.compile(r"^\s*(المساعد|المستخدم)\s*:\s*", re.MULTILINE)
+_EXCESS_BLANK_LINES = re.compile(r"\n{3,}")
+
+
+def sanitize_model_reply(text: str) -> str:
+    """Strip prompt-scaffold artifacts that occasionally leak into the raw
+    model reply (e.g. a literal ``id: 50`` from the retrieved-context block,
+    or an echoed ``[CONTEXT START]...[CONTEXT END]`` block / role label).
+
+    Defense-in-depth only — the system prompt already instructs the model
+    not to do this, but that instruction is not always followed.
+    """
+    if not text:
+        return text
+    cleaned = _LEAKED_CONTEXT_BLOCK.sub("", text)
+    cleaned = _LEAKED_ID_LINE.sub("", cleaned)
+    cleaned = _LEAKED_ROLE_PREFIX.sub("", cleaned)
+    cleaned = _EXCESS_BLANK_LINES.sub("\n\n", cleaned)
+    return cleaned.strip()
 
 
 def _normalize_match_char(ch: str) -> str:
