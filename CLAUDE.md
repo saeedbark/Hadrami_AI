@@ -24,7 +24,7 @@ Flutter client (Riverpod + go_router)
         ▼
 FastAPI backend (uvicorn)
   ├─ main.py                          — routes only, thin controllers
-  ├─ core/data_store.py               — Supabase client + queries (fetch_all, text_search,
+  ├─ core/data_store.py               — Supabase client + queries (fetch_all, fetch_by_id,
   │                                      rpc_match_entries, rpc_search_entries_expanded,
   │                                      insert_feedback, count_rows, ...)
   ├─ services/dictionary_service.py   — search/scoring/formatting on top of data_store

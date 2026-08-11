@@ -89,21 +89,6 @@ def count_rows() -> int:
     return resp.count or 0
 
 
-def text_search(
-    query: str,
-    columns: list[str] | None = None,
-    limit: int = 20,
-) -> list[dict[str, Any]]:
-    """Case-insensitive ``ilike`` search across one or more text columns."""
-    cols = columns or ["word_vocalized", "word_clean", "fusha_equivalent", "definition"]
-    pattern = f"%{query}%"
-    or_filter = ",".join(f"{c}.ilike.{pattern}" for c in cols)
-    resp = _execute_with_retry(
-        lambda c, f=or_filter, lim=limit: c.table(TABLE).select(_SELECT_COLS).or_(f).limit(lim)
-    )
-    return resp.data or []
-
-
 def rpc_match_entries(
     query_embedding: list[float],
     match_threshold: float = 0.3,
@@ -130,25 +115,6 @@ def insert_feedback(payload: dict[str, Any]) -> dict[str, Any]:
     )
     rows = resp.data or []
     return rows[0] if rows else {}
-
-
-def list_feedback(
-    limit: int = 50,
-    offset: int = 0,
-    status: str | None = None,
-    feedback_type: str | None = None,
-) -> dict[str, Any]:
-    """List feedback rows newest-first, with optional status/type filters."""
-    def build(c, start=offset, end=offset + limit - 1):
-        q = c.table(FEEDBACK_TABLE).select("*", count="exact")
-        if status:
-            q = q.eq("status", status)
-        if feedback_type:
-            q = q.eq("feedback_type", feedback_type)
-        return q.order("created_at", desc=True).range(start, end)
-
-    resp = _execute_with_retry(build)
-    return {"total": resp.count or 0, "results": resp.data or []}
 
 
 def rpc_search_entries_expanded(query_text: str, match_count: int = 8) -> list[dict[str, Any]]:
