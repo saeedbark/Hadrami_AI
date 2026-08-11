@@ -19,7 +19,6 @@ from ..core.data_store import (
     fetch_by_id,
     get_client,
     insert_feedback,
-    list_feedback,
     rpc_match_entries,
     rpc_search_entries_expanded,
 )
@@ -545,18 +544,6 @@ def save_feedback(payload: dict[str, Any]) -> dict[str, Any]:
     row.setdefault("feedback_type", "correction")
     row.setdefault("consent", False)
     return insert_feedback(row)
-
-
-def recent_feedback(
-    limit: int = 50,
-    offset: int = 0,
-    status: Optional[str] = None,
-    feedback_type: Optional[str] = None,
-) -> dict[str, Any]:
-    """Return recent feedback submissions (admin/debug use)."""
-    return list_feedback(
-        limit=limit, offset=offset, status=status, feedback_type=feedback_type
-    )
 
 
 def random_word() -> Optional[dict[str, Any]]:

@@ -20,7 +20,6 @@ from __future__ import annotations
 from typing import Any
 
 from .config import (
-    MODE,
     RAG_CONFIDENCE_GATE,
     gemini_api_key,
     rag_response_mode_tag,
@@ -42,16 +41,6 @@ from .retrieval import (
 from .serialization import finalize_ask_payload
 from .system_prompt import HADRAMI_SYSTEM_PROMPT, Intent, intent_for
 from .text_utils import first_example, sanitize_model_reply
-
-
-__all__ = [
-    "MODE",
-    "get_chat_answer",
-    "get_conversion_answer",
-    "get_rag_answer",
-    "retrieve_phrase_context",
-    "retrieve_rag_context",
-]
 
 
 _INSUFFICIENT_CONTEXT_MSG = (
@@ -153,10 +142,9 @@ def get_conversion_answer(question: str) -> dict[str, Any]:
     answer = gemini_generate(prompt, gemini_api_key())
 
     if is_gemini_unavailable(answer):
-        print(
+        rag_log(
             f"🤖❌ RAG/convert: Gemini not used. Reason: {preview(answer, 240)} | "
-            f"top_score={top_score} | lexicon_hits={len(merged)}",
-            flush=True,
+            f"top_score={top_score} | lexicon_hits={len(merged)}"
         )
         fb = _lexicon_fallback_answer(merged, top_score)
         tag = rag_response_mode_tag()
@@ -187,18 +175,16 @@ def get_rag_answer(question: str) -> dict[str, Any]:
     answer = gemini_generate(prompt, gemini_api_key())
 
     if is_gemini_unavailable(answer):
-        print(
+        rag_log(
             f"🤖❌ /ask: Gemini not used — the answer is the offline lexicon path. "
             f"Reason: {preview(answer, 240)} | top_score={top_score} | "
-            f"retrieved_entries={len(merged)} (need score≥{_MIN_FALLBACK_SCORE} to fill from dict)",
-            flush=True,
+            f"retrieved_entries={len(merged)} (need score≥{_MIN_FALLBACK_SCORE} to fill from dict)"
         )
         fb = _lexicon_fallback_answer(merged, top_score)
         if fb == _INSUFFICIENT_CONTEXT_MSG:
-            print(
+            rag_log(
                 f"📚ℹ️  /ask: lexicon fallback = generic 'not enough retrieved' message | "
-                f"usually top_score<{_MIN_FALLBACK_SCORE} or no hits (now top_score={top_score})",
-                flush=True,
+                f"usually top_score<{_MIN_FALLBACK_SCORE} or no hits (now top_score={top_score})"
             )
         tag = rag_response_mode_tag()
         rag_log(
