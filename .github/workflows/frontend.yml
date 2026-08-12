@@ -1,0 +1,91 @@
+name: Frontend CI/CD
+
+on:
+  pull_request:
+    paths:
+      - "flutter_app/**"
+      - ".github/workflows/frontend.yml"
+  push:
+    branches: [main, dev]
+    paths:
+      - "flutter_app/**"
+      - ".github/workflows/frontend.yml"
+
+env:
+  FLUTTER_VERSION: "3.35.2"
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: flutter_app
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: "stable"
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Generate code (freezed/json_serializable/riverpod/reactive_forms)
+        run: dart run build_runner build --delete-conflicting-outputs
+
+      - name: Analyze
+        # --no-fatal-infos: pre-existing `info`-level deprecation notices in
+        # generated Riverpod code (.g.dart, gitignored/regenerated above)
+        # shouldn't block CI; real errors/warnings still fail the step.
+        run: flutter analyze --no-fatal-infos
+
+      - name: Test
+        run: flutter test
+
+  deploy:
+    needs: test
+    if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/dev')
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: flutter_app
+    env:
+      VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+      VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+      VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID_FRONTEND }}
+      API_BASE_URL: ${{ secrets.API_BASE_URL }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: "stable"
+
+      - name: Install Vercel CLI
+        run: npm install --global vercel@58.9.5
+
+      - name: Pull Vercel environment (production)
+        if: github.ref == 'refs/heads/main'
+        run: vercel pull --yes --environment=production --token="$VERCEL_TOKEN"
+
+      - name: Pull Vercel environment (preview)
+        if: github.ref == 'refs/heads/dev'
+        run: vercel pull --yes --environment=preview --token="$VERCEL_TOKEN"
+
+      - name: Build (production)
+        if: github.ref == 'refs/heads/main'
+        run: vercel build --prod --token="$VERCEL_TOKEN"
+
+      - name: Build (preview)
+        if: github.ref == 'refs/heads/dev'
+        run: vercel build --token="$VERCEL_TOKEN"
+
+      - name: Deploy (production)
+        if: github.ref == 'refs/heads/main'
+        run: vercel deploy --prebuilt --prod --token="$VERCEL_TOKEN"
+
+      - name: Deploy (preview)
+        if: github.ref == 'refs/heads/dev'
+        run: vercel deploy --prebuilt --token="$VERCEL_TOKEN"
