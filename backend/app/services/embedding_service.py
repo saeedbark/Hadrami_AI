@@ -1,6 +1,6 @@
 """Thin wrapper around Google Generative AI embedding model.
 
-Used by the semantic-search endpoint and the sync script to produce
+Used by the semantic-search endpoint and the vector retriever to produce
 768-dim vectors compatible with the ``entries.embedding`` column.
 """
 
@@ -14,7 +14,6 @@ from typing import Optional
 _EMBED_MODEL = "models/gemini-embedding-001"
 OUTPUT_DIM = 768
 _EMBED_TASK = "RETRIEVAL_QUERY"
-_EMBED_TASK_DOC = "RETRIEVAL_DOCUMENT"
 
 
 def _api_key() -> str:
@@ -46,31 +45,3 @@ def embed_text(text: str, *, task_type: str = _EMBED_TASK) -> Optional[list[floa
         except Exception:
             pass
         return None
-
-
-def embed_texts(
-    texts: list[str], *, task_type: str = _EMBED_TASK_DOC
-) -> list[Optional[list[float]]]:
-    """Batch-embed a list of texts. Returns one embedding (or None) per input."""
-    key = _api_key()
-    if not key:
-        return [None] * len(texts)
-    try:
-        import google.generativeai as genai
-
-        genai.configure(api_key=key)
-        out: list[Optional[list[float]]] = []
-        for text in texts:
-            try:
-                result = genai.embed_content(
-                    model=_EMBED_MODEL,
-                    content=text,
-                    task_type=task_type,
-                    output_dimensionality=OUTPUT_DIM,
-                )
-                out.append(result["embedding"])
-            except Exception:
-                out.append(None)
-        return out
-    except ImportError:
-        return [None] * len(texts)
