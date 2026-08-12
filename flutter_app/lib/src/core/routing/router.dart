@@ -13,7 +13,13 @@ part 'router.g.dart';
 
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
 
-@riverpod
+// keepAlive: GoRouter owns the navigation back-stack; if this ever lost its
+// last watcher (autoDispose default) it would be torn down and recreated,
+// silently resetting navigation history. It happens to survive today because
+// the app root always watches it, but that's implicit — same class of
+// app-lifetime state as AppThemeMode/Favorites/Chat, so it gets the same
+// explicit keepAlive rather than relying on "there's always a watcher".
+@Riverpod(keepAlive: true)
 GoRouter router(RouterRef ref) {
   final router = GoRouter(
     navigatorKey: _rootNavigatorKey,

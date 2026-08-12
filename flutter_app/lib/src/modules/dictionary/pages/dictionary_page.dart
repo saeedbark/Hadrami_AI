@@ -150,9 +150,9 @@ class DictionaryPage extends HookConsumerWidget {
                     ref.read(dictionarySearchQueryProvider.notifier).set(value),
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-              child: _PosAndCategoryFilter(ref: ref),
+            const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              child: _PosAndCategoryFilter(),
             ),
           ] else
             Padding(
@@ -210,11 +210,17 @@ class DictionaryPage extends HookConsumerWidget {
                       return ListView.builder(
                         padding: const EdgeInsets.fromLTRB(16, 8, 16, 16),
                         itemCount: result.results.length,
-                        itemBuilder: (_, i) => AnimatedAppear(
-                          duration: const Duration(milliseconds: 280),
-                          delay: Duration(milliseconds: 20 * (i < 12 ? i : 12)),
-                          child: WordCard(entry: result.results[i]),
-                        ),
+                        // Only entrance-animate the first screenful (i < 12);
+                        // items scrolled into view later shouldn't replay an
+                        // "appear" animation, and skipping the wrapper means
+                        // no AnimationController is created for them at all.
+                        itemBuilder: (_, i) => i < 12
+                            ? AnimatedAppear(
+                                duration: const Duration(milliseconds: 280),
+                                delay: Duration(milliseconds: 20 * i),
+                                child: WordCard(entry: result.results[i]),
+                              )
+                            : WordCard(entry: result.results[i]),
                       );
                     },
                     loading: () => const LoadingWidget(),
@@ -241,12 +247,16 @@ class DictionaryPage extends HookConsumerWidget {
                                   child: CircularProgressIndicator.adaptive()),
                             );
                           }
-                          return AnimatedAppear(
-                            duration: const Duration(milliseconds: 280),
-                            delay:
-                                Duration(milliseconds: 20 * (i < 12 ? i : 12)),
-                            child: WordCard(entry: words[i]),
-                          );
+                          // Same rationale as the search-results list above:
+                          // only the first screenful gets the entrance
+                          // animation; later pages (loadMore) render plainly.
+                          return i < 12
+                              ? AnimatedAppear(
+                                  duration: const Duration(milliseconds: 280),
+                                  delay: Duration(milliseconds: 20 * i),
+                                  child: WordCard(entry: words[i]),
+                                )
+                              : WordCard(entry: words[i]);
                         },
                       );
                     },
@@ -347,9 +357,11 @@ class _LetterFilter extends HookWidget {
   }
 }
 
-class _PosAndCategoryFilter extends StatelessWidget {
-  const _PosAndCategoryFilter({required this.ref});
-  final WidgetRef ref;
+// ConsumerWidget (not a ref-holding StatelessWidget): ref.watch here must
+// register against *this* widget so filter changes only rebuild this small
+// row, not the whole DictionaryPage that creates it.
+class _PosAndCategoryFilter extends ConsumerWidget {
+  const _PosAndCategoryFilter();
 
   static const _posOptions = ['Noun', 'Verb', 'Adjective', 'Expression'];
   // Supabase stores tags lowercased — these must match exactly since the
@@ -366,7 +378,7 @@ class _PosAndCategoryFilter extends StatelessWidget {
   ];
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final selectedPos = ref.watch(selectedPosProvider);
     final selectedTag = ref.watch(selectedTagProvider);
 

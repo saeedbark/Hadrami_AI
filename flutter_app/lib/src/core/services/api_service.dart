@@ -1,11 +1,18 @@
 import 'dart:convert';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart' as http;
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 import 'package:hadrami_nlp/src/configs/api_config.dart';
 import 'package:hadrami_nlp/src/configs/api_endpoints.dart';
 import 'package:hadrami_nlp/src/core/models/word_entry.dart';
 
-final apiServiceProvider = Provider<ApiService>((_) => ApiService());
+part 'api_service.g.dart';
+
+// Every other provider in the codebase is @riverpod-generated; this was the
+// one hand-written exception (see docs/... Riverpod guide, section on
+// consistency vs. boilerplate reduction). Converting it keeps the codegen
+// convention uniform across services/.
+@Riverpod(keepAlive: true)
+ApiService apiService(ApiServiceRef ref) => ApiService();
 
 class ApiService {
   final _client = http.Client();

@@ -24,6 +24,13 @@ class _AnimatedAppearState extends State<AnimatedAppear>
     with SingleTickerProviderStateMixin {
   late final AnimationController _controller =
       AnimationController(vsync: this, duration: widget.duration);
+  // Built once per State (not per build()) so it registers exactly one
+  // listener on _controller; a version created inline in build() would
+  // re-register a new, never-removed listener every time this State
+  // rebuilds (e.g. a parent provider change) without the widget itself
+  // being recreated — a slow, cumulative leak in any list that uses this.
+  late final CurvedAnimation _curved =
+      CurvedAnimation(parent: _controller, curve: widget.curve);
 
   @override
   void initState() {
@@ -39,18 +46,17 @@ class _AnimatedAppearState extends State<AnimatedAppear>
 
   @override
   void dispose() {
+    _curved.dispose();
     _controller.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    final curved =
-        CurvedAnimation(parent: _controller, curve: widget.curve);
     return AnimatedBuilder(
-      animation: curved,
+      animation: _curved,
       builder: (context, child) {
-        final t = curved.value;
+        final t = _curved.value;
         return Opacity(
           opacity: t,
           child: Transform.translate(
