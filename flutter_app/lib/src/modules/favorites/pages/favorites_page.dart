@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:hadrami_nlp/src/core/strings/app_strings.dart';
-import 'package:hadrami_nlp/src/modules/dictionary/widgets/word_card.dart';
-import 'package:hadrami_nlp/src/modules/favorites/providers/favorites_provider.dart';
-import 'package:hadrami_nlp/src/widgets/app_scaffold.dart';
-import 'package:hadrami_nlp/src/widgets/empty_state.dart';
+import 'package:hadrami_nlp/src/core/ui/app_scaffold.dart';
+import 'package:hadrami_nlp/src/core/ui/empty_state.dart';
+import 'package:hadrami_nlp/src/modules/lexicon/providers/favorites_provider.dart';
+import 'package:hadrami_nlp/src/modules/lexicon/widgets/word_card.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class FavoritesPage extends ConsumerWidget {
   const FavoritesPage({super.key});

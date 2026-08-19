@@ -40,6 +40,11 @@ jobs:
         # shouldn't block CI; real errors/warnings still fail the step.
         run: flutter analyze --no-fatal-infos
 
+      - name: Check architecture (dependency direction)
+        # The Dart compiler cannot enforce these rules: a violating import
+        # compiles and analyzes clean, so the graph can only decay silently.
+        run: bash tool/check_architecture.sh
+
       - name: Test
         run: flutter test
 

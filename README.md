@@ -65,19 +65,22 @@ hadrami_project/
 │   │   ├── main.dart                ← Entry point (ProviderScope)
 │   │   └── src/
 │   │       ├── app.dart             ← MaterialApp.router + theme
-│   │       ├── configs/             ← API URL, endpoint path constants, colors, radii, phrase limits
-│   │       ├── core/
-│   │       │   ├── models/          ← Shared models (WordEntry, dictionary labels, ...)
-│   │       │   ├── services/        ← api_service.dart — shared HTTP transport + cross-module endpoints
-│   │       │   ├── providers/       ← App-wide Riverpod providers
-│   │       │   ├── routing/         ← GoRouter setup + app_routes.dart path constants
-│   │       │   ├── strings/         ← app_strings.dart — centralized UI copy (per screen/widget)
-│   │       │   └── theme/           ← Material 3 theme, light/dark
-│   │       ├── widgets/             ← Shared UI components
-│   │       └── modules/             ← Feature modules (home, dictionary, favorites, chat, landing, settings),
-│   │                                  each with pages/providers/widgets and, where the module owns
-│   │                                  module-specific API calls or models, its own services/ and models/
-│   │                                  (e.g. dictionary/services/, home/services/ + home/home_models/)
+│   │       ├── core/                ← Infrastructure only, zero domain knowledge —
+│   │       │   │                      the portable half (drops into another app unchanged)
+│   │       │   ├── theme/           ← Material 3 light/dark theme + theme_provider + colors + radii
+│   │       │   ├── network/         ← api_service (pure HTTP transport) + api_config + api_endpoints
+│   │       │   ├── ui/              ← Generic widget kit (scaffold, text input, empty/loading states)
+│   │       │   ├── formatting/      ← Shared display formatters (time, ...)
+│   │       │   ├── routing/         ← GoRouter setup (composition root) + app_routes.dart
+│   │       │   └── strings/         ← app_strings.dart — centralized UI copy (per screen/widget)
+│   │       └── modules/             ← Domain + features, each with pages/providers/widgets and,
+│   │           │                      where owned, its own services/, models/ and utils/
+│   │           ├── lexicon/         ← FOUNDATION domain module: WordEntry/AppStats models,
+│   │           │                      favorites state, LexiconService, WordCard/WordDetailSheet.
+│   │           │                      Every other feature depends on it; it depends on none.
+│   │           └── home · dictionary · favorites · chat · landing · settings
+│   │                                ← Feature modules. They never import each other —
+│   │                                  only core/ and lexicon/, so the graph stays acyclic.
 │   └── pubspec.yaml
 │
 ├── scripts/

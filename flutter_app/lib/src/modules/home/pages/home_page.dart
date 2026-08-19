@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:hadrami_nlp/src/core/routing/app_routes.dart';
-import 'package:hadrami_nlp/src/core/theme/theme.dart';
-import 'package:hadrami_nlp/src/modules/home/home_models/home_model.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:hadrami_nlp/src/configs/app_colors.dart';
-import 'package:hadrami_nlp/src/configs/app_radius.dart';
-import 'package:hadrami_nlp/src/core/providers/theme_provider.dart';
 import 'package:hadrami_nlp/src/core/strings/app_strings.dart';
-import 'package:hadrami_nlp/src/modules/dictionary/widgets/word_card.dart';
+import 'package:hadrami_nlp/src/core/theme/app_colors.dart';
+import 'package:hadrami_nlp/src/core/theme/app_radius.dart';
+import 'package:hadrami_nlp/src/core/theme/theme.dart';
+import 'package:hadrami_nlp/src/core/theme/theme_provider.dart';
+import 'package:hadrami_nlp/src/core/ui/animated_appear.dart';
+import 'package:hadrami_nlp/src/core/ui/content_shell.dart';
+import 'package:hadrami_nlp/src/core/ui/loading_widget.dart';
 import 'package:hadrami_nlp/src/modules/home/providers/home_provider.dart';
-import 'package:hadrami_nlp/src/widgets/animated_appear.dart';
-import 'package:hadrami_nlp/src/widgets/content_shell.dart';
-import 'package:hadrami_nlp/src/widgets/loading_widget.dart';
+import 'package:hadrami_nlp/src/modules/lexicon/models/app_stats.dart';
+import 'package:hadrami_nlp/src/modules/lexicon/widgets/word_card.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 const _kPhraseHighlights = <(String phrase, String gloss)>[
   ('إبط تسرع', 'مثل للتأني والحكمة'),

@@ -32,7 +32,7 @@ Stop it when done: `lsof -ti:8765 -sTCP:LISTEN | xargs -r kill`.
 
 This app has no backend dependency for UI verification — the dictionary
 data renders from whatever `API_BASE_URL` the app is built with
-(see `lib/src/configs/api_config.dart`); the home/search/dictionary
+(see `lib/src/core/network/api_config.dart`); the home/search/dictionary
 pages hit the real deployed backend by default, no local backend needed
 just to look at the UI.
 

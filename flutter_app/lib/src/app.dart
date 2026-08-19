@@ -1,11 +1,11 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:hadrami_nlp/src/core/providers/theme_provider.dart';
 import 'package:hadrami_nlp/src/core/routing/router.dart';
 import 'package:hadrami_nlp/src/core/strings/app_strings.dart';
 import 'package:hadrami_nlp/src/core/theme/theme.dart';
+import 'package:hadrami_nlp/src/core/theme/theme_provider.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 /// Flutter's default [MaterialScrollBehavior] only lets touch/stylus drag
 /// scroll views, so on web a mouse can't click-and-drag any list (e.g. the

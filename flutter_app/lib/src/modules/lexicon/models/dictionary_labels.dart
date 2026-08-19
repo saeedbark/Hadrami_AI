@@ -94,6 +94,17 @@ enum WordRegion {
     }
     return null;
   }
+
+  /// True when [raw] is the unremarkable default region, which callers hide
+  /// rather than render as a chip. Case-insensitive on purpose: Supabase
+  /// stores `region` lowercased (`general`) while the staging dataset and
+  /// [apiValue] use Title Case, so a `!=` against `'General'` matches every
+  /// row and shows the chip on ~97% of entries.
+  /// A blank region counts as default too — there is nothing worth showing.
+  static bool isDefault(String raw) {
+    final normalized = raw.trim().toLowerCase();
+    return normalized.isEmpty || normalized == general.apiValue.toLowerCase();
+  }
 }
 
 /// Arabic label for every free-text category tag in the dataset. A `Map`

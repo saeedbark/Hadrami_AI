@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:hadrami_nlp/src/core/strings/app_strings.dart';
-import 'package:hadrami_nlp/src/widgets/text_input.dart';
+import 'package:hadrami_nlp/src/core/ui/text_input.dart';
 
 class ChatInput extends StatefulWidget {
   const ChatInput({

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:hadrami_nlp/src/core/theme/app_radius.dart';
 import 'package:reactive_forms/reactive_forms.dart';
-import 'package:hadrami_nlp/src/configs/app_radius.dart';
 
 /// Visual treatment for [AppTextField].
 ///
@@ -40,9 +40,16 @@ class AppTextField extends StatelessWidget {
     this.alignLabelWithHint = false,
     this.style,
     this.borderRadius,
-  }) : assert(
+  })  : assert(
           (controller == null) != (formControlName == null),
           'Provide exactly one of controller or formControlName',
+        ),
+        // `ReactiveTextField` derives its enabled state from the bound
+        // FormControl (`field.control.enabled`), so a widget-level `enabled`
+        // would be silently ignored. Disable the control instead.
+        assert(
+          formControlName == null || enabled,
+          'With formControlName, disable the FormControl — not the widget',
         );
 
   final TextEditingController? controller;
@@ -122,10 +129,13 @@ class AppTextField extends StatelessWidget {
         textInputAction: textInputAction,
         minLines: minLines,
         maxLines: maxLines,
+        onChanged:
+            onChanged == null ? null : (control) => onChanged!(control.value ?? ''),
         onSubmitted:
             onSubmitted == null ? null : (_) => onSubmitted!(),
         inputFormatters: inputFormatters,
         validationMessages: validationMessages,
+        autofocus: autofocus,
         style: style,
         decoration: decoration,
       );
