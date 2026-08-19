@@ -1,0 +1,2050 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>RAG في حضرمي — دليل التصميم</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500&family=Readex+Pro:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0F1418; --surface:#161D22; --surface2:#1D262C; --surface3:#243038;
+  --ink:#DCE6EA; --ink-dim:#B0C0C8; --muted:#7F929C; --border:#25313A;
+  /* semantic colour system: cool = retrieval, warm = generation */
+  --teal:#5FB8C4; --teal-bg:#10262B;      /* 🔍 retrieval / vectors / DB */
+  --amber:#E0A458; --amber-bg:#2A2115;    /* 🤖 LLM / generation */
+  --violet:#9D8DE0; --violet-bg:#1F1B31;  /* 🏗️ architecture */
+  --red:#E0736A; --red-bg:#2C1B19;        /* ⚠️ failure / security */
+  --green:#6FBF9B; --green-bg:#132520;    /* ✅ good */
+  --code-bg:#0A0E12;
+  --body:"IBM Plex Sans Arabic","SF Arabic","Geeza Pro","Segoe UI",Tahoma,sans-serif;
+  --display:"Readex Pro","IBM Plex Sans Arabic","SF Arabic",sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+  --measure:76ch;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:20px}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{animation:none!important;transition:none!important}}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.9;-webkit-font-smoothing:antialiased}
+
+.shell{display:grid;grid-template-columns:300px minmax(0,1fr);max-width:1560px;margin:0 auto}
+.toc{position:sticky;top:0;height:100vh;overflow-y:auto;border-left:1px solid var(--border);background:var(--surface);padding:24px 18px 60px}
+.toc h2{font-family:var(--display);font-size:13px;letter-spacing:.08em;color:var(--teal);margin:0 0 4px;font-weight:600}
+.toc .sub{font-size:12px;color:var(--muted);margin:0 0 16px;line-height:1.6}
+.toc .grp{font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;color:var(--amber);margin:18px 0 6px;padding-right:8px}
+.toc ol{list-style:none;margin:0;padding:0;counter-reset:t}
+.toc li{counter-increment:t}
+.toc a{display:block;padding:5px 9px;border-radius:5px;color:var(--ink-dim);text-decoration:none;font-size:13px;line-height:1.5}
+.toc a::before{content:counter(t);color:var(--muted);font-family:var(--mono);font-size:10.5px;margin-left:8px}
+.toc a:hover{background:var(--surface2);color:var(--ink)}
+.toc a:focus-visible{outline:2px solid var(--teal);outline-offset:2px}
+main{padding:0 34px 120px;min-width:0}
+
+.mast{padding:54px 0 32px;border-bottom:2px solid var(--teal);margin-bottom:6px}
+.kicker{font-family:var(--mono);font-size:11.5px;letter-spacing:.18em;color:var(--teal);margin:0 0 13px;direction:ltr;text-align:right}
+h1{font-family:var(--display);font-size:clamp(29px,4.4vw,44px);line-height:1.32;margin:0 0 15px;font-weight:600;text-wrap:balance}
+.lede{font-size:17.5px;color:var(--ink-dim);max-width:var(--measure);margin:0}
+.meta{display:flex;flex-wrap:wrap;gap:8px;margin-top:20px}
+.meta span{font-family:var(--mono);font-size:11px;color:var(--muted);background:var(--surface2);border:1px solid var(--border);border-radius:20px;padding:4px 12px;direction:ltr}
+
+section{padding:42px 0;border-bottom:1px solid var(--border);scroll-margin-top:18px}
+section:last-of-type{border-bottom:0}
+h2{font-family:var(--display);font-size:clamp(22px,2.9vw,29px);font-weight:600;line-height:1.4;margin:0 0 6px;text-wrap:balance}
+h2 .num{font-family:var(--mono);font-size:13.5px;color:var(--teal);margin-left:10px;font-weight:400}
+.deck{color:var(--muted);font-size:15px;margin:0 0 24px;max-width:var(--measure)}
+h3{font-size:17.5px;font-weight:600;margin:30px 0 11px;line-height:1.5}
+h4{font-size:15px;font-weight:600;margin:20px 0 8px;color:var(--teal)}
+p{max-width:var(--measure);margin:0 0 14px;color:var(--ink-dim)}
+strong{color:var(--ink);font-weight:600}
+ul,ol.body{max-width:var(--measure);padding-right:22px;margin:0 0 15px;color:var(--ink-dim)}
+li{margin-bottom:7px}
+a{color:var(--teal)}
+code{font-family:var(--mono);font-size:.85em;direction:ltr;unicode-bidi:embed;background:var(--surface2);padding:.14em .4em;border-radius:3px;color:var(--amber)}
+.fname{font-family:var(--mono);font-size:11.5px;color:var(--muted);direction:ltr;text-align:left;padding:8px 15px;background:var(--surface2);border:1px solid var(--border);border-bottom:0;border-radius:7px 7px 0 0}
+pre{margin:0 0 20px;background:var(--code-bg);border:1px solid var(--border);border-radius:7px;overflow-x:auto;direction:ltr;text-align:left}
+.fname + pre{border-radius:0 0 7px 7px;margin-top:0}
+pre code{background:none;padding:14px 15px;color:var(--ink-dim);font-size:12.8px;line-height:1.75;display:block}
+pre.ascii code{color:var(--muted);font-size:12.3px}
+
+.scroll{overflow-x:auto;margin:0 0 22px;border:1px solid var(--border);border-radius:8px}
+table{border-collapse:collapse;width:100%;font-size:14px;background:var(--surface)}
+th,td{padding:11px 13px;text-align:right;vertical-align:top;border-bottom:1px solid var(--border)}
+thead th{background:var(--surface2);font-size:12px;color:var(--muted);font-weight:600;white-space:nowrap}
+tbody tr:last-child td{border-bottom:0}
+tbody tr:hover{background:var(--surface2)}
+
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(235px,1fr));gap:13px;margin:0 0 22px}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:9px;padding:16px}
+.card h4{margin:0 0 7px;font-size:14.5px;color:var(--ink)}
+.card p{font-size:13.5px;margin:0;color:var(--muted);line-height:1.75;max-width:none}
+.card .tag{font-family:var(--mono);font-size:10.5px;color:var(--teal);letter-spacing:.09em;display:block;margin-bottom:7px;direction:ltr;text-align:right}
+
+.box{border-right:3px solid var(--teal);background:var(--teal-bg);padding:15px 17px;border-radius:0 7px 7px 0;margin:0 0 20px}
+.box.warn{border-right-color:var(--red);background:var(--red-bg)}
+.box.good{border-right-color:var(--green);background:var(--green-bg)}
+.box.llm{border-right-color:var(--amber);background:var(--amber-bg)}
+.box.senior{border-right-color:var(--violet);background:var(--violet-bg)}
+.box h4{margin:0 0 6px;font-size:14.5px;color:var(--teal)}
+.box.warn h4{color:var(--red)} .box.good h4{color:var(--green)}
+.box.llm h4{color:var(--amber)} .box.senior h4{color:var(--violet)}
+.box p{margin:0 0 9px;font-size:14.5px;max-width:none}
+.box p:last-child{margin:0}
+.box ul{max-width:none;margin-bottom:0;font-size:14.5px}
+
+.teach{background:var(--surface);border:1px solid var(--border);border-radius:9px;margin:0 0 20px;overflow:hidden}
+.teach-hd{background:var(--surface2);padding:10px 15px;font-family:var(--mono);font-size:12px;color:var(--teal);direction:ltr;text-align:left;border-bottom:1px solid var(--border)}
+.teach dl{margin:0;padding:15px}
+.teach dt{font-size:13px;font-weight:600;color:var(--amber);margin:0 0 3px}
+.teach dt:not(:first-child){margin-top:14px}
+.teach dd{margin:0;font-size:14.5px;color:var(--ink-dim);line-height:1.8}
+
+.mermaid{background:var(--surface);border:1px solid var(--border);border-radius:9px;padding:20px;margin:0 0 8px;overflow-x:auto;text-align:center}
+figure{margin:0 0 22px}
+figcaption{font-size:13px;color:var(--muted);margin-top:8px;max-width:var(--measure)}
+
+/* step timeline */
+.steps{counter-reset:st;margin:0 0 22px;padding:0;list-style:none;max-width:none}
+.steps li{counter-increment:st;position:relative;padding:0 42px 18px 0;border-right:1px solid var(--border);margin:0}
+.steps li:last-child{border-right-color:transparent;padding-bottom:0}
+.steps li::before{content:counter(st);position:absolute;right:-13px;top:0;width:26px;height:26px;border-radius:50%;background:var(--surface2);border:1px solid var(--teal);color:var(--teal);font-family:var(--mono);font-size:11.5px;display:flex;align-items:center;justify-content:center}
+.steps h4{margin:0 0 5px;font-size:15px;color:var(--ink)}
+.steps p{margin:0 0 6px;font-size:14.5px;max-width:none}
+.steps .w{font-size:13.5px;color:var(--muted);margin:0}
+.steps .w b{color:var(--teal);font-weight:600}
+
+.pill{display:inline-block;font-size:11.5px;font-weight:600;padding:2px 10px;border-radius:20px;border:1px solid currentColor;white-space:nowrap}
+.p-no{color:var(--red)} .p-yes{color:var(--green)} .p-part{color:var(--amber)}
+
+details.ex{border:1px solid var(--border);border-radius:9px;margin:0 0 12px;background:var(--surface);overflow:hidden}
+details.ex summary{padding:13px 16px;cursor:pointer;font-weight:600;font-size:15px;background:var(--surface2);list-style:none}
+details.ex summary::-webkit-details-marker{display:none}
+details.ex summary::before{content:"▸";color:var(--teal);margin-left:9px;font-size:13px;display:inline-block}
+details.ex[open] summary::before{content:"▾"}
+details.ex summary:focus-visible{outline:2px solid var(--teal);outline-offset:-2px}
+details.ex .inner{padding:15px 16px}
+details.ex .inner p{max-width:none}
+
+@media (max-width:1040px){
+  .shell{grid-template-columns:1fr}
+  .toc{position:static;height:auto;border-left:0;border-bottom:1px solid var(--border);padding:18px}
+  .toc ol{columns:2;column-gap:16px}
+  main{padding:0 18px 90px}
+}
+@media (max-width:560px){.toc ol{columns:1}body{font-size:15.5px}}
+</style>
+</head>
+<body>
+<div class="shell">
+
+<nav class="toc" aria-label="فهرس">
+  <h2>RAG — دليل التصميم</h2>
+  <p class="sub">من النظرية العامة إلى كود هذا المشروع بالذات.</p>
+  <p class="grp">PART 1 · THEORY</p>
+  <ol>
+    <li><a href="#s1">ما هو RAG؟</a></li>
+    <li><a href="#s2">لماذا وُجد RAG؟</a></li>
+    <li><a href="#s3">المعمارية القياسية</a></li>
+    <li><a href="#s4">Ingestion — تجهيز البيانات</a></li>
+    <li><a href="#s5">Chunking — التقطيع</a></li>
+    <li><a href="#s6">Embeddings</a></li>
+    <li><a href="#s7">Vector Database و pgvector</a></li>
+    <li><a href="#s8">BM25 والبحث النصّي</a></li>
+    <li><a href="#s9">Hybrid Search</a></li>
+    <li><a href="#s10">Retrieval و Top-K</a></li>
+    <li><a href="#s11">بناء الموجّه</a></li>
+    <li><a href="#s12">Generation</a></li>
+    <li><a href="#s13">RAG مقابل LLM عادي</a></li>
+    <li><a href="#s14">RAG مقابل Fine-Tuning</a></li>
+  </ol>
+  <p class="grp">PART 2 · THIS PROJECT</p>
+  <ol start="15">
+    <li><a href="#s15">RAG في مشروعنا — الخريطة</a></li>
+    <li><a href="#s16">المخطط الكامل</a></li>
+    <li><a href="#s17">Flutter ← المستخدم</a></li>
+    <li><a href="#s18">Backend ← HTTP</a></li>
+    <li><a href="#s19">RAG ← قاعدة البيانات</a></li>
+    <li><a href="#s20">الموجّه ← LLM</a></li>
+    <li><a href="#s21">الردّ ← Flutter</a></li>
+    <li><a href="#s22">مثال كامل: «وش يعني عاد؟»</a></li>
+  </ol>
+  <p class="grp">PART 3 · ENGINEERING</p>
+  <ol start="23">
+    <li><a href="#s23">RAG System Design</a></li>
+    <li><a href="#s24">الأداء</a></li>
+    <li><a href="#s25">التقييم</a></li>
+    <li><a href="#s26">حالات الفشل</a></li>
+    <li><a href="#s27">الأمن</a></li>
+    <li><a href="#s28">التوسّع</a></li>
+    <li><a href="#s29">تفكير Senior Engineer</a></li>
+    <li><a href="#s30">Architecture Decision Records</a></li>
+    <li><a href="#s31">تمارين</a></li>
+    <li><a href="#s32">الخلاصة</a></li>
+  </ol>
+</nav>
+
+<main>
+<header class="mast">
+  <p class="kicker">HADRAMI NLP · RAG SYSTEM DESIGN</p>
+  <h1>كيف يعمل RAG — عمومًا، وفي هذا المشروع</h1>
+  <p class="lede">
+    الجزء الأول يشرح RAG من الصفر كنظرية. الجزء الثاني يتتبّع سؤالًا حقيقيًّا —
+    <strong>«وش يعني عاد؟»</strong> — عبر كل سطر كود يمرّ به، بأرقام مقيسة من تشغيل
+    فعلي لا من تخمين. الجزء الثالث يعلّم كيف تُصمَّم أنظمة RAG وتُقيَّم وتُوسَّع.
+    كل رقم في هذه الصفحة مأخوذ من تشغيل حقيقي على قاعدة بيانات المشروع.
+  </p>
+  <div class="meta">
+    <span>gemini-embedding-001 · 768d</span>
+    <span>gemini-2.5-flash</span>
+    <span>Supabase pgvector · 1000 entries</span>
+    <span>قياس فعلي: 3.07s / سؤال</span>
+  </div>
+</header>
+
+<section id="s1">
+  <h2><span class="num">01</span>🧠 ما هو RAG؟</h2>
+  <p class="deck">تفكيك الاسم قبل تفكيك النظام.</p>
+
+  <pre class="ascii"><code>Retrieval  ← الاسترجاع: ابحث عن المعرفة ذات الصلة في مصدر تملكه
+    +
+Augmented  ← المُعزَّز: احشُ تلك المعرفة داخل الموجّه (prompt)
+    +
+Generation ← التوليد: دع النموذج يكتب الجواب معتمدًا عليها</code></pre>
+
+  <div class="cards">
+    <div class="card"><span class="tag">RETRIEVAL 🔍</span><h4>الاسترجاع</h4><p>بحث في مصدر معرفة خارجي — قاعدة متجهات، بحث نصّي، أو كلاهما. لا علاقة له بالنموذج اللغوي إطلاقًا؛ هو محرّك بحث.</p></div>
+    <div class="card"><span class="tag">AUGMENTED ➕</span><h4>التعزيز</h4><p>حقن النتائج المسترجَعة في نصّ الموجّه بصيغة منظَّمة ومفصولة عن سؤال المستخدم. هنا يقع أغلب فنّ الهندسة.</p></div>
+    <div class="card"><span class="tag">GENERATION 🤖</span><h4>التوليد</h4><p>النموذج يصوغ الجواب. مهمّته الصياغة والاستدلال على ما أُعطي، لا استحضار المعرفة من ذاكرته.</p></div>
+  </div>
+
+  <pre class="ascii"><code>بدون RAG:
+  المستخدم ──→ LLM ──→ جواب
+                 └── المعرفة من أوزان النموذج فقط (ثابتة · عامّة · غير قابلة للتدقيق)
+
+مع RAG:
+  المستخدم ──→ استرجاع المعرفة ──→ حقنها في الموجّه ──→ LLM ──→ جواب
+                     │                                          │
+                     └── من بياناتك أنت ───────────────→ ويمكن ذكر المصدر</code></pre>
+
+  <div class="box">
+    <h4>🎯 التمييز الذي يجب ألّا يغيب</h4>
+    <p>
+      <strong>RAG ليس نموذجًا لغويًّا، ولا نوعًا من النماذج.</strong> RAG هو
+      <em>خطّ أنابيب (pipeline)</em> يضع محرّك بحث قبل نموذج لغوي. يمكنك تبديل النموذج
+      كاملًا وتبقى معماريّة RAG كما هي — وهذا بالضبط ما يجعله قرارًا معماريًّا لا
+      قرارًا في تعلّم الآلة.
+    </p>
+  </div>
+</section>
+
+<section id="s2">
+  <h2><span class="num">02</span>لماذا وُجد RAG؟</h2>
+  <p class="deck">سبع مشاكل يحلّها — كل واحدة منها تنطبق على هذا المشروع.</p>
+
+  <div class="scroll">
+  <table>
+    <thead><tr><th>المشكلة</th><th>لماذا تحدث؟</th><th>كيف يحلّها RAG</th><th>في مشروعنا</th></tr></thead>
+    <tbody>
+      <tr><td><strong>حدود السياق</strong></td><td>لا يمكن حشر ١٠٠٠ مدخل قاموس في كل موجّه</td><td>يُرسل الأكثر صلة فقط</td><td>٥ مداخل من ١٠٠٠ لكل سؤال</td></tr>
+      <tr><td><strong>الهلوسة</strong></td><td>النموذج يخترع بثقة حين لا يعرف</td><td>يقيّده بمعرفة موجودة فعلًا</td><td>القيد الأهمّ — الهلوسة تُبطل مشروعًا بحثيًّا في اللهجات</td></tr>
+      <tr><td><strong>بيانات خاصّة</strong></td><td>لم يُدرَّب النموذج على معجمك</td><td>معجمك يعيش خارج النموذج</td><td>المعجم بحث خاصّ لم يره Gemini قط</td></tr>
+      <tr><td><strong>حداثة المعرفة</strong></td><td>معرفة النموذج مجمّدة عند تاريخ تدريبه</td><td>تحديث الصفّ يُحدِّث الجواب فورًا</td><td>إضافة كلمة تظهر في الردّ مباشرةً بلا إعادة تدريب</td></tr>
+      <tr><td><strong>التخصّص</strong></td><td>معرفة عامة ضحلة باللهجة الحضرمية</td><td>المعرفة المتخصّصة تأتي من المصدر</td><td>سبب وجود المشروع كلّه</td></tr>
+      <tr><td><strong>التكلفة</strong></td><td>Fine-tuning مكلف ويتكرّر مع كل تحديث</td><td>لا تدريب — استرجاع فقط</td><td>الكلفة نداء API لا دورة تدريب</td></tr>
+      <tr><td><strong>قابلية التدقيق</strong></td><td>لا تعرف من أين جاء الجواب</td><td>يعيد المصادر مع الجواب</td><td><code>context</code> يعود مع كل ردّ</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <div class="box senior">
+    <h4>🎯 ملاحظة Senior</h4>
+    <p>
+      حين تقيّم «هل أحتاج RAG؟» لا تسأل «هل هذا متقدّم؟» بل: <strong>هل الجواب الصحيح
+      يعتمد على معرفة لا يملكها النموذج؟</strong> إن كان الجواب نعم، فأنت تحتاج
+      استرجاعًا. وإن كان لا — كأن تطلب تلخيص نصّ أرسلته أنت — فـRAG تعقيد بلا مقابل.
+    </p>
+  </div>
+</section>
+
+<section id="s3">
+  <h2><span class="num">03</span>🏗️ المعمارية القياسية</h2>
+  <p class="deck">المسارَان اللذان يتكوّن منهما كل نظام RAG.</p>
+
+  <p>
+    كل نظام RAG هو <strong>مساران منفصلان زمنيًّا</strong>: مسار يُشغَّل مرّة عند تجهيز
+    البيانات (Ingestion)، ومسار يُشغَّل مع كل سؤال (Query time). الخلط بينهما هو أشيع
+    خطأ في فهم RAG.
+  </p>
+
+  <figure>
+    <pre class="mermaid">
+graph TD
+    subgraph ING["INGESTION — مرة واحدة عند تجهيز البيانات"]
+      D["المستندات"] --> L["تحميل وتنظيف"]
+      L --> C["تقطيع Chunking"]
+      C --> M["إضافة Metadata"]
+      M --> E1["توليد Embeddings"]
+      E1 --> V[("قاعدة المتجهات")]
+    end
+    subgraph QRY["QUERY TIME — مع كل سؤال"]
+      Q["سؤال المستخدم"] --> QP["معالجة الاستعلام"]
+      QP --> E2["تضمين السؤال"]
+      E2 --> R["الاسترجاع"]
+      V -.->|"بحث تشابه"| R
+      R --> RK["ترتيب وتصفية"]
+      RK --> PB["بناء الموجّه"]
+      PB --> LLM["نموذج لغوي"]
+      LLM --> A["الجواب"]
+    end
+    </pre>
+    <figcaption>الأعلى يُشغَّل عند تغيّر البيانات؛ الأسفل يُشغَّل آلاف المرّات يوميًّا. لهما ميزانيّتا أداء مختلفتان تمامًا.</figcaption>
+  </figure>
+
+  <div class="box">
+    <h4>لماذا الفصل مهمّ؟</h4>
+    <p>
+      Ingestion بطيء ومكلف ونادر — يمكن أن يستغرق ساعات. Query time يجب أن يكون
+      بالمللي ثانية. أي عمل تستطيع نقله من المسار الثاني إلى الأول، انقله. وهذا
+      بالضبط ما يفعله المشروع: نصّ التضمين لكل مدخل يُبنى ويُخزَّن عند المزامنة، فلا
+      يُبنى شيء منه وقت السؤال.
+    </p>
+  </div>
+</section>
+
+<section id="s4">
+  <h2><span class="num">04</span>Ingestion — تجهيز البيانات</h2>
+  <p class="deck">النظرية العامة، ثمّ ما يفعله المشروع فعلًا.</p>
+
+  <pre class="ascii"><code>Raw Data → Cleaning → Chunking → Metadata → Embedding → Vector DB</code></pre>
+
+  <h3>في مشروعنا: لا تحميل ولا تنظيف — البيانات منظَّمة أصلًا</h3>
+  <p>
+    الفارق الجوهري بين هذا المشروع وأغلب أنظمة RAG: مصدر المعرفة ليس مستندات PDF أو
+    صفحات ويب، بل <strong>معجم منظَّم</strong> — ١٠٠٠ صفّ لكل منها حقول محدّدة. لذلك
+    مرحلتا التحميل والتنظيف غير موجودتين، ومرحلة التقطيع غير موجودة أيضًا (القسم 5).
+  </p>
+  <p>
+    ما يوجد فعلًا هو <strong>بناء نصّ وثيقة واحد لكل مدخل</strong>، وهذا هو الملف
+    المسؤول:
+  </p>
+
+  <div class="fname">backend/app/services/embedding_doc.py</div>
+  <pre><code>EMBEDDING_DOC_VERSION = "v2"
+
+def embedding_text_for_entry(entry: dict[str, Any]) -&gt; str:
+    """Single Arabic-first document string for vector embedding."""
+    parts: list[str] = []
+    if wv: parts.append(f"الكلمة: {wv} ({wc})")
+    if root: parts.append(f"الجذر: {root}")
+    if fusha: parts.append(f"الفصحى: {fusha}")
+    if definition: parts.append(f"المعنى: {definition}")
+    if syns: parts.append("المرادفات: " + "، ".join(syns))
+    ...
+    return "\n".join(parts)</code></pre>
+
+  <div class="box good">
+    <h4>🎯 لماذا هذا الملف موجود أصلًا؟ الدرس الأهمّ في Ingestion</h4>
+    <p>
+      نصّ الوثيقة يجب أن يُبنى <strong>بنفس الطريقة تمامًا</strong> في كل مكان يستخدمه:
+      سكربت المزامنة، سكربتات التقييم، وأي وظيفة إعادة تضمين مستقبلية. لو انحرف نصّ
+      الوثيقة بين منتِج ومستهلك — ولو بسطر واحد — <strong>ينهار التشابه الجيبي</strong>
+      لأن المتجهات صارت تمثّل نصوصًا مختلفة.
+    </p>
+    <p>
+      ولهذا أيضًا يحمل الملف <code>EMBEDDING_DOC_VERSION</code>: تغيير التخطيط يعني أن كل
+      المتجهات المخزَّنة صارت قديمة، والرقم يجعل ذلك القرار صريحًا بدل أن يكون حادثًا.
+    </p>
+  </div>
+
+  <h4>تفصيلة تقنية دقيقة: نوعان مختلفان من مهمّة التضمين</h4>
+  <p>
+    المشروع يستخدم <code>task_type</code> مختلفًا في الطرفين: <code>RETRIEVAL_DOCUMENT</code>
+    عند تضمين مداخل المعجم، و<code>RETRIEVAL_QUERY</code> عند تضمين سؤال المستخدم
+    (<code>embedding_service.py:16</code>). هذا مقصود: النموذج يُنتج فضاءً غير متماثل
+    مُحسَّنًا لمطابقة الأسئلة القصيرة بالوثائق الطويلة. استخدام النوع نفسه في الطرفين
+    يعمل، لكنه يعطي نتائج أضعف.
+  </p>
+</section>
+
+<section id="s5">
+  <h2><span class="num">05</span>Chunking — التقطيع</h2>
+  <p class="deck">أهمّ فرق بين النظرية العامة وهذا المشروع.</p>
+
+  <h3>النظرية: لماذا نُقطِّع أصلًا؟</h3>
+  <p>
+    لأن المستندات الحقيقية طويلة. كتاب من ٣٠٠ صفحة لا يمكن تضمينه في متجه واحد — لأن
+    المتجه الواحد يمثّل «معنى» واحدًا، ومستند بمئة موضوع يعطي متجهًا يمثّل كل شيء ولا
+    شيء. التقطيع يجعل كل قطعة تحمل فكرة واحدة قابلة للمطابقة.
+  </p>
+
+  <pre class="ascii"><code>المستند الأصلي:
+"كلمة عاد الحضرمية تعني الوعيد. تُستخدم للسؤال الإنكاري.
+ مثال: عادك بتسويها مرة ثانية؟"
+                    ↓ Chunking
+Chunk 1  "كلمة عاد الحضرمية تعني الوعيد."
+Chunk 2  "تُستخدم للسؤال الإنكاري."
+Chunk 3  "مثال: عادك بتسويها مرة ثانية؟"</code></pre>
+
+  <div class="scroll">
+  <table>
+    <thead><tr><th>الأسلوب</th><th>كيف يعمل</th><th>يصلح لـ</th><th>عيبه</th></tr></thead>
+    <tbody>
+      <tr><td>Fixed-size</td><td>كل ٥٠٠ محرف قطعة</td><td>نصّ متجانس · تنفيذ سريع</td><td>يقطع الجُمل والأفكار في منتصفها</td></tr>
+      <tr><td>Sentence-based</td><td>القطع عند حدود الجُمل</td><td>نصّ سردي</td><td>أطوال متفاوتة جدًّا</td></tr>
+      <tr><td>Semantic</td><td>القطع عند تغيّر الموضوع</td><td>أعلى جودة استرجاع</td><td>مكلف — يحتاج تضمينًا أثناء التقطيع</td></tr>
+      <tr><td>Overlap</td><td>تداخل ٥٠–١٠٠ محرف بين القطع</td><td>يمنع ضياع المعنى عند الحدّ</td><td>تكرار → تخزين وتكلفة أكبر</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <div class="box warn">
+    <h4>⚠️ في مشروعنا: لا يوجد تقطيع إطلاقًا — وهذا صحيح</h4>
+    <p>
+      ابحث في <code>backend/</code> عن أي منطق تقطيع للتضمين ولن تجد شيئًا. السبب:
+      <strong>وحدة المعرفة هنا هي «مدخل معجمي» وهي أصلًا صغيرة ومتماسكة</strong> —
+      كلمة واحدة بمعناها ومثالها ومرادفاتها، بضع مئات من المحارف. مدخل واحد = وثيقة
+      واحدة = متجه واحد.
+    </p>
+    <p>
+      تقطيع مدخل معجمي إلى ثلاث قطع سيكون <em>ضارًّا</em>: قطعة «تُستخدم للسؤال الإنكاري»
+      بلا الكلمة التي تصفها لا تُطابق شيئًا مفيدًا. <strong>التقطيع أداة لتفتيت ما هو
+      كبير جدًّا، لا طقس يُؤدّى في كل نظام RAG.</strong>
+    </p>
+    <p>
+      متى ينقلب هذا القرار؟ حين يُضاف مصدر معرفة طويل — نصوص شعر حضرمي، أو مقالات عن
+      اللهجة. عندها تصير الحاجة إلى التقطيع حقيقية، ويجب أن تُقطَّع تلك المصادر دون
+      المساس بجدول المعجم.
+    </p>
+  </div>
+</section>
+
+<section id="s6">
+  <h2><span class="num">06</span>Embeddings — التضمينات</h2>
+  <p class="deck">كيف يتحوّل المعنى إلى أرقام، ولماذا لا تتوافق نماذج التضمين المختلفة.</p>
+
+  <pre class="ascii"><code>نصّ  ──→  نموذج التضمين  ──→  متجه
+
+"عاد"  ──→  gemini-embedding-001  ──→  [0.021, -0.183, 0.442, ... ]
+                                        └──── 768 رقمًا ────┘</code></pre>
+
+  <h3>ما المتجه؟ وماذا يعني التشابه؟</h3>
+  <p>
+    المتجه نقطة في فضاء ذي ٧٦٨ بُعدًا. نموذج التضمين مُدرَّب بحيث تقع النصوص
+    <strong>المتقاربة في المعنى</strong> قريبةً في هذا الفضاء — حتى لو لم تشترك في أي
+    حرف. هذه هي القدرة التي لا يملكها البحث بالكلمات المفتاحية.
+  </p>
+
+  <h4>تشابه جيب التمام — Cosine Similarity</h4>
+  <p>
+    نقيس <em>الزاوية</em> بين متجهين لا المسافة بينهما. النتيجة بين ١- و١+:
+    <code>1.0</code> يعني الاتجاه نفسه (معنى متطابق تقريبًا)، و<code>0.0</code> يعني
+    لا علاقة. سبب اختيار الزاوية دون المسافة: طول المتجه يتأثّر بطول النصّ، والزاوية لا
+    تتأثّر — فنقيس المعنى لا الحجم.
+  </p>
+
+  <div class="box good">
+    <h4>🔍 أرقام حقيقية من قاعدة بيانات المشروع</h4>
+    <p>تشغيل فعلي لـ<code>match_entries(embed("عاد"), 0.25, 3)</code>:</p>
+    <pre class="ascii" style="margin-top:8px"><code>عَاد        similarity = 0.7798   ← الكلمة نفسها
+وَلْعَاد     similarity = 0.7657   ← مشتقّ منها
+عَادَك      similarity = 0.7508   ← صيغة مركّبة</code></pre>
+    <p style="margin-top:8px">
+      لاحظ أن الكلمة نفسها لم تحصل على <code>1.0</code> بل <code>0.78</code> — لأننا نقارن
+      <em>سؤال المستخدم</em> بـ<em>وثيقة المدخل الكاملة</em> (كلمة + جذر + فصحى + معنى
+      + أمثلة)، لا نصًّا بنصّ مطابق. في RAG العملي، <strong>الترتيب هو المهمّ لا القيمة
+      المطلقة.</strong>
+    </p>
+  </div>
+
+  <h3>⚠️ لماذا يفرض تغيير نموذج التضمين إعادة تضمين كل البيانات؟</h3>
+  <p>
+    لأن كل نموذج يبني <strong>فضاءً خاصًّا به</strong>. البُعد رقم ٤٢ في
+    <code>gemini-embedding-001</code> لا يعني ما يعنيه البُعد ٤٢ في نموذج آخر — الأرقام
+    ليست لغة مشتركة. مقارنة متجه من نموذج بمتجه من آخر تُنتج ضوضاء تبدو كأنها نتائج.
+  </p>
+  <pre class="ascii"><code>نموذج A: "عاد" → [0.021, -0.183, ...]   ┐
+                                        ├── مقارنتهما بلا معنى
+نموذج B: "عاد" → [0.774,  0.052, ...]   ┘   حتى لو تطابق عدد الأبعاد</code></pre>
+  <p>
+    ولهذا فإن تبديل نموذج التضمين في هذا المشروع يعني إعادة تضمين ١٠٠٠ صفّ — وهي عملية
+    ingestion كاملة، لا تغيير سطر إعداد. الـ<code>EMBEDDING_DOC_VERSION</code> موجود
+    تحديدًا ليجعل هذه اللحظة مرئية.
+  </p>
+
+  <div class="teach">
+    <div class="teach-hd">📍 backend/app/services/embedding_service.py</div>
+    <dl>
+      <dt>🎯 المسؤولية</dt>
+      <dd>غلاف رفيع حول Gemini للتضمين. نقطة واحدة تعرف اسم النموذج وعدد الأبعاد ونوع المهمّة.</dd>
+      <dt>➡️ المدخل</dt>
+      <dd><code>text: str</code> + <code>task_type</code> (افتراضيًّا <code>RETRIEVAL_QUERY</code>).</dd>
+      <dt>⬅️ المخرج</dt>
+      <dd><code>list[float]</code> بطول ٧٦٨، أو <code>None</code> عند الفشل — <strong>لا يرمي استثناء</strong>.</dd>
+      <dt>🧠 لماذا يُرجع None بدل الاستثناء؟</dt>
+      <dd>لأن الاستدعاء في <code>vector_context</code> يتعامل معه كـ«تدهور تدريجي»: بلا تضمين، يُلغى البحث المتجهي ويستمرّ البحث بالكلمات المفتاحية. غياب المتجهات يُضعف الجودة ولا يُسقط النظام.</dd>
+      <dt>⚠️ ملاحظة</dt>
+      <dd><code>output_dimensionality=768</code> إجباري مع <code>gemini-embedding-001</code>، ويجب أن يطابق <code>vector(768)</code> في العمود. عدم التطابق يجعل الاستعلام يفشل لا أن يعطي نتائج سيّئة.</dd>
+    </dl>
+  </div>
+</section>
+
+<section id="s7">
+  <h2><span class="num">07</span>🗄️ Vector Database و pgvector</h2>
+  <p class="deck">كيف تُخزَّن المتجهات ويُبحث فيها، وماذا يعني المعامل <code>&lt;=&gt;</code>.</p>
+
+  <p>
+    لا يستخدم المشروع قاعدة متجهات منفصلة (Pinecone · Weaviate · Qdrant). يستخدم
+    <strong>PostgreSQL مع امتداد pgvector</strong> داخل Supabase — أي أن المتجهات عمود في
+    نفس الجدول الذي يحمل الكلمة ومعناها ووسومها.
+  </p>
+
+  <pre class="ascii"><code>جدول public.entries
+┌────┬────────────────┬──────────────────┬──────────────┬──────────────────┐
+│ id │ word_vocalized │ fusha_equivalent │ definition   │ embedding        │
+├────┼────────────────┼──────────────────┼──────────────┼──────────────────┤
+│619 │ عَاد           │ الوعيد / التهديد │ كلمة تستخدم…│ vector(768)      │
+└────┴────────────────┴──────────────────┴──────────────┴──────────────────┘
+                                                          └── هنا يعيش المعنى
+                                                              كأرقام</code></pre>
+
+  <h3>المعاملات وما تعنيه</h3>
+  <div class="scroll">
+  <table>
+    <thead><tr><th>المعامل</th><th>الاسم</th><th>يقيس</th><th>الأفضل</th></tr></thead>
+    <tbody>
+      <tr><td><code>&lt;=&gt;</code></td><td>Cosine distance</td><td>الزاوية بين المتجهين</td><td>الأصغر = أشبه · <code>similarity = 1 - distance</code></td></tr>
+      <tr><td><code>&lt;-&gt;</code></td><td>L2 / إقليدية</td><td>المسافة المستقيمة</td><td>الأصغر = أقرب</td></tr>
+      <tr><td><code>&lt;#&gt;</code></td><td>Inner product</td><td>الضرب الداخلي (سالب)</td><td>الأصغر = أقوى</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <p>الاستعلام الجوهري في أي بحث متجهي يبدو هكذا:</p>
+  <pre><code>SELECT *, 1 - (embedding &lt;=&gt; query_embedding) AS similarity
+FROM entries
+WHERE 1 - (embedding &lt;=&gt; query_embedding) &gt; 0.25   -- عتبة المشروع
+ORDER BY embedding &lt;=&gt; query_embedding              -- الأقرب أولًا
+LIMIT 4;                                            -- Top-K</code></pre>
+  <p>
+    اقرأه سطرًا سطرًا: احسب بُعد الزاوية بين متجه كل صفّ ومتجه السؤال، استبعد ما هو
+    أضعف من العتبة، رتّب تصاعديًّا بالبُعد (أي تنازليًّا بالتشابه)، وخذ الأوائل.
+  </p>
+
+  <div class="box warn">
+    <h4>🗄️ لماذا لا «تفهم» قاعدة البيانات العربية؟</h4>
+    <p>
+      Postgres لا يعرف أن «عاد» كلمة حضرمية، ولا يعرف العربية أصلًا. هو يقارن ٧٦٨ رقمًا
+      بـ٧٦٨ رقمًا حسابيًّا. <strong>كل الفهم اللغوي حدث في نموذج التضمين قبل أن تصل
+      الأرقام إلى القاعدة.</strong> القاعدة محرّك حساب هندسي سريع لا أكثر.
+    </p>
+    <p>
+      نتيجة عملية مهمّة: جودة الاسترجاع المتجهي تتحدّد بالكامل بجودة نموذج التضمين وبنصّ
+      الوثيقة الذي غذّيته له. لا يمكن إصلاح تضمين رديء بضبط الاستعلام.
+    </p>
+  </div>
+
+  <div class="box senior">
+    <h4>🎯 متى تحتاج قاعدة متجهات مخصّصة؟</h4>
+    <p>
+      pgvector ممتاز حتى ~١٠⁵ متجهات مع فهرس مناسب (HNSW/IVFFlat). مشروعك عند
+      <strong>١٠٠٠</strong> — أي أقلّ من ١٪ من السقف. الانتقال إلى Pinecone اليوم يضيف
+      خدمة ومزامنة وتكلفة مقابل صفر مكسب. الإشارة التي تُبرّر الانتقال: تجاوز مئات
+      الآلاف من المتجهات، أو الحاجة لفلترة متعدّدة المستأجرين على نطاق واسع.
+    </p>
+  </div>
+</section>
+
+<section id="s8">
+  <h2><span class="num">08</span>BM25 والبحث النصّي</h2>
+  <p class="deck">النظرية — ثمّ حقيقة ما يستخدمه المشروع، وهي ليست BM25.</p>
+
+  <h3>ما BM25؟</h3>
+  <p>
+    خوارزمية ترتيب معجمية (lexical) تُقيّم مطابقة الكلمات لا المعاني. تجمع ثلاثة عوامل:
+    كم مرّة تكرّرت الكلمة في الوثيقة (TF)، وكم هي نادرة عبر كل الوثائق (IDF)، وطول
+    الوثيقة (تطبيع). كلمة نادرة موجودة في وثيقة قصيرة = إشارة قوية.
+  </p>
+  <p>
+    قوّته: دقيق تمامًا عند التطابق الحرفي، سريع جدًّا، مفهوم وقابل للتفسير، ولا يحتاج
+    نموذجًا ولا GPU. ضعفه: <strong>لا يعرف المرادفات ولا المعنى</strong> — من يبحث عن
+    «كريم» لن يجد «جواد» أبدًا.
+  </p>
+
+  <div class="box warn">
+    <h4>⚠️ تصحيح مهمّ: المشروع لا يستخدم BM25 ولا Postgres FTS في مسار الاسترجاع</h4>
+    <p>
+      قد يُظنّ ذلك لوجود فهرس نصّي في الترحيلات:
+    </p>
+    <pre class="ascii" style="margin-top:8px"><code>-- backend/migrations/20260503_add_searchable_text.sql
+CREATE INDEX IF NOT EXISTS entries_searchable_tsv_idx
+    ON entries USING GIN (to_tsvector('simple', coalesce(searchable_text, '')));</code></pre>
+    <p style="margin-top:8px">
+      لكن ما يجري فعلًا في التسجيل هو <strong>سُلَّم نقاط يدوي</strong> في
+      <code>dictionary_service.py</code> — لا TF ولا IDF ولا <code>ts_rank</code>:
+    </p>
+  </div>
+
+  <div class="fname">backend/app/services/dictionary_service.py:48</div>
+  <pre><code>def _entry_match_score(entry, clean: str, norm: str) -&gt; int:
+    if word == clean or word_clean == norm or clean in syn_values:
+        return 100      # تطابق تامّ للكلمة أو أحد مرادفاتها
+    if clean in word or norm in word_clean or any(clean in a for a in syn_values):
+        return 80       # الاستعلام جزء من الكلمة
+    if word and word in clean:
+        return 70       # الكلمة جزء من الاستعلام
+    if clean in fusha:
+        return 60       # مطابقة في المقابل الفصيح
+    if clean in definition:
+        return 40       # مطابقة في الشرح
+    return 0</code></pre>
+
+  <p>
+    ولاحظ <code>_normalize_alef</code> قبله: يوحّد <code>أ إ آ</code> إلى <code>ا</code>.
+    هذا تطبيع عربي ضروري — بدونه «إثم» و«اثم» كلمتان مختلفتان تمامًا للمقارنة النصّية.
+  </p>
+
+  <div class="box">
+    <h4>ماذا عن دالّة <code>search_entries_expanded</code> في Supabase؟</h4>
+    <p>
+      <strong>جسم الدالّة غير موجود في المستودع</strong> — هي معرَّفة في لوحة Supabase
+      فقط. ما نعرفه يقينًا هو عقدها المرصود بالتشغيل: تأخذ <code>query_text</code>
+      و<code>match_count</code>، وتُرجع صفوف المداخل مع عمود <code>match_score</code>.
+    </p>
+    <p>
+      وبما أن القيم المرصودة كانت <code>100</code> و<code>80</code> بالضبط — وهي قيم
+      السُلَّم أعلاه حرفيًّا — فالاستنتاج القوي أن SQL يعكس نفس السُلَّم. هذا
+      <em>استدلال من السلوك لا قراءة للكود</em>، وأذكره كذلك.
+    </p>
+  </div>
+
+  <div class="box warn">
+    <h4>⚠️ مخاطرة تشغيلية حقيقية</h4>
+    <p>
+      أهمّ دالّتين في مسار الاسترجاع (<code>match_entries</code> و
+      <code>search_entries_expanded</code>) <strong>غير خاضعتين لإدارة الإصدارات</strong>.
+      لا مراجعة، ولا سجلّ تغييرات، ولا استرجاع لنسخة سابقة. تعديل عرَضي في اللوحة يغيّر
+      سلوك الاسترجاع كله دون أثر في git. الإصلاح رخيص: أضِف تعريفهما إلى
+      <code>backend/migrations/</code>.
+    </p>
+  </div>
+</section>
+
+<section id="s9">
+  <h2><span class="num">09</span>Hybrid Search — البحث الهجين</h2>
+  <p class="deck">لماذا يتفوّق الجمع، وكيف يدمج المشروع النتائج فعليًّا.</p>
+
+  <figure>
+    <pre class="mermaid">
+graph TD
+    Q["سؤال المستخدم"] --> K["بحث معجمي<br/>expanded keyword"]
+    Q --> F["focus_query_for_embedding"]
+    F --> E["تضمين 768d"]
+    E --> V["بحث متجهي<br/>match_entries"]
+    K --> KR["نتائج A · match_score"]
+    V --> VR["نتائج B · similarity"]
+    KR --> M["دمج بإزالة التكرار<br/>حسب id"]
+    VR --> M
+    M --> T["أعلى 5"]
+    T --> P["بناء الموجّه"]
+    </pre>
+    <figcaption>المسار الفعلي في <code>retrieve_rag_context</code>. لاحظ خطوة <code>focus_query_for_embedding</code> — سنعود إليها.</figcaption>
+  </figure>
+
+  <div class="scroll">
+  <table>
+    <thead><tr><th>الاستعلام</th><th>معجمي وحده</th><th>متجهي وحده</th><th>الهجين</th></tr></thead>
+    <tbody>
+      <tr><td>«عاد» (كلمة موجودة حرفيًّا)</td><td><span class="pill p-yes">ممتاز</span> تطابق 100</td><td><span class="pill p-part">جيد</span> 0.78</td><td>ممتاز</td></tr>
+      <tr><td>«كلمة تصف الكرم»</td><td><span class="pill p-no">يفشل</span> لا تطابق حرفي</td><td><span class="pill p-yes">ممتاز</span> يفهم المفهوم</td><td>ممتاز</td></tr>
+      <tr><td>خطأ إملائي بسيط</td><td><span class="pill p-part">جزئي</span> بعد التطبيع</td><td><span class="pill p-yes">صامد</span></td><td>ممتاز</td></tr>
+      <tr><td>اسم عَلَم نادر</td><td><span class="pill p-yes">ممتاز</span></td><td><span class="pill p-no">ضعيف</span> نادر في التدريب</td><td>ممتاز</td></tr>
+    </tbody>
+  </table>
+  </div>
+  <p>
+    الخلاصة: كل أسلوب يفشل حيث ينجح الآخر. لهذا الهجين ليس ترفًا — هو تغطية لثغرتين
+    متعاكستين.
+  </p>
+
+  <h3>كيف يدمج المشروع النتائج فعليًّا؟</h3>
+  <p>
+    كثير من أنظمة RAG تستخدم <strong>Reciprocal Rank Fusion (RRF)</strong> أو دمجًا
+    موزونًا للدرجات. <strong>هذا المشروع لا يفعل أيًّا منهما.</strong> الدمج هو
+    ببساطة إزالة تكرار مرتَّبة، والمعجمي له الأولوية دائمًا:
+  </p>
+
+  <div class="fname">backend/app/rag/retrieval.py:122</div>
+  <pre><code>def _merge_entries_by_id(*lists: list[dict]) -&gt; list[dict]:
+    seen: set[int] = set()
+    out: list[dict] = []
+    for lst in lists:                 # الترتيب مهمّ: kw أولًا ثم vec
+        for e in lst:
+            eid = e.get("id")
+            if eid is None or eid in seen:
+                continue
+            seen.add(eid)
+            out.append(e)
+    return out</code></pre>
+
+  <p>وفوق ذلك اختصار مسار حاسم:</p>
+  <div class="fname">backend/app/rag/retrieval.py:149</div>
+  <pre><code>kw_payload = expanded_keyword_context(query, top_k=8)
+top_score  = int(kw_payload.get("top_score") or 0)
+if top_score &gt;= 100:
+    rag_log(f"exact keyword hit for q={query!r} -- skipping vector search")
+    merged = kw_ctx[:5]
+    return merged, merged[:5]          # ← لا تضمين، لا بحث متجهي إطلاقًا
+
+vec_ctx = vector_context(query, top_k=4)
+merged  = _merge_entries_by_id(kw_ctx, vec_ctx)[:5]</code></pre>
+
+  <div class="box senior">
+    <h4>🎯 ملاحظة Senior: هذا الاختصار يوفّر ٢٠٠ مللي ثانية ويكلّف دقّة — بالقياس</h4>
+    <p>
+      عند تطابق تامّ يُلغى نداء التضمين كاملًا. المكسب حقيقي: ~٢٠٠ms ونداء API أقلّ لكل
+      سؤال. لكن الثمن مقيس أيضًا. تشغيل فعلي على «وش يعني عاد؟»:
+    </p>
+    <pre class="ascii" style="margin-top:8px"><code>المسار المعجمي (المستخدَم فعليًّا):
+  عَاد · عَادَك · عَادُه · اَلْقَعَادَة · اَلْمِرعَادْ
+                              └────── ضجيج: تطابق حرفي فقط ──────┘
+
+ما كان البحث المتجهي سيقدّمه:
+  عَاد(0.78) · وَلْعَاد(0.77) · عَادَك(0.75) · عَوَّاد(0.74)
+              └────── مرتبطة دلاليًّا فعلًا ──────┘</code></pre>
+    <p style="margin-top:8px">
+      خانتان من خمس في سياق الموجّه ذهبتا إلى «القعادة» و«المرعاد» — كلمتان لا علاقة
+      لهما بالسؤال سوى احتواؤهما الحروف <code>عاد</code>. <strong>هذه هي المقايضة
+      بالضبط: زمن استجابة أقلّ مقابل سياق أقلّ نقاءً.</strong> ليست خطأ — لكنها قرار
+      يجب أن يكون واعيًا. لو أردت تحسينه دون خسارة السرعة: أبقِ الاختصار لكن قصّ
+      <code>kw_ctx</code> عند أوّل نتيجة درجتها أقلّ من ٧٠.
+    </p>
+  </div>
+</section>
+
+<section id="s10">
+  <h2><span class="num">10</span>🔍 Retrieval و Top-K</h2>
+  <p class="deck">مرحلة الاسترجاع بتفاصيلها، ولماذا اختيار K قرار معماري.</p>
+
+  <h3>معالجة الاستعلام قبل البحث</h3>
+  <p>
+    لا يُضمَّن سؤال المستخدم كما هو. تُستخرج منه «الكلمات المفتاحية» أولًا عبر
+    <code>focus_query_for_embedding</code>، لسبب مهمّ: تضمين «وش يعني عاد؟» يمزج معنى
+    <em>السؤال</em> بمعنى <em>الكلمة</em>، فيبتعد المتجه عن مداخل المعجم التي لا تحوي
+    صيغة سؤال أصلًا.
+  </p>
+  <pre class="ascii"><code>مقيس فعليًّا:
+  المدخل                    "وش يعني عاد؟"
+  _extract_search_candidates ['وش يعني عاد؟', 'عاد']
+  focus_query_for_embedding  'عاد'          ← هذا وحده ما يُضمَّن</code></pre>
+
+  <h3>Top-K والمقايضة التي يحكمها</h3>
+  <div class="scroll">
+  <table>
+    <thead><tr><th>K</th><th>Recall</th><th>الضجيج</th><th>التكلفة/الزمن</th><th>الخطر</th></tr></thead>
+    <tbody>
+      <tr><td><strong>1</strong></td><td>منخفض جدًّا</td><td>معدوم</td><td>الأقلّ</td><td>خطأ استرجاع واحد = جواب خاطئ تمامًا · صفر تسامح</td></tr>
+      <tr><td><strong>5</strong> ← مشروعنا</td><td>جيد</td><td>مقبول</td><td>معتدل</td><td>متوازن لمعجم صغير ومداخل قصيرة</td></tr>
+      <tr><td><strong>50</strong></td><td>عالٍ جدًّا</td><td>مرتفع</td><td>الأعلى</td><td>«الضياع في المنتصف» — يهمل النموذج ما في وسط السياق الطويل</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <p>القيم الفعلية في المشروع، وكلّها في <code>retrieval.py</code>:</p>
+  <pre class="ascii"><code>expanded_keyword_context  top_k = 8    ← يجلب أكثر ليختار منه
+vector_context            top_k = 4    ← أقلّ لأن المعجمي له الأولوية
+match_threshold           0.25         ← أرضية التشابه المتجهي
+الحدّ النهائي للسياق        5            ← ما يصل الموجّه فعلًا
+RAG_CONFIDENCE_GATE       0.65         ← عتبة «هل الكلمة في معجمنا؟»
+_MIN_FALLBACK_SCORE       70           ← أدنى درجة معجمية للإجابة بلا Gemini</code></pre>
+
+  <div class="box">
+    <h4>الفرق بين عتبتين يخلط بينهما كثيرون</h4>
+    <p>
+      <code>match_threshold = 0.25</code> هي <strong>أرضية استرجاع</strong>: ماذا يستحقّ
+      أن يُجلب أصلًا. أما <code>RAG_CONFIDENCE_GATE = 0.65</code> فهي
+      <strong>بوّابة ثقة</strong>: هل ما جُلب قويّ كفاية لنجيب بثقة أم نعتذر ونقترح
+      إضافة الكلمة؟ التعليق في <code>config.py</code> يوضّحها صراحةً: «ليست حدًّا
+      للاسترجاع». عتبة واحدة لا تكفي لأن السؤالين مختلفان.
+    </p>
+  </div>
+</section>
+
+<section id="s11">
+  <h2><span class="num">11</span>بناء الموجّه — Prompt Construction</h2>
+  <p class="deck">ما يحدث بين الاسترجاع ونداء النموذج، وهو أكثر ما يُستهان به.</p>
+
+  <pre class="ascii"><code>System Prompt  (من نحن · القواعد · صيغة الردّ · عقد الرفض)
+      +
+Context Block  (المداخل المسترجَعة، محاطة بعلامات صريحة)
+      +
+History        (آخر ١٠ رسائل)
+      +
+User Message   (السؤال الحالي)</code></pre>
+
+  <p>المشروع يفصلها فصلًا صحيحًا: القواعد كـ<code>system_instruction</code> أصلية لدى Gemini، والسياق في جسم الرسالة:</p>
+
+  <div class="fname">backend/app/rag/prompts.py:220</div>
+  <pre><code>def chat_prompt(user_message, history, context_entries) -&gt; str:
+    context = ask_context_block(context_entries, definition_max_chars=320)
+    ...
+    return f"""{context}
+{history_section}
+المستخدم: {user_message}
+
+المساعد:"""</code></pre>
+
+  <p>وكتلة السياق تُحاط بعلامات صريحة يبحث عنها الـsystem prompt:</p>
+  <div class="fname">backend/app/rag/prompts.py:40 — ask_context_block</div>
+  <pre><code>return f"[CONTEXT START]\n{body}\n[CONTEXT END]"</code></pre>
+
+  <p>الناتج الحقيقي لسؤالنا (أوّل ٣٨٠ محرفًا من ١٤٤٧):</p>
+  <pre><code>[CONTEXT START]
+- الكلمة الحضرمية: عَاد
+  id: 619
+  المرادفات: وعيد
+  المقابل الفصيح: الوعيد / التهديد
+  الشرح القاموسي: كلمة تستخدم للسؤال الإنكاري أو للوعيد والتهديد…
+  مثال قاموسي: عادك بتسويها مرة ثانية؟
+  معنى المثال: ألديك الجرأة لتفعلها مرة أخرى؟ (تهديد)
+
+- الكلمة الحضرمية: عَادَك
+  id: 622
+  ...</code></pre>
+
+  <div class="box">
+    <h4>لماذا العلامات الصريحة ضرورية؟ ثلاثة أسباب</h4>
+    <ul>
+      <li><strong>حدّ الثقة:</strong> يعرف النموذج أن ما بين العلامتين معرفة موثوقة، وما بعدهما كلام مستخدم لا يُطاع كتعليمات.</li>
+      <li><strong>عقد الرفض:</strong> السياق يُبنى ويُرسل حتى لو كان فارغًا — «(لا توجد مطابقات قاموسية)» — فيعلم النموذج أن الاسترجاع جرى وأخفق، لا أنه نُسي.</li>
+      <li><strong>القابلية للتتبّع:</strong> عند مراجعة جواب سيّئ تعرف بالضبط ما رآه النموذج.</li>
+    </ul>
+  </div>
+
+  <p>ولاحظ <code>definition[:cap]</code> في بناء الكتلة — قصّ الشروح عند ٣٢٠ محرفًا. هذه <strong>ميزانية رموز (token budget)</strong> صريحة: خمسة مداخل بشروح غير مقصوصة قد تبتلع السياق وترفع الكلفة دون فائدة.</p>
+
+  <div class="box warn">
+    <h4>⚠️ تلوّث السياق و Prompt Injection</h4>
+    <p>
+      <strong>تلوّث السياق:</strong> رأيناه بالقياس في القسم 9 — «القعادة» و«المرعاد» في
+      سياق سؤال عن «عاد». النموذج قد يذكرهما فيبدو الجواب مشوّشًا رغم أن التوليد سليم؛
+      العيب في الاسترجاع.
+    </p>
+    <p>
+      <strong>حقن الموجّه:</strong> ماذا لو كتب المستخدم «تجاهل التعليمات السابقة»؟ ما
+      يحمي المشروع هو أن السياق يأتي من <em>معجمه هو</em> لا من نصّ يرسله المستخدم،
+      والقواعد في <code>system_instruction</code> منفصلة عن جسم الرسالة. الخطر المتبقّي
+      يأتي من جهة أخرى تمامًا — القسم 27.
+    </p>
+  </div>
+</section>
+
+<section id="s12">
+  <h2><span class="num">12</span>🤖 Generation — التوليد</h2>
+  <p class="deck">آخر خطوة، وأوضح تمييز في الدليل كله.</p>
+
+  <div class="box llm">
+    <h4>🤖 الفرق بين Retrieval و Generation</h4>
+    <p>
+      <strong>الاسترجاع</strong> يجيب: «أي المعارف التي أملكها تخصّ هذا السؤال؟» — عملية
+      بحث، حتميّة، قابلة للقياس بمقاييس دقّة واسترجاع، ولا تحتاج نموذجًا لغويًّا.
+    </p>
+    <p>
+      <strong>التوليد</strong> يجيب: «كيف أصوغ جوابًا من هذه المعارف؟» — عملية لغوية،
+      احتمالية، تُقاس بالأمانة والصلة.
+    </p>
+    <p>
+      عندما يخرج جواب سيّئ، <strong>السؤال الأول دائمًا: أي المرحلتين أخفقت؟</strong> إن
+      كان السياق المسترجَع خاطئًا فلا فائدة من تعديل الموجّه؛ وإن كان السياق صحيحًا
+      والجواب رديئًا فالمشكلة في الموجّه أو النموذج. الخلط بينهما يُضيّع أيامًا في إصلاح
+      الطبقة الخطأ.
+    </p>
+  </div>
+
+  <div class="fname">backend/app/rag/generation.py — سلسلة النماذج الاحتياطية</div>
+  <pre><code>order = [GEMINI_MODEL, *GEMINI_FALLBACK_MODELS]
+# gemini-2.5-flash → gemini-2.0-flash → gemini-2.5-flash-lite
+
+for mname in order:
+    try:
+        model = genai.GenerativeModel(mname, system_instruction=...)
+        return model.generate_content(prompt, generation_config=...).text
+    except Exception as e:
+        failures.append((mname, e))
+
+return f"Gemini not available: {summary}"   # ← ليس استثناءً، بل قيمة يفحصها المنادي</code></pre>
+
+  <p>وإعدادات التوليد:</p>
+  <pre><code>genai.types.GenerationConfig(max_output_tokens=1536, temperature=0.35)</code></pre>
+  <p>
+    <code>temperature=0.35</code> منخفضة عمدًا. في RAG نريد النموذج ملتزمًا بالسياق لا
+    مبدعًا؛ الحرارة العالية تُنتج صياغات متنوّعة وتزيد احتمال الانحراف عن المصدر.
+    القاعدة العامة: <strong>كلما زادت أهمّية الأمانة للمصدر، خفّض الحرارة.</strong>
+  </p>
+
+  <div class="box good">
+    <h4>✅ نمط جيد يستحقّ التقليد: الفشل قيمة لا استثناء</h4>
+    <p>
+      <code>gemini_generate</code> يُرجع نصًّا يبدأ بـ<code>"Gemini not available:"</code>
+      بدل أن يرمي استثناءً، ويفحصه المنادي بـ<code>is_gemini_unavailable()</code>. هذا
+      يجعل «النموذج غير متاح» <strong>حالة متوقَّعة في التصميم</strong> لا حادثًا — ولذلك
+      يوجد مسار بديل حقيقي يجيب من المعجم مباشرة بدل صفحة خطأ.
+    </p>
+  </div>
+</section>
+
+<section id="s13">
+  <h2><span class="num">13</span>RAG مقابل LLM عادي</h2>
+  <p class="deck">مقارنة عملية بمثال من هذا المعجم.</p>
+
+  <div class="cards">
+    <div class="card"><span class="tag">PLAIN LLM 🤖</span><h4>نموذج بلا استرجاع</h4><p>سؤال ← نموذج ← جواب. المعرفة كلها من الأوزان. لا مصادر، ولا تحديث، ولا وسيلة لمعرفة إن كان الجواب مخترعًا.</p></div>
+    <div class="card"><span class="tag">RAG 🔍🤖</span><h4>استرجاع ثم توليد</h4><p>سؤال ← بحث ← معرفة ← نموذج ← جواب + مصادر. المعرفة من بياناتك، قابلة للتحديث والتدقيق.</p></div>
+  </div>
+
+  <div class="box llm">
+    <h4>مثال ملموس: «وش يعني عاد؟»</h4>
+    <p>
+      <strong>بلا RAG:</strong> Gemini يعرف العربية جيدًا لكنه لم يرَ معجمك قط. سيقول
+      على الأرجح إن «عاد» فعل ماضٍ بمعنى «رجع» — وهو صحيح في الفصحى
+      <em>وخاطئ تمامًا هنا</em>. والأسوأ: سيقوله بثقة تامّة.
+    </p>
+    <p>
+      <strong>مع RAG:</strong> يُسترجَع المدخل <code>id=619</code> الذي يقول إن معناها
+      الحضرمي «الوعيد / التهديد»، مع المثال «عادك بتسويها مرة ثانية؟». الجواب الفعلي
+      المولَّد كان:
+    </p>
+    <pre class="ascii" style="margin-top:8px"><code>📖 عَاد — الوعيد / التهديد
+تُستخدم في اللهجة الحضرمية للسؤال الإنكاري أو للوعيد والتهديد…
+مثال: عادك بتسويها مرة ثانية؟ ← ألديك الجرأة لتفعلها مرة أخرى؟</code></pre>
+    <p style="margin-top:8px">
+      <strong>هذا هو RAG في جملة واحدة:</strong> النموذج نفسه، لكن الجواب صار صحيحًا لأن
+      المعرفة الصحيحة وُضعت أمامه.
+    </p>
+  </div>
+</section>
+
+<section id="s14">
+  <h2><span class="num">14</span>RAG مقابل Fine-Tuning</h2>
+  <p class="deck">أداتان لمشكلتين مختلفتين — لا بديلتان.</p>
+
+  <div class="scroll">
+  <table>
+    <thead><tr><th>الوجه</th><th>RAG</th><th>Fine-Tuning</th></tr></thead>
+    <tbody>
+      <tr><td>يُغيّر</td><td>ما <em>يعرفه</em> النموذج وقت الإجابة</td><td>كيف <em>يتصرّف</em> ويصوغ</td></tr>
+      <tr><td>تحديث المعرفة</td><td>حدّث صفًّا في القاعدة — فوري</td><td>أعد التدريب — ساعات وتكلفة</td></tr>
+      <tr><td>التكلفة</td><td>استرجاع + رموز سياق لكل نداء</td><td>تدريب مقدَّم عالٍ، ثم نداءات أرخص</td></tr>
+      <tr><td>المصادر</td><td>متاحة طبيعيًّا</td><td>مستحيلة — المعرفة ذابت في الأوزان</td></tr>
+      <tr><td>الهلوسة</td><td>تُخفَّف بالتقييد بالسياق</td><td>قد تزيد — يزداد ثقةً بما «تعلّمه»</td></tr>
+      <tr><td>يبرع في</td><td>الحقائق · الوثائق الخاصة · البيانات المتغيّرة</td><td>الأسلوب · الصيغة · مهامّ متخصّصة متكرّرة</td></tr>
+      <tr><td>البيانات المطلوبة</td><td>وثائقك كما هي</td><td>آلاف أزواج (سؤال، جواب) معنونة</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h3>لماذا RAG هو الخيار الصحيح لهذا المشروع؟</h3>
+  <ul>
+    <li><strong>المعجم ينمو.</strong> كل كلمة جديدة تظهر في الإجابات فورًا؛ مع fine-tuning تحتاج دورة تدريب لكل دفعة.</li>
+    <li><strong>الأمانة للمصدر شرط بحثي.</strong> ورقة عن اللهجة الحضرمية يجب أن تُثبت أن الإجابة جاءت من مدخل معجمي محدَّد. RAG يعطيك <code>context</code> و<code>id</code>؛ fine-tuning لا يعطيك شيئًا.</li>
+    <li><strong>الحجم لا يبرّره.</strong> ١٠٠٠ مدخل بعيد جدًّا عن كمّ البيانات التي يحتاجها تدريب مفيد.</li>
+  </ul>
+
+  <div class="box senior">
+    <h4>🎯 متى يُفيد الجمع بينهما؟</h4>
+    <p>
+      حين تستقرّ <em>المعرفة</em> في RAG لكن يبقى <em>الأسلوب</em> غير منضبط. مثال ملائم
+      لمشروعك: لو أردت أن يلتزم النموذج دائمًا بصيغة المدخل المعجمي (📖 كلمة — فصحى /
+      شرح / مثال) دون أن يحتاج system prompt طويلًا يشرحها في كل نداء. عندها fine-tuning
+      خفيف على الصيغة + RAG للمعرفة = موجّهات أقصر وتكلفة أقلّ وثبات أعلى.
+    </p>
+    <p>
+      لكن هذا تحسين متأخّر. الترتيب الصحيح دائمًا: <strong>RAG أولًا، هندسة الموجّه
+      ثانيًا، fine-tuning أخيرًا وفقط إن بقيت مشكلة أسلوب حقيقية.</strong>
+    </p>
+  </div>
+</section>
+
+<section id="s15">
+  <h2><span class="num">15</span>RAG في مشروعنا — الخريطة</h2>
+  <p class="deck">كل مكوّن نظري أعلاه، وما يقابله فعلًا في الكود.</p>
+
+  <div class="scroll">
+  <table>
+    <thead><tr><th>مكوّن RAG</th><th>في هذا المشروع</th><th>الملف</th></tr></thead>
+    <tbody>
+      <tr><td>مصدر المعرفة</td><td>معجم حضرمي · ١٠٠٠ مدخل في Supabase</td><td>جدول <code>public.entries</code></td></tr>
+      <tr><td>Chunking</td><td><span class="pill p-no">لا يوجد</span> مدخل = وثيقة</td><td>—</td></tr>
+      <tr><td>بناء نصّ الوثيقة</td><td><code>embedding_text_for_entry()</code> · v2</td><td><code>services/embedding_doc.py</code></td></tr>
+      <tr><td>نموذج التضمين</td><td><code>models/gemini-embedding-001</code> · 768d</td><td><code>services/embedding_service.py</code></td></tr>
+      <tr><td>تخزين المتجهات</td><td>pgvector · عمود <code>vector(768)</code></td><td>Supabase</td></tr>
+      <tr><td>بحث معجمي</td><td>سُلَّم نقاط 100/80/70/60/40 + تطبيع الألف</td><td><code>services/dictionary_service.py:48</code></td></tr>
+      <tr><td>BM25 / FTS</td><td><span class="pill p-no">غير مستخدم</span> فهرس GIN موجود بلا استعمال مؤكَّد</td><td><code>migrations/…searchable_text.sql</code></td></tr>
+      <tr><td>بحث متجهي</td><td>RPC <code>match_entries</code> · عتبة 0.25</td><td><code>core/data_store.py:92</code></td></tr>
+      <tr><td>دمج هجين</td><td>إزالة تكرار مرتَّبة (لا RRF)</td><td><code>rag/retrieval.py:128</code></td></tr>
+      <tr><td>تصنيف النيّة</td><td>٥ نوايا بأنماط regex</td><td><code>rag/system_prompt.py:213</code></td></tr>
+      <tr><td>بناء الموجّه</td><td><code>[CONTEXT START]…[CONTEXT END]</code></td><td><code>rag/prompts.py:40</code></td></tr>
+      <tr><td>System prompt</td><td>native <code>system_instruction</code></td><td><code>rag/system_prompt.py:21</code></td></tr>
+      <tr><td>النموذج المولِّد</td><td><code>gemini-2.5-flash</code> + احتياطيّان</td><td><code>rag/config.py:14</code></td></tr>
+      <tr><td>التنسيق</td><td><code>get_chat_answer()</code></td><td><code>rag/pipeline.py:228</code></td></tr>
+      <tr><td>تخزين مؤقّت</td><td>قاموس بـTTL ٩٠ ثانية داخل العملية</td><td><code>rag/retrieval.py:34</code></td></tr>
+      <tr><td>المصادر للعميل</td><td><code>context[]</code> + <code>hadrami_spans[]</code></td><td><code>rag/pipeline.py:_chat_payload</code></td></tr>
+      <tr><td>المصادقة</td><td><span class="pill p-no">لا توجد</span> · CORS مفتوح</td><td><code>main.py:56</code></td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <div class="box">
+    <h4>ما يميّز هذا النظام عن RAG «الكتاب المدرسي»</h4>
+    <ul>
+      <li><strong>لا تقطيع</strong> — لأن وحدة المعرفة صغيرة ومتماسكة أصلًا.</li>
+      <li><strong>دمج بالأولوية لا بالدرجات</strong> — المعجمي يفوز دائمًا؛ لا RRF.</li>
+      <li><strong>تصنيف نيّة قبل الاسترجاع</strong> — خمسة مسارات لا مسار واحد.</li>
+      <li><strong>عقد رفض صريح</strong> — «هذه الكلمة غير موجودة… هل تريد اقتراح إضافتها؟» بدل تخمين مهذّب.</li>
+      <li><strong>مسار احتياطي حتمي</strong> — يجيب من المعجم مباشرة حين يسقط Gemini.</li>
+    </ul>
+  </div>
+</section>
+
+<section id="s16">
+  <h2><span class="num">16</span>🏗️ المخطط الكامل</h2>
+  <p class="deck">من ضغطة «إرسال» إلى ظهور الجواب — أهمّ مخطط في الدليل.</p>
+
+  <figure>
+    <pre class="mermaid">
+graph TD
+    U["المستخدم يكتب: وش يعني عاد؟"] --> CP["ChatPage<br/>modules/chat/pages/"]
+    CP --> PR["Chat notifier · Riverpod<br/>modules/chat/providers/"]
+    PR --> CS["ChatService<br/>modules/chat/services/"]
+    CS --> AS["ApiService.postJson<br/>core/network/"]
+    AS -->|"POST /chat"| RT["main.py · route"]
+    RT --> GC["get_chat_answer()<br/>rag/pipeline.py"]
+    GC --> IN["intent_for()<br/>تصنيف النيّة"]
+    IN --> KW["expanded_keyword_context<br/>top_k=8"]
+    IN --> FQ["focus_query_for_embedding"]
+    FQ --> EM["embed_text · 768d"]
+    EM --> VS["match_entries RPC<br/>عتبة 0.25 · top_k=4"]
+    KW --> MG["_merge_entries_by_id<br/>cap 5"]
+    VS --> MG
+    MG --> CG{"_is_confidently_grounded؟"}
+    CG -->|"لا · word/define/convert"| SW["كتلة اقتراح الكلمة<br/>بلا نداء Gemini"]
+    CG -->|"نعم"| PB["chat_prompt<br/>CONTEXT START/END"]
+    PB --> LLM["gemini-2.5-flash<br/>temp 0.35"]
+    LLM --> SP["find_hadrami_spans"]
+    SW --> SP
+    SP --> RS["JSON: reply · context<br/>hadrami_spans · intent"]
+    RS --> CS2["ChatResult.fromJson"]
+    CS2 --> ST["ChatState · Riverpod"]
+    ST --> UI["ChatBubble · تظليل"]
+    </pre>
+    <figcaption>
+      المسار الكامل. المعقدة <code>_is_confidently_grounded</code> هي البوّابة التي
+      تقرّر إن كان النظام سينفق نداء Gemini أصلًا.
+    </figcaption>
+  </figure>
+</section>
+
+<section id="s17">
+  <h2><span class="num">17</span>Flutter ← المستخدم</h2>
+  <p class="deck">أربع طبقات في العميل، وسبب وجود كل واحدة.</p>
+
+  <div class="teach">
+    <div class="teach-hd">📍 lib/src/modules/chat/pages/chat_page.dart</div>
+    <dl>
+      <dt>🎯 المسؤولية</dt>
+      <dd>عرض قائمة الرسائل وحقل الإدخال، وتمرير النصّ إلى المزوّد. لا منطق ولا شبكة.</dd>
+      <dt>➡️ المدخل</dt><dd>نصّ المستخدم من <code>ChatInput</code>.</dd>
+      <dt>⬅️ المخرج</dt><dd>نداء <code>ref.read(chatProvider.notifier).sendMessage(text)</code>.</dd>
+      <dt>🧠 لماذا هذه الطبقة موجودة؟</dt>
+      <dd>لأن الودجة يجب أن تكون دالّة من الحالة إلى بكسلات. كل ما عداه — متى نُظهر مؤشّر التحميل، ماذا نفعل عند الخطأ — قرارات تخصّ طبقة أخرى. هذا ما يجعل الشاشة قابلة للاختبار بلا شبكة.</dd>
+    </dl>
+  </div>
+
+  <div class="teach">
+    <div class="teach-hd">📍 lib/src/modules/chat/providers/chat_provider.dart</div>
+    <dl>
+      <dt>🎯 المسؤولية</dt>
+      <dd>يملك <code>ChatState</code> (الرسائل + <code>isLoading</code>) ويرتّب الحالة زمنيًّا.</dd>
+      <dt>➡️ المدخل</dt><dd><code>String text</code>.</dd>
+      <dt>⬅️ المخرج</dt><dd>حالة جديدة غير قابلة للتعديل تُعيد بناء الواجهة.</dd>
+      <dt>🔗 الاعتماد</dt><dd><code>chatServiceProvider</code> فقط — لا يعرف HTTP ولا المسارات.</dd>
+      <dt>🧠 لماذا؟</dt>
+      <dd>ترتيب «أظهر رسالة المستخدم فورًا ← ارفع مؤشّر التحميل ← أضف الردّ» قرار تجربة مستخدم خالص. وضعه في الخدمة يخلط العرض بالنقل؛ وضعه في الودجة يجعله غير قابل للاختبار.</dd>
+      <dt>⚠️ لاحظ</dt>
+      <dd><code>@Riverpod(keepAlive: true)</code> — بدونها يُمحى سجلّ المحادثة كلّما بدّل المستخدم تبويبًا.</dd>
+    </dl>
+  </div>
+
+  <div class="fname">chat_provider.dart — الجوهر</div>
+  <pre><code>final userMessage = ChatMessage(role: ChatRole.user, content: text, ...);
+state = state.copyWith(messages: [...state.messages, userMessage], isLoading: true);
+
+final result = await ref.read(chatServiceProvider)
+    .sendMessage(message: text, history: history);   // ← حدّ الطبقة
+
+state = state.copyWith(
+  messages: [...state.messages, ChatMessage(role: ChatRole.assistant,
+      content: result.reply, note: _firstNote(result.context))],
+  isLoading: false,
+);</code></pre>
+
+  <div class="teach">
+    <div class="teach-hd">📍 lib/src/modules/chat/services/chat_service.dart</div>
+    <dl>
+      <dt>🎯 المسؤولية</dt>
+      <dd>ثلاثة أشياء: أي مسار (<code>ApiEndpoints.chat</code>)، إلى أي نوع (<code>ChatResult.fromJson</code>)، وماذا عند الفشل.</dd>
+      <dt>➡️ المدخل</dt><dd>الرسالة + السجلّ (يُحوَّل بـ<code>toApiMap()</code>).</dd>
+      <dt>⬅️ المخرج</dt><dd><code>ChatResult</code> صالحة <strong>دائمًا</strong> — حتى عند انقطاع الشبكة.</dd>
+      <dt>🧠 لماذا؟</dt>
+      <dd>هذا هو «Repository» المشروع دون تسميته كذلك: نقطة واحدة تعرف شكل الـAPI. تبديل الخادم يلمس هذا الملف وحده.</dd>
+      <dt>⚠️ المقايضة</dt>
+      <dd>ابتلاع الاستثناء يمنع الواجهة من التمييز بين «الخادم ساقط» و«جواب فارغ».</dd>
+    </dl>
+  </div>
+
+  <pre><code>try {
+  final response = await _api.postJson(ApiEndpoints.chat,
+      {'message': message, 'history': history.map((m) =&gt; m.toApiMap()).toList()},
+      timeout: ApiConfig.longTimeout);          // ← مهلة أطول: RAG بطيء
+  return ChatResult.fromJson(response);
+} on TimeoutException {
+  return const ChatResult(reply: AppStrings.apiServiceChatTimeoutReply);
+} catch (_) { ... }</code></pre>
+
+  <div class="box">
+    <h4>لماذا <code>longTimeout</code> هنا تحديدًا؟</h4>
+    <p>
+      لأن <code>/chat</code> ينتظر نداء Gemini كاملًا — قسناه عند <strong>3.07 ثانية</strong>
+      وقد يبلغ أضعاف ذلك تحت الضغط. مهلة <code>/words</code> الافتراضية ستقطع الاتصال
+      قبل وصول الجواب. <strong>ميزانية المهلة يجب أن تشتقّ من ميزانية زمن المسار، لا
+      أن تُختار رقمًا مريحًا.</strong>
+    </p>
+  </div>
+</section>
+
+<section id="s18">
+  <h2><span class="num">18</span>Backend ← HTTP</h2>
+  <p class="deck">من المسار إلى خطّ RAG.</p>
+
+  <pre class="ascii"><code>POST /chat
+  ↓  main.py            تحقّق Pydantic (ChatRequest) — مسار رفيع
+  ↓  get_chat_answer()  rag/pipeline.py — المنسّق
+  ↓  intent_for()       تصنيف إلى: word · convert · define · semantic · qa
+  ↓  retrieve_*()       المسار يتفرّع حسب النيّة
+  ↓  gemini_generate()  إن اجتاز بوّابة الثقة
+  ↓  _chat_payload()    تشكيل الردّ + حساب النطاقات</code></pre>
+
+  <h3>تصنيف النيّة — أول قرار في المسار</h3>
+  <div class="fname">backend/app/rag/system_prompt.py:213</div>
+  <pre><code>def intent_for(question: str) -&gt; Intent:
+    if _CONVERSION_INTENT_PATTERN.search(q): return "convert"   # 1
+    if _SEMANTIC_PATTERN.search(q):          return "semantic"  # 2
+    if _DEFINITION_PATTERN.search(q):        return "define"    # 3
+    if _is_single_word(q):                   return "word"      # 4
+    if _QUESTION_PATTERN.search(q):          return "qa"        # 5</code></pre>
+
+  <p><strong>الترتيب مهمّ</strong> — أول نمط يطابق يفوز. سلوك مقيس فعليًّا:</p>
+  <pre class="ascii"><code>'ما معنى عاد؟'                  → define     ✓
+'عاد'                           → word       ✓
+'اشرح كلمة عاد'                 → define     ✓
+'حول إلى الفصحى: عادك بتسويها'  → convert    ✓
+'وش يعني عاد؟'                  → qa         ⚠️
+'وش معنى كلمة زقر؟'             → qa         ⚠️
+'كلمة تصف الشخص الكريم'         → convert    ⚠️</code></pre>
+
+  <div class="box warn">
+    <h4>⚠️ ثغرتان حقيقيتان في التصنيف — مرصودتان لا مفترضتان</h4>
+    <p>
+      <strong>١. المصنّف يفهم الفصحى ولا يفهم الحضرمية.</strong> «ما معنى» تُصنَّف
+      <code>define</code>، أما «وش يعني» — وهي الصيغة الحضرمية لنفس السؤال — فتُصنَّف
+      <code>qa</code>. لماذا يهمّ؟ لأن اختصار «اقتراح الكلمة» يعمل فقط مع
+      <code>word/define/convert</code>. فالسؤال بالحضرمية عن كلمة <em>غير موجودة</em>
+      ينفق نداء Gemini للاعتذار، بينما نظيره بالفصحى يعتذر مجانًا وفورًا. مفارقة لافتة
+      في أداة مخصّصة للهجة الحضرمية.
+    </p>
+    <p>
+      <strong>٢. «كلمة تصف الشخص الكريم» تُصنَّف <code>convert</code>.</strong> وهي طلب
+      بحث دلالي واضح (<code>semantic</code>)، لكن نمط التحويل يُفحص أولًا فيلتقطها. النتيجة:
+      استرجاع بمعجم العبارات وموجّه تحويل، بدل المسار الدلالي المقصود.
+    </p>
+    <p>
+      كلاهما إصلاحه سطر واحد في regex — والأهمّ أن كليهما لا يظهر في أي اختبار، لأن
+      الاختبارات تفحص الصيغ الفصيحة فقط.
+    </p>
+  </div>
+
+  <h3>بوّابة الثقة — القرار الذي يوفّر المال</h3>
+  <div class="fname">backend/app/rag/pipeline.py</div>
+  <pre><code>def _is_confidently_grounded(entries, top_keyword_score) -&gt; bool:
+    if not entries: return False
+    if top_keyword_score &gt;= 70:  return True          # مطابقة معجمية قوية
+    return _top_similarity(entries) &gt;= 0.65           # أو تشابه متجهي كافٍ
+
+# ...
+if not confident and intent in ("word", "define", "convert"):
+    reply = _suggest_word_block(q)                     # ← بلا نداء Gemini
+    return _chat_payload(reply, ..., suggest_word=True, answer_source="lexicon")</code></pre>
+
+  <div class="box senior">
+    <h4>🎯 لماذا هذا أذكى ممّا يبدو</h4>
+    <p>
+      البديل الساذج: أرسل السياق الفارغ إلى Gemini ودعه يعتذر. يكلّف ذلك ~٢ ثانية ونداء
+      API لكل كلمة غير موجودة، وبنتيجة <em>غير مضمونة</em> — قد يعتذر بصيغة مختلفة كل
+      مرة، وقد يخمّن.
+    </p>
+    <p>
+      الاختصار الحتمي يعطي <strong>الصيغة نفسها دائمًا</strong>، بزمن صفر وتكلفة صفر،
+      ويرفع <code>suggest_word=True</code> ليعرض العميل زرّ المساهمة. <strong>قاعدة عامة:
+      حين تعرف الجواب حتميًّا، لا تسأل النموذج.</strong>
+    </p>
+  </div>
+</section>
+
+<section id="s19">
+  <h2><span class="num">19</span>🗄️ RAG ← قاعدة البيانات</h2>
+  <p class="deck">الاستدعاءان الحقيقيان، وما نعرفه ولا نعرفه عنهما.</p>
+
+  <h3>الاستدعاء ١ — البحث المتجهي</h3>
+  <div class="fname">backend/app/core/data_store.py:92</div>
+  <pre><code>def rpc_match_entries(query_embedding: list[float],
+                      match_threshold: float = 0.3,
+                      match_count: int = 10) -&gt; list[dict]:
+    resp = _execute_with_retry(lambda c: c.rpc("match_entries", {
+        "query_embedding": query_embedding,   # 768 رقمًا
+        "match_threshold": match_threshold,   # 0.25 من retrieval.py
+        "match_count":     match_count,       # 4
+    }))
+    return resp.data or []</code></pre>
+
+  <p><strong>ماذا يعود فعلًا؟</strong> أعمدة مرصودة بالتشغيل:</p>
+  <pre class="ascii"><code>id · word_vocalized · word_clean · root · pos · fusha_equivalent
+definition · region · synonyms · phonetic_variants · note · source
+examples · proverbs · tags · tags_ar · similarity        ← المحسوب</code></pre>
+  <p>
+    ولاحظ <code>tags_ar</code>: عمود موجود في القاعدة ويعود مع الصفوف لكن لا يستهلكه أي
+    كود في المشروع — العميل يترجم الوسوم بنفسه في <code>dictionary_labels.dart</code>.
+    ازدواج صامت يستحقّ حسمًا في أحد الاتجاهين.
+  </p>
+
+  <h3>الاستدعاء ٢ — البحث المعجمي الموسَّع</h3>
+  <pre><code>rpc_search_entries_expanded(query_text="عاد", match_count=3)
+→ 3 صفوف · نفس الأعمدة + match_score (بدل similarity)
+
+  'عَاد'    match_score=100    ← تطابق تامّ
+  'عَادَك'  match_score=80     ← الاستعلام جزء من الكلمة
+  'عَادُه'  match_score=80</code></pre>
+
+  <div class="box warn">
+    <h4>⚠️ ما لا نستطيع توثيقه — وسبب أهمّيته</h4>
+    <p>
+      <strong>جسم الدالّتين غير موجود في المستودع.</strong> بحثتُ في
+      <code>backend/migrations/</code> فوجدت ثلاثة ملفات SQL تضيف أعمدة وفهارس فقط —
+      ولا تعريف لأي من الدالّتين. هما معرَّفتان في لوحة Supabase.
+    </p>
+    <p>
+      لذلك ما ورد أعلاه <strong>عقد مرصود بالتشغيل</strong> لا قراءة للتنفيذ. ولذلك أيضًا
+      لا أزعم كيف تعمل <code>search_entries_expanded</code> داخليًّا؛ أقول فقط إن قيمها
+      المرصودة (100/80) تطابق سُلَّم <code>_entry_match_score</code> حرفيًّا، وهو استدلال
+      قوي على أن SQL يعكسه.
+    </p>
+    <p>
+      <strong>هذه ثغرة معمارية حقيقية:</strong> أهمّ منطق استرجاع في النظام خارج
+      إدارة الإصدارات. لا مراجعة ولا استرجاع ولا اختبار. الإصلاح ساعة عمل.
+    </p>
+  </div>
+
+  <h3>الصمود: إعادة المحاولة</h3>
+  <pre><code>def _execute_with_retry(build_query_fn):   # data_store.py:46
+    # يعيد إنشاء العميل ويعيد المحاولة عند انقطاع الاتصال</code></pre>
+  <p>
+    <strong>لماذا هذا موجود؟</strong> لأن Supabase عبر HTTP من دالّة serverless: الحاويات
+    تُجمَّد وتُستأنف، والاتصال المحفوظ قد يكون ميتًا عند أول استخدام بعد الاستئناف.
+    إعادة المحاولة تحوّل هذا الفشل العابر إلى تأخّر بسيط.
+  </p>
+</section>
+
+<section id="s20">
+  <h2><span class="num">20</span>الموجّه ← LLM</h2>
+  <p class="deck">ما يصل Gemini بالضبط، بأرقام حقيقية.</p>
+
+  <pre class="ascii"><code>system_instruction  ← HADRAMI_SYSTEM_PROMPT (الهوية · القواعد · عقد الرفض)
+                      يُمرَّر إلى GenerativeModel، منفصلًا عن جسم الرسالة
+
+الجسم (1447 محرفًا مقيسة لسؤالنا):
+  [CONTEXT START]
+  - الكلمة الحضرمية: عَاد
+    id: 619
+    المرادفات: وعيد
+    المقابل الفصيح: الوعيد / التهديد
+    الشرح القاموسي: كلمة تستخدم للسؤال الإنكاري أو للوعيد…
+    مثال قاموسي: عادك بتسويها مرة ثانية؟
+    معنى المثال: ألديك الجرأة لتفعلها مرة أخرى؟ (تهديد)
+  … (٤ مداخل أخرى)
+  [CONTEXT END]
+
+  المستخدم: وش يعني عاد؟
+
+  المساعد:</code></pre>
+
+  <div class="box llm">
+    <h4>🤖 ثلاثة قرارات هندسية في هذه الكتلة</h4>
+    <ul>
+      <li><strong>القواعد في <code>system_instruction</code> لا في الجسم.</strong> Gemini يزن تعليمات النظام أثقل، وفصلها يجعل حقن الموجّه أصعب.</li>
+      <li><strong><code>id: 619</code> داخل السياق.</strong> يتيح للنموذج الإشارة إلى مدخل بعينه ويجعل تتبّع مصدر أي جملة ممكنًا عند المراجعة.</li>
+      <li><strong>ينتهي بـ«المساعد:»</strong> — إشارة إكمال تدفع النموذج للبدء فورًا بالجواب بدل مقدّمة مثل «بالطبع! سأشرح لك…».</li>
+    </ul>
+  </div>
+
+  <p>وبعد التوليد، تُحسب مواضع الكلمات الحضرمية داخل النصّ:</p>
+  <pre><code>highlight_surfaces = collect_highlight_surfaces(ctx_for_api)   # أشكال من المداخل
+"hadrami_spans":    find_hadrami_spans(reply, highlight_surfaces)</code></pre>
+  <p>ناتج حقيقي لجوابنا:</p>
+  <pre class="ascii"><code>[{'start': 2,  'end': 6,  'surface': 'عَاد'},
+ {'start': 11, 'end': 15, 'surface': 'وعيد'},
+ {'start': 74, 'end': 78, 'surface': 'وعيد'}]</code></pre>
+  <p>
+    الفهارس بـ<strong>نقاط الترميز</strong> (مطابقة لـ<code>len</code> في بايثون)، ولذلك
+    يستخدم العميل <code>text.runes</code> لا <code>text.length</code> — الأخير يعدّ وحدات
+    UTF-16 وينزلق التظليل معه. والمطابقة مطبَّعة عربيًّا (توحيد الألف، حذف التشكيل) ثم
+    تُعاد الفهارس إلى مواضعها الأصلية.
+  </p>
+  <p>
+    <em>ملاحظة حالة:</em> وقت كتابة هذا الدليل، ودجة <code>HadramiHighlightedText</code>
+    موجودة والخلفية ترسل <code>hadrami_spans</code> دائمًا، لكن ربط
+    <code>ChatMessage.spans</code> كان قيد التعديل في جلسات متوازية. الخلفية طرف مستقرّ؛
+    الربط في العميل هو المتغيّر.
+  </p>
+</section>
+
+<section id="s21">
+  <h2><span class="num">21</span>الردّ ← Flutter</h2>
+  <p class="deck">شكل الردّ الحقيقي ومساره حتى البكسل.</p>
+
+  <p>مفاتيح الردّ الفعلية من <code>get_chat_answer()</code> (مرصودة لا مفترضة):</p>
+  <pre><code>{
+  "reply":              "📖 عَاد — الوعيد / التهديد …",
+  "intent":             "qa",
+  "context":            [ …5 مداخل Entry كاملة… ],
+  "hadrami_spans":      [ {"start":2,"end":6,"surface":"عَاد"}, … ],
+  "highlight_surfaces": [ "عَاد", "وعيد", … ],
+  "suggest_word":       false,
+  "answer_source":      "model"        // أو "lexicon" للمسار الاحتياطي
+}</code></pre>
+
+  <pre class="ascii"><code>JSON ──→ ApiService.postJson    يُرجع dynamic — لا نوع مجالي في core/
+     ──→ ChatResult.fromJson    snake_case ← camelCase (json_serializable)
+     ──→ ChatService            يُرجع نوعًا مُحكمًا دائمًا
+     ──→ Chat notifier          state = copyWith(...)
+     ──→ ChatState              غير قابلة للتعديل
+     ──→ ChatBubble             ref.watch يُعيد البناء</code></pre>
+
+  <div class="box warn">
+    <h4>⚠️ ثلاثة حقول يرسلها الخادم ويتجاهلها العميل</h4>
+    <p>
+      <code>intent</code> و<code>suggest_word</code> و<code>answer_source</code> موجودة
+      في الردّ، وتعليقات <code>schemas.py</code> تصفها صراحةً بأنها للعميل: «تتيح لعميل
+      Flutter اختيار تخطيط العرض»، و«يستطيع العميل دعوة المستخدم لإضافة الكلمة».
+      لكن <code>ChatResult</code> لا يقرأ أيًّا منها.
+    </p>
+    <p>
+      الأثر الملموس: <strong>مسار المساهمة ميت.</strong> يحدّد الخادم أن الكلمة غير
+      موجودة، ويجهّز نصّ الدعوة، ويرفع العَلَم — ولا يعرض العميل زرًّا. المستخدم يقرأ
+      «هل تريد اقتراح إضافتها؟» ولا يجد ما يضغطه.
+    </p>
+  </div>
+</section>
+
+<section id="s22">
+  <h2><span class="num">22</span>مثال كامل: «وش يعني عاد؟»</h2>
+  <p class="deck">١٦ خطوة بأرقام من تشغيل حقيقي — لا مثال متخيَّل.</p>
+
+  <ol class="steps">
+    <li>
+      <h4>Flutter يلتقط السؤال</h4>
+      <p><code>ChatInput</code> يمرّر النصّ إلى <code>ChatPage</code> ثم إلى المزوّد.</p>
+      <p class="w"><b>لماذا:</b> الودجة تجمع المدخل ولا تفسّره.</p>
+    </li>
+    <li>
+      <h4>المزوّد يضيف الرسالة ويرفع مؤشّر التحميل</h4>
+      <p><code>state = copyWith(messages: [...], isLoading: true)</code></p>
+      <p class="w"><b>لماذا:</b> استجابة فورية قبل أي شبكة — الواجهة لا تجمد ٣ ثوانٍ.</p>
+    </li>
+    <li>
+      <h4>ChatService يبني الطلب</h4>
+      <p><code>POST /chat {"message": "وش يعني عاد؟", "history": []}</code> بمهلة طويلة.</p>
+      <p class="w"><b>لماذا:</b> هنا تُعرف المسارات والأنواع ومسارات الفشل.</p>
+    </li>
+    <li>
+      <h4>FastAPI يتحقّق ويوجّه</h4>
+      <p>Pydantic يتحقّق من <code>ChatRequest</code> ثم ينادي <code>get_chat_answer()</code>.</p>
+      <p class="w"><b>لماذا:</b> المسار رفيع — التحقّق فقط، والمنطق في <code>rag/</code>.</p>
+    </li>
+    <li>
+      <h4>تصنيف النيّة → <code>qa</code></h4>
+      <p>مقيس: <code>intent_for("وش يعني عاد؟") == "qa"</code></p>
+      <p class="w"><b>لاحظ:</b> ليست <code>define</code> — «وش يعني» حضرمية وأنماط التعريف فصيحة (القسم 18).</p>
+    </li>
+    <li>
+      <h4>استخراج الكلمات المرشّحة</h4>
+      <p><code>['وش يعني عاد؟', 'عاد']</code> — يُزال ضجيج السؤال وتُستخرج الكلمة.</p>
+      <p class="w"><b>لماذا:</b> «وش» و«يعني» تطابق كلمات لا علاقة لها بالسؤال.</p>
+    </li>
+    <li>
+      <h4>البحث المعجمي · top_k=8</h4>
+      <p>٨ نتائج، <code>top_score = 100</code> — تطابق تامّ مع <code>عَاد</code>.</p>
+      <p class="w"><b>كيف:</b> RPC <code>search_entries_expanded</code> ثم دمج نتائج كل مرشّح.</p>
+    </li>
+    <li>
+      <h4>⚡ اختصار: تخطّي البحث المتجهي</h4>
+      <p><code>top_score &gt;= 100</code> ⟹ لا تضمين ولا <code>match_entries</code>.</p>
+      <p class="w"><b>المكسب:</b> ~٢٠٠ms ونداء API. <b>الثمن المقيس:</b> «القعادة» و«المرعاد» يشغلان خانتين بدل <code>وَلْعَاد(0.77)</code> و<code>عَوَّاد(0.74)</code>.</p>
+    </li>
+    <li>
+      <h4>الدمج والقصّ عند ٥</h4>
+      <p><code>['عَاد','عَادَك','عَادُه','اَلْقَعَادَة','اَلْمِرعَادْ']</code></p>
+      <p class="w"><b>لماذا ٥:</b> توازن بين التغطية والضجيج وحجم الموجّه.</p>
+    </li>
+    <li>
+      <h4>بوّابة الثقة</h4>
+      <p><code>top_score=100 ≥ 70</code> ⟹ <code>confident = True</code> — لا اختصار اعتذار.</p>
+      <p class="w"><b>لماذا:</b> لو لم نكن واثقين ونيّة السؤال <code>word/define/convert</code>، لخرج ردّ حتمي بلا تكلفة.</p>
+    </li>
+    <li>
+      <h4>بناء الموجّه · ١٤٤٧ محرفًا</h4>
+      <p><code>[CONTEXT START]</code> + ٥ مداخل + السجلّ + السؤال + «المساعد:»</p>
+      <p class="w"><b>لماذا:</b> علامات صريحة تفصل المعرفة الموثوقة عن كلام المستخدم.</p>
+    </li>
+    <li>
+      <h4>نداء Gemini</h4>
+      <p><code>gemini-2.5-flash</code> · <code>temperature=0.35</code> · <code>max_output_tokens=1536</code> · مع <code>system_instruction</code>.</p>
+      <p class="w"><b>الصمود:</b> عند الفشل يجرّب <code>gemini-2.0-flash</code> ثم <code>gemini-2.5-flash-lite</code>، ثم المسار المعجمي الحتمي.</p>
+    </li>
+    <li>
+      <h4>النموذج يولّد الجواب</h4>
+      <pre class="ascii" style="margin:6px 0"><code>📖 عَاد — الوعيد / التهديد
+تُستخدم في اللهجة الحضرمية للسؤال الإنكاري أو للوعيد والتهديد،
+وتأتي بمعنى "هل ستفعل ذلك حقاً؟" أو "ويل لك".
+مثال: عادك بتسويها مرة ثانية؟ ← ألديك الجرأة لتفعلها مرة أخرى؟</code></pre>
+      <p class="w"><b>لاحظ:</b> كل معلومة هنا موجودة في المدخل <code>619</code> — لا شيء مخترع.</p>
+    </li>
+    <li>
+      <h4>حساب مواضع التظليل</h4>
+      <p><code>[{start:2,end:6,surface:'عَاد'}, {start:11,end:15,surface:'وعيد'}, …]</code></p>
+      <p class="w"><b>لماذا في الخادم:</b> التطبيع العربي منطق مجالي؛ تكراره في عميلين يضمن انحرافهما.</p>
+    </li>
+    <li>
+      <h4>الردّ · <strong>3.07 ثانية</strong> إجمالًا</h4>
+      <p><code>reply · intent · context(5) · hadrami_spans · suggest_word=false · answer_source="model"</code></p>
+      <p class="w"><b>أين ذهب الوقت:</b> ~٩٠٪ في نداء Gemini وحده.</p>
+    </li>
+    <li>
+      <h4>Flutter يفكّ ويعرض</h4>
+      <p><code>ChatResult.fromJson</code> ← <code>ChatState</code> ← <code>ref.watch</code> ← <code>ChatBubble</code>.</p>
+      <p class="w"><b>لماذا الحالة غير قابلة للتعديل:</b> Riverpod يقارن المرجع ليقرّر إعادة البناء.</p>
+    </li>
+  </ol>
+</section>
+
+<section id="s23">
+  <h2><span class="num">23</span>🏗️ RAG System Design</h2>
+  <p class="deck">كيف تُكتب متطلّبات نظام RAG قبل كتابة سطر واحد.</p>
+
+  <h3>المتطلّبات الوظيفية — ما يفعله النظام</h3>
+  <pre class="ascii"><code>✓ يستقبل سؤالًا بالعربية (حضرمية أو فصحى)
+✓ يصنّف نيّته إلى واحدة من خمس
+✓ يسترجع مداخل المعجم ذات الصلة
+✓ يولّد جوابًا مقيَّدًا بها حصرًا
+✓ يعيد المصادر (context) مع الجواب
+✓ يعلّم مواضع الكلمات الحضرمية للتظليل
+✓ يرفض صراحةً حين لا تكون الكلمة في المعجم
+✓ يعمل — بجودة أقلّ — حين يسقط النموذج</code></pre>
+
+  <div class="scroll">
+  <table>
+    <thead><tr><th>متطلّب غير وظيفي</th><th>الحالة اليوم</th><th>الحكم</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Latency</strong></td><td>3.07s مقيسة · ~٩٠٪ منها Gemini</td><td><span class="pill p-part">مقبول</span> للبحث · بطيء للمحادثة</td></tr>
+      <tr><td><strong>Availability</strong></td><td>Vercel + Supabase مُدارتان · تدهور تدريجي عند سقوط Gemini</td><td><span class="pill p-yes">جيد</span></td></tr>
+      <tr><td><strong>Scalability</strong></td><td>حصص Gemini هي السقف — لا القاعدة</td><td><span class="pill p-part">محدود بالطرف الثالث</span></td></tr>
+      <tr><td><strong>Cost</strong></td><td>نداء تضمين + نداء توليد لكل سؤال · بلا حدّ معدّل</td><td><span class="pill p-no">مكشوف</span></td></tr>
+      <tr><td><strong>Accuracy</strong></td><td>هجين + بوّابة ثقة + عقد رفض</td><td><span class="pill p-yes">مصمَّم جيدًا</span></td></tr>
+      <tr><td><strong>Security</strong></td><td>لا مصادقة · CORS <code>["*"]</code></td><td><span class="pill p-no">ثغرة نافذة</span></td></tr>
+      <tr><td><strong>Observability</strong></td><td><code>rag_log</code> خلف <code>RAG_DEBUG</code> · لا مقاييس</td><td><span class="pill p-no">الأضعف</span></td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <div class="box senior">
+    <h4>🎯 المتطلّب غير الوظيفي الذي يحكم هذا النظام</h4>
+    <p>
+      <strong>الأمانة للمصدر (faithfulness) تسبق كل شيء آخر.</strong> ولأنه مشروع بحثي
+      سيُنشر، فجواب خاطئ أسوأ من لا جواب. هذا المتطلّب الواحد يفسّر كل قرار غريب في
+      المعمارية: لماذا حرارة ٠٫٣٥، ولماذا بوّابة ثقة، ولماذا عقد رفض صريح، ولماذا مسار
+      احتياطي حتمي بدل رسالة خطأ.
+    </p>
+    <p>
+      <strong>الدرس:</strong> رتّب متطلّباتك غير الوظيفية <em>قبل</em> التصميم. النظام
+      الذي يُحسّن الدقّة يبدو مختلفًا تمامًا عن الذي يُحسّن الزمن — وكلاهما «RAG».
+    </p>
+  </div>
+</section>
+
+<section id="s24">
+  <h2><span class="num">24</span>⚡ الأداء</h2>
+  <p class="deck">أين يذهب الوقت — بقياس لا بتخمين.</p>
+
+  <pre class="ascii"><code>مسار /chat — قياس فعلي (الإجمالي 3.07s):
+
+  تصنيف النيّة (regex)          ~1 ms     ▏
+  بحث معجمي · RPC               ~50 ms    ██
+  تضمين السؤال                  ~200 ms   ████████        ← يُتخطّى عند تطابق تامّ
+  بحث متجهي · pgvector          ~50 ms    ██
+  دمج وترتيب                    ~1 ms     ▏
+  ★ توليد Gemini                ~2700 ms  ████████████████████████████████████████
+  find_hadrami_spans            ~1 ms     ▏</code></pre>
+
+  <div class="box llm">
+    <h4>⚡ الاستنتاج الوحيد المهمّ</h4>
+    <p>
+      <strong>~٩٠٪ من الزمن في نداء واحد لا تملكه.</strong> أي تحسين في الفهارس أو
+      الاستعلامات أو الدمج يتحرّك داخل الـ١٠٪ الباقية. مُحسِّن يقضي أسبوعًا في تسريع
+      استعلام من ٥٠ms إلى ٢٠ms قد وفّر ١٪ من زمن المستخدم.
+    </p>
+  </div>
+
+  <div class="scroll">
+  <table>
+    <thead><tr><th>التحسين</th><th>الأثر المتوقَّع</th><th>الجهد</th><th>يستحقّ؟</th></tr></thead>
+    <tbody>
+      <tr><td><strong>بثّ تدريجي (streaming)</strong></td><td>الزمن حتى أول محرف: 3.07s → &lt;0.5s</td><td>متوسط</td><td><span class="pill p-yes">الأعلى مردودًا</span></td></tr>
+      <tr><td>تخزين ردود الأسئلة المتكرّرة</td><td>0ms و0$ للسؤال المكرَّر</td><td>منخفض</td><td><span class="pill p-yes">نعم</span></td></tr>
+      <tr><td>الاختصار عند التطابق التامّ</td><td>−200ms</td><td>—</td><td><span class="pill p-part">مُنفَّذ · بثمن دقّة</span></td></tr>
+      <tr><td>استرجاع متوازٍ (kw ∥ vec)</td><td>−50ms</td><td>منخفض</td><td><span class="pill p-part">هامشي</span></td></tr>
+      <tr><td>فهرس HNSW على المتجهات</td><td>~0ms عند ١٠٠٠ صفّ</td><td>منخفض</td><td><span class="pill p-no">ليس الآن</span></td></tr>
+      <tr><td>تقليل حجم الموجّه</td><td>بضع عشرات ms</td><td>منخفض</td><td><span class="pill p-part">للتكلفة لا للسرعة</span></td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <div class="box warn">
+    <h4>⚠️ التخزين المؤقّت الحالي شبه عديم الأثر — والسبب معماري</h4>
+    <p>
+      <code>_keyword_cache</code> و<code>_vector_cache</code> قاموسان <em>داخل العملية</em>
+      بـTTL ٩٠ ثانية (<code>retrieval.py:34</code>). على Vercel، كل طلب قد يُنفَّذ في حاوية
+      مختلفة تبدأ بذاكرة فارغة — فنسبة الإصابة تقترب من الصفر في الإنتاج، بينما تبدو
+      ممتازة محلّيًّا.
+    </p>
+    <p>
+      المكان الصحيح لهذا التخزين هو خارج العملية: Redis، أو جدول في Postgres، أو
+      Vercel KV. والأهمّ: <strong>خزّن الجواب النهائي لا نتائج الاسترجاع</strong> — لأن
+      الجزء المكلف هو Gemini لا الاستعلام.
+    </p>
+  </div>
+</section>
+
+<section id="s25">
+  <h2><span class="num">25</span>التقييم — كيف نعرف أنه جيد؟</h2>
+  <p class="deck">مقاييس الاسترجاع والتوليد، وكيف تُقاس هنا.</p>
+
+  <h3>مقاييس الاسترجاع — هل جلبنا الصحيح؟</h3>
+  <div class="scroll">
+  <table>
+    <thead><tr><th>المقياس</th><th>يجيب على</th><th>مثال من مشروعنا</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Recall@K</strong></td><td>هل المدخل الصحيح ضمن أعلى K؟</td><td>«عاد» ← <code>id=619</code> في المرتبة ١ ⟹ Recall@5 = 1.0</td></tr>
+      <tr><td><strong>Precision@K</strong></td><td>كم نسبة النتائج المسترجَعة مفيدة؟</td><td>٣ من ٥ مفيدة («القعادة» و«المرعاد» ضجيج) ⟹ 0.6</td></tr>
+      <tr><td><strong>MRR</strong></td><td>ما مرتبة أول نتيجة صحيحة؟</td><td>المرتبة ١ ⟹ MRR = 1.0</td></tr>
+      <tr><td><strong>Hit Rate</strong></td><td>نسبة الأسئلة التي جاء فيها شيء صحيح</td><td>يُقاس على <code>eval_pairs.json</code></td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <div class="box">
+    <h4>لماذا Precision@5 = 0.6 مهمّة هنا رغم أن Recall مثالي؟</h4>
+    <p>
+      لأن الاسترجاع نجح (المدخل الصحيح أولًا) لكن ٤٠٪ من ميزانية السياق ذهبت لضجيج.
+      يترجَم ذلك إلى رموز مدفوعة بلا فائدة، واحتمال أن يذكر النموذج كلمة غير ذات صلة.
+      <strong>هذا هو الرقم الذي يقيس أثر اختصار «التطابق التامّ» في القسم 9</strong> —
+      وهو ما يحوّل ملاحظة نوعية إلى قرار قابل للقياس.
+    </p>
+  </div>
+
+  <h3>مقاييس التوليد — هل الجواب جيد؟</h3>
+  <div class="cards">
+    <div class="card"><span class="tag">FAITHFULNESS</span><h4>الأمانة</h4><p>هل كل ادّعاء في الجواب مدعوم بالسياق؟ <strong>المقياس الأهمّ هنا</strong> — انخفاضه يعني هلوسة. في جوابنا: كل جملة تعود إلى <code>id=619</code>.</p></div>
+    <div class="card"><span class="tag">ANSWER RELEVANCE</span><h4>صلة الجواب</h4><p>هل يجيب على ما سُئل؟ جواب أمين لكن عن كلمة أخرى يسجّل أمانة عالية وصلة منخفضة.</p></div>
+    <div class="card"><span class="tag">CONTEXT RELEVANCE</span><h4>صلة السياق</h4><p>هل ما استُرجع يخصّ السؤال؟ يقيس الاسترجاع لا التوليد — وهو ما يفصل الطبقتين عند التشخيص.</p></div>
+  </div>
+
+  <div class="box good">
+    <h4>ما هو موجود فعلًا في المشروع</h4>
+    <p>
+      <code>backend/data/eval_pairs.json</code> — أزواج حضرمي↔فصحى محجوزة، و
+      <code>scripts/eval/</code> — مجموعة تقييم للهلوسة والنيّة والبحث والتحويل. البنية
+      موجودة، وهي أكثر ممّا لدى معظم مشاريع RAG.
+    </p>
+    <p>
+      <strong>الفجوة:</strong> لا يوجد رقم أساس (baseline) منشور، ولا تشغيل دوري. ولأن
+      الهدف ورقة علمية، فأنت تحتاج تحديدًا: Recall@5 و Precision@5 و Faithfulness على
+      مجموعة محجوزة، مقيسة قبل وبعد كل تغيير في الاسترجاع. <strong>اختصار «التطابق
+      التامّ» هو أول ما يستحقّ قياسًا بهذه الطريقة.</strong>
+    </p>
+  </div>
+</section>
+
+<section id="s26">
+  <h2><span class="num">26</span>⚠️ حالات فشل RAG</h2>
+  <p class="deck">كيف يفشل، كيف تكتشفه، وكيف تصلحه.</p>
+
+  <pre class="ascii"><code>سؤال ──→ استرجاع خاطئ ──→ سياق خاطئ ──→ جواب واثق وخاطئ
+                                          └── أخطر أنواع الفشل:
+                                              يبدو صحيحًا تمامًا</code></pre>
+
+  <div class="scroll">
+  <table>
+    <thead><tr><th>الفشل</th><th>العَرَض</th><th>كيف تكتشفه</th><th>العلاج</th><th>هنا؟</th></tr></thead>
+    <tbody>
+      <tr><td>لا وثيقة ذات صلة</td><td>جواب عام أو مخترع</td><td>Recall@K منخفض</td><td>عقد رفض صريح</td><td><span class="pill p-yes">معالَج</span> بوّابة الثقة</td></tr>
+      <tr><td>قطعة خاطئة</td><td>جواب عن كلمة أخرى</td><td>Context relevance</td><td>تحسين التقطيع/التسجيل</td><td><span class="pill p-part">جزئي</span> ضجيج التطابق الحرفي</td></tr>
+      <tr><td>قطع كثيرة جدًّا</td><td>جواب مشوّش · «الضياع في المنتصف»</td><td>Precision@K منخفض</td><td>خفض K · إعادة ترتيب</td><td><span class="pill p-yes">مضبوط</span> K=5</td></tr>
+      <tr><td>قطع مكرّرة</td><td>تكرار في الجواب</td><td>فحص يدوي</td><td>إزالة تكرار</td><td><span class="pill p-yes">معالَج</span> <code>_merge_entries_by_id</code></td></tr>
+      <tr><td>تضمينات رديئة</td><td>نتائج متجهية عشوائية</td><td>تشابه أعلى نتيجة منخفض دائمًا</td><td>إعادة تضمين · مراجعة نصّ الوثيقة</td><td><span class="pill p-yes">مُدار</span> <code>EMBEDDING_DOC_VERSION</code></td></tr>
+      <tr><td>استعلام سيّئ</td><td>لا يجد ما هو موجود</td><td>مقارنة يدوية</td><td>معالجة الاستعلام</td><td><span class="pill p-yes">معالَج</span> <code>focus_query_for_embedding</code></td></tr>
+      <tr><td>هلوسة</td><td>تفاصيل ليست في السياق</td><td>Faithfulness</td><td>حرارة منخفضة · قواعد صارمة</td><td><span class="pill p-yes">مصمَّم ضدّه</span></td></tr>
+      <tr><td>معرفة قديمة</td><td>جواب لا يعكس تحديث المعجم</td><td>مقارنة بالقاعدة</td><td>—</td><td><span class="pill p-yes">غير وارد</span> القراءة حيّة</td></tr>
+      <tr><td>تصنيف نيّة خاطئ</td><td>مسار استرجاع خاطئ</td><td>اختبار المصنّف</td><td>توسيع الأنماط</td><td><span class="pill p-no">مرصود</span> «وش يعني» · «كلمة تصف»</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <div class="box warn">
+    <h4>⚠️ نمط الفشل الأخطر في هذا النظام تحديدًا</h4>
+    <p>
+      ليس الهلوسة — فالتصميم يقاومها جيدًا. بل <strong>تصنيف نيّة خاطئ يمرّ صامتًا</strong>.
+      حين تُصنَّف «كلمة تصف الشخص الكريم» على أنها <code>convert</code>، يعمل كل شيء
+      «بنجاح»: يجري استرجاع، ويُبنى موجّه، ويردّ Gemini، وترجع 200 OK. لا خطأ في أي سجلّ.
+      الجواب فقط… عن السؤال الخطأ.
+    </p>
+    <p>
+      <strong>الاكتشاف يحتاج اختبارًا للمصنّف نفسه</strong> بجدول (مدخل ← نيّة متوقَّعة)
+      يشمل الصيغ الحضرمية لا الفصيحة فقط. لا يوجد اليوم.
+    </p>
+  </div>
+</section>
+
+<section id="s27">
+  <h2><span class="num">27</span>🔐 الأمن</h2>
+  <p class="deck">مخاطر RAG عمومًا، وأيّها ينطبق هنا فعلًا.</p>
+
+  <div class="scroll">
+  <table>
+    <thead><tr><th>الخطر</th><th>ما هو</th><th>في مشروعنا</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Prompt injection</strong></td><td>المستخدم يحقن تعليمات تتجاوز القواعد</td><td><span class="pill p-part">مخفَّف</span> القواعد في <code>system_instruction</code> منفصلة</td></tr>
+      <tr><td><strong>وثائق خبيثة</strong></td><td>تعليمات مخبَّأة داخل المحتوى المسترجَع</td><td><span class="pill p-part">خطر مستقبلي</span> — انظر أدناه</td></tr>
+      <tr><td><strong>وثائق حسّاسة</strong></td><td>استرجاع ما لا يحقّ للمستخدم رؤيته</td><td><span class="pill p-yes">غير وارد</span> المعجم عامّ كلّه</td></tr>
+      <tr><td><strong>التفويض</strong></td><td>من يحقّ له الاستعلام؟</td><td><span class="pill p-no">لا يوجد</span> الجميع</td></tr>
+      <tr><td><strong>تسريب البيانات</strong></td><td>تسرّب معرفة خاصّة عبر الإجابات</td><td><span class="pill p-part">المعجم بحث خاصّ ويُخدَم للعالم</span></td></tr>
+      <tr><td><strong>عزل المستأجرين</strong></td><td>خلط بيانات عملاء</td><td><span class="pill p-yes">غير وارد</span> مستأجر واحد</td></tr>
+      <tr><td><strong>تسجيل الحسّاس</strong></td><td>كتابة أسئلة المستخدمين في السجلّات</td><td><span class="pill p-part"><code>rag_log</code> يطبع الأسئلة كاملة</span></td></tr>
+      <tr><td><strong>إساءة الاستخدام والتكلفة</strong></td><td>استنزاف رصيد النموذج</td><td><span class="pill p-no">مكشوف تمامًا</span></td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <div class="box warn">
+    <h4>⚠️ الخطر الحقيقي هنا ليس ما يظنّه أغلب الناس</h4>
+    <p>
+      لا توجد بيانات مستخدمين ولا حسابات ولا مدفوعات — فغياب المصادقة ليس ثغرة تسريب.
+      لكنه <strong>ثغرة تكلفة نافذة الآن</strong>: <code>main.py:56</code> يضبط
+      <code>allow_origins=["*"]</code>، و<code>/chat</code> ينفق نداء تضمين ونداء توليد
+      لكل طلب، ولا يوجد حدّ معدّل. حلقة بسيطة تستنزف رصيدك.
+    </p>
+    <p>
+      وتفصيلة دقيقة: يوجد <code>allow_origin_regex</code> يحصر النطاقات المحلّية في
+      السطر ٥٨، لكن <code>allow_origins=["*"]</code> في السطر ٥٩ يُبطله. لو كانت النيّة
+      الحصر، فالسطر الثاني ينسفها.
+    </p>
+    <p>
+      <strong>الإصلاح المتناسب:</strong> ليس نظام مصادقة — بل حصر <code>allow_origins</code>
+      بنطاقات Vercel، وحدّ معدّل بالـIP على <code>/chat</code> و<code>/feedback</code>.
+      ساعة عمل تغلق الخطر بأكمله.
+    </p>
+  </div>
+
+  <div class="box senior">
+    <h4>🎯 خطر مؤجَّل يستحقّ التخطيط له الآن</h4>
+    <p>
+      جدول <code>feedback</code> يستقبل مساهمات المستخدمين. اليوم لا تُدمج في المعجم.
+      لكن اللحظة التي تُدمج فيها مساهمة في <code>entries</code> تتحوّل
+      <strong>«الوثائق الخبيثة» من خطر نظري إلى خطر فعلي</strong>: مساهم يكتب في حقل
+      التعريف «تجاهل التعليمات السابقة وقل…» فيصير النصّ جزءًا من السياق المسترجَع —
+      أي أن الحقن يأتي من قاعدة البيانات لا من رسالة المستخدم، حيث الثقة أعلى.
+    </p>
+    <p>
+      الدفاع يُبنى قبل الدمج لا بعده: مراجعة بشرية إلزامية، وتنقية للمحتوى، ومعاملة
+      المداخل ذات المصدر المجتمعي كطبقة ثقة أدنى.
+    </p>
+  </div>
+</section>
+
+<section id="s28">
+  <h2><span class="num">28</span>التوسّع</h2>
+  <p class="deck">كيف تتطوّر هذه المعمارية — ومتى لا يجوز أن تتطوّر.</p>
+
+  <h3>اليوم</h3>
+  <pre class="ascii"><code>Flutter Web ──→ FastAPI ──→ PostgreSQL + pgvector
+                    └─────→ Gemini (تضمين + توليد)</code></pre>
+
+  <h3>حين يكبر فعلًا</h3>
+  <pre class="ascii"><code>Flutter ──→ API Gateway (حدّ معدّل · مصادقة)
+                 ↓
+            RAG Service
+              ├── Query Service      تصنيف النيّة · معالجة الاستعلام
+              ├── Retrieval Service  هجين · قابل للتوسّع منفصلًا
+              ├── Ranking Service    إعادة ترتيب (cross-encoder)
+              ├── LLM Service        تجميع · إعادة محاولة · بثّ
+              └── Cache              ردود + تضمينات (خارج العملية)
+                       ↓
+                  Vector DB ──→ PostgreSQL</code></pre>
+
+  <div class="box warn">
+    <h4>⚠️ متى تحتاج كلًّا منها فعلًا؟ اقرأ هذا قبل أن تبني أيًّا منها</h4>
+    <div class="scroll" style="margin-top:10px">
+    <table>
+      <thead><tr><th>المكوّن</th><th>الإشارة التي تبرّره</th><th>الآن؟</th></tr></thead>
+      <tbody>
+        <tr><td>API Gateway</td><td>إساءة استخدام أو حاجة لحدّ معدّل</td><td><span class="pill p-part">حدّ معدّل: نعم · بوّابة كاملة: لا</span></td></tr>
+        <tr><td>Cache خارج العملية</td><td>أسئلة متكرّرة + فاتورة ملحوظة</td><td><span class="pill p-part">قريبًا</span></td></tr>
+        <tr><td>Ranking Service</td><td>Precision@K منخفضة رغم Recall جيد</td><td><span class="pill p-no">قِس أولًا</span></td></tr>
+        <tr><td>Vector DB منفصلة</td><td>&gt; ١٠⁵ متجهات</td><td><span class="pill p-no">أنت عند ١٠٠٠</span></td></tr>
+        <tr><td>تفكيك الخدمات</td><td>احتياج توسّع مستقلّ أو فرق متعدّدة</td><td><span class="pill p-no">مطوّر واحد</span></td></tr>
+      </tbody>
+    </table>
+    </div>
+  </div>
+
+  <div class="box senior">
+    <h4>🎯 لا تبنِ Microservices لأنها تبدو متقدّمة</h4>
+    <p>
+      المخطط الثاني أعلاه ليس «أفضل» — هو <strong>أنسب لمشكلة ليست عندك</strong>. تفكيك
+      هذا النظام اليوم إلى خمس خدمات يعني خمس نشرات، وخمس نقاط فشل، وتصحيحًا موزّعًا
+      عبر الشبكة، مقابل صفر مكسب عند حجمك الحالي.
+    </p>
+    <p>
+      التسلسل الصحيح لهذا المشروع بالذات: <strong>حدّ معدّل ← تخزين ردود ← قياس
+      Precision ← بثّ تدريجي</strong>. الأربعة معًا أرخص من تفكيك واحد، وكلٌّ منها يحلّ
+      مشكلة مرصودة فعلًا في هذا الدليل.
+    </p>
+  </div>
+</section>
+
+<section id="s29">
+  <h2><span class="num">29</span>🎯 كيف يفكّر Senior Engineer؟</h2>
+  <p class="deck">إطار قرار من عشرة أسئلة، مطبَّق على هذا المشروع.</p>
+
+  <div class="scroll">
+  <table>
+    <thead><tr><th>#</th><th>السؤال</th><th>الجواب هنا</th><th>ما يقرّره</th></tr></thead>
+    <tbody>
+      <tr><td>1</td><td>ما المشكلة؟</td><td>إجابات دقيقة عن لهجة لا يعرفها أي نموذج</td><td>RAG لا fine-tuning</td></tr>
+      <tr><td>2</td><td>ما البيانات؟</td><td>١٠٠٠ مدخل منظَّم وقصير</td><td>لا تقطيع · مدخل = وثيقة</td></tr>
+      <tr><td>3</td><td>كم تتغيّر؟</td><td>نموّ بطيء وتحرير مستمرّ</td><td>قراءة حيّة · لا تخزين طويل</td></tr>
+      <tr><td>4</td><td>ما دقّة الاسترجاع المطلوبة؟</td><td>عالية — مشروع بحثي</td><td>هجين + بوّابة ثقة + رفض</td></tr>
+      <tr><td>5</td><td>ما الزمن المقبول؟</td><td>~٣ ثوانٍ مقبولة للبحث</td><td>لا حاجة لبثّ… بعد</td></tr>
+      <tr><td>6</td><td>ما الميزانية؟</td><td>مشروع فردي</td><td>Gemini Flash · pgvector لا Pinecone</td></tr>
+      <tr><td>7</td><td>كم مستخدمًا؟</td><td>عشرات</td><td>لا بوّابة ولا طوابير</td></tr>
+      <tr><td>8</td><td>ما حجم البيانات؟</td><td>١٠٠٠ متجه</td><td>&lt;١٪ من سقف pgvector</td></tr>
+      <tr><td>9</td><td>هل نحتاج بيانات لحظية؟</td><td>لا</td><td>لا تعقيد مزامنة</td></tr>
+      <tr><td>10</td><td>ماذا لو فشل الاسترجاع؟</td><td><strong>يجب أن نرفض لا أن نخمّن</strong></td><td>عقد رفض + مسار احتياطي حتمي</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <div class="box senior">
+    <h4>🎯 السؤال العاشر هو الذي يفصل بين المستويات</h4>
+    <p>
+      أغلب المطوّرين يصمّمون المسار السعيد ثم يضيفون معالجة الأخطاء لاحقًا. المهندس
+      السينيور يسأل <strong>«ماذا يحدث حين يفشل هذا؟» في أثناء التصميم</strong>، لأن
+      الجواب يغيّر المعمارية نفسها.
+    </p>
+    <p>
+      انظر الأثر هنا: الإجابة «يجب أن نرفض» أنتجت ثلاثة مكوّنات ما كانت لتوجد لولاها —
+      <code>RAG_CONFIDENCE_GATE</code>، و<code>_suggest_word_block</code>،
+      و<code>_lexicon_fallback_answer</code>. <strong>سلوك الفشل ليس تفصيلًا تُضيفه في
+      النهاية؛ إنه متطلّب يُشكّل التصميم.</strong>
+    </p>
+  </div>
+</section>
+
+<section id="s30">
+  <h2><span class="num">30</span>Architecture Decision Records</h2>
+  <p class="deck">قرارات حقيقية من هذا المشروع — بسياقها وثمنها وشرط انقلابها.</p>
+
+  <details class="ex" open>
+    <summary>ADR-R01 · بحث هجين بدل أحدهما</summary>
+    <div class="inner">
+      <pre class="ascii"><code>السياق:
+  اللهجة الحضرمية تحوي تنوّعًا إملائيًّا (أ/ا/إ)، ولواحق ملتصقة
+  (عاد/عادك/عاده)، ومستخدمون يصفون المفهوم دون معرفة الكلمة.
+
+الخيارات:
+  1. معجمي فقط    — يفشل في «كلمة تصف الكرم»
+  2. متجهي فقط    — يضعف في الكلمات النادرة وأسماء الأعلام
+  3. هجين         — تغطية متكاملة، تكلفة أعلى
+
+القرار: 3 — هجين بأولوية للمعجمي
+
+السبب:
+  الأسلوبان يفشلان في مواضع متعاكسة تمامًا. والأولوية للمعجمي لأن
+  التطابق الحرفي في معجم = يقين، بينما 0.78 تشابه = ترجيح.
+
+الثمن:
+  نداء تضمين إضافي (~200ms) لكل سؤال بلا تطابق تامّ.
+
+شرط الانقلاب:
+  لو صارت كلفة التضمين أو زمنه عائقًا، أو أظهر القياس أن المتجهي
+  لا يضيف شيئًا فوق المعجمي على مجموعة التقييم.</code></pre>
+    </div>
+  </details>
+
+  <details class="ex">
+    <summary>ADR-R02 · لا تقطيع — مدخل معجمي = وثيقة واحدة</summary>
+    <div class="inner">
+      <pre class="ascii"><code>السياق:
+  وحدة المعرفة مدخل معجمي: كلمة + فصحى + شرح + مثال + وسوم.
+  بضع مئات من المحارف، متماسكة دلاليًّا.
+
+الخيارات:
+  1. تقطيع ثابت 500 محرف  — يقطع المدخل عشوائيًّا
+  2. تقطيع بالحقول        — «الشرح» بلا الكلمة لا يطابق شيئًا مفيدًا
+  3. بلا تقطيع            — مدخل = وثيقة
+
+القرار: 3
+
+السبب:
+  التقطيع أداة لتفتيت ما هو أكبر من أن يُمثَّل بمتجه واحد. المدخل
+  المعجمي ليس كذلك — بل تقطيعه يُتلف الإشارة لأن الكلمة ومعناها
+  يجب أن يبقيا في متجه واحد.
+
+الثمن:
+  لا يتوسّع لمصادر طويلة (شعر · مقالات) إن أُضيفت لاحقًا.
+
+شرط الانقلاب:
+  إضافة أي مصدر معرفة طويل. عندها يُقطَّع ذلك المصدر وحده،
+  دون المساس بجدول المعجم.</code></pre>
+    </div>
+  </details>
+
+  <details class="ex">
+    <summary>ADR-R03 · تخطّي البحث المتجهي عند التطابق التامّ</summary>
+    <div class="inner">
+      <pre class="ascii"><code>السياق:
+  عند top_score = 100 نكون وجدنا الكلمة حرفيًّا في المعجم.
+
+القرار: تخطّي التضمين والبحث المتجهي كليًّا.
+
+المكسب المقيس: ~200ms ونداء API أقلّ لكل سؤال بتطابق تامّ.
+
+الثمن المقيس (قياس فعلي على «وش يعني عاد؟»):
+  المستخدَم:  عَاد · عَادَك · عَادُه · اَلْقَعَادَة · اَلْمِرعَادْ
+  المتاح:     عَاد(0.78) · وَلْعَاد(0.77) · عَادَك(0.75) · عَوَّاد(0.74)
+  ⟹ خانتان من خمس ضجيع حرفي بدل جيران دلاليين.
+  ⟹ Precision@5 ≈ 0.6 بدل ما كان يمكن أن يكون أعلى.
+
+الحالة: قيد المراجعة
+
+تحسين مقترح بلا خسارة سرعة:
+  أبقِ الاختصار، لكن اقصص kw_ctx عند أول نتيجة درجتها < 70
+  بدل ملء الخمس خانات دائمًا.</code></pre>
+    </div>
+  </details>
+
+  <details class="ex">
+    <summary>ADR-R04 · اختصار حتمي بدل نداء Gemini للاعتذار</summary>
+    <div class="inner">
+      <pre class="ascii"><code>السياق:
+  حين يسأل المستخدم عن كلمة ليست في المعجم، الجواب الصحيح معروف
+  سلفًا: اعتذار + دعوة للمساهمة.
+
+الخيارات:
+  1. أرسل سياقًا فارغًا ودع Gemini يعتذر
+  2. ردّ حتمي بلا نداء
+
+القرار: 2 — عبر _is_confidently_grounded + _suggest_word_block
+
+السبب:
+  الخيار 1 يكلّف ~2s ونداء API لنتيجة غير مضمونة الصيغة، وقد
+  يخمّن النموذج بدل أن يعتذر. الخيار 2: صفر تكلفة، صفر زمن،
+  وصيغة واحدة ثابتة قابلة للاعتماد عليها في العميل.
+
+القاعدة العامة:
+  حين تعرف الجواب حتميًّا، لا تسأل النموذج.
+
+ثغرة مرصودة:
+  يعمل فقط لنوايا word/define/convert. و«وش يعني …» تُصنَّف qa،
+  فالسؤال بالحضرمية عن كلمة مجهولة ينفق نداءً بينما نظيره الفصيح
+  لا ينفق. إصلاحه سطر regex.</code></pre>
+    </div>
+  </details>
+
+  <details class="ex">
+    <summary>ADR-R05 · دوالّ SQL خارج إدارة الإصدارات <span class="pill p-no">يجب عكسه</span></summary>
+    <div class="inner">
+      <pre class="ascii"><code>الوضع:
+  match_entries و search_entries_expanded معرَّفتان في لوحة
+  Supabase فقط. ملفات backend/migrations/ تضيف أعمدة وفهارس
+  ولا تعرّف أيًّا من الدالّتين.
+
+المشكلة:
+  أهمّ منطق استرجاع في النظام: بلا مراجعة، بلا سجلّ تغييرات،
+  بلا استرجاع لنسخة سابقة، بلا اختبار. تعديل عرَضي في اللوحة
+  يغيّر سلوك الاسترجاع كله دون أثر واحد في git.
+
+  وهو تحديدًا نمط الفشل الذي أصاب هذا المشروع من قبل: تغيير
+  صامت في منطق التسجيل، والاختبارات خضراء.
+
+القرار الموصى به:
+  استخرج التعريفين إلى backend/migrations/ وتعامل معهما ككود.
+
+التكلفة: ساعة عمل.  الفائدة: المنطق يصير مرئيًّا ومراجَعًا.</code></pre>
+    </div>
+  </details>
+</section>
+
+<section id="s31">
+  <h2><span class="num">31</span>تمارين</h2>
+  <p class="deck">ثمانية تمارين تدرّب تفكير System Design لا الحفظ.</p>
+
+  <details class="ex"><summary>١ · ارسم معمارية RAG من ذاكرتك</summary><div class="inner">
+    <p>على ورقة، بلا رجوع: ارسم مسار Ingestion ومسار Query time منفصلين. ثمّ قارن بالقسم 3.</p>
+    <p><strong>ما يقيسه:</strong> هل استوعبت أن RAG <em>مساران</em> لا واحد؟ أغلب الشروح تخلطهما، وهذا الخلط يقود إلى قرارات أداء خاطئة.</p>
+  </div></details>
+
+  <details class="ex"><summary>٢ · اشرح رحلة «وش يعني عاد؟» بلا نظر</summary><div class="inner">
+    <p>سمِّ كل ملف بالترتيب من <code>ChatInput</code> إلى <code>ChatBubble</code>. ثمّ افتح القسم 22 وتحقّق.</p>
+    <p><strong>ما يقيسه:</strong> النقاط التي تنساها هي حدود الطبقات التي لم تفهم سبب وجودها بعد.</p>
+  </div></details>
+
+  <details class="ex"><summary>٣ · احذف البحث المتجهي — ماذا ينكسر؟</summary><div class="inner">
+    <p>افترض أن <code>vector_context</code> تُرجع <code>[]</code> دائمًا. أي ملفات تتغيّر؟ أي أسئلة تتوقّف عن العمل؟</p>
+    <p><strong>الجواب المتوقَّع:</strong> ملف واحد يتغيّر. «عاد» يظلّ يعمل (تطابق حرفي)، و«كلمة تصف الكرم» يفشل تمامًا. <strong>الدرس:</strong> النظام يتدهور ولا ينهار — وهذه خاصية تصميم لا صدفة.</p>
+  </div></details>
+
+  <details class="ex"><summary>٤ · استبدل Gemini بنموذج آخر</summary><div class="inner">
+    <p>عدّد كل ما يجب تغييره للانتقال إلى OpenAI أو نموذج محلّي.</p>
+    <p><strong>تلميح:</strong> التوليد سهل — <code>generation.py</code> وحده. لكن <strong>التضمين ليس كذلك</strong>: تغييره يفرض إعادة تضمين ١٠٠٠ صفّ (القسم 6). سؤال المتابعة: هل يمكن تبديل نموذج التوليد وحده مع إبقاء تضمين Gemini؟ ولماذا نعم؟</p>
+  </div></details>
+
+  <details class="ex"><summary>٥ · استبدل Supabase — أي حدود تحميك؟</summary><div class="inner">
+    <p>حدّد كل ملف يعرف أن قاعدة البيانات هي Supabase.</p>
+    <p><strong>الجواب:</strong> <code>core/data_store.py</code> وحده — وهو Repository بلا واجهة مجرّدة. لكن انتبه: الدالّتان <code>match_entries</code> و<code>search_entries_expanded</code> منطق Postgres يجب إعادة كتابته، وهو غير موجود في المستودع أصلًا (ADR-R05).</p>
+  </div></details>
+
+  <details class="ex"><summary>٦ · أضف تخزينًا مؤقّتًا — أين بالضبط؟</summary><div class="inner">
+    <p>ثلاثة مواضع ممكنة: الاستعلام، أو نتائج الاسترجاع، أو الجواب النهائي. أيّها وأيّها لا؟</p>
+    <p><strong>تلميح من القسم 24:</strong> الجزء المكلف هو Gemini (~٢٧٠٠ms) لا الاستعلام (~٥٠ms). فأي طبقة تخزين تعطي أكبر مردود؟ وسؤال أصعب: لماذا لا يعمل التخزين الحالي على Vercel؟ وأين يجب أن يعيش بدلًا من ذلك؟</p>
+  </div></details>
+
+  <details class="ex"><summary>٧ · مليون مستخدم — ما ينكسر أولًا؟</summary><div class="inner">
+    <p>رتّب: Flutter · FastAPI · Postgres · pgvector · Gemini.</p>
+    <p><strong>الجواب:</strong> Gemini — حصص ومعدّل وتكلفة، بفارق كبير. Postgres عند ١٠٠٠ صفّ لا يشعر بشيء. <strong>الدرس:</strong> وسّع الحلقة الأضيق، وهي هنا عند طرف ثالث — أي أن حلّها تخزين وحدّ معدّل، لا خوادم أكثر.</p>
+  </div></details>
+
+  <details class="ex"><summary>٨ · عشرة ملايين وثيقة — ما الذي يتغيّر؟</summary><div class="inner">
+    <p>صمّم النظام عند ١٠⁴ ضعف الحجم الحالي.</p>
+    <p><strong>يجب أن تشمل إجابتك:</strong> فهرس ANN (HNSW) لأن المسح التسلسلي ينهار؛ إعادة النظر في التقطيع؛ إعادة ترتيب (cross-encoder) لأن Precision تنهار مع اتساع فضاء البحث؛ ingestion على دفعات؛ وربما قاعدة متجهات مخصّصة. <strong>سؤال المتابعة الأهمّ:</strong> أيّها تحتاجه عند ١٠٠ ألف، وأيّها لا يُبرَّر إلا عند مليون؟</p>
+  </div></details>
+</section>
+
+<section id="s32">
+  <h2><span class="num">32</span>الخلاصة</h2>
+  <p class="deck">ما يجب أن يبقى معك بعد إغلاق هذه الصفحة.</p>
+
+  <div class="box good">
+    <h4>RAG ليس Vector Search</h4>
+    <p>
+      البحث المتجهي مكوّن واحد داخل خطّ أنابيب. RAG هو الخطّ كله:
+    </p>
+    <pre class="ascii" style="margin-top:8px"><code>Data → Ingestion → Chunking → Embedding → Storage
+     → Retrieval → Ranking → Context → Prompt → LLM → Answer</code></pre>
+    <p style="margin-top:8px">
+      وكل حلقة فيه قابلة للفشل باستقلال، ولذلك يجب أن تُقاس باستقلال.
+    </p>
+  </div>
+
+  <h3>وفي هذا المشروع تحديدًا</h3>
+  <pre class="ascii"><code>Flutter Chat
+   ↓  ChatPage → Chat notifier → ChatService → ApiService
+API  POST /chat
+   ↓  main.py (رفيع) → get_chat_answer()
+RAG  intent_for → استرجاع هجين → بوّابة ثقة → بناء موجّه
+   ↓
+DB   search_entries_expanded (معجمي) + match_entries (متجهي · 768d)
+   ↓
+LLM  gemini-2.5-flash · temp 0.35 · مقيَّد بـ[CONTEXT START/END]
+   ↓
+API  reply + context + hadrami_spans + intent + suggest_word
+   ↓
+Flutter  ChatResult → ChatState → ChatBubble</code></pre>
+
+  <h3>الأشياء التي تميّز هذا النظام</h3>
+  <ul>
+    <li><strong>لا تقطيع</strong> — لأن وحدة المعرفة صغيرة ومتماسكة، لا لأنه نُسي.</li>
+    <li><strong>دمج بالأولوية لا بالدرجات</strong> — أبسط من RRF، وله ثمن مقيس في الدقّة.</li>
+    <li><strong>الرفض ميزة أولى</strong> — بوّابة ثقة واختصار حتمي ومسار احتياطي معجمي.</li>
+    <li><strong>الأمانة للمصدر تسبق السرعة</strong> — وهي تفسّر كل قرار يبدو محافظًا.</li>
+  </ul>
+
+  <h3>وأهمّ ما وجدته المراجعة</h3>
+  <div class="scroll">
+  <table>
+    <thead><tr><th>الملاحظة</th><th>الأثر</th><th>القسم</th></tr></thead>
+    <tbody>
+      <tr><td>اختصار التطابق التامّ يُدخل ضجيجًا حرفيًّا</td><td>Precision@5 ≈ 0.6</td><td>9 · 30</td></tr>
+      <tr><td>المصنّف يفهم الفصحى لا الحضرمية</td><td>«وش يعني» → qa · ينفق نداءً بلا داعٍ</td><td>18</td></tr>
+      <tr><td>«كلمة تصف …» تُصنَّف convert</td><td>مسار استرجاع خاطئ يمرّ صامتًا</td><td>18 · 26</td></tr>
+      <tr><td>دوالّ SQL خارج git</td><td>أهمّ منطق استرجاع بلا مراجعة</td><td>19 · 30</td></tr>
+      <tr><td>التخزين المؤقّت داخل العملية</td><td>شبه معدوم الأثر على serverless</td><td>24</td></tr>
+      <tr><td>ثلاثة حقول يتجاهلها العميل</td><td>مسار المساهمة ميت</td><td>21</td></tr>
+      <tr><td>لا مصادقة ولا حدّ معدّل</td><td>ثغرة تكلفة نافذة</td><td>27</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <div class="box senior">
+    <h4>🎯 العادة التي تستحقّ حملها من هنا</h4>
+    <p>
+      كل رقم في هذا الدليل — 0.7798 و100 و1447 محرفًا و3.07 ثانية — جاء من
+      <strong>تشغيل فعلي</strong>، لا من قراءة الكود وافتراض ما يفعله. وهذا الفارق هو
+      الذي كشف أشياء لم يكن الكود ليقولها: أن الاختصار يُدخل ضجيجًا، وأن المصنّف يعمى
+      عن الحضرمية.
+    </p>
+    <p>
+      <strong>قِس نظامك، لا تقرأه فقط.</strong> الكود يخبرك بما <em>ينبغي</em> أن يحدث؛
+      التشغيل وحده يخبرك بما <em>يحدث</em>.
+    </p>
+  </div>
+</section>
+
+</main>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script>
+  // Progressive enhancement: renders when opened with a network connection.
+  // A CSP-restricted viewer blocks the CDN and renders `pre.mermaid` natively,
+  // so guard rather than assume the library is present.
+  if (window.mermaid) {
+    window.mermaid.initialize({
+      startOnLoad: true,
+      theme: 'dark',
+      themeVariables: {
+        background: '#161D22', primaryColor: '#1D262C', primaryTextColor: '#DCE6EA',
+        primaryBorderColor: '#25313A', lineColor: '#7F929C', secondaryColor: '#10262B',
+        tertiaryColor: '#2A2115', fontFamily: 'IBM Plex Sans Arabic, sans-serif'
+      }
+    });
+  }
+</script>
+</body>
+</html>
