@@ -1,0 +1,1539 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>معمارية حضرمي NLP — دليل System Design</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500&family=Readex+Pro:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#10151A; --surface:#171E25; --surface2:#1E262F; --surface3:#243039;
+  --ink:#DEE6ED; --ink-dim:#B4C1CC; --muted:#8798A6; --border:#27323D;
+  --indigo:#7FA0E8; --indigo-dim:#4A5F8F; --indigo-bg:#19233A;
+  --brick:#D9A05B; --brick-bg:#2A2118;
+  --madder:#E0736A; --madder-bg:#2E1D1C;
+  --sage:#6FBF9B; --sage-bg:#152720;
+  --code-bg:#0C1116;
+  --body:"IBM Plex Sans Arabic","SF Arabic","Geeza Pro","Segoe UI",Tahoma,sans-serif;
+  --display:"Readex Pro","IBM Plex Sans Arabic","SF Arabic",sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+  --measure:74ch;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:24px}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{animation:none!important;transition:none!important}}
+body{
+  margin:0;background:var(--bg);color:var(--ink);
+  font-family:var(--body);font-size:16px;line-height:1.9;
+  -webkit-font-smoothing:antialiased;
+}
+
+/* ---------- layout ---------- */
+.shell{display:grid;grid-template-columns:290px minmax(0,1fr);gap:0;max-width:1500px;margin:0 auto}
+.toc{
+  position:sticky;top:0;height:100vh;overflow-y:auto;
+  border-left:1px solid var(--border);background:var(--surface);
+  padding:26px 20px 60px;
+}
+.toc h2{
+  font-family:var(--display);font-size:13px;letter-spacing:.08em;color:var(--brick);
+  margin:0 0 4px;font-weight:600;
+}
+.toc .subtitle{font-size:12px;color:var(--muted);margin:0 0 18px;line-height:1.6}
+.toc ol{list-style:none;margin:0;padding:0;counter-reset:toc}
+.toc li{counter-increment:toc;margin:0}
+.toc a{
+  display:block;padding:6px 10px 6px 8px;border-radius:5px;
+  color:var(--ink-dim);text-decoration:none;font-size:13.5px;line-height:1.5;
+  border-right:2px solid transparent;
+}
+.toc a::before{content:counter(toc) ".";color:var(--muted);font-family:var(--mono);font-size:11px;margin-left:7px}
+.toc a:hover{background:var(--surface2);color:var(--ink)}
+.toc a:focus-visible{outline:2px solid var(--indigo);outline-offset:2px}
+main{padding:0 34px 120px;min-width:0}
+
+/* ---------- masthead ---------- */
+.mast{padding:56px 0 34px;border-bottom:2px solid var(--brick);margin-bottom:8px}
+.kicker{font-family:var(--mono);font-size:11.5px;letter-spacing:.18em;color:var(--brick);margin:0 0 14px;direction:ltr;text-align:right}
+h1{font-family:var(--display);font-size:clamp(30px,4.6vw,46px);line-height:1.3;margin:0 0 16px;font-weight:600;text-wrap:balance}
+.lede{font-size:18px;color:var(--ink-dim);max-width:var(--measure);margin:0}
+.meta{display:flex;flex-wrap:wrap;gap:8px;margin-top:22px}
+.meta span{font-family:var(--mono);font-size:11.5px;color:var(--muted);background:var(--surface2);border:1px solid var(--border);border-radius:20px;padding:4px 12px;direction:ltr}
+
+/* ---------- sections ---------- */
+section{padding:44px 0;border-bottom:1px solid var(--border);scroll-margin-top:20px}
+section:last-of-type{border-bottom:0}
+h2{font-family:var(--display);font-size:clamp(23px,3vw,30px);font-weight:600;line-height:1.4;margin:0 0 6px;text-wrap:balance}
+h2 .num{font-family:var(--mono);font-size:14px;color:var(--brick);margin-left:10px;font-weight:400}
+.deck{color:var(--muted);font-size:15px;margin:0 0 26px;max-width:var(--measure)}
+h3{font-size:18px;font-weight:600;margin:32px 0 12px;color:var(--ink);line-height:1.5}
+h4{font-size:15px;font-weight:600;margin:22px 0 8px;color:var(--indigo)}
+p{max-width:var(--measure);margin:0 0 15px;color:var(--ink-dim)}
+strong{color:var(--ink);font-weight:600}
+ul,ol.body{max-width:var(--measure);padding-right:22px;margin:0 0 16px;color:var(--ink-dim)}
+li{margin-bottom:8px}
+a{color:var(--indigo)}
+hr{border:0;border-top:1px solid var(--border);margin:30px 0}
+
+/* ---------- code ---------- */
+code{font-family:var(--mono);font-size:.85em;direction:ltr;unicode-bidi:embed;background:var(--surface2);padding:.14em .4em;border-radius:3px;color:var(--brick)}
+.fname{font-family:var(--mono);font-size:11.5px;color:var(--muted);direction:ltr;text-align:left;padding:8px 16px;background:var(--surface2);border:1px solid var(--border);border-bottom:0;border-radius:7px 7px 0 0}
+pre{margin:0 0 22px;background:var(--code-bg);border:1px solid var(--border);border-radius:7px;overflow-x:auto;direction:ltr;text-align:left}
+.fname + pre{border-radius:0 0 7px 7px;margin-top:0}
+pre code{background:none;padding:0;color:var(--ink-dim);font-size:13px;line-height:1.75;display:block;padding:15px 16px}
+pre.ascii code{color:var(--muted);font-size:12.5px}
+
+/* ---------- tables ---------- */
+.scroll{overflow-x:auto;margin:0 0 24px;border:1px solid var(--border);border-radius:8px}
+table{border-collapse:collapse;width:100%;font-size:14px;background:var(--surface)}
+th,td{padding:11px 13px;text-align:right;vertical-align:top;border-bottom:1px solid var(--border)}
+thead th{background:var(--surface2);font-size:12px;color:var(--muted);font-weight:600;white-space:nowrap;letter-spacing:.03em}
+tbody tr:last-child td{border-bottom:0}
+tbody tr:hover{background:var(--surface2)}
+
+/* ---------- cards & callouts ---------- */
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:14px;margin:0 0 24px}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:9px;padding:17px}
+.card h4{margin:0 0 8px;font-size:14.5px;color:var(--ink)}
+.card p{font-size:13.5px;margin:0;color:var(--muted);line-height:1.75;max-width:none}
+.card .tagline{font-family:var(--mono);font-size:10.5px;color:var(--brick);letter-spacing:.09em;display:block;margin-bottom:8px;direction:ltr;text-align:right}
+
+.box{border-right:3px solid var(--indigo);background:var(--indigo-bg);padding:15px 18px;border-radius:0 7px 7px 0;margin:0 0 22px}
+.box.warn{border-right-color:var(--madder);background:var(--madder-bg)}
+.box.good{border-right-color:var(--sage);background:var(--sage-bg)}
+.box.note{border-right-color:var(--brick);background:var(--brick-bg)}
+.box h4{margin:0 0 7px;font-size:14.5px}
+.box.warn h4{color:var(--madder)} .box.good h4{color:var(--sage)} .box.note h4{color:var(--brick)}
+.box p{margin:0 0 9px;font-size:14.5px;max-width:none}
+.box p:last-child{margin:0}
+
+/* ---------- code teacher block ---------- */
+.teach{background:var(--surface);border:1px solid var(--border);border-radius:9px;padding:0;margin:0 0 24px;overflow:hidden}
+.teach-hd{background:var(--surface2);padding:11px 16px;font-family:var(--mono);font-size:12px;color:var(--indigo);direction:ltr;text-align:left;border-bottom:1px solid var(--border)}
+.teach dl{margin:0;padding:16px}
+.teach dt{font-size:13px;font-weight:600;color:var(--brick);margin:0 0 4px}
+.teach dt:not(:first-child){margin-top:15px}
+.teach dd{margin:0;font-size:14.5px;color:var(--ink-dim);line-height:1.8}
+
+/* ---------- mermaid ---------- */
+.mermaid{background:var(--surface);border:1px solid var(--border);border-radius:9px;padding:20px;margin:0 0 10px;overflow-x:auto;text-align:center}
+figure{margin:0 0 24px}
+figcaption{font-size:13px;color:var(--muted);margin-top:9px;max-width:var(--measure)}
+
+/* ---------- severity pills ---------- */
+.pill{display:inline-block;font-size:11.5px;font-weight:600;padding:2px 10px;border-radius:20px;border:1px solid currentColor;white-space:nowrap}
+.p-crit{color:var(--madder)} .p-imp{color:var(--brick)} .p-opt{color:var(--sage)}
+
+/* ---------- levels ---------- */
+.level{border:1px solid var(--border);border-radius:9px;margin:0 0 14px;overflow:hidden;background:var(--surface)}
+.level summary{padding:14px 17px;cursor:pointer;font-weight:600;font-size:15.5px;background:var(--surface2);list-style:none}
+.level summary::-webkit-details-marker{display:none}
+.level summary::before{content:"▸";color:var(--brick);margin-left:9px;display:inline-block;font-size:13px}
+.level[open] summary::before{content:"▾"}
+.level summary:focus-visible{outline:2px solid var(--indigo);outline-offset:-2px}
+.level .inner{padding:16px 17px}
+.level .inner p{max-width:none}
+
+@media (max-width:1000px){
+  .shell{grid-template-columns:1fr}
+  .toc{position:static;height:auto;border-left:0;border-bottom:1px solid var(--border);padding:20px}
+  .toc ol{columns:2;column-gap:18px}
+  main{padding:0 20px 90px}
+}
+@media (max-width:560px){ .toc ol{columns:1} body{font-size:15.5px} }
+</style>
+</head>
+<body>
+<div class="shell">
+
+<nav class="toc" aria-label="فهرس المحتويات">
+  <h2>الفهرس</h2>
+  <p class="subtitle">دليل دراسي لمعمارية المشروع — يُقرأ بالترتيب أو بالقفز حسب الحاجة.</p>
+  <ol>
+    <li><a href="#s1">مقدمة ومنهج التحليل</a></li>
+    <li><a href="#s2">كيف يعمل النظام الحالي؟</a></li>
+    <li><a href="#s3">خريطة المشروع</a></li>
+    <li><a href="#s4">System Design الحالي</a></li>
+    <li><a href="#s5">المعمارية الفعلية (لا المزعومة)</a></li>
+    <li><a href="#s6">Data Flow</a></li>
+    <li><a href="#s7">Dependency Flow</a></li>
+    <li><a href="#s8">Flutter Architecture</a></li>
+    <li><a href="#s9">Riverpod Architecture</a></li>
+    <li><a href="#s10">Clean Architecture</a></li>
+    <li><a href="#s11">System Design مقابل Clean Architecture</a></li>
+    <li><a href="#s12">شرح الكود الحقيقي</a></li>
+    <li><a href="#s13">المشاكل المعمارية الحالية</a></li>
+    <li><a href="#s14">التحسينات المقترحة</a></li>
+    <li><a href="#s15">Trade-offs</a></li>
+    <li><a href="#s16">كيف يفكر Senior Engineer؟</a></li>
+    <li><a href="#s17">كيف يفكر Software Architect؟</a></li>
+    <li><a href="#s18">Scalability</a></li>
+    <li><a href="#s19">Reliability</a></li>
+    <li><a href="#s20">Performance</a></li>
+    <li><a href="#s21">Security</a></li>
+    <li><a href="#s22">Testing</a></li>
+    <li><a href="#s23">Observability</a></li>
+    <li><a href="#s24">Deployment / CI-CD</a></li>
+    <li><a href="#s25">Architecture Decision Records</a></li>
+    <li><a href="#s26">المعمارية النهائية الموصى بها</a></li>
+    <li><a href="#s27">خارطة التعلّم</a></li>
+  </ol>
+</nav>
+
+<main>
+<header class="mast">
+  <p class="kicker">HADRAMI NLP · ARCHITECTURE STUDY</p>
+  <h1>معمارية هذا المشروع، ولماذا هي كذلك</h1>
+  <p class="lede">
+    تحليل للمعمارية <strong>الفعلية</strong> لتطبيق حضرمي — مبنيّ على قراءة الكود
+    والاعتماديات، لا على أسماء المجلدات. الهدف ليس وصف ما هو موجود فحسب، بل تفسير
+    <em>لماذا</em> اتُّخذ كل قرار، وما الذي كُسِب وما الذي دُفِع ثمنًا له، ومتى يكون
+    النمط المقابل هو الأصحّ.
+  </p>
+  <div class="meta">
+    <span>Flutter 3.35 · Riverpod · go_router</span>
+    <span>FastAPI · Supabase pgvector</span>
+    <span>45 ملف Dart · 3138 سطر Python</span>
+    <span>محدّث 2026-08-18</span>
+  </div>
+</header>
+
+<section id="s1">
+  <h2><span class="num">01</span>مقدمة ومنهج التحليل</h2>
+  <p class="deck">قبل أي حكم معماري: كيف عرفنا أن هذا هو التصميم الحقيقي؟</p>
+
+  <p>
+    الخطأ الأكثر شيوعًا في تقييم المعمارية هو قراءة أسماء المجلدات واستنتاج النمط منها.
+    مجلد اسمه <code>domain/</code> لا يعني أن المشروع يطبّق Clean Architecture، ومجلد
+    <code>repositories/</code> لا يعني وجود Repository Pattern. <strong>المعمارية
+    الحقيقية هي رسم الاعتماديات، لا شجرة الملفات.</strong>
+  </p>
+
+  <p>لذلك بُني هذا التحليل على أدلة قابلة للتشغيل، لا على انطباع:</p>
+
+  <div class="fname">أدوات التحقّق المستخدمة فعليًا</div>
+  <pre><code># 1. رسم الاعتماديات: من يستورد من؟
+grep -rl "package:hadrami_nlp/src/modules/" lib/src/core/
+for m in chat dictionary favorites home settings; do
+  grep -rh "src/modules/" modules/$m | sed -E "s|.*modules/([a-z_]+)/.*|\1|" | sort -u
+done
+
+# 2. الشكل الحقيقي للبيانات: ماذا يرسل الخادم فعلًا؟
+python -c "from app.core.data_store import fetch_all; ..."   # عيّنة حيّة
+curl -s "http://127.0.0.1:8000/words?page=1&size=5"          # عبر الـAPI نفسه
+
+# 3. هل يُصرَّف ويُبنى ويمرّ؟
+flutter analyze &amp;&amp; flutter test &amp;&amp; flutter build web --release
+python -m pytest backend/tests/ -q</code></pre>
+
+  <div class="box note">
+    <h4>لماذا الفحص بالبيانات الحيّة وليس بالملف المحلّي؟</h4>
+    <p>
+      لأن الملف المحلّي <code>backend/data/hadrami_dataset.json</code> ليس مصدر الحقيقة —
+      إنه نسخة عمل للسكربتات. الملف يحوي 1047 صفًّا بحروف Title Case، بينما Supabase —
+      وهو ما يقرأه التطبيق فعلًا — يحوي 1000 صفّ بحقول <code>region</code>
+      و<code>tags</code> مكتوبة lowercase. هذا الفارق وحده كشف عن خطأ حقيقي في الواجهة
+      (القسم 13). <strong>افترض دائمًا أن الملف المحلّي كذب حتى يثبت العكس.</strong>
+    </p>
+  </div>
+</section>
+
+<section id="s2">
+  <h2><span class="num">02</span>كيف يعمل النظام الحالي؟</h2>
+  <p class="deck">وصف من الأعلى قبل الغوص في الطبقات.</p>
+
+  <p>
+    حضرمي NLP هو قاموس ثنائي الاتجاه بين اللهجة الحضرمية والفصحى، مدعوم بـRAG. المستخدم
+    يفتح تطبيق Flutter (ويب أساسًا)، يتصفّح معجمًا من ١٠٠٠ مدخل أو يسأل سؤالًا حرًّا في
+    شاشة المحادثة. الخادم يصنّف نيّة السؤال، يسترجع مداخل المعجم ذات الصلة من
+    PostgreSQL عبر بحث كلمات مفتاحية وبحث متجهات (pgvector)، يبني موجّهًا يحوي تلك
+    المداخل فقط، يُمرّره إلى Gemini، ثم يعيد الردّ مع <em>مواضع الكلمات الحضرمية</em>
+    داخل النصّ ليُظلّلها العميل.
+  </p>
+
+  <p>
+    الفكرة المعمارية المركزية: <strong>النموذج اللغوي لا يُترك حرًّا</strong>. هو مقيَّد
+    بمداخل المعجم المسترجَعة، وإذا لم يجد الاسترجاع تغطية كافية يرفض النظام الإجابة بدل
+    أن يهلوس. هذا القيد هو سبب وجود أغلب تعقيد الخلفية.
+  </p>
+
+  <figure>
+    <pre class="mermaid">
+graph TD
+    U["المستخدم"] --> F["Flutter Web<br/>Vercel"]
+    F -->|"HTTPS · JSON"| A["FastAPI<br/>Vercel"]
+    A --> S["services/<br/>بحث · تسجيل · تحويل"]
+    A --> R["rag/<br/>تصنيف · استرجاع · توليد"]
+    S --> D["core/data_store.py"]
+    R --> D
+    R -->|"موجّه مقيَّد بالمعجم"| G["Google Gemini"]
+    D --> P[("Supabase<br/>PostgreSQL + pgvector<br/>1000 مدخل · 768 بُعد")]
+    </pre>
+    <figcaption>
+      المكوّنات الفعلية. لاحظ ما هو <strong>غائب</strong>: لا طبقة مصادقة، لا بوّابة API،
+      لا طابور، لا تخزين مؤقّت مشترك، لا خدمة مراقبة. هذا ليس نقصًا بالضرورة — القسم 21
+      يناقش أيّها غياب مقبول وأيّها ثغرة حقيقية.
+    </figcaption>
+  </figure>
+</section>
+
+<section id="s3">
+  <h2><span class="num">03</span>خريطة المشروع</h2>
+  <p class="deck">الشجرة الحقيقية، مع مسؤولية كل مجلد.</p>
+
+  <h3>الواجهة — <code>flutter_app/lib/src/</code></h3>
+  <pre class="ascii"><code>src/
+├── app.dart                    MaterialApp.router + ربط الثيم
+├── core/                       بنية تحتية — صفر معرفة بالمجال
+│   ├── network/                api_service · api_config · api_endpoints
+│   ├── theme/                  theme · theme_provider · app_colors · app_radius
+│   ├── ui/                     app_scaffold · content_shell · text_input · empty_state
+│   ├── routing/                router (جذر التركيب) · app_routes
+│   ├── strings/                app_strings — كل نصوص الواجهة
+│   └── formatting/             time_formatting
+└── modules/
+    ├── lexicon/                ★ وحدة المجال الأساس
+    │   ├── models/             word_entry · app_stats · dictionary_labels
+    │   ├── providers/          favorites_provider
+    │   ├── services/           lexicon_service  (/words · /stats · /feedback)
+    │   └── widgets/            word_card · word_detail_sheet
+    ├── chat/                   pages · providers · services · models · widgets
+    ├── dictionary/             pages · providers · services · widgets
+    ├── home/                   pages · providers · services · models
+    ├── favorites/              pages فقط — الحالة في lexicon
+    ├── landing/                قشرة التنقّل (bottom nav / rail)
+    └── settings/               pages فقط</code></pre>
+
+  <h3>الخلفية — <code>backend/app/</code></h3>
+  <pre class="ascii"><code>app/
+├── main.py                     268 سطرًا — تعريف المسارات فقط
+├── schemas.py                  نماذج Pydantic للطلب/الردّ
+├── core/
+│   ├── config.py               الثوابت وأسماء متغيرات البيئة
+│   └── data_store.py           عميل Supabase + كل الاستعلامات  ← الحدّ الوحيد للبيانات
+├── services/
+│   ├── dictionary_service.py   557 سطرًا ← الأكبر، وفيه مشكلة (القسم 13)
+│   ├── phrase_conversion_service.py
+│   └── embedding_service.py / embedding_doc.py
+└── rag/
+    ├── pipeline.py             get_rag_answer() · get_chat_answer()
+    ├── retrieval.py            بحث كلمات + متجهات + تخزين مؤقّت داخلي
+    ├── generation.py           نداء Gemini
+    ├── prompts.py / system_prompt.py
+    ├── text_utils.py           التطبيع العربي · find_hadrami_spans
+    └── serialization.py · config.py · logging_utils.py</code></pre>
+
+  <div class="box">
+    <h4>ملاحظة على التسمية</h4>
+    <p>
+      لا يوجد في المشروع مجلد <code>domain/</code> ولا <code>data/</code> ولا
+      <code>presentation/</code>، ولا <code>usecases/</code> ولا
+      <code>repositories/</code>. هذا <strong>مقصود</strong>، وليس نقصًا سنعالجه بإضافة
+      تلك المجلدات. الأقسام 10 و11 و14 تشرح لماذا.
+    </p>
+  </div>
+</section>
+
+<section id="s4">
+  <h2><span class="num">04</span>System Design الحالي</h2>
+  <p class="deck">المكوّنات، والاتصال بينها، وما هو موجود فعلًا مقابل ما هو غائب.</p>
+
+  <div class="scroll">
+  <table>
+    <thead><tr><th>المكوّن</th><th>الحالة في المشروع</th><th>أين؟</th></tr></thead>
+    <tbody>
+      <tr><td>Client</td><td>Flutter Web (وأندرويد/iOS ممكنان من نفس الشيفرة)</td><td><code>flutter_app/</code></td></tr>
+      <tr><td>Presentation</td><td>Widgets + go_router بـ<code>StatefulShellRoute</code>، ٤ وجهات</td><td><code>modules/*/pages/</code></td></tr>
+      <tr><td>State Management</td><td>Riverpod — ١٩ مزوّدًا مولّدًا بـ<code>@riverpod</code></td><td><code>modules/*/providers/</code></td></tr>
+      <tr><td>Business Logic (عميل)</td><td><strong>ضئيل جدًّا</strong> — المنطق في الخادم</td><td>—</td></tr>
+      <tr><td>Data Layer (عميل)</td><td>خدمات لكل وحدة فوق <code>ApiService</code>. <strong>لا Repository</strong></td><td><code>modules/*/services/</code></td></tr>
+      <tr><td>API</td><td>FastAPI · REST · ١٤ مسارًا</td><td><code>backend/app/main.py</code></td></tr>
+      <tr><td>Business Logic (خادم)</td><td>خدمات + خطّ RAG</td><td><code>services/</code> · <code>rag/</code></td></tr>
+      <tr><td>Database</td><td>Supabase PostgreSQL + pgvector (768 بُعدًا)</td><td>جدولا <code>entries</code> · <code>feedback</code></td></tr>
+      <tr><td>External Services</td><td>Google Gemini (توليد + تضمين)</td><td><code>rag/generation.py</code></td></tr>
+      <tr><td>Authentication</td><td><span class="pill p-crit">غائبة تمامًا</span></td><td>—</td></tr>
+      <tr><td>Caching</td><td>قاموس داخل العملية بـTTL ٩٠ ثانية — <strong>في طبقة الاسترجاع فقط</strong></td><td><code>rag/retrieval.py:34</code></td></tr>
+      <tr><td>Error Handling</td><td>الخادم: <code>HTTPException</code> (٥ مواضع). العميل: ابتلاع + ردّ عربي بديل</td><td>موزّع</td></tr>
+      <tr><td>Observability</td><td><code>rag_log()</code> خلف <code>RAG_DEBUG</code> فقط. <strong>لا مقاييس ولا تتبّع</strong></td><td><code>rag/logging_utils.py</code></td></tr>
+      <tr><td>CI/CD</td><td>GitHub Actions → Vercel (مشروعان منفصلان)</td><td><code>.github/workflows/</code></td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <div class="box warn">
+    <h4>أهمّ حقيقتين في هذا الجدول</h4>
+    <p>
+      <strong>١. لا توجد مصادقة، والـCORS مفتوح بالكامل</strong>
+      (<code>allow_origins=["*"]</code> مع <code>allow_methods=["*"]</code> في
+      <code>main.py:56</code>). أي شخص على الإنترنت يستطيع استدعاء <code>/chat</code> —
+      وهو مسار يستهلك رصيد Gemini — أو الكتابة في جدول <code>feedback</code>.
+    </p>
+    <p>
+      <strong>٢. التخزين المؤقّت داخل العملية على منصّة serverless شبه عديم الفائدة.</strong>
+      Vercel قد يشغّل كل طلب في حاوية مختلفة، فالقاموس في الذاكرة يبدأ فارغًا غالبًا.
+      ليس ضارًّا، لكن لا تحسب عليه في تقدير الأداء.
+    </p>
+  </div>
+</section>
+
+<section id="s5">
+  <h2><span class="num">05</span>المعمارية الفعلية (لا المزعومة)</h2>
+  <p class="deck">تسمية دقيقة للنمط المطبَّق، وحكم صريح على صحّته.</p>
+
+  <h3>الاسم الصحيح: Feature-First مع وحدة مجال أساس</h3>
+  <p>
+    التطبيق يطبّق <strong>Vertical Slice / Feature-First Architecture</strong>: كل ميزة
+    مجلد واحد يملك كل طبقاته (صفحات، مزوّدات، خدمة، ودجات، نماذج). فوق ذلك طبقتان
+    مشتركتان: <code>core/</code> بنية تحتية بلا معرفة مجالية، و<code>modules/lexicon/</code>
+    وحدة مجال أساس تعتمد عليها كل الميزات.
+  </p>
+
+  <p>ثلاثة ثوابت (invariants) تحكم الرسم، وقد تحقّقتُ منها آليًا:</p>
+
+  <div class="cards">
+    <div class="card">
+      <span class="tagline">RULE 01</span>
+      <h4>modules → core، ولا عكس</h4>
+      <p>الاستثناء الوحيد <code>core/routing/router.dart</code> لأنه جذر التركيب: مكان واحد معلوم يعرف الجميع.</p>
+    </div>
+    <div class="card">
+      <span class="tagline">RULE 02</span>
+      <h4>الميزات لا تستورد بعضها</h4>
+      <p>يُسمح فقط بالاعتماد على <code>lexicon</code>. هذا ما يبقي الرسم لادوريًا وكل ميزة قابلة للحذف.</p>
+    </div>
+    <div class="card">
+      <span class="tagline">RULE 03</span>
+      <h4>مشترك بين اثنين → ارفعه، مستهلك واحد → أنزله</h4>
+      <p>الترقية عند ظهور المستهلك <em>الثاني</em> فعليًا، لا توقّعًا له. الترقية الاستباقية هي مصنع الشيفرة الميتة.</p>
+    </div>
+  </div>
+
+  <figure>
+    <pre class="mermaid">
+graph TD
+    subgraph FEAT["وحدات الميزات"]
+      CH["chat"]
+      DI["dictionary"]
+      HO["home"]
+      FA["favorites"]
+      SE["settings"]
+    end
+    LX["modules/lexicon<br/>WordEntry · favorites · LexiconService · WordCard"]
+    CO["core/<br/>network · theme · ui · routing · strings"]
+
+    CH --> LX
+    DI --> LX
+    HO --> LX
+    FA --> LX
+    SE --> LX
+    LX --> CO
+    CH --> CO
+    DI --> CO
+    HO --> CO
+
+    CH -.->|"ممنوع"| DI
+    CO -.->|"ممنوع"| CH
+    </pre>
+    <figcaption>
+      الخطوط المتقطّعة اتجاهات ممنوعة. غياب أي سهم أفقي بين الميزات هو ما يجعل الرسم
+      لادوريًا: يمكن حذف <code>chat</code> بالكامل دون أن تُكسر <code>dictionary</code>.
+    </figcaption>
+  </figure>
+
+  <h3>هل هذه المعمارية صحيحة؟</h3>
+  <p>
+    <strong>نعم، لهذا المشروع.</strong> والسبب ليس أن Feature-First «أفضل» بإطلاق، بل أن
+    خصائص المشروع تطابق ما يحسّنه هذا النمط: مصدر بيانات واحد ثابت (Supabase عبر API
+    واحد)، لا نيّة لاستبداله، ومعدّل تغيير عالٍ في الميزات نفسها. النمط يُحسّن
+    <em>قابلية التعديل</em>، وهي بالضبط الحاجة هنا.
+  </p>
+  <p>
+    الثغرة الحقيقية ليست في اختيار النمط، بل في <strong>طريقة فرضه</strong>: القواعد
+    الثلاث أعلاه لا يفرضها المُصرِّف. استيراد مخالف يُصرَّف وينجح ويمرّ الاختبارات. عولج
+    هذا في هذه الجلسة بإضافة حارس في CI (القسم 24).
+  </p>
+</section>
+
+<section id="s6">
+  <h2><span class="num">06</span>Data Flow</h2>
+  <p class="deck">تتبّع رسالة محادثة واحدة عبر كل طبقة، بالكود الحقيقي.</p>
+
+  <figure>
+    <pre class="mermaid">
+sequenceDiagram
+    autonumber
+    participant W as ChatPage
+    participant P as Chat notifier
+    participant S as ChatService
+    participant A as ApiService
+    participant B as FastAPI /chat
+    participant DB as Supabase
+    participant G as Gemini
+
+    W->>P: sendMessage(text)
+    P->>P: أضف رسالة المستخدم · isLoading = true
+    P->>S: sendMessage(message, history)
+    S->>A: postJson('/chat', {...})
+    A->>B: HTTP POST · JSON
+    B->>B: تصنيف النيّة
+    B->>DB: استرجاع كلمات + متجهات
+    DB-->>B: مداخل المعجم
+    B->>G: موجّه مقيَّد بالمداخل
+    G-->>B: نصّ الردّ
+    B->>B: find_hadrami_spans(reply, surfaces)
+    B-->>A: {reply, context, hadrami_spans}
+    A-->>S: dynamic (JSON خام)
+    S-->>P: ChatResult (نوع مُحكم)
+    P->>P: state = ...  ← Riverpod يُخطر الواجهة
+    P-->>W: إعادة بناء · تظليل النطاقات
+    </pre>
+    <figcaption>الخطوات ١٢–١٤ هي حيث تتحوّل البيانات من JSON خام إلى نوع مُحكم. هذه هي الحدود المعمارية الفاصلة.</figcaption>
+  </figure>
+
+  <h3>الخطوة ١ — المزوّد يملك الحالة، ولا يعرف الشبكة</h3>
+  <div class="fname">modules/chat/providers/chat_provider.dart</div>
+  <pre><code>final result = await ref
+    .read(chatServiceProvider)                  // ← الحدّ: من هنا تبدأ الخدمة
+    .sendMessage(message: text, history: history);
+
+final assistantMessage = ChatMessage(
+  content: result.reply,
+  spans: result.hadramiSpans,                   // ← مواضع التظليل من الخادم
+);
+state = state.copyWith(messages: [...], isLoading: false);</code></pre>
+  <p>
+    <strong>ماذا يدخل؟</strong> نصّ المستخدم. <strong>ماذا يخرج؟</strong> حالة جديدة
+    غير قابلة للتعديل (immutable). <strong>لماذا هذه الطبقة مسؤولة؟</strong> لأن ترتيب
+    الحالة زمنيًّا — «أظهر رسالة المستخدم فورًا، ثم مؤشّر التحميل، ثم الردّ» — قرار عرضٍ
+    خالص، لا يخصّ الشبكة ولا المجال.
+  </p>
+
+  <h3>الخطوة ٢ — الخدمة تعرف المسار والنوع والفشل</h3>
+  <div class="fname">modules/chat/services/chat_service.dart</div>
+  <pre><code>try {
+  final response = await _api.postJson(ApiEndpoints.chat, {...});
+  return ChatResult.fromJson(response);         // ← تحويل: dynamic → نوع مُحكم
+} on TimeoutException {
+  return const ChatResult(reply: AppStrings.apiServiceChatTimeoutReply);
+} catch (_) {
+  return const ChatResult(reply: '...${ApiConfig.baseUrl}');
+}</code></pre>
+  <p>
+    ثلاث مسؤوليات تجتمع هنا عمدًا: <strong>أي مسار</strong> يُنادى،
+    <strong>إلى أي نوع</strong> يُحوَّل الردّ، و<strong>ماذا يحدث عند الفشل</strong>.
+    ولهذا هي الطبقة التي تُعالَج فيها الأخطاء: هي أوّل مكان يعرف ما هو «ردّ صالح».
+  </p>
+
+  <h3>الخطوة ٣ — طبقة النقل لا تعرف شيئًا عن المجال</h3>
+  <div class="fname">core/network/api_service.dart</div>
+  <pre><code>Future&lt;dynamic&gt; postJson(String path, Map&lt;String, dynamic&gt; body, {...}) async {
+  final response = await _client.post(_buildUri(path), ...).timeout(timeout);
+  if (response.statusCode != 200) throw Exception('Server error: ...');
+  return json.decode(utf8.decode(response.bodyBytes));   // ← dynamic عمدًا
+}</code></pre>
+  <p>
+    نوع الإرجاع <code>dynamic</code> ليس كسلًا — هو <strong>قرار معماري</strong>. لو
+    أرجع <code>ChatResult</code> لاحتاج <code>core/</code> أن يستورد وحدة، ولانهار الثابت
+    الأول. الثمن: فقدان أمان الأنواع لمسافة سطر واحد داخل الخدمة، وهو ثمن مقبول.
+  </p>
+</section>
+
+<section id="s7">
+  <h2><span class="num">07</span>Dependency Flow</h2>
+  <p class="deck">اتجاه الاعتماد المثالي، ما يفعله هذا المشروع، وأين الفرق.</p>
+
+  <h3>في Clean Architecture النموذجي</h3>
+  <pre class="ascii"><code>Presentation ──→ Domain ←── Data
+                   ↑
+              لا يعتمد على شيء خارجي
+              (Dependency Inversion)</code></pre>
+
+  <h3>في هذا المشروع فعليًا</h3>
+  <pre class="ascii"><code>Widget ──→ Provider ──→ ModuleService ──→ ApiService ──→ HTTP ──→ FastAPI
+                                              ↑
+                                   core/ — بلا معرفة مجالية</code></pre>
+
+  <p>
+    الفارق واضح: <strong>لا يوجد Domain مستقلّ ولا عكس اعتماديات.</strong>
+    <code>ChatService</code> يعتمد على <code>ApiService</code> مباشرة — صنف فعلي، لا
+    واجهة مجرّدة. لا يوجد <code>abstract class ChatRepository</code> ينفّذه
+    <code>ChatRepositoryImpl</code>.
+  </p>
+
+  <div class="box good">
+    <h4>هل هذا خطأ؟ لا — وهذا هو الدرس المهمّ</h4>
+    <p>
+      عكس الاعتماديات يشتري شيئًا محدّدًا: <strong>القدرة على استبدال التنفيذ دون لمس
+      المستهلك</strong>. اسأل: كم مرة سيُستبدل مصدر البيانات هنا؟ الجواب: صفر. هناك
+      خادم واحد، يملكه نفس الشخص، ولا خطة لاستبداله. فالتجريد يُدفع ثمنه (ملفات أكثر،
+      قفزات أكثر عند القراءة) دون أن يُقبض مقابله.
+    </p>
+    <p>
+      الاستثناء الوحيد المعتبر هو <strong>الاختبار</strong>: الواجهة المجرّدة تسهّل
+      استبدال الخدمة بمزيّفة. لكن Riverpod يحلّ هذا أصلًا عبر
+      <code>overrideWithValue()</code> دون أي واجهة — وهذا ما يجعل التجريد هنا زائدًا
+      حقًّا لا مجرد مؤجَّل.
+    </p>
+  </div>
+
+  <h3>المخالفة التي يجب رفضها فعلًا</h3>
+  <p>
+    ليست غياب Repository، بل هذا الشكل — ولا وجود له في المشروع، والحمد لله:
+  </p>
+  <pre class="ascii"><code>❌  Widget ──→ Supabase / http.Client مباشرة
+
+لماذا سيئ؟
+  · لا يمكن اختبار الودجة دون شبكة حقيقية
+  · تغيير شكل الردّ يفرض تعديل كل ودجة تستهلكه
+  · معالجة الأخطاء تتكرّر في كل شاشة، وتتباين بينها
+  · مستحيل تسجيل أو قياس النداءات في مكان واحد</code></pre>
+  <p>
+    المشروع يتجنّب هذا بالكامل: لا ودجة واحدة تستورد <code>http</code> أو
+    <code>ApiService</code> مباشرة. كل نداء يمرّ بـ Provider ثم خدمة الوحدة. <strong>هذا
+    هو الحدّ الأدنى الذي لا يجوز التنازل عنه</strong>، وما فوقه (UseCase، Repository،
+    Entity منفصل) اختياري بحسب الحاجة.
+  </p>
+</section>
+
+<section id="s8">
+  <h2><span class="num">08</span>Flutter Architecture</h2>
+  <p class="deck">كيف تنطبق المفاهيم العامة على أدوات Flutter تحديدًا.</p>
+
+  <div class="scroll">
+  <table>
+    <thead><tr><th>الجانب</th><th>القرار في المشروع</th><th>الملاحظة المعمارية</th></tr></thead>
+    <tbody>
+      <tr><td>Widgets</td><td><code>ConsumerWidget</code> / <code>HookConsumerWidget</code></td><td>الودجة تقرأ الحالة ولا تملكها</td></tr>
+      <tr><td>BuildContext</td><td>للثيم والتنقّل والـSnackBar فقط</td><td>لا يُستخدم لتمرير البيانات — Riverpod يتكفّل</td></tr>
+      <tr><td>State Management</td><td>Riverpod مع codegen</td><td>١٩ مزوّدًا؛ التفصيل في القسم 9</td></tr>
+      <tr><td>Dependency Injection</td><td>Riverpod نفسه هو الحاوية</td><td><code>ref.read(apiServiceProvider)</code> — لا get_it ولا حاجة إليه</td></tr>
+      <tr><td>Navigation</td><td>go_router · <code>StatefulShellRoute</code></td><td>يحفظ حالة كل تبويب؛ المسارات في <code>AppRoutes</code></td></tr>
+      <tr><td>Serialization</td><td>freezed + json_serializable</td><td>snake_case ↔ camelCase مولّد، تحقّقتُ من صحّته</td></tr>
+      <tr><td>Error Handling</td><td>الخدمة تبتلع وتُرجع بديلًا عربيًّا</td><td>مقايضة صريحة — انظر القسم 13</td></tr>
+      <tr><td>Loading States</td><td><code>AsyncValue</code> للقراءات، <code>isLoading</code> يدويًّا في المحادثة</td><td>ازدواجية مقبولة: المحادثة تراكمية لا استبدالية</td></tr>
+      <tr><td>Local Persistence</td><td><code>shared_preferences</code> للثيم <strong>فقط</strong></td><td>المفضّلة في الذاكرة — تضيع عند التحديث</td></tr>
+      <tr><td>Caching</td><td>لا شيء في العميل</td><td>كل فتح شاشة = نداء شبكة جديد</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <div class="box warn">
+    <h4>المفضّلة لا تنجو من إعادة تحميل الصفحة</h4>
+    <p>
+      <code>Favorites</code> هو <code>List&lt;WordEntry&gt; build() =&gt; []</code> بلا أي
+      حفظ، بينما الثيم وحده يستخدم <code>shared_preferences</code>. على الويب — وهو هدف
+      النشر — إغلاق التبويب يمحو كل ما حفظه المستخدم. مشكلة صغيرة في الكود، كبيرة في
+      تجربة المستخدم. التفصيل في القسم 14.
+    </p>
+  </div>
+</section>
+
+<section id="s9">
+  <h2><span class="num">09</span>Riverpod Architecture</h2>
+  <p class="deck">١٩ مزوّدًا: ما نوع كل واحد، ولماذا هذا النوع بالذات.</p>
+
+  <div class="scroll">
+  <table>
+    <thead><tr><th>المزوّد</th><th>النوع</th><th>العمر</th><th>لماذا؟</th></tr></thead>
+    <tbody>
+      <tr><td><code>apiServiceProvider</code></td><td><code>Provider</code> يدوي</td><td>دائم</td><td>عديم الحالة؛ الوحيد غير المولّد لأنه لا يحتاج codegen</td></tr>
+      <tr><td><code>lexiconService</code> · <code>chatService</code> · <code>homeService</code> · <code>dictionaryService</code></td><td><code>@riverpod</code></td><td>autoDispose</td><td>أغلفة رفيعة؛ إعادة إنشائها رخيصة</td></tr>
+      <tr><td><code>themeMode</code></td><td><code>@Riverpod(keepAlive: true)</code></td><td>دائم</td><td>يُقرأ من كل شاشة؛ إعادة القراءة من القرص هدر</td></tr>
+      <tr><td><code>Chat</code></td><td><code>@Riverpod(keepAlive: true)</code></td><td>دائم</td><td><strong>حرج</strong> — بدونه يُمحى سجلّ المحادثة عند تبديل التبويب</td></tr>
+      <tr><td><code>selectedLetter</code> · <code>selectedPos</code> · <code>selectedTag</code> · <code>WordList</code></td><td><code>@Riverpod(keepAlive: true)</code></td><td>دائم</td><td>يحفظ الفلاتر وموضع التصفّح عبر التنقّل</td></tr>
+      <tr><td><code>Favorites</code></td><td><code>@Riverpod(keepAlive: true)</code></td><td>دائم</td><td>يبقى داخل الجلسة — لكنه لا يُحفظ على القرص</td></tr>
+      <tr><td><code>stats</code> · <code>sections</code> · <code>featuredWords</code> · <code>randomWord</code></td><td><code>@riverpod</code> Future</td><td>autoDispose</td><td>قراءات للعرض؛ تحديثها عند العودة مقبول ومطلوب</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h3>النمط المتكرّر: المزوّد يحقن الخدمة، والخدمة تحقن النقل</h3>
+  <div class="fname">modules/lexicon/services/lexicon_service.dart</div>
+  <pre><code>@riverpod
+LexiconService lexiconService(LexiconServiceRef ref) =&gt;
+    LexiconService(ref.read(apiServiceProvider));   // ← DI عبر Riverpod</code></pre>
+  <p>
+    هذه ثلاثة أسطر تؤدّي وظيفة حاوية حقن اعتماديات كاملة. لا حاجة إلى <code>get_it</code>
+    ولا <code>injectable</code>: Riverpod <em>هو</em> الحاوية، ويمنحك مجّانًا ما تحتاجه
+    الاختبارات — استبدال أي عقدة في الرسم:
+  </p>
+  <pre><code>ProviderScope(
+  overrides: [ apiServiceProvider.overrideWithValue(FakeApi()) ],
+  child: ...,
+)</code></pre>
+
+  <div class="box">
+    <h4>لماذا هذا يُلغي الحاجة إلى Repository مجرّد هنا</h4>
+    <p>
+      الحجّة التقليدية لـ<code>abstract class Repository</code> هي «حتى نستطيع تزييفه في
+      الاختبار». لكن <code>overrideWithValue</code> يزيّف الصنف الفعلي دون أي واجهة. إذًا
+      الفائدة الوحيدة المتبقّية للتجريد هي استبدال التنفيذ في <em>الإنتاج</em> — وهو
+      سيناريو غير موجود هنا. <strong>عندما تُلغي الأداة سبب وجود النمط، إبقاء النمط هو
+      over-engineering بحت.</strong>
+    </p>
+  </div>
+
+  <h3>ملاحظة على <code>keepAlive</code></h3>
+  <p>
+    ستّة مزوّدات <code>keepAlive</code> ليست إهمالًا بل قرار تجربة مستخدم: بدونها يفقد
+    المستخدم فلاتر القاموس وسجلّ المحادثة كلما بدّل تبويبًا. الثمن ذاكرة لا تُحرَّر
+    طوال الجلسة — مقبول لأن الحمولة صغيرة (قائمة كلمات ورسائل نصّية). لو صارت الحالة
+    تحمل صورًا أو آلاف الصفوف، لوجب إعادة النظر.
+  </p>
+</section>
+
+<section id="s10">
+  <h2><span class="num">10</span>Clean Architecture</h2>
+  <p class="deck">شرح النمط كما هو، لا كما يُساء تطبيقه.</p>
+
+  <div class="cards">
+    <div class="card"><span class="tagline">ENTITIES</span><h4>الكيانات</h4><p>قواعد العمل الأصفى، مستقلّة عن أي تطبيق. لا تعرف قاعدة بيانات ولا واجهة ولا HTTP.</p></div>
+    <div class="card"><span class="tagline">USE CASES</span><h4>حالات الاستخدام</h4><p>عملية تطبيقية واحدة: <code>GetWordDetails</code>. تنسّق الكيانات والمستودعات لإنجاز هدف واحد.</p></div>
+    <div class="card"><span class="tagline">INTERFACE ADAPTERS</span><h4>المحوّلات</h4><p>Repository implementations · Data sources · Presenters. تترجم بين شكل المجال وشكل العالم الخارجي.</p></div>
+    <div class="card"><span class="tagline">FRAMEWORKS</span><h4>الأطر والأدوات</h4><p>Flutter · Supabase · Dio. الطبقة الأكثر تقلّبًا، ولذلك الأبعد عن المركز.</p></div>
+  </div>
+
+  <h3>قاعدة الاعتماد — Dependency Rule</h3>
+  <p>
+    <strong>الاعتماد يشير إلى الداخل دائمًا.</strong> الطبقة الخارجية تعرف الداخلية، ولا
+    عكس. عندما يحتاج الداخل أن ينادي الخارج — مثل حالة استخدام تحتاج بيانات — يُعرَّف
+    العقد في الداخل (<code>abstract class</code>) ويُنفَّذ في الخارج. هذا هو
+    <strong>Dependency Inversion — عكس الاعتماديات</strong>.
+  </p>
+
+  <pre class="ascii"><code>Presentation ──→ Domain ←── Data
+                   │
+                   └── يعرّف: abstract class WordRepository
+                              ↑ ينفّذها WordRepositoryImpl في Data
+
+اتجاه الاعتماد:  Data → Domain
+اتجاه التدفّق:    Domain → Data  (عبر الواجهة)
+هذان الاتجاهان متعاكسان — وهذا هو جوهر «العكس».</code></pre>
+
+  <div class="box note">
+    <h4>الخطأ الشائع الذي يجب تجنّبه</h4>
+    <p>
+      إنشاء <code>domain/</code> و<code>data/</code> و<code>presentation/</code> ثم وضع
+      نموذج JSON في <code>domain/entities/</code>. إن كان الكيان يحمل
+      <code>fromJson()</code> فهو ليس كيانًا — إنه DTO، ومكانه <code>data/</code>. المجلد
+      لا يصنع الطبقة؛ <strong>الاعتماديات هي التي تصنعها</strong>. مشروعك الحالي أمين في
+      هذه النقطة: <code>WordEntry</code> يحمل <code>fromJson</code> ويعيش في
+      <code>models/</code> — تسمية صادقة لما هو عليه.
+    </p>
+  </div>
+</section>
+
+<section id="s11">
+  <h2><span class="num">11</span>System Design مقابل Clean Architecture</h2>
+  <p class="deck">أهمّ قسم في هذا الدليل — الخلط بينهما يُنتج قرارات خاطئة.</p>
+
+  <h3>System Design — تصميم الأنظمة</h3>
+  <p>
+    يجيب على: <strong>ما المكوّنات التي يتألّف منها النظام، وكيف تتواصل، وكيف يصمد تحت
+    الضغط والفشل؟</strong> نطاقه كل شيء بين المستخدم والقرص: الخوادم، قواعد البيانات،
+    الشبكات، الطوابير، الـCDN، التخزين المؤقّت، النسخ، النشر، المراقبة، الأمن. يهتمّ
+    بـ<em>الحدود بين الأنظمة</em> وبالخصائص غير الوظيفية: Scalability، Reliability،
+    Availability، Latency، Consistency، Cost.
+  </p>
+
+  <h3>Clean Architecture — المعمارية النظيفة</h3>
+  <p>
+    تجيب على: <strong>كيف أرتّب الشيفرة <em>داخل</em> تطبيق واحد بحيث يبقى المنطق
+    مستقلًّا عن الإطار وقاعدة البيانات؟</strong> نطاقها ملفات ومجلدات وأصناف واتجاهات
+    استيراد. تهتمّ بـ<em>قابلية الاختبار والتعديل والاستبدال</em> داخل حدود عملية واحدة.
+  </p>
+
+  <div class="scroll">
+  <table>
+    <thead><tr><th>المفهوم</th><th>System Design</th><th>Clean Architecture</th></tr></thead>
+    <tbody>
+      <tr><td><strong>النطاق</strong></td><td>النظام كله: خدمات، شبكات، بنية تحتية</td><td>داخل تطبيق واحد: أصناف ومجلدات</td></tr>
+      <tr><td><strong>الاهتمام الأساسي</strong></td><td>هل يصمد تحت الحمل والفشل؟</td><td>هل يمكن تعديله واختباره بعد سنتين؟</td></tr>
+      <tr><td><strong>التركيز</strong></td><td>الحدود بين الأنظمة</td><td>الحدود بين الطبقات</td></tr>
+      <tr><td><strong>Scalability</strong></td><td>أفقيًّا: نسخ، توزيع حمل، تجزئة، طوابير</td><td>لا تعالجها إطلاقًا — ليست من اختصاصها</td></tr>
+      <tr><td><strong>تنظيم الكود</strong></td><td>لا يهتمّ به</td><td>هو موضوعه بالكامل</td></tr>
+      <tr><td><strong>الاعتماديات</strong></td><td>شبكية: من ينادي من عبر أي بروتوكول</td><td>ترجمية: من يستورد من داخل الشيفرة</td></tr>
+      <tr><td><strong>وحدة القياس</strong></td><td>ms · QPS · uptime · $</td><td>عدد الملفات الملموسة لتغيير واحد</td></tr>
+      <tr><td><strong>مثال من مشروعك</strong></td><td>«pgvector في Postgres بدل قاعدة متجهات منفصلة»</td><td>«<code>core/</code> لا يستورد وحدة»</td></tr>
+      <tr><td><strong>الخطأ إن أهملته</strong></td><td>النظام ينهار عند النموّ أو يكلّف كثيرًا</td><td>الشيفرة تتعفّن ويصير كل تغيير مخاطرة</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h3>كيف يعملان معًا</h3>
+  <pre class="ascii"><code>System Design
+      ↓  يحدّد حدود النظام: كم خدمة؟ أي قاعدة بيانات؟ أين المنطق؟
+Application Boundary
+      ↓  الآن لدينا «تطبيق Flutter» و«خدمة FastAPI»
+Clean Architecture (أو Feature-First، أو غيرهما)
+      ↓  يحدّد البنية الداخلية لكل واحد منهما
+Implementation</code></pre>
+
+  <div class="box good">
+    <h4>الخلاصة التي يجب أن تبقى معك</h4>
+    <p>
+      <strong>Clean Architecture ليست بديلًا عن System Design، ولا العكس.</strong> يعملان
+      على مستويين مختلفين. يمكن أن يكون لديك نظام موزّع ممتاز التصميم مكوّن من خدمات
+      داخلها شيفرة متعفّنة، أو تطبيق نظيف داخليًّا لكنه ينهار عند ١٠٠ مستخدم متزامن.
+    </p>
+    <p>
+      في مشروعك: <strong>قرار System Design</strong> هو أن المنطق الثقيل (RAG، الاسترجاع،
+      التطبيع العربي) يعيش في الخادم لا في العميل — ولهذا العميل رفيع بلا Domain.
+      <strong>قرار Clean-Architecture-المستوى</strong> هو أن العميل يستخدم Feature-First
+      لا الطبقات الأربع. القرار الثاني <em>نتيجة</em> للأول: عميل بلا منطق أعمال لا يحتاج
+      طبقة Domain، فإصرارك عليها يُنتج مجلدات فارغة.
+    </p>
+  </div>
+</section>
+
+<section id="s12">
+  <h2><span class="num">12</span>شرح الكود الحقيقي</h2>
+  <p class="deck">أربعة ملفات مفصلية — لماذا يوجد كل منها، وماذا يحدث لو حُذف.</p>
+
+  <div class="teach">
+    <div class="teach-hd">📍 lib/src/core/network/api_service.dart</div>
+    <dl>
+      <dt>🎯 المسؤولية</dt>
+      <dd>نقل HTTP خالص: بناء الـURI، المهلة، فكّ JSON، رمي استثناء عند حالة ≠ 200. لا شيء غير ذلك.</dd>
+      <dt>🔗 يعتمد على</dt>
+      <dd><code>http</code> · <code>ApiConfig</code> فقط. <strong>لا يستورد أي وحدة.</strong></dd>
+      <dt>➡️ يناديه</dt>
+      <dd>كل خدمة وحدة: <code>LexiconService</code> · <code>ChatService</code> · <code>HomeService</code> · <code>DictionaryService</code>.</dd>
+      <dt>🧠 المبدأ المعماري</dt>
+      <dd>Single Responsibility + استقلال المجال. إرجاعه <code>dynamic</code> مقصود: لحظة إرجاعه نوعًا مجاليًّا يصبح <code>core/</code> غير محمول.</dd>
+      <dt>⚠️ المشكلة المحتملة</dt>
+      <dd><code>http.Client</code> يُنشأ ولا يُغلق أبدًا (<code>close()</code> غير مستدعى). غير مؤثّر عمليًّا لأن المزوّد يعيش طوال التطبيق.</dd>
+      <dt>💡 لو حُذف</dt>
+      <dd>لتكرّر منطق المهلة وفكّ JSON ومعالجة الحالة في أربع خدمات، وتباين بينها مع الوقت. هذا بالضبط ما كان عليه الحال قبل التوحيد.</dd>
+    </dl>
+  </div>
+
+  <div class="teach">
+    <div class="teach-hd">📍 lib/src/modules/lexicon/services/lexicon_service.dart</div>
+    <dl>
+      <dt>🎯 المسؤولية</dt>
+      <dd>مسارات المجال المشتركة: <code>/words</code> · <code>/stats</code> · <code>/feedback</code>، مع تحويلها إلى أنواع مُحكمة وابتلاع أخطائها.</dd>
+      <dt>🔗 يعتمد على</dt>
+      <dd><code>ApiService</code> · <code>ApiEndpoints</code> · نماذج <code>lexicon</code>.</dd>
+      <dt>➡️ يناديه</dt>
+      <dd><code>dictionary</code> (تصفّح) · <code>home</code> (الإحصاءات والكلمات المميّزة) · <code>settings</code> (اختبار الاتصال) · <code>word_detail_sheet</code> (التغذية الراجعة).</dd>
+      <dt>🧠 المبدأ المعماري</dt>
+      <dd><strong>سبب وجوده هو الثابت الثاني.</strong> أربعة مستهلكين في وحدات مختلفة يحتاجون نفس المسارات؛ لو بقيت في <code>dictionary</code> لاضطرّت <code>home</code> لاستيراد <code>dictionary</code> — وهو ممنوع. الحلّ: ارفعها إلى وحدة المجال الأساس.</dd>
+      <dt>⚠️ المشكلة المحتملة</dt>
+      <dd><code>listWords()</code> تُرجع <code>SearchResult(total: 0)</code> عند الفشل، فلا يمكن للواجهة التمييز بين «لا نتائج» و«الخادم متوقّف».</dd>
+      <dt>💡 لو حُذف</dt>
+      <dd>إمّا تكرار الشيفرة في ثلاث وحدات، أو استيراد متبادل بينها يكسر لادورية الرسم.</dd>
+    </dl>
+  </div>
+
+  <div class="teach">
+    <div class="teach-hd">📍 lib/src/modules/lexicon/models/dictionary_labels.dart</div>
+    <dl>
+      <dt>🎯 المسؤولية</dt>
+      <dd>ترجمة قيم البيانات الإنجليزية (POS · region · tags) إلى عربية للعرض، مع الرجوع إلى النصّ الخام عند عدم وجود ترجمة.</dd>
+      <dt>🧠 المبدأ المعماري</dt>
+      <dd>فصل <strong>قيمة البيانات</strong> عن <strong>نصّ العرض</strong>. الاستعلام والفلترة تستخدمان الإنجليزية دائمًا؛ العربية للعرض فقط. لو خُلطا، لانكسرت الفلترة عند تغيير الترجمة.</dd>
+      <dt>⚠️ المشكلة التي وُجدت فعلًا</dt>
+      <dd>Supabase يخزّن <code>region</code> بحروف صغيرة، بينما الودجة كانت تقارن <code>entry.region != 'General'</code> — مقارنة حسّاسة لحالة الأحرف، فظهرت شارة «عام» على ٩٦٧ من ١٠٠٠ مدخل. أُصلح بنقل القاعدة إلى المجال.</dd>
+      <dt>💡 الشكل بعد الإصلاح</dt>
+      <dd><code>WordRegion.isDefault(raw)</code> — قاعدة المجال في المجال، لا مقارنة نصّية داخل ودجة.</dd>
+    </dl>
+  </div>
+
+  <div class="teach">
+    <div class="teach-hd">📍 backend/app/core/data_store.py</div>
+    <dl>
+      <dt>🎯 المسؤولية</dt>
+      <dd>الحدّ الوحيد بين التطبيق وSupabase: عميل، إعادة محاولة، وكل الاستعلامات (<code>fetch_all</code> · <code>rpc_match_entries</code> · <code>insert_feedback</code> …).</dd>
+      <dt>➡️ يناديه</dt>
+      <dd><code>services/dictionary_service.py</code> · <code>rag/retrieval.py</code>. <strong>لا مسار في <code>main.py</code> يلمس Supabase مباشرة.</strong></dd>
+      <dt>🧠 المبدأ المعماري</dt>
+      <dd>هذا <em>هو</em> نمط Repository — بلا واجهة مجرّدة، لكن بالخاصية الجوهرية: نقطة واحدة تعرف كيف تُخزَّن البيانات. استبدال Supabase يعني تعديل هذا الملف وحده.</dd>
+      <dt>💡 الدرس</dt>
+      <dd>الفائدة جاءت من <strong>تركيز المعرفة في مكان واحد</strong>، لا من وجود <code>abstract class</code>. لا تخلط بين النمط وبين طقوسه.</dd>
+    </dl>
+  </div>
+</section>
+
+<section id="s13">
+  <h2><span class="num">13</span>المشاكل المعمارية الحالية</h2>
+  <p class="deck">ما وُجد فعلًا بالفحص — مرتّبًا بالأثر، لا بسهولة الإصلاح.</p>
+
+  <h3><span class="pill p-crit">حرج</span> &nbsp; API مفتوح بلا مصادقة ولا حدّ معدّل</h3>
+  <p>
+    <code>main.py:56</code> يضبط <code>allow_origins=["*"]</code> مع
+    <code>allow_methods=["*"]</code>، ولا يوجد أي تحقّق هوية على أي مسار. النتيجة: أي
+    شخص يعرف الرابط يستطيع استدعاء <code>/chat</code> — الذي يستهلك رصيد Gemini بكل
+    نداء — أو حشو جدول <code>feedback</code>. هذه ليست ثغرة تسريب بيانات (لا بيانات
+    شخصية)، بل <strong>ثغرة تكلفة وإساءة استخدام</strong>.
+  </p>
+
+  <h3><span class="pill p-crit">حرج</span> &nbsp; شارة المنطقة تظهر على كل الكلمات <em>(أُصلح)</em></h3>
+  <pre class="ascii"><code>Current:  if (entry.region != 'General')          ← مقارنة حسّاسة للحالة
+Problem:  Supabase يرسل 'general' → الشرط صحيح دائمًا → الشارة على 967/1000
+Proposed: if (!WordRegion.isDefault(entry.region)) ← القاعدة في المجال
+Why:      البيانات lowercase والثوابت Title Case؛ التطبيع مسؤولية المجال لا الودجة</code></pre>
+  <p>
+    أُثبت بثلاث طرق: استعلام مباشر على Supabase، ثم <code>curl</code> على
+    <code>/words</code>، ثم اختبار ودجة يرصد ظهور الشارة. أُصلح في هذه الجلسة مع اختبار
+    انحدار يمنع عودته.
+  </p>
+
+  <h3><span class="pill p-imp">مهمّ</span> &nbsp; ابتلاع الأخطاء يخفي الفرق بين «فارغ» و«معطّل»</h3>
+  <p>
+    كل خدمة تُرجع بديلًا صامتًا عند الفشل: <code>SearchResult(total: 0)</code> أو
+    <code>AppStats()</code>. المكسب واجهة لا تتعامل مع <code>AsyncError</code> أبدًا.
+    الخسارة: المستخدم يرى «لا نتائج» بينما الخادم ساقط، وأنت لا تملك أي إشارة تشخيصية.
+  </p>
+
+  <h3><span class="pill p-imp">مهمّ</span> &nbsp; <code>dictionary_service.py</code> صار وحدة عملاقة</h3>
+  <p>
+    ٥٥٧ سطرًا — أكبر ملف في المشروع — يجمع: تسجيل النقاط، التطبيع العربي، البحث،
+    البحث الدلالي، توسيع الاستعلام، تقسيم الأقسام، الإحصاءات، وحفظ التغذية الراجعة.
+    مسؤوليات متعدّدة لا يجمعها سبب تغيير واحد. ليس عاجلًا، لكنه يصعب اختباره بدقّة.
+  </p>
+
+  <h3><span class="pill p-imp">مهمّ</span> &nbsp; العميل يتجاهل ثلاثة حقول يوثّقها الخادم كواجهة له</h3>
+  <p>
+    <code>ChatResponse</code> يُرجع <code>intent</code> و<code>suggest_word</code>
+    و<code>answer_source</code>، وتعليقات <code>schemas.py</code> تصفها صراحةً بأنها
+    للعميل: «تتيح لعميل Flutter اختيار تخطيط العرض»، و«يستطيع العميل دعوة المستخدم
+    لإضافة الكلمة». <code>ChatResult</code> لا يقرأ أيًّا منها. مسار مساهمة المستخدم
+    مبنيّ في الخلفية وميت في الواجهة.
+  </p>
+
+  <h3><span class="pill p-opt">اختياري</span> &nbsp; مشاكل أصغر مؤكَّدة</h3>
+  <ul>
+    <li>المفضّلة في الذاكرة فقط — تضيع عند تحديث الصفحة (القسم 8).</li>
+    <li>على الويب، ردّ فيه تظليل يُرسم بـ<code>Text.rich</code> غير قابل للتحديد، وردّ بلا تظليل بـ<code>SelectableText</code> — المستخدم ينسخ بعض الردود دون بعض بلا سبب ظاهر.</li>
+    <li><code>ApiEndpoints.word</code> و<code>semanticSearch</code> بلا مستهلك (مقصودان كتوثيق للمسارات القائمة).</li>
+    <li>ملف البيانات المحلّي انحرف عن الإنتاج: ١٠٤٧ صفًّا Title Case مقابل ١٠٠٠ صفّ lowercase. تشغيل <code>sync_to_supabase.py</code> الآن سيكتب فوق تطبيع v2.</li>
+  </ul>
+</section>
+
+<section id="s14">
+  <h2><span class="num">14</span>التحسينات المقترحة</h2>
+  <p class="deck">مرتّبة بالأولوية، مع تكلفة كل واحدة وتوقيت تنفيذها.</p>
+
+  <h3><span class="pill p-crit">🔴 حرج</span></h3>
+  <div class="scroll">
+  <table>
+    <thead><tr><th>التحسين</th><th>الوضع الحالي</th><th>الحلّ المقترح</th><th>التعقيد</th><th>متى؟</th></tr></thead>
+    <tbody>
+      <tr>
+        <td><strong>حماية المسارات المكلفة</strong></td>
+        <td>لا مصادقة · CORS مفتوح · لا حدّ معدّل</td>
+        <td>حصر <code>allow_origins</code> بنطاقات Vercel المعروفة، ثم حدّ معدّل بسيط على <code>/chat</code> و<code>/feedback</code> بالـIP</td>
+        <td>منخفض</td>
+        <td><strong>الآن</strong> — الرابط منشور</td>
+      </tr>
+      <tr>
+        <td><strong>شارة المنطقة</strong></td>
+        <td>تظهر على ٩٦٧/١٠٠٠</td>
+        <td><code>WordRegion.isDefault()</code> + اختبار انحدار</td>
+        <td>منخفض</td>
+        <td><span class="pill p-opt">تمّ</span></td>
+      </tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h3><span class="pill p-imp">🟠 مهمّ</span></h3>
+  <div class="scroll">
+  <table>
+    <thead><tr><th>التحسين</th><th>الوضع الحالي</th><th>الحلّ المقترح</th><th>التعقيد</th><th>متى؟</th></tr></thead>
+    <tbody>
+      <tr>
+        <td><strong>فرض اتجاه الاعتماد آليًّا</strong></td>
+        <td>قاعدة يحرسها اتفاق بشري فقط</td>
+        <td>سكربت فحص في CI يكسر البناء عند المخالفة</td>
+        <td>منخفض</td>
+        <td><span class="pill p-opt">تمّ</span></td>
+      </tr>
+      <tr>
+        <td><strong>تمييز الفشل عن الفراغ</strong></td>
+        <td>الخدمة تُرجع بديلًا صامتًا</td>
+        <td>نوع نتيجة صريح <code>(data | failure)</code> للقراءات الأساسية فقط — لا لكل نداء</td>
+        <td>متوسط</td>
+        <td>عند أول شكوى «القاموس فارغ»</td>
+      </tr>
+      <tr>
+        <td><strong>حفظ المفضّلة</strong></td>
+        <td>ذاكرة فقط؛ تضيع عند التحديث</td>
+        <td><code>shared_preferences</code> — نفس نمط <code>theme_provider</code> الموجود</td>
+        <td>منخفض</td>
+        <td>قريبًا — أثر مباشر على المستخدم</td>
+      </tr>
+      <tr>
+        <td><strong>تفكيك <code>dictionary_service.py</code></strong></td>
+        <td>٥٥٧ سطرًا · مسؤوليات متعدّدة</td>
+        <td>فصل التسجيل/التطبيع في <code>scoring.py</code> — وهو الجزء الذي انحدر سابقًا</td>
+        <td>متوسط</td>
+        <td>عند التعديل التالي عليه</td>
+      </tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h3><span class="pill p-opt">🟢 اختياري</span></h3>
+  <ul>
+    <li><strong>استهلاك <code>intent</code> و<code>suggest_word</code></strong> — أو حذف تعليقاتهما المضلّلة. الأرخص: صحّح التعليق الآن، نفّذ الميزة عند الحاجة.</li>
+    <li><strong>تخزين مؤقّت في العميل</strong> لـ<code>/stats</code> و<code>/sections</code> (بيانات شبه ثابتة). مكسب ملموس بجهد قليل.</li>
+    <li><strong>حزمة Dart لكل وحدة</strong> ليفرض المُصرِّف ما يفرضه السكربت اليوم. مبالغة لفريق من شخص واحد.</li>
+  </ul>
+
+  <div class="box warn">
+    <h4>ما لا يجب فعله</h4>
+    <p>
+      <strong>لا تُدخل Clean Architecture كاملة</strong> (Entities · UseCases · Repository
+      abstractions) على هذا العميل. سيضيف خمسة ملفات لكل قراءة بسيطة، مقابل قدرة استبدال
+      لن تُستعمل، وقابلية اختبار تملكها Riverpod أصلًا. الشرط الذي يقلب هذا الحكم واضح:
+      <em>ظهور منطق أعمال حقيقي في العميل</em> — عمل دون اتصال، مزامنة، أو مصدر بيانات
+      ثانٍ. عندها، وعندها فقط، تصبح طبقة Domain استثمارًا لا طقسًا.
+    </p>
+  </div>
+</section>
+
+<section id="s15">
+  <h2><span class="num">15</span>Trade-offs</h2>
+  <p class="deck">كل مقايضة مربوطة بقرار فعلي في هذا المشروع.</p>
+
+  <div class="scroll">
+  <table>
+    <thead><tr><th>المقايضة</th><th>الاختيار هنا</th><th>المكسب</th><th>الثمن</th></tr></thead>
+    <tbody>
+      <tr><td>البساطة ↔ القابلية للتوسّع</td><td>البساطة</td><td>ميزة جديدة = مجلد واحد</td><td>لا حدود جاهزة للتقسيم لو كبر</td></tr>
+      <tr><td>الأداء ↔ قابلية الصيانة</td><td>الصيانة</td><td>كل نداء يمرّ بمسار واحد واضح</td><td>لا تخزين مؤقّت في العميل</td></tr>
+      <tr><td>التجريد ↔ التعقيد</td><td>تجريد أقلّ</td><td>قفزتان من الودجة إلى HTTP</td><td>استبدال مصدر البيانات يلمس كل خدمة</td></tr>
+      <tr><td>Offline ↔ Online</td><td>Online بحت</td><td>لا مزامنة ولا تعارضات</td><td>التطبيق بلا شبكة = شاشات فارغة</td></tr>
+      <tr><td>Cache ↔ Consistency</td><td>الاتّساق</td><td>القاموس دائمًا محدّث</td><td>زمن استجابة أعلى وحمل أكبر</td></tr>
+      <tr><td>SQL ↔ NoSQL</td><td>PostgreSQL</td><td>pgvector يجمع العلاقي والمتجهات في محرّك واحد</td><td>سقف توسّع أدنى من قاعدة متجهات مخصّصة</td></tr>
+      <tr><td>REST ↔ GraphQL</td><td>REST</td><td>١٤ مسارًا ومستهلك واحد — GraphQL بلا مبرّر</td><td>جلب زائد أحيانًا</td></tr>
+      <tr><td>منطق العميل ↔ الخادم</td><td>الخادم</td><td>التطبيع العربي وRAG في مكان واحد؛ التصحيح بلا إصدار جديد</td><td>العميل بلا فائدة دون شبكة</td></tr>
+      <tr><td>Monolith ↔ Microservices</td><td>Monolith</td><td>نشرة واحدة، تصحيح أسهل</td><td>تسريع RAG يفرض تسريع كل شيء</td></tr>
+      <tr><td>متزامن ↔ غير متزامن</td><td>متزامن</td><td>مسار طلب/ردّ مباشر</td><td>المستخدم ينتظر Gemini كاملًا</td></tr>
+      <tr><td>اتّساق قوي ↔ نهائي</td><td>قوي</td><td>Postgres وحيد بلا نسخ</td><td>لا توسّع قراءة أفقي</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <div class="box">
+    <h4>القراءة الصحيحة لهذا الجدول</h4>
+    <p>
+      عمود «الثمن» ليس قائمة أخطاء — هو قائمة <strong>ما اشتريته عن وعي</strong>. الفرق
+      بين مهندس متوسّط وسينيور ليس في تجنّب الأثمان، بل في معرفتها ومعرفة
+      <em>الإشارة</em> التي تعني أن الوقت حان لإعادة النظر. مثال: «لا تخزين مؤقّت في
+      العميل» ثمن مقبول اليوم؛ إشارة تغيّره أن يصير <code>/stats</code> بطيئًا أو أن
+      تظهر فاتورة قراءات مرتفعة.
+    </p>
+  </div>
+</section>
+
+<section id="s16">
+  <h2><span class="num">16</span>كيف يفكر Senior Engineer؟</h2>
+  <p class="deck">القالب، مطبَّقًا على قرارين حقيقيين من هذا المشروع.</p>
+
+  <h3>القرار ١: أين تعيش نداءات <code>/words</code>؟</h3>
+  <pre class="ascii"><code>المشكلة:
+  ثلاث وحدات (dictionary · home · settings) تحتاج نفس المسارات.
+
+القيود:
+  · الميزات ممنوعة من استيراد بعضها (الثابت الثاني)
+  · core/ ممنوع من معرفة ما هي «الكلمة» (الثابت الأول)
+
+الخيارات:
+  1. إبقاؤها على ApiService        → يكسر الثابت الأول (نوع مجالي في core)
+  2. إبقاؤها في DictionaryService  → يجبر home على استيراد dictionary: يكسر الثاني
+  3. تكرارها في كل وحدة            → ثلاث نسخ تتباين مع الوقت
+  4. وحدة مجال أساس (lexicon)      → لا يكسر شيئًا
+
+القرار: 4
+
+لماذا:
+  الخيار الوحيد الذي يحترم الثابتين معًا. والأهمّ: «مشترك بين اثنين فأكثر»
+  معيار موضوعي قابل للتطبيق لاحقًا دون جدال — لا ذوق شخصي.</code></pre>
+
+  <h3>القرار ٢: من يحسب مواضع التظليل؟</h3>
+  <pre class="ascii"><code>المشكلة:
+  تحديد مواضع الكلمات الحضرمية داخل نصّ الردّ لتظليلها.
+
+القيود:
+  · المطابقة تحتاج تطبيعًا عربيًّا (توحيد الألف، حذف التشكيل)
+  · فهارس بايثون بنقاط الترميز، وفهارس Dart بوحدات UTF-16
+
+الخيارات:
+  1. حساب في العميل  → منطق التطبيع مكرّر ويتباين بين المنصّتين
+  2. حساب في الخادم  → نداء شبكة يحمل بيانات أكثر
+
+القرار: 2 — وحُذف core/utils/hadrami_lexicon_spans.dart
+
+لماذا:
+  التطبيع العربي منطق مجالي يخصّ المعجم، ومكانه بجوار المعجم. تكرار قواعد
+  اللهجة في عميلين (ويب وموبايل) يضمن انحرافهما.
+
+الثمن المدفوع بوعي:
+  العميل صار يثق بفهارس يرسلها الخادم. ولهذا يستخدم text.runes لا text.length،
+  وإلا لانزاح التظليل مع أول رمز خارج المستوى الأساسي.</code></pre>
+
+  <div class="box good">
+    <h4>ما يميّز التفكير السينيور في المثالين</h4>
+    <p>
+      لاحظ أن القرار في الحالتين لم يُتّخذ بسؤال «ما النمط الصحيح؟» بل بسؤال <strong>«ما
+      القيود، وأي خيار لا يكسر أيًّا منها؟»</strong>. القيود تسبق الأنماط. ولاحظ أن
+      الثمن مذكور صراحةً في القرار الثاني — <em>قرار بلا ثمن معلن هو قرار لم يُفهم
+      بعد</em>.
+    </p>
+  </div>
+</section>
+
+<section id="s17">
+  <h2><span class="num">17</span>كيف يفكر Software Architect؟</h2>
+  <p class="deck">الفرق عن السينيور: المدى الزمني، ومن يتحمّل نتيجة القرار.</p>
+
+  <div class="cards">
+    <div class="card"><span class="tagline">TIME</span><h4>المدى</h4><p>السينيور يحسب للإصدار القادم؛ المعماري يحسب لما بعد رحيله عن المشروع. سؤاله: «هل يبقى هذا القرار مفهومًا لمن لم يحضر النقاش؟»</p></div>
+    <div class="card"><span class="tagline">REVERSIBILITY</span><h4>قابلية التراجع</h4><p>يفرز القرارات: قابل للتراجع (قرّر بسرعة) أم شبه نهائي (تمهّل). اختيار Postgres شبه نهائي؛ اسم مجلد قابل للتراجع في دقائق.</p></div>
+    <div class="card"><span class="tagline">ENFORCEMENT</span><h4>الفرض لا التوثيق</h4><p>القاعدة التي يحرسها التوثيق تُخرق؛ التي يحرسها المُصرِّف أو CI تصمد. لهذا صار فحص الاعتماديات خطوة في CI لا فقرة في README.</p></div>
+    <div class="card"><span class="tagline">COST</span><h4>التكلفة الكاملة</h4><p>ليست ساعات التطوير فقط: فاتورة Gemini، وقت التصحيح، صعوبة التوظيف، عبء التعلّم على من يأتي بعدك.</p></div>
+  </div>
+
+  <h3>سؤال المعماري المفضّل: «ما الإشارة التي تعني أن هذا القرار انتهت صلاحيته؟»</h3>
+  <p>
+    كل قرار في هذا الدليل مربوط بشرط انقلاب صريح، وهذا مقصود:
+  </p>
+  <div class="scroll">
+  <table>
+    <thead><tr><th>القرار</th><th>الإشارة التي تُبطله</th><th>البديل حينها</th></tr></thead>
+    <tbody>
+      <tr><td>لا طبقة Domain في العميل</td><td>ظهور منطق أعمال حقيقي: offline · مزامنة · مصدر ثانٍ</td><td>UseCases + Repository مجرّد</td></tr>
+      <tr><td>لا تخزين مؤقّت في العميل</td><td>بطء <code>/stats</code> أو فاتورة قراءات مرتفعة</td><td>ذاكرة مؤقّتة بـTTL في المزوّد</td></tr>
+      <tr><td>Monolith في الخلفية</td><td>حاجة RAG لتوسّع مستقلّ عن القاموس</td><td>فصل خدمة RAG</td></tr>
+      <tr><td>الاعتماديات يحرسها سكربت</td><td>انضمام مطوّر ثانٍ للفريق</td><td>حزمة Dart لكل وحدة</td></tr>
+      <tr><td>لا مصادقة</td><td><strong>انقضت أصلًا</strong> — الرابط منشور علنًا</td><td>حدّ معدّل ثم مفتاح API</td></tr>
+    </tbody>
+  </table>
+  </div>
+</section>
+
+<section id="s18">
+  <h2><span class="num">18</span>Scalability</h2>
+  <p class="deck">أين يقف النظام اليوم، وأي جدار يصطدم به أولًا.</p>
+
+  <p>
+    المقياس الحالي متواضع عمدًا: ١٠٠٠ مدخل، مستخدمون بالعشرات، لا حمل متزامن يُذكر.
+    السؤال المفيد ليس «هل يتوسّع؟» بل <strong>«أي جزء ينكسر أولًا، وعند أي رقم؟»</strong>
+  </p>
+
+  <div class="scroll">
+  <table>
+    <thead><tr><th>الجزء</th><th>السقف التقريبي</th><th>ما يكسره</th><th>الخطوة التالية</th></tr></thead>
+    <tbody>
+      <tr><td>Gemini API</td><td><strong>الأدنى — ينكسر أولًا</strong></td><td>حدّ المعدّل والتكلفة لكل نداء</td><td>تخزين ردود الأسئلة المتكرّرة · حدّ معدّل</td></tr>
+      <tr><td><code>fetch_all()</code></td><td>بضعة آلاف صفّ</td><td>يجلب الجدول كله إلى الذاكرة في كل طلب بارد</td><td>ترحيل التسجيل إلى SQL/RPC</td></tr>
+      <tr><td>Vercel Functions</td><td>عالٍ (توسّع تلقائي)</td><td>البدء البارد يضاعف زمن الاستجابة</td><td>لا شيء الآن</td></tr>
+      <tr><td>Supabase Postgres</td><td>عالٍ لهذا الحجم</td><td>نسخة واحدة بلا قراءة موزّعة</td><td>نسخ قراءة عند الحاجة</td></tr>
+      <tr><td>pgvector</td><td>~١٠⁵ متجهات</td><td>البحث التسلسلي دون فهرس مناسب</td><td>فهرس HNSW · ثم قاعدة متجهات مخصّصة</td></tr>
+      <tr><td>Flutter Web</td><td>لا يُذكر</td><td>حجم الحزمة عند بدء التشغيل</td><td>لا شيء</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <div class="box note">
+    <h4>الدرس: توسّع الحلقة الأضيق، لا كل شيء</h4>
+    <p>
+      لو تضاعف الاستخدام عشر مرّات غدًا، فالمشكلة ستكون <strong>تكلفة Gemini</strong> —
+      لا Postgres ولا Flutter. لذلك أول استثمار في التوسّع هنا ليس نسخ قواعد بيانات ولا
+      تقسيم خدمات، بل <em>تخزين ردود الأسئلة الشائعة</em>. تحسين أي طبقة أخرى قبلها هو
+      جهد في غير موضعه.
+    </p>
+  </div>
+</section>
+
+<section id="s19">
+  <h2><span class="num">19</span>Reliability</h2>
+  <p class="deck">ماذا يحدث حين يفشل كل مكوّن — وهل الفشل مرئي؟</p>
+
+  <div class="scroll">
+  <table>
+    <thead><tr><th>الفشل</th><th>السلوك الحالي</th><th>التقييم</th></tr></thead>
+    <tbody>
+      <tr><td>Gemini غير متاح</td><td>رجوع محكوم إلى إجابة من المعجم (<code>_lexicon_fallback_answer</code>)</td><td><span class="pill p-opt">جيد</span> تدهور تدريجي حقيقي</td></tr>
+      <tr><td>الاسترجاع بلا تغطية</td><td>رفض صريح بدل الهلوسة</td><td><span class="pill p-opt">جيد</span> القرار الصحيح لمشروع بحثي</td></tr>
+      <tr><td>Supabase متقطّع</td><td>إعادة محاولة في <code>_execute_with_retry</code></td><td><span class="pill p-opt">جيد</span></td></tr>
+      <tr><td>مهلة الشبكة في العميل</td><td>رسالة عربية صريحة في المحادثة</td><td><span class="pill p-opt">جيد</span></td></tr>
+      <tr><td>فشل <code>/words</code></td><td><code>SearchResult(total: 0)</code> — يبدو كقاموس فارغ</td><td><span class="pill p-crit">سيّئ</span> فشل صامت</td></tr>
+      <tr><td>فشل <code>/stats</code></td><td><code>AppStats()</code> ثم <code>StateError</code> في المزوّد</td><td><span class="pill p-imp">ملتبس</span> مسار غير مباشر</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <p>
+    النمط واضح: <strong>الخلفية تتدهور بلطف والعميل يفشل بصمت.</strong> الخلفية بُنيت
+    بعناية حول فكرة «ارفض بدل أن تهلوس»، وهو قرار ممتاز لمشروع سيُنشر كورقة بحثية. أما
+    العميل فيبتلع كل شيء ويعرض حالة فارغة — وهي أسوأ أنواع الفشل: لا المستخدم يعرف أن
+    هناك عطلًا، ولا أنت تعرف.
+  </p>
+</section>
+
+<section id="s20">
+  <h2><span class="num">20</span>Performance</h2>
+  <p class="deck">أين يذهب الوقت فعليًّا في طلب <code>/chat</code>.</p>
+
+  <pre class="ascii"><code>مسار /chat — تقدير ترتيب الحجم:
+
+  تصنيف النيّة            ~1 ms      منطق محلّي
+  استرجاع كلمات مفتاحية   ~50 ms     استعلام Postgres
+  توليد التضمين           ~200 ms    نداء Gemini
+  بحث المتجهات            ~50 ms     pgvector
+  توليد الردّ             ~2000 ms   نداء Gemini  ← 85% من الزمن
+  find_hadrami_spans      ~1 ms      منطق محلّي
+  ─────────────────────────────────
+  الإجمالي               ~2.3 s</code></pre>
+
+  <p>
+    <strong>الاستنتاج الوحيد المهمّ:</strong> ٨٥٪ من الزمن في نداء واحد لا تملكه. أي
+    تحسين في الاستعلامات أو التسلسل أو حجم حزمة Flutter يتحرّك داخل الـ١٥٪ المتبقّية.
+    ولذلك فإن التحسين الوحيد ذا الأثر الملموس هو <strong>البثّ التدريجي (streaming)</strong>
+    لردّ Gemini: لا يقلّل الزمن الكلّي لكنه يخفض <em>الزمن حتى أول محرف</em> من ٢.٣ ثانية
+    إلى أقلّ من نصف ثانية. تحسّن مُدرَك بلا أي تسريع فعلي.
+  </p>
+
+  <div class="box">
+    <h4>مبدأ عام يستحقّ الحفظ</h4>
+    <p>
+      قِس قبل أن تُحسّن، وحسّن <em>الجزء المهيمن</em>. مطوّرون كثر يقضون أسابيع في تحسين
+      استعلام يستهلك ٥٠ مللي ثانية داخل مسار طوله ٢٣٠٠ مللي ثانية. وحين لا تستطيع تسريع
+      الجزء المهيمن (لأنه عند طرف ثالث)، فالخيار الباقي هو تغيير <em>إدراك</em> المستخدم
+      للزمن، لا الزمن نفسه.
+    </p>
+  </div>
+</section>
+
+<section id="s21">
+  <h2><span class="num">21</span>Security</h2>
+  <p class="deck">تقييم صريح — وأين الخطر الحقيقي مقابل المتخيَّل.</p>
+
+  <div class="scroll">
+  <table>
+    <thead><tr><th>الجانب</th><th>الحالة</th><th>الخطر الفعلي</th></tr></thead>
+    <tbody>
+      <tr><td>المصادقة</td><td><span class="pill p-crit">غائبة</span></td><td>استنزاف رصيد Gemini · حشو جدول feedback</td></tr>
+      <tr><td>CORS</td><td><code>allow_origins=["*"]</code></td><td>يُبطل الحماية التي يوفّرها <code>allow_origin_regex</code> أعلاه</td></tr>
+      <tr><td>حدّ المعدّل</td><td><span class="pill p-crit">غائب</span></td><td>لا شيء يوقف حلقة نداءات آلية</td></tr>
+      <tr><td>الأسرار</td><td><code>.env</code> مستبعد من git · متغيّرات في Vercel</td><td><span class="pill p-opt">سليم</span></td></tr>
+      <tr><td>مفتاح <code>service_role</code></td><td>في الخادم فقط، لا يصل العميل أبدًا</td><td><span class="pill p-opt">سليم</span> — نقطة قوّة</td></tr>
+      <tr><td>حقن SQL</td><td>استعلامات مُعامَلة عبر عميل Supabase</td><td><span class="pill p-opt">سليم</span></td></tr>
+      <tr><td>حقن الموجّه (Prompt Injection)</td><td>الموجّه مقيَّد بمداخل المعجم</td><td>مخفَّف بالتصميم، غير معدوم</td></tr>
+      <tr><td>بيانات شخصية</td><td>لا تُجمع؛ التغذية الراجعة خلف علم <code>consent</code></td><td><span class="pill p-opt">سليم</span></td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <div class="box warn">
+    <h4>رتّب الخطر بصدق</h4>
+    <p>
+      هذا التطبيق لا يحوي بيانات مستخدمين حسّاسة ولا حسابات ولا مدفوعات، فغياب المصادقة
+      <strong>ليس</strong> ثغرة تسريب. لكنه <strong>ثغرة تكلفة</strong> حقيقية: كل نداء
+      <code>/chat</code> يصرف من رصيدك، والمسار مفتوح للعالم بلا أي حدّ. الإصلاح
+      المتناسب ليس نظام مصادقة كاملًا — بل <em>حصر CORS + حدّ معدّل بالـIP</em>: ساعة عمل
+      تغلق الخطر الحقيقي بأكمله.
+    </p>
+    <p>
+      ملاحظة دقيقة: وجود <code>allow_origin_regex</code> مع <code>allow_origins=["*"]</code>
+      معًا يجعل الأول عديم الأثر. لو كانت النيّة حصر النطاقات، فالسطر الثاني يُبطلها.
+    </p>
+  </div>
+</section>
+
+<section id="s22">
+  <h2><span class="num">22</span>Testing</h2>
+  <p class="deck">التغطية الحقيقية، والدرس الأهمّ في هذا المشروع كلّه.</p>
+
+  <div class="scroll">
+  <table>
+    <thead><tr><th>الطبقة</th><th>التغطية</th><th>التقييم</th></tr></thead>
+    <tbody>
+      <tr><td>الخلفية</td><td>٥٣ اختبارًا · <code>test_api</code> · <code>test_chat_unified</code> · <code>test_dictionary_service</code> · <code>test_text_utils</code></td><td><span class="pill p-opt">جيد</span></td></tr>
+      <tr><td>نماذج/منطق الواجهة</td><td>١١ اختبارًا (أُضيفت في هذه الجلسة)</td><td><span class="pill p-imp">بداية</span></td></tr>
+      <tr><td>ودجات الواجهة</td><td>٣ اختبارات</td><td><span class="pill p-imp">ضعيف</span></td></tr>
+      <tr><td>تكامل شامل (E2E)</td><td>لا شيء</td><td>مقبول لهذا الحجم</td></tr>
+      <tr><td>حرّاس معماريون</td><td>سكربت اتجاه الاعتماد في CI</td><td><span class="pill p-opt">جيد</span></td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h3>الدرس: لا تُزيّف الشيء الذي تختبره</h3>
+  <p>
+    في أغسطس ٢٠٢٦ انحدرت <code>search_phrase_lexicon()</code>: توقّفت عن إرجاع
+    <code>top_score</code> وصار المُسجِّل يقارن نصًّا غير مطبَّع. النتيجة أن
+    <code>/convert-phrase</code> صار يرفض كل مدخل حقيقي تقريبًا — و<strong>٤٢ من ٤٢
+    اختبارًا بقيت خضراء</strong>، لأن الاختبارات كانت تزيّف الدالة المكسورة نفسها.
+  </p>
+
+  <p>
+    نفس الشكل تكرّر في هذه الجلسة من زاوية أخرى: شارة المنطقة كانت تظهر على ٩٦٧ مدخلًا،
+    والتحليل والبناء والاختبارات كلها خضراء. <strong>الإشارة الخضراء تثبت أن ما
+    تختبره يعمل، لا أن التطبيق يعمل.</strong>
+  </p>
+
+  <div class="box good">
+    <h4>ثلاث قواعد مستخلصة</h4>
+    <p>
+      <strong>١.</strong> إن زيّفت دالة في اختبار، فليكن هناك اختبار آخر يشغّل تنفيذها
+      الحقيقي.<br>
+      <strong>٢.</strong> اختبر مقابل <em>شكل البيانات الحقيقي</em> لا المتوقَّع — اختبار
+      شارة المنطقة يمرّر <code>'general'</code> بحروف صغيرة لأن هذا ما يرسله Supabase
+      فعلًا.<br>
+      <strong>٣.</strong> ما لا يستطيع المُصرِّف فرضه (اتجاه الاعتماد) يحتاج حارسًا
+      صريحًا في CI، وإلّا انحدر بصمت.
+    </p>
+  </div>
+</section>
+
+<section id="s23">
+  <h2><span class="num">23</span>Observability</h2>
+  <p class="deck">أضعف جانب في النظام، بفارق واضح.</p>
+
+  <pre class="ascii"><code>Logs     ⚠️  rag_log() خلف RAG_DEBUG فقط — مطفأ في الإنتاج غالبًا
+Metrics  ❌  لا شيء: لا عدّاد طلبات، لا زمن استجابة، لا معدّل أخطاء
+Tracing  ❌  لا شيء
+Alerts   ❌  لا شيء
+Client   ❌  لا تقارير أعطال، لا تحليلات استخدام</code></pre>
+
+  <p>
+    السؤال العملي: <strong>لو توقّف <code>/chat</code> الآن، متى ستعرف؟</strong> الجواب
+    الحالي: حين يخبرك أحد. وبما أن العميل يبتلع الأخطاء ويعرض حالات فارغة، قد لا يخبرك
+    أحد أصلًا — سيظنّون أن القاموس فارغ.
+  </p>
+
+  <p>
+    هذا مقبول لمشروع في طور البحث، ويصير غير مقبول لحظة الاعتماد على النظام في تجربة
+    تُذكر في ورقة علمية. أرخص خطوة ذات أثر: <strong>تسجيل منظَّم (structured logging)
+    لكل طلب</strong> — المسار، الزمن، رمز الحالة، مصدر الإجابة (<code>model</code> أم
+    <code>lexicon</code>). ذلك وحده يجيب على «كم نسبة الإجابات التي جاءت من الرجوع
+    الاحتياطي؟» — وهو رقم <em>ستحتاجه في الورقة نفسها</em>، لا لأغراض التشغيل فحسب.
+  </p>
+</section>
+
+<section id="s24">
+  <h2><span class="num">24</span>Deployment / CI-CD</h2>
+  <p class="deck">مسار النشر، والدرس المدفوع ثمنه في تعطّل ٢٠٢٦-٠٧-٢٧.</p>
+
+  <figure>
+    <pre class="mermaid">
+graph LR
+    P["push إلى dev / main"] --> GA["GitHub Actions"]
+    GA --> B1["pub get"]
+    B1 --> B2["build_runner"]
+    B2 --> B3["analyze"]
+    B3 --> B4["حارس المعمارية"]
+    B4 --> B5["flutter test"]
+    B5 --> V1["Vercel: hadrami-ai-lr7j<br/>(الواجهة)"]
+    GA --> C1["pytest"]
+    C1 --> V2["Vercel: hadrami-ai<br/>(الخلفية)"]
+    </pre>
+    <figcaption>مشروعا Vercel منفصلان من نفس المستودع، مقيَّدان بمجلد الجذر. خطوة «حارس المعمارية» أُضيفت في هذه الجلسة.</figcaption>
+  </figure>
+
+  <p>
+    التفصيلة الحاسمة: <strong>لا يوجد بناء ثابت مُودَع في git.</strong>
+    <code>vercel_build.sh</code> يستنسخ Flutter <code>stable</code> من جديد ويشغّل
+    <code>build_runner</code> ثم <code>flutter build web</code> في <em>كل</em> نشرة. هذا
+    يعني أمرين:
+  </p>
+  <ul>
+    <li>الملفات المولّدة مستبعدة من git بحقّ — لكن نسيان <code>build_runner</code> في السكربت يعطّل الإنتاج، وهذا ما حدث فعلًا في ٢٠٢٦-٠٧-٢٧.</li>
+    <li>اعتمادية مثبَّتة تُصرَّف اليوم على Flutter المحلّي قد تنكسر بعد أشهر حين يتقدّم <code>stable</code> — والخطأ سيبدو وكأنه في شيفرتك بينما هو تعارض إصدارات.</li>
+  </ul>
+
+  <div class="box note">
+    <h4>الدرس: أي مسار لا يعمل إلّا في CI هو مسار غير مُختبَر</h4>
+    <p>
+      سبب التعطّل لم يكن خطأً برمجيًّا، بل أن مسار البناء على Vercel لم يكن يُشغَّل محلّيًّا
+      أبدًا. القاعدة المستخلصة والمثبَّتة في <code>CLAUDE.md</code>: بعد أي تعديل يمسّ
+      <code>pubspec.yaml</code> أو <code>vercel_build.sh</code> أو <code>vercel.json</code>،
+      شغّل السلسلة كاملة محلّيًّا قبل الدفع. وهذا ما فُعل في هذه الجلسة: <code>build_runner</code>
+      ثم <code>analyze</code> ثم الحارس ثم <code>test</code> ثم <code>build web --release</code>.
+    </p>
+  </div>
+</section>
+
+<section id="s25">
+  <h2><span class="num">25</span>Architecture Decision Records</h2>
+  <p class="deck">سجلّ القرارات — كل واحد بسياقه وثمنه وشرط انقلابه.</p>
+
+  <div class="scroll">
+  <table>
+    <thead><tr><th>#</th><th>القرار</th><th>الحالة</th><th>السبب</th><th>الثمن</th></tr></thead>
+    <tbody>
+      <tr><td>001</td><td>Supabase + pgvector بدل قاعدة متجهات منفصلة</td><td>نافذ</td><td>محرّك واحد للعلاقي والمتجهات؛ لا خدمة إضافية</td><td>سقف توسّع أدنى عند ١٠⁵ متجهات</td></tr>
+      <tr><td>002</td><td>RAG مقيَّد بالمعجم مع رفض صريح</td><td>نافذ</td><td>الهلوسة تُبطل قيمة مشروع بحثي في اللهجات</td><td>يرفض أحيانًا أسئلة مشروعة</td></tr>
+      <tr><td>003</td><td>Feature-First بدل Clean Architecture في العميل</td><td>نافذ</td><td>لا منطق أعمال في العميل؛ مصدر بيانات واحد</td><td>لا حماية إن ظهر منطق لاحقًا</td></tr>
+      <tr><td>004</td><td><code>core/</code> بلا معرفة مجالية</td><td>نافذ</td><td>يجعل الطبقة التحتية محمولة إلى مشروع آخر</td><td><code>ApiService</code> يُرجع <code>dynamic</code></td></tr>
+      <tr><td>005</td><td><code>lexicon</code> وحدة مجال أساس</td><td>نافذ</td><td>يمنع الاستيراد المتبادل بين ٣ وحدات</td><td>قد يصير درج مهملات جديدًا إن لم يُراقَب</td></tr>
+      <tr><td>006</td><td>توحيد <code>/ask</code> و<code>/convert-phrase</code> في <code>/chat</code></td><td>نافذ</td><td>٤ وجهات تنقّل بدل ٧؛ نيّة واحدة تُصنَّف تلقائيًّا</td><td>مسار خلفي أعقد</td></tr>
+      <tr><td>007</td><td>حساب مواضع التظليل في الخادم</td><td>نافذ</td><td>التطبيع العربي منطق مجالي يجب ألّا يتكرّر</td><td>العميل يثق بفهارس خارجية</td></tr>
+      <tr><td>008</td><td>الخدمات تبتلع الأخطاء وتُرجع بديلًا عربيًّا</td><td><span class="pill p-imp">قيد المراجعة</span></td><td>واجهة أبسط بلا <code>AsyncError</code></td><td>لا فرق بين «فارغ» و«معطّل»</td></tr>
+      <tr><td>009</td><td>لا مصادقة (مؤجَّلة عمدًا)</td><td><span class="pill p-crit">انتهت صلاحيته</span></td><td>لا بيانات حسّاسة؛ تركيز على البحث</td><td>مسار مكلف مفتوح للعالم</td></tr>
+      <tr><td>010</td><td>فرض اتجاه الاعتماد عبر CI</td><td>جديد — هذه الجلسة</td><td>المُصرِّف لا يستطيع فرضه؛ الانحدار صامت</td><td>سكربت إضافي يحتاج صيانة</td></tr>
+    </tbody>
+  </table>
+  </div>
+</section>
+
+<section id="s26">
+  <h2><span class="num">26</span>المعمارية النهائية الموصى بها</h2>
+  <p class="deck">الخلاصة: ما يبقى كما هو، وما يتغيّر، ولماذا.</p>
+
+  <div class="box good">
+    <h4>التوصية: أبقِ المعمارية الحالية، وأغلق ثغراتها</h4>
+    <p>
+      البنية سليمة ومناسبة لحجم المشروع وطبيعته. المطلوب ليس إعادة هيكلة بل إغلاق أربع
+      ثغرات محدّدة. <strong>إعادة كتابة معمارية صحيحة هي أسوأ استثمار ممكن هنا.</strong>
+    </p>
+  </div>
+
+  <pre class="ascii"><code>Flutter Client
+  Widgets ──→ Riverpod Providers ──→ Module Services ──→ ApiService
+                                            │
+                                    core/ (بلا معرفة مجالية)
+                                            │
+                                          HTTPS
+                                            ↓
+FastAPI
+  main.py (مسارات رفيعة)
+      ├──→ services/  (بحث · تحويل · تضمين)
+      └──→ rag/       (تصنيف · استرجاع · توليد)
+                  └──→ core/data_store.py     ← الحدّ الوحيد للبيانات
+                              ↓
+                  Supabase (Postgres + pgvector)
+                              ↓
+                        Gemini API</code></pre>
+
+  <div class="scroll">
+  <table>
+    <thead><tr><th>السؤال</th><th>الجواب في هذه المعمارية</th></tr></thead>
+    <tbody>
+      <tr><td>أين منطق الأعمال؟</td><td>في الخادم حصرًا: <code>services/</code> و<code>rag/</code>. العميل عرضٌ وحالة عرض فقط.</td></tr>
+      <tr><td>أين إدارة الحالة؟</td><td>Riverpod في <code>modules/*/providers/</code> — حالة واجهة لا حالة مجال.</td></tr>
+      <tr><td>أين اتصال الشبكة؟</td><td><code>core/network/api_service.dart</code> نقلًا، وخدمات الوحدات تحويلًا ومعالجةً للأخطاء.</td></tr>
+      <tr><td>أين التخزين المؤقّت؟</td><td>طبقة استرجاع RAG فقط. لا شيء في العميل — وهذا مقصود حاليًّا.</td></tr>
+      <tr><td>أين المصادقة؟</td><td><strong>لا مكان لها بعد.</strong> عند إضافتها: middleware في FastAPI + رأس في <code>ApiService</code>.</td></tr>
+      <tr><td>كيف تتواصل الميزات؟</td><td>لا تتواصل. تشترك عبر <code>lexicon</code> فقط، والرسم يبقى لادوريًّا.</td></tr>
+      <tr><td>ما سهولة استبدال Supabase؟</td><td>عالية في الخلفية — <code>data_store.py</code> وحده. العميل لا يعرف Supabase أصلًا.</td></tr>
+      <tr><td>ما سهولة الاختبار؟</td><td>الخلفية جيدة. العميل ممكن عبر <code>overrideWithValue</code> — الأداة موجودة والاستخدام قليل.</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <h3>ما يتغيّر — بالترتيب</h3>
+  <ol class="body">
+    <li><strong>حصر CORS + حدّ معدّل على <code>/chat</code> و<code>/feedback</code></strong> — الثغرة الوحيدة النافذة اليوم.</li>
+    <li><strong>حفظ المفضّلة</strong> بـ<code>shared_preferences</code> على نمط <code>theme_provider</code> القائم.</li>
+    <li><strong>تسجيل منظَّم لكل طلب</strong> — تحتاج الرقم للتشغيل وللورقة معًا.</li>
+    <li><strong>تمييز الفشل عن الفراغ</strong> في القراءات الأساسية فقط، لا في كل نداء.</li>
+  </ol>
+</section>
+
+<section id="s27">
+  <h2><span class="num">27</span>خارطة التعلّم</h2>
+  <p class="deck">سبعة مستويات، كلٌّ منها مربوط بتمرين على هذا المشروع بالذات.</p>
+
+  <details class="level" open>
+    <summary>المستوى ١ — أساسيات المعمارية</summary>
+    <div class="inner">
+      <p><strong>ماذا تتعلّم:</strong> الاقتران والتماسك · SOLID (خاصةً SRP وDIP) · لماذا يهمّ اتجاه الاعتماد · متى يكون التجريد مكسبًا ومتى يكون ضريبة.</p>
+      <p><strong>لماذا يهمّ:</strong> كل ما بعده مبنيّ عليه. أغلب «المعماريات السيّئة» ليست خيارًا خاطئًا للنمط، بل اقترانًا لم ينتبه له أحد.</p>
+      <p><strong>تمرين على مشروعك:</strong> ارسم رسم الاستيراد الكامل لـ<code>lib/src</code> يدويًّا، ثم قارنه بمخرجات <code>tool/check_architecture.sh</code>. أين توقّعت اعتمادًا لا وجود له، والعكس؟</p>
+    </div>
+  </details>
+
+  <details class="level">
+    <summary>المستوى ٢ — System Design</summary>
+    <div class="inner">
+      <p><strong>ماذا تتعلّم:</strong> تصميم الـAPI · نمذجة البيانات · استراتيجيات التخزين المؤقّت · موازنة الحمل · طبقات التطبيق مقابل طبقات البيانات · تقدير السعة.</p>
+      <p><strong>لماذا يهمّ:</strong> ينقلك من «كيف أرتّب الملفات» إلى «كيف يصمد النظام».</p>
+      <p><strong>تمرين على مشروعك:</strong> قدّر تكلفة ١٠٠٠ مستخدم يوميًّا × ٥ رسائل: كم نداء Gemini؟ كم يكلّف؟ عند أي رقم يصير التخزين المؤقّت للأسئلة المتكرّرة أرخص من إضافة الرصيد؟</p>
+    </div>
+  </details>
+
+  <details class="level">
+    <summary>المستوى ٣ — الأنظمة الموزّعة</summary>
+    <div class="inner">
+      <p><strong>ماذا تتعلّم:</strong> نظرية CAP عمليًّا · القدرة على إعادة التنفيذ (idempotency) · إعادة المحاولة والتراجع الأسّي · الفشل الجزئي · قواطع الدارة.</p>
+      <p><strong>لماذا يهمّ:</strong> لديك بالفعل نظام موزّع — عميل، خادم، قاعدة بيانات، وواجهة طرف ثالث. كل حدّ بينها يمكن أن يفشل وحده.</p>
+      <p><strong>تمرين على مشروعك:</strong> ادرس <code>_execute_with_retry</code> في <code>data_store.py</code>: ماذا يحدث لو فشل <code>insert_feedback</code> بعد الكتابة وقبل وصول الردّ؟ هل يُنشئ التكرار صفًّا مزدوجًا؟</p>
+    </div>
+  </details>
+
+  <details class="level">
+    <summary>المستوى ٤ — القابلية للتوسّع</summary>
+    <div class="inner">
+      <p><strong>ماذا تتعلّم:</strong> التوسّع الأفقي مقابل الرأسي · التقسيم · نسخ القراءة · الطوابير · معالجة الدُفعات · اكتشاف عنق الزجاجة.</p>
+      <p><strong>لماذا يهمّ:</strong> يعلّمك <em>ألّا</em> توسّع ما ليس هو الحلقة الأضيق.</p>
+      <p><strong>تمرين على مشروعك:</strong> راجع القسم 18: لماذا Gemini هو السقف لا Postgres؟ صمّم أرخص حلّ يرفع هذا السقف عشرة أضعاف دون تغيير البنية.</p>
+    </div>
+  </details>
+
+  <details class="level">
+    <summary>المستوى ٥ — الموثوقية</summary>
+    <div class="inner">
+      <p><strong>ماذا تتعلّم:</strong> SLI وSLO · ميزانية الأخطاء · التدهور التدريجي · هندسة الفوضى · تحليل ما بعد العطل بلا لوم.</p>
+      <p><strong>لماذا يهمّ:</strong> الفرق بين «يعمل عندي» و«يعمل للمستخدمين دائمًا».</p>
+      <p><strong>تمرين على مشروعك:</strong> اكتب تحليلًا لعطل ٢٠٢٦-٠٧-٢٧ (نقص <code>build_runner</code> في سكربت Vercel): ما السبب الجذري؟ ما الحاجز الذي كان سيمنعه؟ هل هو موجود الآن فعلًا؟</p>
+    </div>
+  </details>
+
+  <details class="level">
+    <summary>المستوى ٦ — السحابة والبنية التحتية</summary>
+    <div class="inner">
+      <p><strong>ماذا تتعلّم:</strong> نموذج serverless وحدوده · البدء البارد · البنية ككود · إدارة الأسرار · بيئات منفصلة.</p>
+      <p><strong>لماذا يهمّ:</strong> مشروعك على Vercel بالفعل، وقيود المنصّة تشرح سلوكيات قد تبدو أخطاءً (مثل عقم التخزين المؤقّت داخل العملية).</p>
+      <p><strong>تمرين على مشروعك:</strong> اشرح لماذا لا يعمل <code>_keyword_cache</code> كما هو متوقَّع على Vercel. أين يجب أن يعيش هذا التخزين المؤقّت بدلًا من ذلك؟</p>
+    </div>
+  </details>
+
+  <details class="level">
+    <summary>المستوى ٧ — تفكير Senior / Architect</summary>
+    <div class="inner">
+      <p><strong>ماذا تتعلّم:</strong> كتابة ADR · تقديم المقايضات لغير التقنيين · تصنيف القرارات بقابلية التراجع · معرفة متى <em>لا</em> تعيد الهيكلة.</p>
+      <p><strong>لماذا يهمّ:</strong> المهارة المميِّزة ليست بناء الأنظمة المعقّدة، بل <strong>تبرير البسيطة منها</strong> أمام ضغط لإضافة طبقات.</p>
+      <p><strong>تمرين على مشروعك:</strong> اكتب ADR-011 لقرار «إضافة حدّ معدّل على <code>/chat</code>»: السياق، الخيارات (بوّابة · middleware · Vercel Edge)، القرار، الثمن، وشرط انقلابه. ثم دافع عن قرارك برفض Clean Architecture أمام معترض افتراضي.</p>
+    </div>
+  </details>
+
+  <div class="box">
+    <h4>ما بعد الخارطة</h4>
+    <p>
+      أهمّ ما يمكن أن تخرج به من هذا الدليل ليس نمطًا معماريًّا، بل عادة:
+      <strong>لكل قرار معماري، اكتب ثمنه وشرط انقلابه في نفس اللحظة.</strong> المهندسون
+      المتوسّطون يوثّقون ما فعلوه؛ المعماريون يوثّقون <em>لماذا</em>، و<em>متى يجب أن
+      يتوقّف ذلك عن الصحّة</em>.
+    </p>
+  </div>
+</section>
+
+</main>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+<script>
+  // Progressive enhancement: renders when opened with a network connection.
+  // Inside a CSP-restricted viewer the CDN is blocked and the host renders
+  // `pre.mermaid` natively instead, so guard rather than assume.
+  if (window.mermaid) {
+    window.mermaid.initialize({
+      startOnLoad: true,
+      theme: 'dark',
+      themeVariables: {
+        background: '#171E25', primaryColor: '#1E262F', primaryTextColor: '#DEE6ED',
+        primaryBorderColor: '#27323D', lineColor: '#8798A6', secondaryColor: '#19233A',
+        tertiaryColor: '#2A2118', fontFamily: 'IBM Plex Sans Arabic, sans-serif'
+      }
+    });
+  }
+</script>
+</body>
+</html>
