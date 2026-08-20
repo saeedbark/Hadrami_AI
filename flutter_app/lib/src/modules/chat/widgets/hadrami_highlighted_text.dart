@@ -1,6 +1,6 @@
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
-import 'package:hadrami_nlp/src/core/models/word_entry.dart';
+import 'package:hadrami_nlp/src/modules/lexicon/models/word_entry.dart';
 
 /// Paints [spans] over [text] using Unicode code-point indices (matches Python `len` / slice).
 class HadramiHighlightedText extends StatelessWidget {
@@ -31,8 +31,12 @@ class HadramiHighlightedText extends StatelessWidget {
     final children = <TextSpan>[];
     var cursor = 0;
     for (final sp in sorted) {
-      final s = sp.start.clamp(0, n);
       final e = sp.end.clamp(0, n);
+      // Spans arrive from the model unmerged and may overlap or nest, so pull
+      // the start up to the cursor — otherwise an overlap repaints runes that
+      // were already emitted and the rendered text no longer equals [text].
+      final rawStart = sp.start.clamp(0, n);
+      final s = rawStart < cursor ? cursor : rawStart;
       if (s >= e) continue;
       if (cursor < s) {
         children.add(TextSpan(

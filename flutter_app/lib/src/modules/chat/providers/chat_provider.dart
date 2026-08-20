@@ -1,8 +1,8 @@
-import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:hadrami_nlp/src/core/models/word_entry.dart';
 import 'package:hadrami_nlp/src/modules/chat/models/chat_message.dart';
 import 'package:hadrami_nlp/src/modules/chat/models/chat_state.dart';
 import 'package:hadrami_nlp/src/modules/chat/services/chat_service.dart';
+import 'package:hadrami_nlp/src/modules/lexicon/models/word_entry.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'chat_provider.g.dart';
 

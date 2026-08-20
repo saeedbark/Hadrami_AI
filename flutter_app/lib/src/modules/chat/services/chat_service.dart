@@ -1,12 +1,12 @@
 import 'dart:async';
 
-import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:hadrami_nlp/src/configs/api_config.dart';
-import 'package:hadrami_nlp/src/configs/api_endpoints.dart';
-import 'package:hadrami_nlp/src/core/models/word_entry.dart';
-import 'package:hadrami_nlp/src/core/services/api_service.dart';
+import 'package:hadrami_nlp/src/core/network/api_config.dart';
+import 'package:hadrami_nlp/src/core/network/api_endpoints.dart';
+import 'package:hadrami_nlp/src/core/network/api_service.dart';
 import 'package:hadrami_nlp/src/core/strings/app_strings.dart';
 import 'package:hadrami_nlp/src/modules/chat/models/chat_message.dart';
+import 'package:hadrami_nlp/src/modules/lexicon/models/word_entry.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'chat_service.g.dart';
 

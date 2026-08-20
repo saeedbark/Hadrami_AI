@@ -1,7 +1,7 @@
  import 'package:freezed_annotation/freezed_annotation.dart';
 
-part 'home_model.freezed.dart';
-part 'home_model.g.dart';
+part 'app_stats.freezed.dart';
+part 'app_stats.g.dart';
 
 @freezed
 class AppStats with _$AppStats {

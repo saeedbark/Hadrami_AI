@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:hadrami_nlp/src/core/models/dictionary_labels.dart';
-import 'package:hadrami_nlp/src/core/models/word_entry.dart';
 import 'package:hadrami_nlp/src/core/strings/app_strings.dart';
-import 'package:hadrami_nlp/src/modules/dictionary/widgets/word_detail_sheet.dart';
-import 'package:hadrami_nlp/src/modules/favorites/providers/favorites_provider.dart';
+import 'package:hadrami_nlp/src/modules/lexicon/models/dictionary_labels.dart';
+import 'package:hadrami_nlp/src/modules/lexicon/models/word_entry.dart';
+import 'package:hadrami_nlp/src/modules/lexicon/providers/favorites_provider.dart';
+import 'package:hadrami_nlp/src/modules/lexicon/widgets/word_detail_sheet.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class WordCard extends ConsumerWidget {
   const WordCard({

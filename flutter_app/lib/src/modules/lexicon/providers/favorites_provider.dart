@@ -1,5 +1,5 @@
+import 'package:hadrami_nlp/src/modules/lexicon/models/word_entry.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:hadrami_nlp/src/core/models/word_entry.dart';
 
 part 'favorites_provider.g.dart';
 

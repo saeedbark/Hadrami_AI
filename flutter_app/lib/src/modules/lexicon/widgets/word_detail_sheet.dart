@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:hadrami_nlp/src/core/models/dictionary_labels.dart';
-import 'package:hadrami_nlp/src/core/models/word_entry.dart';
 import 'package:hadrami_nlp/src/core/strings/app_strings.dart';
-import 'package:hadrami_nlp/src/modules/dictionary/services/dictionary_service.dart';
-import 'package:hadrami_nlp/src/modules/favorites/providers/favorites_provider.dart';
-import 'package:hadrami_nlp/src/widgets/text_input.dart';
+import 'package:hadrami_nlp/src/core/ui/text_input.dart';
+import 'package:hadrami_nlp/src/modules/lexicon/models/dictionary_labels.dart';
+import 'package:hadrami_nlp/src/modules/lexicon/models/word_entry.dart';
+import 'package:hadrami_nlp/src/modules/lexicon/providers/favorites_provider.dart';
+import 'package:hadrami_nlp/src/modules/lexicon/services/lexicon_service.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class WordDetailSheet extends HookConsumerWidget {
   const WordDetailSheet({super.key, required this.entry});
@@ -29,7 +29,7 @@ class WordDetailSheet extends HookConsumerWidget {
       if (text.isEmpty) return;
       isSubmitting.value = true;
 
-      final success = await ref.read(dictionaryServiceProvider).submitFeedback(
+      final success = await ref.read(lexiconServiceProvider).submitFeedback(
             wordId: entry.id,
             wordVocalized: entry.wordVocalized,
             suggestedFusha: text,
@@ -161,7 +161,7 @@ class WordDetailSheet extends HookConsumerWidget {
                 children: [
                   if (entry.pos != null && entry.pos!.isNotEmpty)
                     _PosChip(rawPos: entry.pos!),
-                  if (entry.region != 'General' && entry.region.isNotEmpty)
+                  if (!WordRegion.isDefault(entry.region))
                     _TagChip(
                       label: WordRegion.arabicLabelFor(entry.region),
                       icon: Icons.place_rounded,

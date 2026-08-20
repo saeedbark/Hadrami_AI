@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:hadrami_nlp/src/configs/app_colors.dart';
-import 'package:hadrami_nlp/src/configs/app_radius.dart';
+import 'package:hadrami_nlp/src/core/theme/app_colors.dart';
+import 'package:hadrami_nlp/src/core/theme/app_radius.dart';
 
 class AppTheme {
   static TextStyle _textStyle({
