@@ -12,6 +12,8 @@ Run:
 from __future__ import annotations
 
 import os
+from unittest.mock import patch
+
 import pytest
 from fastapi.testclient import TestClient
 
@@ -157,7 +159,10 @@ def test_get_single_word_has_schema_fields(client: TestClient):
 
 
 def test_get_word_not_found(client: TestClient):
-    resp = client.get("/word/999999")
+    # Doesn't need @db_only: fetch_by_id is mocked so this exercises the
+    # route's not-found branch without contacting Supabase.
+    with patch("app.services.dictionary_service.fetch_by_id", return_value=None):
+        resp = client.get("/word/999999")
     assert resp.status_code == 404
 
 

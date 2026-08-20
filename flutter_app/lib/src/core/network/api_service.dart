@@ -1,9 +1,8 @@
 import 'dart:convert';
+
+import 'package:hadrami_nlp/src/core/network/api_config.dart';
 import 'package:http/http.dart' as http;
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:hadrami_nlp/src/configs/api_config.dart';
-import 'package:hadrami_nlp/src/configs/api_endpoints.dart';
-import 'package:hadrami_nlp/src/core/models/word_entry.dart';
 
 part 'api_service.g.dart';
 
@@ -61,29 +60,5 @@ class ApiService {
       throw Exception('Server error: ${response.statusCode}');
     }
     return json.decode(utf8.decode(response.bodyBytes));
-  }
-
-  Future<SearchResult> listWords({
-    int page = 1,
-    int size = ApiConfig.defaultPageSize,
-    String? letter,
-    String? pos,
-    String? region,
-    String? tag,
-  }) async {
-    try {
-      final params = <String, String>{
-        'page': '$page',
-        'size': '$size',
-        if (letter != null) 'letter': letter,
-        if (pos != null) 'pos': pos,
-        if (region != null) 'region': region,
-        if (tag != null) 'tag': tag,
-      };
-      final data = await getJson(ApiEndpoints.words, queryParameters: params);
-      return SearchResult.fromJson(data);
-    } catch (_) {
-      return const SearchResult(total: 0, results: []);
-    }
   }
 }

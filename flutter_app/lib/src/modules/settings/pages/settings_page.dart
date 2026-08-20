@@ -1,13 +1,13 @@
 import 'package:flutter/foundation.dart' show kDebugMode;
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
-import 'package:hadrami_nlp/src/modules/home/services/home_service.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:hadrami_nlp/src/configs/api_config.dart';
-import 'package:hadrami_nlp/src/core/providers/theme_provider.dart';
+import 'package:hadrami_nlp/src/core/network/api_config.dart';
 import 'package:hadrami_nlp/src/core/strings/app_strings.dart';
-import 'package:hadrami_nlp/src/widgets/app_scaffold.dart';
-import 'package:hadrami_nlp/src/widgets/content_shell.dart';
+import 'package:hadrami_nlp/src/core/theme/theme_provider.dart';
+import 'package:hadrami_nlp/src/core/ui/app_scaffold.dart';
+import 'package:hadrami_nlp/src/core/ui/content_shell.dart';
+import 'package:hadrami_nlp/src/modules/lexicon/services/lexicon_service.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class SettingsPage extends HookConsumerWidget {
   const SettingsPage({super.key});
@@ -24,7 +24,7 @@ class SettingsPage extends HookConsumerWidget {
       testing.value = true;
       testResult.value = null;
       try {
-        final stats = await ref.read(homeServiceProvider).getStats();
+        final stats = await ref.read(lexiconServiceProvider).getStats();
         if (stats != null && stats.totalWords > 0) {
           testResult.value =
               '${AppStrings.settingsConnectionSuccessPrefix}${stats.totalWords}${AppStrings.settingsConnectionSuccessSuffix}';

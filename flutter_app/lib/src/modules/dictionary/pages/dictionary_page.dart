@@ -2,17 +2,17 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:go_router/go_router.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:hadrami_nlp/src/core/models/dictionary_labels.dart';
 import 'package:hadrami_nlp/src/core/strings/app_strings.dart';
+import 'package:hadrami_nlp/src/core/ui/animated_appear.dart';
+import 'package:hadrami_nlp/src/core/ui/app_scaffold.dart';
+import 'package:hadrami_nlp/src/core/ui/empty_state.dart';
+import 'package:hadrami_nlp/src/core/ui/loading_widget.dart';
+import 'package:hadrami_nlp/src/core/ui/text_input.dart';
 import 'package:hadrami_nlp/src/modules/dictionary/providers/dictionary_provider.dart';
-import 'package:hadrami_nlp/src/modules/dictionary/widgets/word_card.dart';
-import 'package:hadrami_nlp/src/widgets/animated_appear.dart';
-import 'package:hadrami_nlp/src/widgets/app_scaffold.dart';
-import 'package:hadrami_nlp/src/widgets/empty_state.dart';
-import 'package:hadrami_nlp/src/widgets/error_widget.dart';
-import 'package:hadrami_nlp/src/widgets/loading_widget.dart';
-import 'package:hadrami_nlp/src/widgets/text_input.dart';
+import 'package:hadrami_nlp/src/modules/dictionary/widgets/error_widget.dart';
+import 'package:hadrami_nlp/src/modules/lexicon/models/dictionary_labels.dart';
+import 'package:hadrami_nlp/src/modules/lexicon/widgets/word_card.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class DictionaryPage extends HookConsumerWidget {
   const DictionaryPage({super.key});

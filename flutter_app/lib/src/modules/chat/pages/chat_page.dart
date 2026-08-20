@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hadrami_nlp/src/core/strings/app_strings.dart';
+import 'package:hadrami_nlp/src/core/ui/animated_appear.dart';
+import 'package:hadrami_nlp/src/core/ui/content_shell.dart';
 import 'package:hadrami_nlp/src/modules/chat/models/chat_state.dart';
 import 'package:hadrami_nlp/src/modules/chat/providers/chat_provider.dart';
 import 'package:hadrami_nlp/src/modules/chat/widgets/chat_bubble.dart';
 import 'package:hadrami_nlp/src/modules/chat/widgets/chat_input.dart';
-import 'package:hadrami_nlp/src/widgets/animated_appear.dart';
-import 'package:hadrami_nlp/src/widgets/content_shell.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class ChatPage extends HookConsumerWidget {

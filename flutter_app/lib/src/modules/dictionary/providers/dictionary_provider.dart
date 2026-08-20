@@ -1,10 +1,10 @@
 import 'dart:async';
 
-import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:hadrami_nlp/src/configs/api_config.dart';
-import 'package:hadrami_nlp/src/core/models/word_entry.dart';
-import 'package:hadrami_nlp/src/core/services/api_service.dart';
+import 'package:hadrami_nlp/src/core/network/api_config.dart';
 import 'package:hadrami_nlp/src/modules/dictionary/services/dictionary_service.dart';
+import 'package:hadrami_nlp/src/modules/lexicon/models/word_entry.dart';
+import 'package:hadrami_nlp/src/modules/lexicon/services/lexicon_service.dart';
+import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 part 'dictionary_provider.g.dart';
 
@@ -53,9 +53,10 @@ class WordList extends _$WordList {
     final letter = ref.watch(selectedLetterProvider);
     final pos = ref.watch(selectedPosProvider);
     final tag = ref.watch(selectedTagProvider);
-    // size passed explicitly (was relying on ApiService.listWords' default)
-    // so it can't silently drift from the size loadMore() below requests.
-    final result = await ref.read(apiServiceProvider).listWords(
+    // size passed explicitly (was relying on LexiconService.listWords'
+    // default) so it can't silently drift from the size loadMore() below
+    // requests.
+    final result = await ref.read(lexiconServiceProvider).listWords(
           page: 1,
           size: ApiConfig.defaultPageSize,
           letter: letter,
@@ -76,7 +77,7 @@ class WordList extends _$WordList {
     final letter = ref.read(selectedLetterProvider);
     final pos = ref.read(selectedPosProvider);
     final tag = ref.read(selectedTagProvider);
-    final result = await ref.read(apiServiceProvider).listWords(
+    final result = await ref.read(lexiconServiceProvider).listWords(
           page: _currentPage,
           size: ApiConfig.defaultPageSize,
           letter: letter,

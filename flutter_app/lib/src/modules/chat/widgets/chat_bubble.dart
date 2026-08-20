@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:hadrami_nlp/src/core/utils/time_formatting.dart';
+import 'package:hadrami_nlp/src/core/formatting/time_formatting.dart';
+import 'package:hadrami_nlp/src/core/ui/animated_appear.dart';
 import 'package:hadrami_nlp/src/modules/chat/models/chat_message.dart';
-import 'package:hadrami_nlp/src/widgets/animated_appear.dart';
 
 class ChatBubble extends StatelessWidget {
   const ChatBubble({super.key, required this.message});

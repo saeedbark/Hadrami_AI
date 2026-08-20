@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:hooks_riverpod/hooks_riverpod.dart';
-import 'package:hadrami_nlp/src/configs/app_colors.dart';
-import 'package:hadrami_nlp/src/core/providers/theme_provider.dart';
 import 'package:hadrami_nlp/src/core/routing/app_routes.dart';
 import 'package:hadrami_nlp/src/core/strings/app_strings.dart';
+import 'package:hadrami_nlp/src/core/theme/app_colors.dart';
 import 'package:hadrami_nlp/src/core/theme/theme.dart';
+import 'package:hadrami_nlp/src/core/theme/theme_provider.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 class _NavItem {
   final IconData icon;

@@ -1,9 +1,8 @@
-import 'package:hadrami_nlp/src/modules/home/home_models/home_model.dart';
-import 'package:hadrami_nlp/src/modules/home/home_models/lexicon_section.dart';
+import 'package:hadrami_nlp/src/core/network/api_endpoints.dart';
+import 'package:hadrami_nlp/src/core/network/api_service.dart';
+import 'package:hadrami_nlp/src/modules/home/models/lexicon_section.dart';
+import 'package:hadrami_nlp/src/modules/lexicon/models/word_entry.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
-import 'package:hadrami_nlp/src/configs/api_endpoints.dart';
-import 'package:hadrami_nlp/src/core/models/word_entry.dart';
-import 'package:hadrami_nlp/src/core/services/api_service.dart';
 
 part 'home_service.g.dart';
 
@@ -19,15 +18,6 @@ class HomeService {
   HomeService(this._api);
 
   final ApiService _api;
-
-  Future<AppStats?> getStats() async {
-    try {
-      final data = await _api.getJson(ApiEndpoints.stats);
-      return AppStats.fromJson(data);
-    } catch (_) {
-      return const AppStats();
-    }
-  }
 
   Future<WordEntry?> randomWord() async {
     try {

@@ -10,7 +10,7 @@ void main() {
         child: HadramiApp(),
       ),
     );
-    await tester.pump();
+    await tester.pumpAndSettle();
     expect(find.text('الرئيسية'), findsWidgets);
   });
 }
