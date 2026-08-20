@@ -53,9 +53,16 @@ class WordList extends _$WordList {
     final letter = ref.watch(selectedLetterProvider);
     final pos = ref.watch(selectedPosProvider);
     final tag = ref.watch(selectedTagProvider);
-    final result = await ref
-        .read(lexiconServiceProvider)
-        .listWords(page: 1, letter: letter, pos: pos, tag: tag);
+    // size passed explicitly (was relying on LexiconService.listWords'
+    // default) so it can't silently drift from the size loadMore() below
+    // requests.
+    final result = await ref.read(lexiconServiceProvider).listWords(
+          page: 1,
+          size: ApiConfig.defaultPageSize,
+          letter: letter,
+          pos: pos,
+          tag: tag,
+        );
     _total = result.total;
     _reachedMax = result.results.length >= _total;
     return result.results;
