@@ -401,28 +401,32 @@ hr.sep{border:none;border-top:1px dashed var(--line-2);margin:26px 0}
   <h3>Architecture &amp; State</h3>
   <a href="#state-management"><span class="n">17</span> State Management</a>
   <a href="#riverpod"><span class="n">18</span> Riverpod</a>
-  <a href="#architecture"><span class="n">19</span> Flutter Architecture</a>
-  <a href="#solid"><span class="n">20</span> SOLID</a>
+  <a href="#riverpod-codegen"><span class="n">19</span> Riverpod: Code Generation</a>
+  <a href="#packages"><span class="n">20</span> Package Deep-Dive</a>
+  <a href="#architecture"><span class="n">21</span> Flutter Architecture</a>
+  <a href="#feature-first"><span class="n">22</span> Feature-First Architecture</a>
+  <a href="#solid"><span class="n">23</span> SOLID</a>
   <h3>Production Skills</h3>
-  <a href="#networking"><span class="n">21</span> Networking &amp; Auth</a>
-  <a href="#error-handling"><span class="n">22</span> Error Handling</a>
-  <a href="#testing"><span class="n">23</span> Testing</a>
-  <a href="#storage"><span class="n">24</span> Local Storage</a>
-  <a href="#git"><span class="n">25</span> Git &amp; Engineering</a>
-  <a href="#debugging"><span class="n">26</span> Debugging Scenarios</a>
-  <a href="#code-review"><span class="n">27</span> Code Review</a>
+  <a href="#networking"><span class="n">24</span> Networking &amp; Auth</a>
+  <a href="#error-handling"><span class="n">25</span> Error Handling</a>
+  <a href="#testing"><span class="n">26</span> Testing</a>
+  <a href="#storage"><span class="n">27</span> Local Storage</a>
+  <a href="#git"><span class="n">28</span> Git &amp; Engineering</a>
+  <a href="#debugging"><span class="n">29</span> Debugging Scenarios</a>
+  <a href="#code-review"><span class="n">30</span> Code Review</a>
+  <a href="#software-engineering"><span class="n">31</span> Software Engineering</a>
   <h3>التدريب</h3>
-  <a href="#output-prediction"><span class="n">28</span> Output Prediction (40)</a>
-  <a href="#scenarios"><span class="n">29</span> Scenario Questions</a>
-  <a href="#mock-beginner"><span class="n">30</span> Mock: Beginner (15)</a>
-  <a href="#mock-mid"><span class="n">31</span> Mock: Mid-Level (25)</a>
-  <a href="#mock-senior"><span class="n">32</span> Mock: Senior (30)</a>
+  <a href="#output-prediction"><span class="n">32</span> Output Prediction (40)</a>
+  <a href="#scenarios"><span class="n">33</span> Scenario Questions</a>
+  <a href="#mock-beginner"><span class="n">34</span> Mock: Beginner (15)</a>
+  <a href="#mock-mid"><span class="n">35</span> Mock: Mid-Level (25)</a>
+  <a href="#mock-senior"><span class="n">36</span> Mock: Senior (30)</a>
   <h3>الخلاصة</h3>
-  <a href="#how-senior"><span class="n">33</span> كيف تُجيب كـ Senior (20 مثال)</a>
-  <a href="#traps"><span class="n">34</span> Interview Traps</a>
-  <a href="#flashcards"><span class="n">35</span> Flashcards</a>
-  <a href="#map"><span class="n">36</span> Knowledge Map</a>
-  <a href="#checklist"><span class="n">37</span> Final Checklist</a>
+  <a href="#how-senior"><span class="n">37</span> كيف تُجيب كـ Senior (20 مثال)</a>
+  <a href="#traps"><span class="n">38</span> Interview Traps</a>
+  <a href="#flashcards"><span class="n">39</span> Flashcards</a>
+  <a href="#map"><span class="n">40</span> Knowledge Map</a>
+  <a href="#checklist"><span class="n">41</span> Final Checklist</a>
 </nav>
 
 <main>
@@ -437,7 +441,7 @@ hr.sep{border:none;border-top:1px dashed var(--line-2);margin:26px 0}
     <span>🔴 Senior Mobile Engineer</span>
   </div>
   <div class="stats">
-    <div class="stat"><b>38</b><small>قسم تدريبي</small></div>
+    <div class="stat"><b>42</b><small>قسم تدريبي</small></div>
     <div class="stat"><b>70</b><small>سؤال مقابلة وهمية</small></div>
     <div class="stat"><b>40</b><small>سؤال Output Prediction</small></div>
     <div class="stat"><b>3</b><small>مستويات متدرّجة</small></div>
@@ -2717,8 +2721,291 @@ void main() {
 استخدام <code>.value!</code> على <code>AsyncValue</code> بلا فحص الحالة — تعود بذلك إلى الـ null checks التي جاء <code>AsyncValue</code> ليمنعها.</div>
 </div></details></article>
 </section>
+<section id="riverpod-codegen">
+<h2><span class="num">19</span> Riverpod: Code Generation مقابل الكتابة اليدوية</h2>
+<p class="lead">منذ Riverpod 2.x أصبح لديك طريقتان لكتابة provider: يدوياً (<code>Provider(...)</code>) أو عبر <code>@riverpod</code> annotation + <code>riverpod_generator</code> + <code>build_runner</code>. هذا سؤال شائع جداً في 2025-2026 لأنه يكشف هل تعرف الأدوات الحديثة فعلاً أم تكرّر ما تعلّمته قديماً.</p>
+
+<div class="ascii">                    نفس الفكرة، طريقتان للتعبير عنها
+
+  يدوي (Manual)                          Code Generation (@riverpod)
+  ──────────────                         ────────────────────────────
+  final wordsProvider =                  @riverpod
+    FutureProvider.autoDispose            Future&lt;List&lt;Word&gt;&gt; words(
+      &lt;List&lt;Word&gt;&gt;((ref) async {            WordsRef ref,
+        return repo.fetch();              ) async {
+      });                                   return repo.fetch();
+                                          }
+  تكتب النوع، autoDispose،
+  والـ family يدوياً                      يُولَّد كل ذلك من التوقيع + الـ annotation
+                                          عبر build_runner → *.g.dart
+
+  ⚙️ الفرق ليس في القدرات — كلاهما Riverpod نفسه في الخلفية.
+     الفرق في: من يكتب الـ boilerplate — أنت أم المولّد؟</div>
+
+<article class="q" data-lv="mid" data-topic="Riverpod Codegen">
+<details><summary><div><div class="qmeta"><span class="badge b-mid">🟡 Mid</span><span class="badge b-topic">@riverpod</span></div>
+<div class="qtext">ما الفرق العملي بين Riverpod اليدوي و <code>riverpod_generator</code>؟ ولماذا قد يفضّل فريق أحدهما؟</div></div></summary>
+<div class="qbody">
+<div class="blk k-want"><div class="t">🎯 ماذا يريد المُحاوِر أن يعرف؟</div>
+هل تفهم أن الـ codegen طبقة <b>بناء (build-time)</b> فوق نفس النظام، لا نظاماً مختلفاً؟ وهل تعرف الثمن الحقيقي: اعتماد على <code>build_runner</code> في كل تعديل.</div>
+<div class="blk k-short"><div class="t">⚡ الإجابة المختصرة</div>
+اليدوي أصرح وأسرع للبدء وبلا خطوة بناء إضافية، لكنه يتطلّب كتابة <code>autoDispose</code> و<code>family</code> ونوع الـ provider يدوياً وبانضباط شخصي. الـ codegen يستنتج كل ذلك من توقيع الدالة/الكلاس، ويفرض <code>autoDispose</code> افتراضياً (وهو الأكثر أماناً)، ويولّد <code>Ref</code> مخصّصاً بنوع آمن لكل provider — لكنه يضيف اعتمادية على <code>build_runner</code> وخطوة watch أثناء التطوير.</div>
+<div class="code"><div class="hd">dart · يدوي<button class="copy">نسخ</button></div><pre><code class="dart">final searchQueryProvider = StateProvider&lt;String&gt;((ref) => '');
+
+final searchResultsProvider =
+    FutureProvider.autoDispose.family&lt;List&lt;Word&gt;, String&gt;((ref, query) async {
+  if (query.trim().length &lt; 2) return [];
+  final link = ref.keepAlive();
+  final timer = Timer(const Duration(seconds: 30), link.close);
+  ref.onDispose(timer.cancel);
+  return ref.watch(wordRepositoryProvider).search(query);
+});</code></pre></div>
+<div class="code"><div class="hd">dart · Code Generation<button class="copy">نسخ</button></div><pre><code class="dart">part 'search_provider.g.dart';
+
+@riverpod
+class SearchQuery extends _$SearchQuery {
+  @override
+  String build() => '';
+  void update(String value) => state = value;
+}
+
+@riverpod
+Future&lt;List&lt;Word&gt;&gt; searchResults(SearchResultsRef ref, String query) async {
+  if (query.trim().length &lt; 2) return [];
+  final link = ref.keepAlive();
+  final timer = Timer(const Duration(seconds: 30), link.close);
+  ref.onDispose(timer.cancel);
+  return ref.watch(wordRepositoryProvider).search(query);
+}
+
+// الاستخدام في الطرفين متطابق تماماً:
+final results = ref.watch(searchResultsProvider(query));   // يدوي
+final results2 = ref.watch(searchResultsProvider(query));  // codegen — نفس الاسم المولَّد</code></pre></div>
+<div class="blk k-trade"><div class="t">⚖️ Trade-offs</div>
+<div class="tablewrap"><table>
+<thead><tr><th>المعيار</th><th>يدوي</th><th>Code Generation</th></tr></thead>
+<tbody>
+<tr><td>سرعة الإعداد</td><td>فوري، بلا build_runner</td><td>يحتاج <code>dart run build_runner watch</code> يعمل باستمرار</td></tr>
+<tr><td>autoDispose</td><td>تكتبه بنفسك (يُنسى بسهولة)</td><td>افتراضي — تكتب <code>@Riverpod(keepAlive: true)</code> لتعطيله عمداً</td></tr>
+<tr><td>الـ family</td><td>يدوي وقد تُخطئ في الـ equality</td><td>مُشتق تلقائياً من معاملات الدالة، بما فيها معاملات متعدّدة بأنواع</td></tr>
+<tr><td>سرعة الـ CI</td><td>أسرع (لا خطوة بناء)</td><td>أبطأ — build_runner على كل ملف معدَّل</td></tr>
+<tr><td>وضوح الكود المصدري</td><td>كل شيء أمامك</td><td>جزء من التوقيع "سحري" حتى تفتح ملف <code>.g.dart</code></td></tr>
+</tbody></table></div></div>
+<div class="blk k-follow"><div class="t">🔴 Senior Follow-up</div>
+«أي واحد تختار لمشروع جديد اليوم؟» — الفريق الرسمي لـ Riverpod يوصي بالـ codegen للمشاريع الجديدة لأنه يقلّل أخطاء autoDispose المنسي ومعاملات family غير الصحيحة equality — وهما أكثر مصدرين للـ bugs في الإنتاج. لكن أذكر الثمن: زمن بناء أطول في مشروع كبير، وحاجة لتشغيل <code>build_runner watch</code> طوال جلسة التطوير.</div>
+<div class="blk k-mistake"><div class="t">🚫 خطأ شائع</div>
+نسيان تشغيل <code>build_runner</code> بعد إضافة provider جديد بـ <code>@riverpod</code> — تحصل على خطأ "Target of URI doesn't exist: 'x.g.dart'" ويظن المبتدئ أن الكود خطأ بينما هو فقط لم يُولَّد بعد.</div>
+</div></details></article>
+
+<article class="q" data-lv="senior" data-topic="Riverpod Codegen">
+<details><summary><div><div class="qmeta"><span class="badge b-sen">🔴 Senior</span><span class="badge b-topic">Notifier Codegen</span></div>
+<div class="qtext">كيف يبدو <code>AsyncNotifier</code> بصيغة الـ codegen؟ وما الفرق في كيفية الوصول إلى الاعتماديات (<code>Ref</code>) داخل الكلاس؟</div></div></summary>
+<div class="qbody">
+<div class="blk k-short"><div class="t">⚡ الإجابة المختصرة</div>
+بدل وراثة <code>AsyncNotifier&lt;T&gt;</code> يدوياً، تُنشئ كلاساً يرث <code>_$ClassName</code> المولَّد وتُنفّذ <code>build()</code>. الفرق الجوهري: <code>ref</code> يصبح متاحاً كخاصية على الكلاس نفسه (<code>this.ref</code>) بدل تمريره كمعامل — وهذا يبسّط الوصول إليه من أي دالة داخل الكلاس بلا تمريره يدوياً.</div>
+<div class="code"><div class="hd">dart<button class="copy">نسخ</button></div><pre><code class="dart">part 'todos_notifier.g.dart';
+
+@riverpod
+class TodosNotifier extends _$TodosNotifier {
+  @override
+  Future&lt;List&lt;Todo&gt;&gt; build() async {
+    // ref متاح هنا تلقائياً كخاصية على الكلاس
+    return ref.watch(todoRepositoryProvider).fetchAll();
+  }
+
+  Future&lt;void&gt; add(Todo t) async {
+    final previous = state.valueOrNull ?? [];
+    state = AsyncData([...previous, t]);           // optimistic update
+    try {
+      await ref.read(todoRepositoryProvider).create(t);
+      ref.invalidateSelf();
+    } catch (e, st) {
+      state = AsyncError(e, st);
+    }
+  }
+}
+
+// provider مولَّد تلقائياً: todosNotifierProvider
+final todos = ref.watch(todosNotifierProvider);</code></pre></div>
+<div class="blk k-follow"><div class="t">🔴 Senior Follow-up</div>
+«كيف تختبر Notifier مبني بالـ codegen؟» — بنفس طريقة اليدوي تماماً: <code>ProviderContainer(overrides: [...])</code> — لأن الملف المولَّد ينتج provider حقيقياً بنفس واجهة الـ API. الـ codegen طبقة على السطح فقط ولا يغيّر آلية الاختبار.</div>
+</div></details></article>
+</section>
+<section id="packages">
+<h2><span class="num">20</span> Package Deep-Dive — Freezed · go_router · Hooks · Reactive Forms</h2>
+<p class="lead">مقابلات Senior تسأل غالباً عن حزم بعينها ذكرتها في الـ CV أو مشروعك. القاعدة: <b>لا تذكر حزمة في سيرتك لا تستطيع شرح المشكلة التي تحلّها</b>. هذا القسم يغطّي الحزم الأكثر شيوعاً في مكدّس Flutter/Riverpod الحديث.</p>
+
+<article class="q" data-lv="mid" data-topic="freezed">
+<details><summary><div><div class="qmeta"><span class="badge b-mid">🟡 Mid</span><span class="badge b-topic">freezed</span></div>
+<div class="qtext">ما المشكلة التي تحلّها حزمة <code>freezed</code>؟ ولماذا لا تكتب <code>copyWith</code> و <code>==</code> يدوياً؟</div></div></summary>
+<div class="qbody">
+<div class="blk k-short"><div class="t">⚡ الإجابة المختصرة</div>
+<code>freezed</code> تولّد لك كلاسات immutable كاملة: <code>copyWith</code>، <code>==</code>/<code>hashCode</code> بالقيمة، <code>toString</code> مقروء، ودعم <code>union types</code> (بديل قوي لـ sealed classes مع pattern matching أغنى). كتابتها يدوياً لكلاس بـ 8 حقول تعني ثمانين سطراً عرضة للأخطاء وتُنسى مزامنتها عند إضافة حقل جديد.</div>
+<div class="code"><div class="hd">dart<button class="copy">نسخ</button></div><pre><code class="dart">part 'word.freezed.dart';
+part 'word.g.dart';
+
+@freezed
+class Word with _$Word {
+  const factory Word({
+    required String id,
+    required String text,
+    required String meaning,
+    @Default([]) List&lt;String&gt; examples,
+  }) = _Word;
+
+  factory Word.fromJson(Map&lt;String, dynamic&gt; json) => _$WordFromJson(json);
+}
+
+// الاستخدام
+final w = const Word(id: '1', text: 'شلونك', meaning: 'كيف حالك');
+final w2 = w.copyWith(meaning: 'كيف حالك؟ (تحية)');   // نسخة جديدة، الأصل لم يتغيّر
+print(w == w2);   // false — مقارنة بالقيمة تلقائياً
+
+// union types — بديل لـ sealed class بصياغة أقصر
+@freezed
+class SearchState with _$SearchState {
+  const factory SearchState.initial() = _Initial;
+  const factory SearchState.loading() = _Loading;
+  const factory SearchState.data(List&lt;Word&gt; results) = _Data;
+  const factory SearchState.error(String message) = _Error;
+}
+
+// pattern matching مولَّد جاهز
+String describe(SearchState s) => s.when(
+  initial: () => 'ابدأ البحث',
+  loading: () => 'جارٍ...',
+  data: (results) => '${results.length} نتيجة',
+  error: (msg) => 'خطأ: $msg',
+);</code></pre></div>
+<div class="blk k-trade"><div class="t">⚖️ Trade-offs</div>
+كود أقل بكثير وأمان أعلى، لكن: build_runner إضافي، ورسائل خطأ المولّد أحياناً غامضة لمبتدئ، وملفات <code>.freezed.dart</code> تضخّم المستودع (عادة تُستثنى من git أو تُبنى في CI).</div>
+<div class="blk k-follow"><div class="t">🔴 Senior Follow-up</div>
+«لماذا freezed أفضل من <code>sealed class</code> العادية لبعض الحالات؟» — عندما تحتاج <code>copyWith</code> غنياً، أو <code>when</code>/<code>maybeWhen</code> جاهزين بدل كتابة <code>switch</code> يدوياً، أو دمج JSON serialization مباشرة. لكن الـ sealed class العادية (بلا حزمة) كافية تماماً وأخف عندما يكون كل ما تحتاجه هو exhaustive switch بسيط بلا copyWith.</div>
+</div></details></article>
+
+<article class="q" data-lv="mid" data-topic="json_serializable">
+<details><summary><div><div class="qmeta"><span class="badge b-mid">🟡 Mid</span><span class="badge b-topic">json_serializable / build_runner</span></div>
+<div class="qtext">كيف يعمل <code>json_serializable</code> مع <code>build_runner</code>؟ وما الفرق بينه وبين فكّ JSON يدوياً؟</div></div></summary>
+<div class="qbody">
+<div class="blk k-short"><div class="t">⚡ الإجابة المختصرة</div>
+<code>build_runner</code> أداة بناء عامة تفحص ملفاتك بحثاً عن <code>part 'x.g.dart'</code> و annotations مثل <code>@JsonSerializable</code>، وتولّد كود Dart حقيقي (لا reflection وقت التشغيل — وهذا مهم للأداء ولتوافق AOT). فكّ JSON يدوياً (<code>json['key'] as String</code>) عرضة لأخطاء لا يكتشفها المترجم إن تغيّر شكل الـ API؛ المولَّد يعطيك أخطاء واضحة عند التوليد.</div>
+<div class="code"><div class="hd">bash<button class="copy">نسخ</button></div><pre><code class="bash"># مرة واحدة
+dart run build_runner build --delete-conflicting-outputs
+
+# أثناء التطوير — يراقب التغييرات ويعيد التوليد تلقائياً
+dart run build_runner watch --delete-conflicting-outputs</code></pre></div>
+<div class="blk k-deep"><div class="t">🔍 لماذا لا reflection؟</div>
+Dart لا تدعم <code>dart:mirrors</code> الكامل على AOT/mobile لأسباب حجم وأداء التطبيق (الـ reflection يمنع الـ tree-shaking). لهذا الحل هو <b>build-time code generation</b>: كود Dart عادي يُولَّد مرة، ثم يُصرَّف مع الباقي بلا أي تكلفة وقت تشغيل إضافية — بعكس مكتبات مثل Jackson في Java التي تعتمد reflection وقت التشغيل.</div>
+<div class="blk k-follow"><div class="t">🔴 Senior Follow-up</div>
+«ماذا يحدث إذا تعارض مولّدان (مثل freezed و json_serializable) على نفس الملف؟» — <code>build_runner</code> يشغّلهما بترتيب معتمد على الاعتماديات المعلَنة في <code>build.yaml</code>/pubspec؛ عادة freezed يولّد أولاً ثم json_serializable يعتمد على مخرجاته. تعارضات نادرة تُحلّ بـ <code>--delete-conflicting-outputs</code> أو تنظيف <code>.dart_tool/build</code>.</div>
+</div></details></article>
+
+<article class="q" data-lv="mid" data-topic="go_router">
+<details><summary><div><div class="qmeta"><span class="badge b-mid">🟡 Mid</span><span class="badge b-sen">🔴 Senior</span><span class="badge b-topic">go_router</span></div>
+<div class="qtext">لماذا يُفضَّل <code>go_router</code> على <code>Navigator</code> المباشر في مشروع متوسط/كبير؟</div></div></summary>
+<div class="qbody">
+<div class="blk k-short"><div class="t">⚡ الإجابة المختصرة</div>
+<code>go_router</code> يبني فوق <code>Navigator 2.0</code> ويعطيك تنقّلاً <b>تصريحياً (declarative)</b>: مسارات معرَّفة مركزياً بعناوين URL حقيقية، دعم كامل لـ deep links والويب، <code>redirect</code> للحراسة (auth guards)، ومسارات متداخلة (<code>ShellRoute</code>) للتنقّل الثابت (bottom nav) مع الحفاظ على حالة كل تبويب.</div>
+<div class="code"><div class="hd">dart<button class="copy">نسخ</button></div><pre><code class="dart">final router = GoRouter(
+  initialLocation: '/search',
+  redirect: (context, state) {
+    final loggedIn = ref.read(authProvider).isLoggedIn;
+    final loggingIn = state.matchedLocation == '/login';
+    if (!loggedIn && !loggingIn) return '/login?from=${state.matchedLocation}';
+    if (loggedIn && loggingIn) return '/search';
+    return null;                          // بلا إعادة توجيه
+  },
+  routes: [
+    ShellRoute(                           // bottom nav يبقى ثابتاً بين التبويبات
+      builder: (context, state, child) => MainShell(child: child),
+      routes: [
+        GoRoute(path: '/search', builder: (c, s) => const SearchScreen()),
+        GoRoute(
+          path: '/word/:id',              // معامل مسار type-safe
+          builder: (c, s) => WordDetailScreen(id: s.pathParameters['id']!),
+        ),
+      ],
+    ),
+    GoRoute(path: '/login', builder: (c, s) => const LoginScreen()),
+  ],
+);</code></pre></div>
+<div class="blk k-trade"><div class="t">⚖️ Trade-offs</div>
+<code>Navigator</code> المباشر أبسط لتطبيق من 3-4 شاشات بلا حاجة لروابط خارجية. <code>go_router</code> يستحق تعقيده الإضافي عندما تحتاج: ويب (URLs حقيقية)، deep links، حراسة مصادقة مركزية، أو bottom navigation معقّد يحافظ على حالة كل تبويب.</div>
+<div class="blk k-follow"><div class="t">🔴 Senior Follow-up</div>
+«كيف تتعامل مع deep link يفتح شاشة تفاصيل قبل تحميل بيانات المصادقة؟» — الـ <code>redirect</code> في go_router يمكن أن يكون async-aware عبر إعادة تقييمه تلقائياً باستخدام <code>refreshListenable</code> مرتبط بحالة المصادقة، فيعيد التقييم فور توفّرها بدل الاعتماد على شرط لحظي واحد.</div>
+</div></details></article>
+
+<article class="q" data-lv="senior" data-topic="flutter_hooks">
+<details><summary><div><div class="qmeta"><span class="badge b-mid">🟡 Mid</span><span class="badge b-sen">🔴 Senior</span><span class="badge b-topic">flutter_hooks</span></div>
+<div class="qtext">ما فائدة <code>flutter_hooks</code> مع Riverpod؟ وما خطرها؟</div></div></summary>
+<div class="qbody">
+<div class="blk k-short"><div class="t">⚡ الإجابة المختصرة</div>
+<code>flutter_hooks</code> (مستوحاة من React Hooks) تسمح بإدارة موارد تحتاج دورة حياة (controllers، animation، focus) داخل <code>HookWidget</code> <b>بلا</b> تحويله إلى <code>StatefulWidget</code> — فتبقى الشاشة كلها <code>StatelessWidget</code>/<code>HookConsumerWidget</code> نظيفة، والمورد يُنشأ ويُحرَّر تلقائياً مع الـ widget.</div>
+<div class="code"><div class="hd">dart<button class="copy">نسخ</button></div><pre><code class="dart">class SearchField extends HookConsumerWidget {
+  const SearchField({super.key});
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final controller = useTextEditingController();      // ينشئ + يُحرّر تلقائياً
+    final debounce = useMemoized(() => Debouncer(const Duration(milliseconds: 300)));
+    useEffect(() {                                       // يعادل initState + dispose
+      void listener() => debounce.run(
+        () => ref.read(searchQueryProvider.notifier).update(controller.text),
+      );
+      controller.addListener(listener);
+      return () => controller.removeListener(listener);  // دالة التنظيف = dispose
+    }, [controller]);
+
+    return TextField(controller: controller, decoration: const InputDecoration());
+  }
+}</code></pre></div>
+<div class="blk k-trade"><div class="t">⚖️ Trade-offs</div>
+كود أقصر وتركيز أعلى (المنطق قرب مكان استخدامه بدل تفرّقه بين <code>initState</code>/<code>dispose</code> البعيدين)، لكن الثمن: مفهوم إضافي على الفريق (ترتيب استدعاء الـ hooks يجب أن يكون ثابتاً بين كل build — تماماً كقيود React Hooks)، واعتمادية خارج حزم Flutter الرسمية.</div>
+<div class="blk k-follow"><div class="t">🔴 Senior Follow-up</div>
+«ما القيد الأهم عند استخدام hooks؟» — لا يجوز استدعاء hook داخل شرط أو حلقة أو بعد return مبكّر؛ يجب أن يكون ترتيب الاستدعاءات ثابتاً في كل build لأن Flutter Hooks يتتبّع الحالة حسب <b>ترتيب</b> الاستدعاء لا اسمه — مخالفة هذا القيد تُخلط الحالة بين hooks مختلفة بصمت.</div>
+</div></details></article>
+
+<article class="q" data-lv="mid" data-topic="reactive_forms">
+<details><summary><div><div class="qmeta"><span class="badge b-mid">🟡 Mid</span><span class="badge b-topic">reactive_forms</span></div>
+<div class="qtext">لماذا تستخدم <code>reactive_forms</code> بدل <code>Form</code> + <code>TextFormField</code> القياسي في Flutter؟</div></div></summary>
+<div class="qbody">
+<div class="blk k-short"><div class="t">⚡ الإجابة المختصرة</div>
+<code>Form</code> القياسي يخلط حالة النموذج مع شجرة الـ widgets (يعتمد على <code>GlobalKey&lt;FormState&gt;</code>) وتحقّق إجرائي عبر <code>validator</code> لكل حقل بمعزل. <code>reactive_forms</code> يفصل <b>نموذج البيانات</b> (<code>FormGroup</code>) عن العرض تماماً، فيصبح قابلاً للاختبار بلا widgets، ويدعم تحقّقاً مركّباً بين الحقول (مثل تطابق كلمتي مرور) وحالة تفاعلية (<code>valueChanges</code> كـ stream).</div>
+<div class="code"><div class="hd">dart<button class="copy">نسخ</button></div><pre><code class="dart">final form = FormGroup({
+  'email': FormControl&lt;String&gt;(
+    validators: [Validators.required, Validators.email],
+  ),
+  'password': FormControl&lt;String&gt;(validators: [Validators.minLength(8)]),
+});
+
+// اختبار المنطق بلا أي widget
+test('البريد غير الصالح يجعل النموذج غير صالح', () {
+  form.control('email').updateValue('not-an-email');
+  expect(form.valid, false);
+  expect(form.control('email').hasError('email'), true);
+});
+
+// في الواجهة
+ReactiveForm(
+  formGroup: form,
+  child: Column(children: [
+    ReactiveTextField&lt;String&gt;(formControlName: 'email'),
+    ReactiveFormConsumer(
+      builder: (context, form, child) => ElevatedButton(
+        onPressed: form.valid ? () => submit(form.value) : null,
+        child: const Text('دخول'),
+      ),
+    ),
+  ]),
+);</code></pre></div>
+<div class="blk k-trade"><div class="t">⚖️ Trade-offs</div>
+منحنى تعلّم أعلى ومصطلحات جديدة (FormGroup/FormArray)، وقد تكون مبالغة لنموذج بحقلين. تستحق نفسها في نماذج طويلة متعدّدة الخطوات، أو عندما التحقّق منطق أعمال حقيقي يحتاج اختباراً منفصلاً عن الـ UI.</div>
+<div class="blk k-follow"><div class="t">🔴 Senior Follow-up</div>
+«كيف تربطها بـ Riverpod؟» — تُبقي <code>FormGroup</code> داخل provider (أو تُنشئه عبر hook <code>useForm</code> إن استخدمت flutter_hooks معها)، وتقرأ <code>form.valid</code> و<code>form.value</code> عند الإرسال عبر repository — نفس نمط فصل الحالة عن العرض المتكرّر في كل هذا الدليل.</div>
+</div></details></article>
+</section>
 <section id="architecture">
-<h2><span class="num">19</span> Flutter Architecture</h2>
+<h2><span class="num">21</span> Flutter Architecture</h2>
 <div class="callout c-think"><div class="t">🧠 الجملة التي تغيّر الإجابة كلها</div>
 المعمارية ليست <b>مجلّدات</b>. المعمارية هي <b>الحدود (boundaries)</b> و<b>اتجاه الاعتمادية (dependency direction)</b>. يمكنك أن تنسخ بنية مجلّدات Clean Architecture بالكامل وتبقى معماريتك سيّئة لأن الـ UI يستدعي قاعدة البيانات مباشرة.</div>
 
@@ -2838,8 +3125,87 @@ final service = AuthService(FakeHttp(), InMemoryTokenStorage());</code></pre></d
 </div></details></article>
 </section>
 
+<section id="feature-first">
+<h2><span class="num">22</span> Feature-First Architecture — عمقاً</h2>
+<p class="lead">«Feature-first» ليس بديلاً عن Clean Architecture — هو <b>طريقة تنظيم المجلّدات</b> يمكن أن تحتوي طبقات نظيفة بداخلها. هذا القسم للمرشّح الذي يعمل بهذا النمط فعلياً ويحتاج الدفاع عنه بدقة، لا بشعارات.</p>
+
+<div class="ascii">   Layer-first (حسب النوع)              Feature-first (حسب الميزة)
+   ─────────────────────                ──────────────────────────
+   lib/                                  lib/
+   ├── screens/                          ├── core/               ← مشترك حقيقي فقط
+   │   ├── search_screen.dart            │   ├── network/  theme/  router/
+   │   ├── profile_screen.dart           ├── features/
+   │   └── settings_screen.dart          │   ├── search/
+   ├── widgets/                          │   │   ├── data/        (dto, datasource, repo_impl)
+   │   ├── word_card.dart                │   │   ├── domain/      (entity, repo interface)
+   │   └── search_bar.dart               │   │   └── presentation/(screen, widgets, notifier)
+   ├── models/                           │   ├── profile/
+   │   ├── word.dart                     │   │   └── (نفس البنية الثلاثية)
+   │   └── user.dart                     │   └── settings/
+   ├── providers/                        └── main.dart
+   │   ├── search_provider.dart
+   │   └── profile_provider.dart
+   └── main.dart
+
+   ⚠️ عند 5 شاشات: layer-first أسرع للبدء.
+   ⚠️ عند 30+ شاشة وفريق: layer-first يعني فتح 5 مجلّدات بعيدة
+      لتعديل ميزة واحدة. feature-first يجمعها في مكان واحد.</div>
+
+<article class="q" data-lv="mid" data-topic="Feature-First">
+<details><summary><div><div class="qmeta"><span class="badge b-mid">🟡 Mid</span><span class="badge b-sen">🔴 Senior</span><span class="badge b-topic">Feature-First</span></div>
+<div class="qtext">ما هو Feature-First (Feature-Based) architecture؟ ولماذا تفضّله على التنظيم حسب النوع (layer-first)؟</div></div></summary>
+<div class="qbody">
+<div class="blk k-want"><div class="t">🎯 ماذا يريد المُحاوِر؟</div>
+هل تختار feature-first لأنه «الموضة» أم لأنك تفهم المشكلة الحقيقية التي يحلّها: <b>محلية التغيير (locality of change)</b>؟</div>
+<div class="blk k-short"><div class="t">⚡ الإجابة المختصرة</div>
+في layer-first، تعديل ميزة واحدة (مثلاً «البحث») يعني فتح ملفات موزّعة في <code>screens/</code> و<code>widgets/</code> و<code>models/</code> و<code>providers/</code> — أربعة مجلّدات بعيدة عن بعضها. في feature-first، كل ما يخصّ «البحث» يعيش في <code>features/search/</code> واحد: أسهل للفهم، أسهل للحذف الكامل، وأسهل لتوزيع الملكية بين أعضاء الفريق (كل مطوّر يملك مجلّد ميزة).</div>
+<div class="blk k-deep"><div class="t">🔍 داخل كل ميزة — لا تتخلَّ عن الطبقات</div>
+Feature-first لا يعني التخلّي عن فصل المسؤوليات؛ بل يطبّقه <b>محلياً</b> داخل كل ميزة:
+<pre><code class="dart">features/search/
+├── data/
+│   ├── word_dto.dart              // شكل الـ API فقط
+│   ├── word_remote_datasource.dart
+│   └── word_repository_impl.dart  // ينفّذ الواجهة من domain/
+├── domain/
+│   ├── word.dart                  // Entity نظيف بلا تبعية على Dio
+│   └── word_repository.dart       // abstract interface
+└── presentation/
+    ├── search_screen.dart
+    ├── widgets/search_bar.dart
+    └── search_notifier.dart       // أو riverpod provider</code></pre></div>
+<div class="blk k-trade"><div class="t">⚖️ Trade-offs</div>
+الثمن الحقيقي: تكرار محدود بين الميزات (كل ميزة قد يكون لها <code>UserCard</code> خاص بها بدل مكوّن مشترك واحد)، وقرار صعب أحياناً: «هل هذا الكود مشترك حقيقي (→ <code>core/</code>) أم خاص بميزتين تشبهان بعضهما صدفة؟». القاعدة التي أستخدمها: لا أنقل شيئاً إلى <code>core/</code> إلا بعد أن يتكرّر في <b>ميزة ثالثة</b> — النقل المبكر لكود مشترك يخلق اقتراناً خاطئاً بين ميزات لم تكن مرتبطة أصلاً.</div>
+<div class="blk k-follow"><div class="t">🔴 Senior Follow-up</div>
+«ماذا يذهب في <code>core/</code> بالضبط؟» — بنية تحتية عابرة للميزات لا معنى محدداً لها في أي ميزة بعينها: عميل HTTP، الثيم، الراوتر، الـ error mapping العام، extensions عامة (<code>BuildContext</code> helpers). أي شيء يحمل منطق أعمال يخصّ ميزة واحدة يبقى داخلها حتى لو بدا قابلاً لإعادة الاستخدام نظرياً.</div>
+<div class="blk k-mistake"><div class="t">🚫 خطأ شائع</div>
+تحويل <code>core/</code> إلى سلة مهملات عامة («shared» أو «common» أو «utils») توضع فيها كل دالة لا تعرف أين تضعها. بعد ستة أشهر يصبح <code>core/</code> أكبر مجلّد في المشروع وأكثرها اقتراناً — بالضبط ما كان feature-first يحاول تفاديه.</div>
+</div></details></article>
+
+<article class="q" data-lv="senior" data-topic="Feature-First">
+<details><summary><div><div class="qmeta"><span class="badge b-sen">🔴 Senior</span><span class="badge b-topic">Boundaries</span></div>
+<div class="qtext">كيف تمنع ميزة من الاعتماد مباشرة على تفاصيل ميزة أخرى؟ وكيف تفرض هذا في فريق من عدة مطوّرين؟</div></div></summary>
+<div class="qbody">
+<div class="blk k-short"><div class="t">⚡ الإجابة المختصرة</div>
+القاعدة: <b>ميزة لا تستورد من <code>presentation/</code> أو <code>data/</code> لميزة أخرى مباشرة</b>. إن احتاجت ميزة "checkout" بيانات من ميزة "cart"، تصل إليها عبر واجهة في <code>domain/</code> (أو عبر provider مشترك مُعرَّف في <code>core/</code>)، لا عبر استيراد ملف من مجلّد الميزة الأخرى مباشرة. وأفرض القاعدة آلياً لا بالتذكير الشفهي.</div>
+<div class="code"><div class="hd">yaml · custom_lint / import_lint<button class="copy">نسخ</button></div><pre><code class="dart">// مثال قاعدة مفهومياً (عبر custom_lint أو import_lint):
+// ✅ مسموح: features/checkout/**  →  core/**
+// ✅ مسموح: features/checkout/**  →  features/checkout/**
+// ❌ ممنوع: features/checkout/**  →  features/cart/data/**
+// ❌ ممنوع: features/checkout/**  →  features/cart/presentation/**
+// ✅ مسموح فقط عبر: features/cart/domain/** (الواجهات العامة المتعمّدة)</code></pre></div>
+<div class="blk k-deep"><div class="t">🔍 كيف تتواصل ميزتان فعلياً</div>
+ثلاث طرق شائعة، من الأبسط إلى الأقوى فصلاً:
+<ol>
+<li><b>مشاركة عبر <code>domain/</code> فقط:</b> ميزة B تستورد <code>Entity</code> و <code>Repository interface</code> من ميزة A (لا التنفيذ ولا الـ widgets).</li>
+<li><b>Provider مشترك في <code>core/</code>:</b> حالة تخصّ التطبيق ككل (سلة المشتريات، المستخدم الحالي) تُرفَع إلى مستوى أعلى من أي ميزة بعينها.</li>
+<li><b>أحداث (event bus / stream):</b> ميزة A تُصدر حدثاً («تم إضافة عنصر»)، وميزة B تستمع دون معرفة من أصدره — أقوى فصل، لكن أصعب تتبّعاً؛ يُستخدم فقط عند حاجة حقيقية لفصل كامل بين فرق مختلفة.</li>
+</ol></div>
+<div class="blk k-follow"><div class="t">🔴 Senior Follow-up</div>
+«متى تستخرج ميزة إلى حزمة Dart منفصلة (package داخل melos)؟» — عندما تحتاج حدود <b>مفروضة من نظام البناء نفسه</b> لا من اتفاق الفريق فقط (استيراد ميزة أخرى يصبح خطأ تجميع لا مجرد مخالفة lint)، أو عندما تحتاج بناء/اختبار الميزة بمعزل، أو إعادة استخدامها في تطبيق آخر (مثل استخراج نظام تصميم مشترك).</div>
+</div></details></article>
+</section>
 <section id="solid">
-<h2><span class="num">20</span> SOLID في Flutter</h2>
+<h2><span class="num">23</span> SOLID في Flutter</h2>
 <p class="lead">لا تُعرّف المبادئ فقط — أعطِ مثالاً سيّئاً ثم أفضل ثم مثالاً من Flutter نفسه. هذا يحوّل سؤالاً نظرياً إلى إثبات خبرة.</p>
 
 <h3 class="sub">S — Single Responsibility</h3>
@@ -2937,7 +3303,7 @@ class LoginNotifier {
 «ما الفائدة الملموسة؟» → اختبارات بلا شبكة، إمكانية تشغيل التطبيق بـ mock data للتصميم، وتبديل المزوّد دون لمس الـ UI.<br><b>Senior follow-up:</b> «أين تُعرَّف الواجهة؟» — في طبقة <b>Domain</b> (المالك هو من يستخدمها) وليس في طبقة Data. هذا التفصيل بالذات هو ما يقلب اتجاه الاعتمادية فعلياً، وذكره يميّزك.</div>
 </section>
 <section id="networking">
-<h2><span class="num">21</span> Networking &amp; Authentication</h2>
+<h2><span class="num">24</span> Networking &amp; Authentication</h2>
 <p class="lead">هنا يُقاس إن كنت شحنت تطبيقاً حقيقياً. الأسئلة النظرية عن REST سهلة؛ السؤال الحقيقي هو سيناريو تجديد التوكن.</p>
 
 <article class="q" data-lv="beginner" data-topic="HTTP">
@@ -3122,7 +3488,7 @@ NotificationListener&lt;ScrollNotification&gt;(
 </section>
 
 <section id="error-handling">
-<h2><span class="num">22</span> Error Handling</h2>
+<h2><span class="num">25</span> Error Handling</h2>
 <p class="lead">معالجة الأخطاء ليست <code>try/catch</code> حول كل شيء. هي <b>تصنيف</b> ثم <b>تحويل</b> ثم <b>عرض</b> ثم <b>استرداد</b>.</p>
 
 <div class="ascii">   طبقات الخطأ ومسؤولية كل طبقة
@@ -3204,7 +3570,7 @@ Widget errorView(Failure f, VoidCallback retry) =&gt; switch (f) {
 </section>
 
 <section id="testing">
-<h2><span class="num">23</span> Testing</h2>
+<h2><span class="num">26</span> Testing</h2>
 
 <div class="ascii">        هرم الاختبارات في Flutter
 
@@ -3279,7 +3645,7 @@ test('debounce ينتظر 300ms', () =&gt; fakeAsync((async) {
 </section>
 
 <section id="storage">
-<h2><span class="num">24</span> Local Storage</h2>
+<h2><span class="num">27</span> Local Storage</h2>
 
 <article class="q" data-lv="mid" data-topic="Storage">
 <details><summary><div><div class="qmeta"><span class="badge b-beg">🟢 Beginner</span><span class="badge b-mid">🟡 Mid</span><span class="badge b-topic">Storage</span></div>
@@ -3302,7 +3668,7 @@ test('debounce ينتظر 300ms', () =&gt; fakeAsync((async) {
 </section>
 
 <section id="git">
-<h2><span class="num">25</span> Git &amp; Engineering Practices</h2>
+<h2><span class="num">28</span> Git &amp; Engineering Practices</h2>
 
 <article class="q" data-lv="mid" data-topic="Git">
 <details><summary><div><div class="qmeta"><span class="badge b-beg">🟢 Beginner</span><span class="badge b-mid">🟡 Mid</span><span class="badge b-topic">Git</span></div>
@@ -3348,7 +3714,7 @@ Future&lt;List&lt;Word&gt;&gt; search(SearchParams params) { /* الجديدة *
 </div></details></article>
 </section>
 <section id="debugging">
-<h2><span class="num">26</span> Debugging Scenarios</h2>
+<h2><span class="num">29</span> Debugging Scenarios</h2>
 <p class="lead">في أسئلة التشخيص لا يُقيَّم جوابك النهائي بل <b>ترتيب خطواتك</b>. ابدأ دائماً بـ: إعادة الإنتاج ← تضييق النطاق ← القياس ← الفرضية ← الاختبار.</p>
 
 <div class="callout c-think"><div class="t">🧠 الإطار العام لأي سؤال debugging</div>
@@ -3466,7 +3832,7 @@ final name = ref.watch(userProvider.select((u) =&gt; u.name));  // ✅ للاس�
 </section>
 
 <section id="code-review">
-<h2><span class="num">27</span> Code Review Questions</h2>
+<h2><span class="num">30</span> Code Review Questions</h2>
 <p class="lead">سؤال «ما المشاكل في هذا الكود؟» يقيس عينك الهندسية. القاعدة: رتّب ملاحظاتك من <b>الأخطر</b> (bug/تسريب) إلى <b>الأسلوب</b>، ولا تكتفِ بذكر المشكلة — اذكر الأثر والبديل.</p>
 
 <article class="q" data-lv="mid" data-topic="Review">
@@ -3609,8 +3975,118 @@ Widget build(BuildContext context) {
 «أيها تُصلح أولاً؟» — الترتيب حسب القياس لا حسب القائمة: إن كان الـ Raster thread هو المتأخّر فابدأ بـ <code>Opacity</code> و<code>ClipRRect</code> والظلال؛ وإن كان الـ UI thread فابدأ بالترتيب داخل <code>build</code> وبـ <code>ListView.builder</code>. <b>قِس أولاً.</b></div>
 </div></details></article>
 </section>
+<section id="software-engineering">
+<h2><span class="num">31</span> Software Engineering Fundamentals</h2>
+<p class="lead">مقابلات "Software Engineer" و"Senior Mobile Engineer" لا تقتصر على Flutter. تسأل أيضاً عن أساسيات علوم الحاسوب، وأنماط تصميم عامة، وأسئلة سلوكية (behavioral) — وهذه غالباً ما تفصل بين "يعرف Flutter" و"مهندس برمجيات كامل".</p>
+
+<article class="q" data-lv="mid" data-topic="Complexity">
+<details><summary><div><div class="qmeta"><span class="badge b-beg">🟢 Beginner</span><span class="badge b-mid">🟡 Mid</span><span class="badge b-topic">Big-O</span></div>
+<div class="qtext">اشرح Big-O Notation. ولماذا يهم اختيار بنية البيانات الصحيحة حتى في تطبيق موبايل؟</div></div></summary>
+<div class="qbody">
+<div class="blk k-want"><div class="t">🎯 ماذا يريد المُحاوِر؟</div>
+هل تفهم أن Big-O ليس أكاديمياً بحتاً، بل يفسّر أشياء واقعية: لماذا تتجمّد الواجهة عند البحث في قائمة كبيرة بطريقة ساذجة.</div>
+<div class="blk k-short"><div class="t">⚡ الإجابة المختصرة</div>
+Big-O يصف كيف تنمو تكلفة عملية (زمناً أو ذاكرة) مع نمو حجم المدخلات <code>n</code>. <code>O(1)</code> ثابت، <code>O(log n)</code> لوغاريتمي (بحث ثنائي)، <code>O(n)</code> خطي (مسح قائمة)، <code>O(n log n)</code> ترتيب فعّال، <code>O(n²)</code> حلقة داخل حلقة — خطير على بيانات كبيرة.</div>
+<div class="tablewrap"><table>
+<thead><tr><th>العملية</th><th>List (Array)</th><th>Map (HashMap)</th><th>Set</th></tr></thead>
+<tbody>
+<tr><td>البحث عن عنصر بمفتاح</td><td>O(n)</td><td>O(1) بالمتوسط</td><td>O(1) بالمتوسط</td></tr>
+<tr><td>الإضافة</td><td>O(1) آخر القائمة</td><td>O(1)</td><td>O(1)</td></tr>
+<tr><td>الحذف من المنتصف</td><td>O(n)</td><td>O(1)</td><td>O(1)</td></tr>
+<tr><td>الحفاظ على الترتيب</td><td>✅ طبيعي</td><td>❌ (استخدم LinkedHashMap)</td><td>❌</td></tr>
+</tbody></table></div>
+<div class="code"><div class="hd">dart<button class="copy">نسخ</button></div><pre><code class="dart">// ❌ O(n) على كل بحث — بطيء مع آلاف العناصر يتكرّر بحثها
+bool existsSlow(List&lt;String&gt; ids, String target) => ids.contains(target);
+
+// ✅ O(1) بالمتوسط بعد بناء الـ Set مرة واحدة O(n)
+final idSet = ids.toSet();
+bool existsFast(String target) => idSet.contains(target);
+
+// مثال واقعي: تمييز العناصر "المفضّلة" داخل قائمة طويلة أثناء البناء
+final favoriteIds = favorites.map((f) => f.id).toSet();   // ابنِه مرة واحدة خارج itemBuilder
+ListView.builder(
+  itemBuilder: (_, i) => ItemTile(
+    item: items[i],
+    isFavorite: favoriteIds.contains(items[i].id),         // O(1) لا O(n) لكل عنصر
+  ),
+);</code></pre></div>
+<div class="blk k-follow"><div class="t">🔴 Senior Follow-up</div>
+«أين رأيت O(n²) خفياً في كود Flutter حقيقي؟» — استدعاء <code>list.contains()</code> داخل <code>itemBuilder</code> لقائمة أخرى: القائمة الخارجية O(n) مضروبة في بحث O(n) داخلي = O(n²) على كل إعادة بناء. الحل دائماً: حوّل القائمة الثانية إلى <code>Set</code> أو <code>Map</code> مرة واحدة خارج الحلقة.</div>
+</div></details></article>
+
+<article class="q" data-lv="mid" data-topic="Design Patterns">
+<details><summary><div><div class="qmeta"><span class="badge b-mid">🟡 Mid</span><span class="badge b-sen">🔴 Senior</span><span class="badge b-topic">Design Patterns</span></div>
+<div class="qtext">اذكر أنماط تصميم (design patterns) شائعة تستخدمها في Flutter، بأمثلة حقيقية لا نظرية.</div></div></summary>
+<div class="qbody">
+<div class="blk k-short"><div class="t">⚡ الإجابة المختصرة</div>
+لا تسرد قائمة من كتاب — اربط كل نمط بمكان تستخدمه فعلياً في مشروعك.</div>
+<div class="tablewrap"><table>
+<thead><tr><th>النمط</th><th>المشكلة</th><th>مثال Flutter</th></tr></thead>
+<tbody>
+<tr><td>Repository</td><td>إخفاء مصدر البيانات عن منطق الأعمال</td><td><code>abstract class WordRepository</code> + تنفيذ Supabase/REST</td></tr>
+<tr><td>Factory</td><td>إنشاء كائن دون كشف تفاصيل النوع الفعلي</td><td><code>Word.fromJson</code> · اختيار تنفيذ Repository حسب البيئة (dev/prod)</td></tr>
+<tr><td>Observer</td><td>إخطار مستمعين متعددين بتغيّر</td><td><code>ChangeNotifier</code> · <code>ValueNotifier</code> · Riverpod نفسه مبني على هذا المبدأ</td></tr>
+<tr><td>Strategy</td><td>تبديل خوارزمية وقت التشغيل</td><td>خوارزمية بحث مختلفة (fuzzy/exact) تُمرَّر كاعتمادية بدل <code>if/else</code>)</td></tr>
+<tr><td>Adapter</td><td>توفيق واجهة مكتبة خارجية مع واجهتك</td><td>تغليف <code>Dio</code> خلف <code>HttpService</code> خاص بك</td></tr>
+<tr><td>Singleton</td><td>نسخة واحدة مشتركة</td><td>عميل Dio أو قاعدة بيانات محلية — عبر DI لا static مباشر</td></tr>
+<tr><td>Builder</td><td>بناء كائن معقّد خطوة بخطوة</td><td><code>MaterialApp.router(...)</code> نفسه، أو <code>StringBuffer</code></td></tr>
+</tbody></table></div>
+<div class="blk k-follow"><div class="t">🔴 Senior Follow-up</div>
+«ما خطر الإفراط في Singleton؟» — يصبح اعتمادية عالمية مخفية يصعب استبدالها في الاختبار، ويشبه متغيّراً عاماً في تأثيره على قابلية التنبؤ بالكود. البديل: نسخة واحدة تُدار عبر DI (Riverpod <code>Provider</code> بلا <code>autoDispose</code> مثلاً) بدل <code>static final instance</code> يدوي — نفس الفائدة (نسخة واحدة) بلا فقدان قابلية الاستبدال.</div>
+<div class="blk k-mistake"><div class="t">🚫 خطأ شائع</div>
+حفظ أسماء الأنماط بلا فهم متى <b>لا</b> تستخدمها. استخدام Factory أو Strategy لحالة بسيطة بخيار واحد هو over-engineering — النمط أداة لحل تعقيد موجود فعلاً، لا زخرفة.</div>
+</div></details></article>
+
+<article class="q" data-lv="senior" data-topic="System Design">
+<details><summary><div><div class="qmeta"><span class="badge b-sen">🔴 Senior</span><span class="badge b-topic">System Design (Mobile)</span></div>
+<div class="qtext">🔥 صمّم تطبيق دردشة (chat) بسيط من ناحية الـ client. كيف تبدأ الإجابة؟</div></div></summary>
+<div class="qbody">
+<div class="blk k-want"><div class="t">🎯 ماذا يريد المُحاوِر؟</div>
+أسئلة system design للموبايل لا تريد بنية خادم كاملة — تريد أن ترى كيف تفكّر في: النقل اللحظي، التخزين المحلي، وتجربة عدم الاتصال. ابدأ بالأسئلة التوضيحية دائماً.</div>
+<div class="blk k-short"><div class="t">⚡ هيكل الإجابة</div>
+<ol>
+<li><b>أسئلة توضيحية:</b> كم مستخدماً بالمحادثة الواحدة؟ رسائل نصية فقط أم وسائط؟ هل يلزم دعم عدم الاتصال؟ ما الحد المقبول لتأخّر التسليم؟</li>
+<li><b>النقل:</b> WebSocket للاتصال اللحظي ثنائي الاتجاه (بدل polling المكلف)، مع إعادة اتصال تلقائي وbackoff عند الانقطاع.</li>
+<li><b>التخزين المحلي كمصدر وحيد للحقيقة:</b> قاعدة محلية (SQLite/Drift) تُملأ من الـ WebSocket، والواجهة تقرأ منها كـ stream — لا من الشبكة مباشرة.</li>
+<li><b>الإرسال المتفائل (optimistic send):</b> الرسالة تظهر فوراً بحالة "جارٍ الإرسال"، ثم "تم التسليم" عند تأكيد الخادم؛ عند الفشل تظهر كـ "لم تُرسَل" مع إعادة محاولة.</li>
+<li><b>الترقيم (pagination):</b> تحميل الرسائل القديمة بـ cursor-based pagination عند التمرير للأعلى، لا تحميل المحادثة كاملة.</li>
+<li><b>الحالات الحرجة:</b> ترتيب الرسائل عند اختلاف ساعة الجهاز عن الخادم (استخدم timestamp الخادم لا الجهاز)، ومعالجة الرسائل المكرّرة (idempotency key لكل رسالة).</li>
+</ol></div>
+<div class="blk k-follow"><div class="t">🔴 Senior Follow-up</div>
+«كيف تتعامل مع 10,000 رسالة غير مقروءة عند فتح التطبيق بعد أسبوع؟» — لا تُحمّل الكل: اجلب آخر N رسالة فقط + عدّاد إجمالي غير المقروء، ودع البقية تُجلب عند الطلب (lazy) عبر pagination للأعلى — نفس مبدأ القوائم الطويلة في قسم الأداء لكن مطبَّقاً على تصميم نظام كامل.</div>
+</div></details></article>
+
+<article class="q" data-lv="mid" data-topic="Behavioral">
+<details><summary><div><div class="qmeta"><span class="badge b-beg">🟢 Beginner</span><span class="badge b-mid">🟡 Mid</span><span class="badge b-sen">🔴 Senior</span><span class="badge b-topic">Behavioral / STAR</span></div>
+<div class="qtext">كيف تُجيب على «حدّثني عن نفسك» و«حدّثني عن مشروع كنت فخوراً به»؟</div></div></summary>
+<div class="qbody">
+<div class="blk k-want"><div class="t">🎯 ماذا يريد المُحاوِر؟</div>
+هذه ليست دردشة — هي اختبار قدرتك على تلخيص خبرتك بإيجاز ووضوح خلال 60-90 ثانية. إجابة مرتجلة وطويلة تفقد انتباه المُحاوِر في الثلث الأول.</div>
+<div class="blk k-short"><div class="t">⚡ صيغة "حدّثني عن نفسك" (present → past → future)</div>
+<ol>
+<li><b>الحاضر:</b> من أنت الآن مهنياً بجملة واحدة — التخصّص والمستوى.</li>
+<li><b>الماضي:</b> كيف وصلت إلى هنا — مسار مختصر بلا سرد كامل للسيرة الذاتية.</li>
+<li><b>المستقبل:</b> لماذا هذا الدور تحديداً يهمّك الآن.</li>
+</ol>
+مثال: «أنا مطوّر Flutter متخصّص في بناء تطبيقات موبايل قابلة للتوسّع، مع خبرة في دمج Supabase وFastAPI كـ backend وإضافة قدرات AI مثل RAG إلى تطبيقات الموبايل. عملت خلال السنوات الماضية على [مشروع]، حيث [نتيجة ملموسة]. أبحث الآن عن دور Senior/Mid Flutter لأن…».</div>
+<div class="blk k-deep"><div class="t">🔍 منهجية STAR لأسئلة "حدّثني عن موقف"</div>
+<div class="tablewrap"><table>
+<thead><tr><th>الحرف</th><th>يعني</th><th>مثال مختصر</th></tr></thead>
+<tbody>
+<tr><td>S — Situation</td><td>السياق بإيجاز</td><td>«كان التطبيق يعاني من jank ملحوظ في شاشة القائمة الرئيسية»</td></tr>
+<tr><td>T — Task</td><td>ما المطلوب منك تحديداً</td><td>«كنت مسؤولاً عن تشخيص السبب وإصلاحه قبل الإصدار»</td></tr>
+<tr><td>A — Action</td><td>ما فعلته أنت (لا الفريق) بالتفصيل التقني</td><td>«قِست بـ DevTools، اكتشفت saveLayer من Opacity متكرّرة، استبدلتها بلون ألفا»</td></tr>
+<tr><td>R — Result</td><td>نتيجة قابلة للقياس</td><td>«انخفض معدّل إسقاط الإطارات من 23% إلى 3% في القياسات التالية»</td></tr>
+</tbody></table></div>
+</div>
+<div class="blk k-trap"><div class="t">⚠️ فخ المقابلة</div>
+تجنّب صيغة الجمع الدائم («نحن فعلنا») في سؤال يطلب دورك الشخصي — المُحاوِر يريد أن يعرف <b>ماذا فعلتَ أنت</b> تحديداً. إن كان العمل جماعياً، وضّح دورك بجملة واحدة ثم انتقل لمساهمتك المحدّدة.</div>
+<div class="blk k-follow"><div class="t">🔴 Senior Follow-up</div>
+«حدّثني عن خلاف تقني مع زميل» — أجب بصدق وبتركيز على <b>كيف حُلّ الخلاف</b> لا من كان محقاً. مثال بنية جيدة: الخلاف (نقطتا نظر مبرّرتان) → كيف جمعتما الأدلة (قياس/تجربة صغيرة) → القرار النهائي وسببه → ماذا تعلّمت من العملية نفسها.</div>
+</div></details></article>
+</section>
 <section id="output-prediction">
-<h2><span class="num">28</span> Output Prediction — 40 سؤال</h2>
+<h2><span class="num">32</span> Output Prediction — 40 سؤال</h2>
 <p class="lead">اقرأ ← توقّع (اكتب على ورق) ← افتح ← افهم <b>لماذا</b>. الإجابات مخفية عمداً؛ الغش هنا غش على نفسك في المقابلة القادمة.</p>
 
 <h3 class="sub">أ) Dart Async — 10 أسئلة</h3>
@@ -3973,7 +4449,7 @@ setState(() =&gt; _c++);      // ثلاثتها في نفس الدالة</code><
 </section>
 
 <section id="scenarios">
-<h2><span class="num">29</span> Scenario-Based Questions</h2>
+<h2><span class="num">33</span> Scenario-Based Questions</h2>
 <p class="lead">في هذه الأسئلة، <b>الأسئلة التي تطرحها أنت</b> أهم من الحل الذي تقترحه. المُحاوِر يقيس هل تجمع المتطلّبات قبل أن تبني.</p>
 
 <article class="q" data-lv="senior" data-topic="Scenario">
@@ -4091,7 +4567,7 @@ debounce أطول = طلبات أقل لكن إحساس بالبطء. أقصر =
 </div></details></article>
 </section>
 <section id="mock-beginner">
-<h2><span class="num">30</span> 🟢 مقابلة وهمية — Beginner (15 سؤال)</h2>
+<h2><span class="num">34</span> 🟢 مقابلة وهمية — Beginner (15 سؤال)</h2>
 <p class="lead">اضبط مؤقّتاً على 30 دقيقة. أجب <b>بصوت مسموع</b> قبل فتح الإجابة، ثم قيّم نفسك من 0 إلى 4: <br><code>0</code> لا أعرف · <code>1</code> فكرة غامضة · <code>2</code> إجابة ناقصة · <code>3</code> إجابة صحيحة · <code>4</code> صحيحة + مثال + trade-off.</p>
 
 <div class="mock" data-mock="beg" data-scale="70">
@@ -4195,7 +4671,7 @@ debounce أطول = طلبات أقل لكن إحساس بالبطء. أقصر =
 </section>
 
 <section id="mock-mid">
-<h2><span class="num">31</span> 🟡 مقابلة وهمية — Mid-Level (25 سؤال)</h2>
+<h2><span class="num">35</span> 🟡 مقابلة وهمية — Mid-Level (25 سؤال)</h2>
 <p class="lead">45 دقيقة. المطلوب هنا ليس التعريف بل <b>كيف يعمل داخلياً + قرار تقني معلَّل</b>.</p>
 
 <div class="mock" data-mock="mid" data-scale="100">
@@ -4358,7 +4834,7 @@ debounce أطول = طلبات أقل لكن إحساس بالبطء. أقصر =
 <code>0–50</code> تحتاج تحسيناً — ركّز على الأشجار الثلاث، الـ Event Loop، وطبقات المعمارية · <code>51–75</code> Mid-Level · <code>76–100</code> Mid-Level قوي — انتقل إلى مقابلة Senior.</div>
 </section>
 <section id="mock-senior">
-<h2><span class="num">32</span> 🔴 مقابلة وهمية — Senior (30 سؤال)</h2>
+<h2><span class="num">36</span> 🔴 مقابلة وهمية — Senior (30 سؤال)</h2>
 <p class="lead">60 دقيقة. الفرق هنا: كل سؤال يتبعه <b>سؤال متابعة</b>. أجب على الاثنين. إن انهارت إجابتك عند المتابعة، فالفهم سطحي مهما بدت الإجابة الأولى جيدة.</p>
 
 <h3 class="sub">🎭 نموذج حوار حقيقي: كيف تتصاعد أسئلة Senior</h3>
@@ -4565,7 +5041,7 @@ debounce أطول = طلبات أقل لكن إحساس بالبطء. أقصر =
 <code>0–60</code> لست جاهزاً لدور Senior بعد — ركّز على الـ internals والـ trade-offs · <code>61–85</code> Senior — أجب بثقة ووسّع في الأمثلة الواقعية · <code>86–100</code> Senior قوي — ركّز الآن على التواصل وقيادة الحوار التقني.</div>
 </section>
 <section id="how-senior">
-<h2><span class="num">33</span> كيف تُجيب كـ Senior — 20 مثالاً</h2>
+<h2><span class="num">37</span> كيف تُجيب كـ Senior — 20 مثالاً</h2>
 <p class="lead">نفس السؤال، ثلاث إجابات. لاحظ النمط: Beginner يعرّف · Mid يشرح الآلية · Senior يبدأ بالسياق ثم يقرّر ثم يذكر الثمن.</p>
 
 <div class="evo"><div class="q-line">1. ما هو Riverpod؟</div>
@@ -4670,7 +5146,7 @@ debounce أطول = طلبات أقل لكن إحساس بالبطء. أقصر =
 </section>
 
 <section id="traps">
-<h2><span class="num">34</span> ⚠️ Interview Traps — الأخطاء الشائعة في مقابلات Flutter</h2>
+<h2><span class="num">38</span> ⚠️ Interview Traps — الأخطاء الشائعة في مقابلات Flutter</h2>
 <div class="grid g2">
 <div class="card"><h5>1. حفظ التعريفات</h5><p>«الـ Widget هو لبنة بناء الواجهة» — جملة صحيحة وفارغة. أول سؤال متابعة يكشفها. الحل: اربط كل تعريف بمشكلة يحلّها.</p></div>
 <div class="card"><h5>2. قول «Clean Architecture» بلا شرح</h5><p>إن ذكرتها فستُسأل: ماذا في كل طبقة؟ ومن يعتمد على من؟ ومتى لا تستخدمها؟ لا تذكر مصطلحاً لا تستطيع الدفاع عنه لدقيقتين.</p></div>
@@ -4694,7 +5170,7 @@ debounce أطول = طلبات أقل لكن إحساس بالبطء. أقصر =
 </section>
 
 <section id="flashcards">
-<h2><span class="num">35</span> Flashcards</h2>
+<h2><span class="num">39</span> Flashcards</h2>
 <p class="lead">اضغط على البطاقة لقلبها. استخدمها للمراجعة السريعة قبل المقابلة بيوم — لا للتعلّم من الصفر.</p>
 <div class="fcgrid">
 <div class="fc"><div class="front">ما هو <code>Future</code>؟</div><div class="back">كائن يمثّل نتيجة عملية غير متزامنة ستتوفّر لاحقاً: قيمة أو خطأ. لا ينشئ thread.</div></div>
@@ -4729,7 +5205,7 @@ debounce أطول = طلبات أقل لكن إحساس بالبطء. أقصر =
 </section>
 
 <section id="map">
-<h2><span class="num">36</span> Final Knowledge Map</h2>
+<h2><span class="num">40</span> Final Knowledge Map</h2>
 <div class="ascii">                            Flutter Engineer
                                    │
                      ┌─────────────┴──────────────┐
@@ -4770,11 +5246,11 @@ debounce أطول = طلبات أقل لكن إحساس بالبطء. أقصر =
 </section>
 
 <section id="checklist">
-<h2><span class="num">37</span> Final Checklist</h2>
+<h2><span class="num">41</span> Final Checklist</h2>
 <p class="lead">علّم فقط ما تستطيع <b>شرحه لشخص آخر</b> في دقيقة دون النظر إلى شيء. الفهم الصامت لا يُحتسب.</p>
 <div class="progressbar"><i id="clbar"></i></div>
-<div class="muted" id="cltext">0 / 28 بند</div>
-<div class="checklist" id="checklist">
+<div class="muted" id="cltext">0 / 33 بند</div>
+<div class="checklist" id="checklist-items">
 <label><input type="checkbox"><span>أفهم Dart fundamentals (var/final/const/late/dynamic)</span></label>
 <label><input type="checkbox"><span>أفهم Null Safety ومعنى sound</span></label>
 <label><input type="checkbox"><span>أفهم OOP و extends/implements/with</span></label>
@@ -4801,6 +5277,11 @@ debounce أطول = طلبات أقل لكن إحساس بالبطء. أقصر =
 <label><input type="checkbox"><span>أفهم Testing واستراتيجيته وMock/Fake/Stub</span></label>
 <label><input type="checkbox"><span>أفهم Architecture: الحدود واتجاه الاعتمادية</span></label>
 <label><input type="checkbox"><span>أفهم SOLID وأستطيع إعطاء مثال Flutter لكل مبدأ</span></label>
+<label><input type="checkbox"><span>أفهم Feature-First Architecture وحدود الميزات</span></label>
+<label><input type="checkbox"><span>أفهم Riverpod code generation (@riverpod) والفرق عن اليدوي</span></label>
+<label><input type="checkbox"><span>أستطيع شرح الحزم في مشروعي (freezed, go_router, hooks...) وسبب اختيارها</span></label>
+<label><input type="checkbox"><span>أستطيع الإجابة على أسئلة CS العامة (Big-O, data structures, design patterns)</span></label>
+<label><input type="checkbox"><span>أستطيع تقديم نفسي وإجابة أسئلة behavioral بمنهجية STAR</span></label>
 <label><input type="checkbox"><span>أستطيع تشخيص مشاكل Flutter بـ DevTools</span></label>
 <label><input type="checkbox"><span>أستطيع شرح قراراتي التقنية والدفاع عن مقايضاتها</span></label>
 </div>
@@ -4986,7 +5467,7 @@ Flutter · Dart Interview Training — مورد تدريبي عام للمقاب
   });
 
   /* ---------------- Checklist progress ---------------- */
-  var cl = document.getElementById('checklist');
+  var cl = document.getElementById('checklist-items');
   if (cl) {
     var boxes = Array.prototype.slice.call(cl.querySelectorAll('input[type=checkbox]'));
     var bar = document.getElementById('clbar');
